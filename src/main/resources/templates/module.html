@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gaia - Modules list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="app"></div>
+
+</div>
+
+<template id="template">
+    <div>
+        <h1>Module {{name}}</h1>
+
+        <form v-on:submit.prevent="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" v-model="name">
+            </div>
+            <div class="form-group">
+                <label for="name">Description</label>
+                <input type="text" class="form-control" id="description" v-model="description">
+            </div>
+            <div class="form-group">
+                <label for="gitRepositoryUrl">Git Repository URL</label>
+                <input type="text" class="form-control" id="gitRepositoryUrl" v-model="gitRepositoryUrl">
+            </div>
+            <div class="form-group">
+                <label for="directory">Git repository directory</label>
+                <input type="text" class="form-control" id="directory" v-model="directory">
+            </div>
+
+            <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
+            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
+                <div class="form-group col-md-4" >
+                    <label for="var-name">Name: </label>
+                    <input type="text" class="form-control" id="var-name" v-model="modVar.name">
+                </div>
+                <div class="form-group col-md-4" >
+                    <label for="var-description">Description: </label>
+                    <input type="text" class="form-control" id="var-description" v-model="modVar.description">
+                </div>
+                <div class="form-group col-md-3" >
+                    <label for="var-defaultValue">Default value: </label>
+                    <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
+                </div>
+                <div class="form-group col-md-1" >
+                    <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</template>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<script th:inline="javascript" type="application/ecmascript">
+    const moduleId = [[${module.id}]];
+
+    let moduleData;
+
+    $.get(`/api/terraformModules/${moduleId}`)
+        .then(data => {
+            moduleData = data;
+            new Vue({
+                el: "#app",
+                data,
+                template: "#template",
+                methods: {
+                    post: function(){
+                        $.ajax({
+                            url: `/api/terraformModules/${moduleId}`,
+                            data: JSON.stringify(moduleData),
+                            contentType: "application/json",
+                            method: "PUT"
+                        })
+                    },
+                    removeVar(varIdx){
+                        data.variables.splice(varIdx,1);
+                    },
+                    addVar(){
+                        data.variables.push({});
+                    }
+                }
+            })
+        });
+</script>
+
+</body>
+</html>

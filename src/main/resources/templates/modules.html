@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gaia - Modules list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div class="container">
+    <h1>Modules list</h1>
+
+    <div class="card-columns">
+
+        <div th:each="module: ${modules}" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${module.name}">Card title</h5>
+                <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" class="btn btn-primary">Edit module</a>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
