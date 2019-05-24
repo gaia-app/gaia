@@ -1,67 +1,108 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gaia - Modules list</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
 
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <title>Gaia - Edit module</title>
+
 </head>
-<body>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
 
-<div class="container">
+        <div th:replace="~{layout/sidebar}"></div>
 
-    <div id="app"></div>
+        <!-- right content -->
+        <div id="content">
 
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2> Module </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white_shd full">
+
+                                <div id="app"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
+<!-- jQuery & bootstrap-->
+<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
 
 <template id="template">
     <div>
-        <h1>Module {{name}}</h1>
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Module {{name}}</h2>
+            </div>
+        </div>
 
-        <form v-on:submit.prevent="post">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" v-model="name">
-            </div>
-            <div class="form-group">
-                <label for="name">Description</label>
-                <input type="text" class="form-control" id="description" v-model="description">
-            </div>
-            <div class="form-group">
-                <label for="gitRepositoryUrl">Git Repository URL</label>
-                <input type="text" class="form-control" id="gitRepositoryUrl" v-model="gitRepositoryUrl">
-            </div>
-            <div class="form-group">
-                <label for="directory">Git repository directory</label>
-                <input type="text" class="form-control" id="directory" v-model="directory">
-            </div>
+        <div class="padding_infor_info">
+            <form v-on:submit.prevent="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" v-model="name">
+                </div>
+                <div class="form-group">
+                    <label for="name">Description</label>
+                    <input type="text" class="form-control" id="description" v-model="description">
+                </div>
+                <div class="form-group">
+                    <label for="gitRepositoryUrl">Git Repository URL</label>
+                    <input type="text" class="form-control" id="gitRepositoryUrl" v-model="gitRepositoryUrl">
+                </div>
+                <div class="form-group">
+                    <label for="directory">Git repository directory</label>
+                    <input type="text" class="form-control" id="directory" v-model="directory">
+                </div>
 
-            <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
-            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
-                <div class="form-group col-md-4" >
-                    <label for="var-name">Name: </label>
-                    <input type="text" class="form-control" id="var-name" v-model="modVar.name">
+                <div class="heading1">
+                    <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
                 </div>
-                <div class="form-group col-md-4" >
-                    <label for="var-description">Description: </label>
-                    <input type="text" class="form-control" id="var-description" v-model="modVar.description">
+                <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
+                    <div class="form-group col-md-4" >
+                        <label for="var-name">Name: </label>
+                        <input type="text" class="form-control" id="var-name" v-model="modVar.name">
+                    </div>
+                    <div class="form-group col-md-4" >
+                        <label for="var-description">Description: </label>
+                        <input type="text" class="form-control" id="var-description" v-model="modVar.description">
+                    </div>
+                    <div class="form-group col-md-3" >
+                        <label for="var-defaultValue">Default value: </label>
+                        <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
+                    </div>
+                    <div class="form-group col-md-1" >
+                        <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>
+                    </div>
                 </div>
-                <div class="form-group col-md-3" >
-                    <label for="var-defaultValue">Default value: </label>
-                    <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
-                </div>
-                <div class="form-group col-md-1" >
-                    <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>
-                </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                <button type="submit" class="btn btn-primary"><i class="far fa-save"></i> Save</button>
+            </form>
+        </div>
     </div>
 </template>
 
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
@@ -96,6 +137,15 @@
                 }
             })
         });
+</script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
 </script>
 
 </body>

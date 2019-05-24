@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - A terraform UI</title>
+
+</head>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
+
+        <div th:replace="~{layout/sidebar}"></div>
+
+        <!-- right content -->
+        <div id="content">
+
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Dashboard</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row column1">
+                        <div class="col-md-6 col-lg-4">
+                            <a href="/modules">
+                                <div class="full counter_section margin_bottom_30 blue1_bg">
+                                    <div class="couter_icon">
+                                        <div>
+                                            <i class="fa fa-object-group"></i>
+                                        </div>
+                                    </div>
+                                    <div class="counter_no">
+                                        <div>
+                                            <p class="total_no" th:text="${moduleCount}">12</p>
+                                            <p class="head_couter">Modules</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+<!--                        <div class="col-md-6 col-lg-4">-->
+<!--                            <a href="/stacks">-->
+<!--                                <div class="full counter_section margin_bottom_30 blue2_bg">-->
+<!--                                    <div class="couter_icon">-->
+<!--                                        <div>-->
+<!--                                            <i class="fas fa-layer-group"></i>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="counter_no">-->
+<!--                                        <div>-->
+<!--                                            <p class="total_no">12</p>-->
+<!--                                            <p class="head_couter">Running Stacks</p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6 col-lg-4">-->
+<!--                            <a href="/stacks">-->
+<!--                                <div class="full counter_section margin_bottom_30 yellow_bg">-->
+<!--                                    <div class="couter_icon">-->
+<!--                                        <div>-->
+<!--                                            <i class="far fa-caret-square-up"></i>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="counter_no">-->
+<!--                                        <div>-->
+<!--                                            <p class="total_no">1</p>-->
+<!--                                            <p class="head_couter">Stacks to update</p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- jQuery & bootstrap-->
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script>
+</body>
+</html>

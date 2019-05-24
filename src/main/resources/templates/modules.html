@@ -1,34 +1,67 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Gaia - Modules list</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
 
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <title>Gaia - Modules</title>
+
 </head>
-<body>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
 
-<div class="container">
-    <h1>Modules list</h1>
+        <div th:replace="~{layout/sidebar}"></div>
 
-    <div class="card-columns">
+        <!-- right content -->
+        <div id="content">
 
-        <div th:each="module: ${modules}" class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${module.name}">Card title</h5>
-                <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" class="btn btn-primary">Edit module</a>
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Modules</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row column1">
+
+                        <div class="card-columns">
+
+                            <div th:each="module: ${modules}" class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${module.name}">Card title</h5>
+                                    <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <a href="#" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
+                                    <a href="#" th:href="@{/modules/{moduleId}/instanciate(moduleId=${module.id})}" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-
     </div>
-
-
 </div>
-
+<!-- jQuery & bootstrap-->
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-<script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    });
+</script>
 
 </body>
 </html>
