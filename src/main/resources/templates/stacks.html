@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - Stacks</title>
+
+</head>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
+
+        <div th:replace="~{layout/sidebar}"></div>
+
+        <!-- right content -->
+        <div id="content">
+
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2>Stacks</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row column1">
+
+                        <div class="card-columns">
+
+                            <div th:each="stack: ${stacks}" class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${stack.name}">Card title</h5>
+                                    <a href="#" th:href="@{/stacks/{stackId}(stackId=${stack.id})}" data-toggle="tooltip" title="Edit this stack" class="btn btn-primary"><i class="far fa-edit"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- jQuery & bootstrap-->
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    });
+</script>
+
+</body>
+</html>

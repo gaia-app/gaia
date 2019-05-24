@@ -1,7 +1,9 @@
 package io.codeka.gaia;
 
+import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.bo.TerraformModule;
 import io.codeka.gaia.bo.TerraformVariable;
+import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
 import io.codeka.gaia.repository.TerraformStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -23,10 +26,13 @@ public class Gaia {
 
 	@Bean
 	@Autowired
-	CommandLineRunner cli(TerraformModuleRepository repository, TerraformStateRepository terraformStateRepository){
+	CommandLineRunner cli(TerraformModuleRepository repository,
+						  TerraformStateRepository terraformStateRepository,
+						  StackRepository stackRepository){
 		return args -> {
 			repository.deleteAll();
 			terraformStateRepository.deleteAll();
+			stackRepository.deleteAll();
 
 			// create dummy module for tests
 			var module = new TerraformModule();
@@ -49,6 +55,23 @@ public class Gaia {
 			module.setVariables(List.of(tvar, tvar2));
 
 			repository.saveAll(List.of(module));
+
+
+			var stack = new Stack();
+			stack.setId("5a215b6b-fe53-4afa-85f0-a10175a7f264");
+			stack.setName("mongo-instance-1");
+			stack.setModuleId("e01f9925-a559-45a2-8a55-f93dc434c676");
+			stack.getVariableValues().put("mongo_exposed_port", "27117");
+			stack.setProviderSpec("provider \"poulp\" {\n" +
+					"    host = \"unix:///var/run/docker.sock\"\n" +
+					"}");
+			stackRepository.save(stack);
+
+			var stack2 = new Stack();
+			stack2.setId("143773fa-4c2e-4baf-a7fb-79d23e01c5ca");
+			stack2.setName("mongo-instance-2");
+			stack2.setModuleId("e01f9925-a559-45a2-8a55-f93dc434c676");
+			stackRepository.save(stack2);
 		};
 	}
 

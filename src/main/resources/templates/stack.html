@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - Edit stack</title>
+
+</head>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
+
+        <div th:replace="~{layout/sidebar}"></div>
+
+        <!-- right content -->
+        <div id="content">
+
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="full">
+                            <div class="page_title">
+                                <button type="submit" class="btn btn-primary" onclick="saveStack()"><i class="far fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="app"></div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<template id="template">
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white_shd full margin_bottom_30">
+                    <div>
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Stack {{name}}</h2>
+                            </div>
+                        </div>
+
+                        <div class="padding_infor_info">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" v-model="name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row margin_bottom_30">
+            <div class="col-md-6">
+                <div class="white_shd full">
+                    <div>
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Backend configuration</h2>
+                                <small>This backend configuration is for information only. Gaia generates it for you !</small>
+                            </div>
+                        </div>
+
+                        <div class="tab_style1 full">
+                            <div class="tabbar">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <a class="nav-item nav-link active show" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">HCL</a>
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">JSON</a>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+<pre><code class="language-hcl">terraform {
+    backend "http" {
+        address = "http://gaia:8080/api/state/{{id}}"
+    }
+}</code></pre>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+<pre><code class="language-json">{
+    "terraform" : {
+        "backend" : {
+            "http": {
+                "address": "http://gaia:8080/api/state/{{id}}"
+            }
+        }
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="white_shd full">
+                    <div>
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Provider configuration</h2>
+                                <small>Input here your provider configuration (in HCL format)</small>
+                            </div>
+                        </div>
+                        <div class="full">
+                        <div id="provider-editor" style="height: 200px;">{{ providerSpec }}</div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white_shd full">
+                    <div>
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Module variables values</h2>
+                                <small>This is the configuration of your module's variables !</small>
+                            </div>
+                        </div>
+
+                        <div class="padding_infor_info">
+                            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in module.variables">
+                                <div class="form-group col-md-4" >
+                                    <label for="var-name">{{modVar.name}}: </label>
+                                    <input type="text" class="form-control" id="var-name" v-model="variableValues[modVar.name]">
+                                    <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/webjars/ace-builds/1.4.4/src-min/ace.js"></script>
+<script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<script th:inline="javascript" type="application/ecmascript">
+    const stackId = [[${stackId}]];
+
+    let stackData;
+    let providerEditor;
+
+    $.get(`/api/stacks/${stackId}`)
+        .then(data => {
+
+            stackData = data;
+
+            getModule(stackData.moduleId).then(module => {
+                stackData.module = module;
+                initFront(stackData);
+            });
+
+
+        });
+
+    function getModule(id){
+        return $.get(`/api/terraformModules/${id}`);
+    }
+
+    function initFront(stack){
+        new Vue({
+            el: "#app",
+            data: stack,
+            template: "#template",
+        });
+
+        // highlight code !
+        Prism.highlightAll();
+
+        // activating code editor
+        providerEditor = ace.edit("provider-editor");
+        let jsonMode = ace.require("ace/mode/hjson").Mode;
+        providerEditor.session.setMode(new jsonMode());
+    }
+
+    function saveStack(){
+        // getting custom provider data
+        stackData.providerSpec = providerEditor.getValue();
+        $.ajax({
+            url: `/api/stacks/${stackId}`,
+            data: JSON.stringify(stackData),
+            contentType: "application/json",
+            method: "PUT"
+        })
+    }
+</script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>
