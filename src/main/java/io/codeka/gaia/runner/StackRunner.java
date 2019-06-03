@@ -156,10 +156,16 @@ public class StackRunner {
                 logs = stream.readFully();
             }
 
-            // delete container :)
-            dockerClient.removeContainer(containerCreation.id());
+            if(containerExit.statusCode() == 0){
+                job.end();
+                // delete container :)
+                dockerClient.removeContainer(containerCreation.id());
+            }
+            else{
+                job.fail();
+            }
 
-            job.end();
+
         } catch (Exception e) {
             job.fail();
             e.printStackTrace();

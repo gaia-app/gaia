@@ -57,11 +57,11 @@
                                 Your deployment is finished ! <i class="far fa-grin-stars"></i>
                             </div>
 
-                            <div class="alert alert-dark" role="alert" v-if="job.status === 'FAILED'">
+                            <div class="alert alert-warning" role="alert" v-if="job.status === 'FAILED'">
                                 Your deployment has failed ! <i class="far fa-frown"></i>
                             </div>
 
-                           <pre><code class="language-shellOutput">{{job.logs}}</code></pre>
+                           <pre><code class="language-shellOutput" v-html="job.logs"></code></pre>
                         </div>
                     </div>
                 </div>
@@ -73,11 +73,12 @@
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/prism.js"></script>
 <script src="/webjars/ace-builds/1.4.4/src-min/ace.js"></script>
 <script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<script src="/js/ansi_to_html.js"></script>
 
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
@@ -117,6 +118,9 @@
                 job = data;
                 vueData.job = job;
 
+                // applying html colors instead of ANSI streams
+                job.logs= new Filter().toHtml(job.logs)
+
                 if(job.status !== "RUNNING"){
                     clearInterval(interval);
                 }
@@ -127,18 +131,8 @@
         const vue = new Vue({
             el: "#app",
             data: vueData,
-            template: "#template",
+            template: "#template"
         });
-
-        // highlight code !
-        Prism.highlightAll();
-    }
-
-    /**
-     * Simple function to replace
-     */
-    function replaceAnsiWithHTML(){
-
     }
 </script>
 

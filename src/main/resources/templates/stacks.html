@@ -29,7 +29,7 @@
 
                         <div class="card-columns">
 
-                            <div th:each="stack: ${stacks}" class="card" style="width: 18rem;">
+                            <div th:each="stack: ${stacks}" class="card" style="">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${stack.name}">Card title</h5>
                                     <a href="#" th:href="@{/stacks/{stackId}(stackId=${stack.id})}" data-toggle="tooltip" title="Edit this stack" class="btn btn-primary"><i class="far fa-edit"></i></a>
