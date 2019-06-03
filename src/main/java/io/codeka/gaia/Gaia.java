@@ -31,7 +31,7 @@ public class Gaia {
 						  StackRepository stackRepository){
 		return args -> {
 			repository.deleteAll();
-			terraformStateRepository.deleteAll();
+			//terraformStateRepository.deleteAll();
 			stackRepository.deleteAll();
 
 			// create dummy module for tests
@@ -61,6 +61,7 @@ public class Gaia {
 			stack.setId("5a215b6b-fe53-4afa-85f0-a10175a7f264");
 			stack.setName("mongo-instance-1");
 			stack.setModuleId("e01f9925-a559-45a2-8a55-f93dc434c676");
+			stack.getVariableValues().put("mongo_container_name", "test");
 			stack.getVariableValues().put("mongo_exposed_port", "27117");
 			stack.setProviderSpec("provider \"poulp\" {\n" +
 					"    host = \"unix:///var/run/docker.sock\"\n" +

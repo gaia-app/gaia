@@ -21,7 +21,8 @@
                     <div class="row column_title">
                         <div class="full">
                             <div class="page_title">
-                                <button type="submit" class="btn btn-primary" onclick="saveStack()"><i class="far fa-save"></i> Save</button>
+                                <button class="btn btn-primary" onclick="saveStack()"><i class="far fa-save"></i> Save</button>
+                                <a href="" th:href="@{/stacks/{stackId}/apply(stackId=${stackId})}" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
                             </div>
                         </div>
                     </div>
