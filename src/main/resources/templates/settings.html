@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - Edit module</title>
+
+</head>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
+
+        <div th:replace="~{layout/sidebar}"></div>
+
+        <!-- right content -->
+        <div id="content">
+
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2> Gaia's Settings </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white_shd full">
+
+                                <div id="app"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- jQuery & bootstrap-->
+<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="webjars/popper.js/1.14.3/popper.min.js"></script>
+<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<template id="template">
+    <div>
+        <div class="full graph_head">
+            <div class="heading1 margin_0">
+                <h2>Settings</h2>
+            </div>
+        </div>
+
+        <div class="padding_infor_info">
+            <div class="form-group">
+                <label for="externalUrl">External url</label>
+                <input type="text" class="form-control" id="externalUrl" v-model="externalUrl">
+                <small>This is gaia's external URL. This is needed to allow terraform backend support.</small>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveSettings()"><i class="far fa-save"></i> Save</button>
+        </div>
+    </div>
+</template>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<script th:inline="javascript" type="application/ecmascript">
+    const settings = [[${settings}]];
+
+    new Vue({
+        el: "#app",
+        data : settings,
+        template: "#template"
+    });
+
+    function saveSettings(){
+        $.ajax({
+            url: `/settings`,
+            data: JSON.stringify(settings),
+            contentType: "application/json",
+            method: "PUT"
+        })
+    }
+</script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>

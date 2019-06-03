@@ -2,9 +2,9 @@ package io.codeka.gaia.runner;
 
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.LogStream;
-import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import io.codeka.gaia.bo.Job;
+import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.bo.TerraformModule;
 import org.apache.commons.io.IOUtils;
@@ -31,12 +31,15 @@ public class StackRunner {
 
     private ContainerConfig containerConfig;
 
+    private Settings settings;
+
     private Map<String, Job> jobs = new HashMap<>();
 
     @Autowired
-    public StackRunner(DockerClient dockerClient, ContainerConfig containerConfig) {
+    public StackRunner(DockerClient dockerClient, ContainerConfig containerConfig, Settings settings) {
         this.dockerClient = dockerClient;
         this.containerConfig = containerConfig;
+        this.settings = settings;
     }
 
     @Async
@@ -97,7 +100,7 @@ public class StackRunner {
 
             var backendGenCommand = String.format("echo \"terraform {\n" +
                     "    backend \\\"http\\\" {\n" +
-                    "\t\taddress=\\\"http://172.17.0.1:8080/api/state/%s\\\"\n" +
+                    "\t\taddress=\\\""+settings.getExternalUrl()+"/api/state/%s\\\"\n" +
                     "\t}\n" +
                     "}\n\" > backend.tf", stack.getId());
 

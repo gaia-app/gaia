@@ -44,14 +44,14 @@
                     <div>
                         <div class="full graph_head">
                             <div class="heading1 margin_0">
-                                <h2>Stack {{name}}</h2>
+                                <h2>Stack {{stack.name}}</h2>
                             </div>
                         </div>
 
                         <div class="padding_infor_info">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" v-model="name">
+                                <input type="text" class="form-control" id="name" v-model="stack.name">
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                                     <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 <pre><code class="language-hcl">terraform {
     backend "http" {
-        address = "http://gaia:8080/api/state/{{id}}"
+        address = "{{settings.externalUrl}}/api/state/{{stack.id}}"
     }
 }</code></pre>
                                     </div>
@@ -90,7 +90,7 @@
     "terraform" : {
         "backend" : {
             "http": {
-                "address": "http://gaia:8080/api/state/{{id}}"
+                "address": "{{settings.externalUrl}}/api/state/{{stack.id}}"
             }
         }
     }
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="full">
-                        <div id="provider-editor" style="height: 200px;">{{ providerSpec }}</div>
+                        <div id="provider-editor" style="height: 200px;">{{ stack.providerSpec }}</div>
                         </div>
                 </div>
             </div>
@@ -130,10 +130,10 @@
                         </div>
 
                         <div class="padding_infor_info">
-                            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in module.variables">
+                            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in stack.module.variables">
                                 <div class="form-group col-md-4" >
                                     <label for="var-name">{{modVar.name}}: </label>
-                                    <input type="text" class="form-control" id="var-name" v-model="variableValues[modVar.name]">
+                                    <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]">
                                     <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
                                 </div>
                             </div>
@@ -156,6 +156,7 @@
 
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
+    const settings = [[${settings}]];
 
     let stackData;
     let providerEditor;
@@ -180,7 +181,10 @@
     function initFront(stack){
         new Vue({
             el: "#app",
-            data: stack,
+            data: {
+                stack,
+                settings
+            },
             template: "#template",
         });
 

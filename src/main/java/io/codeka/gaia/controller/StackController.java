@@ -1,11 +1,10 @@
 package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Job;
+import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +24,14 @@ public class StackController {
 
     private TerraformModuleRepository terraformModuleRepository;
 
+    private Settings settings;
+
     @Autowired
-    public StackController(StackRepository stackRepository, StackRunner stackRunner, TerraformModuleRepository terraformModuleRepository) {
+    public StackController(StackRepository stackRepository, StackRunner stackRunner, TerraformModuleRepository terraformModuleRepository, Settings settings) {
         this.stackRepository = stackRepository;
         this.stackRunner = stackRunner;
         this.terraformModuleRepository = terraformModuleRepository;
+        this.settings = settings;
     }
 
     @GetMapping("/stacks")
@@ -45,6 +47,7 @@ public class StackController {
         // TODO throw an exception (404) if not
         if(stackRepository.existsById(stackId)){
             model.addAttribute("stackId", stackId);
+            model.addAttribute("settings", settings);
         }
         return "stack";
     }
