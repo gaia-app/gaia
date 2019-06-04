@@ -1,14 +1,19 @@
 package io.codeka.gaia;
 
+import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
-public class GaiaTest {
+@Testcontainers
+class GaiaTest {
+
+	@Container
+	private static MongoContainer mongoContainer = new MongoContainer();
 
 	@Test
-	public void contextLoads() {
-	}
+	void contextLoads() {}
 
 }

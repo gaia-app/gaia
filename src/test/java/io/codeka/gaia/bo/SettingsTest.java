@@ -2,12 +2,14 @@ package io.codeka.gaia.bo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = Settings.class)
+@EnableConfigurationProperties
 @TestPropertySource(properties = "gaia.externalUrl=http://172.17.0.1:8080")
 class SettingsTest {
 
