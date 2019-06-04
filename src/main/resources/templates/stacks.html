@@ -40,7 +40,13 @@
     <div class="card-columns">
         <div class="card" v-for="stack in stacks">
             <div class="card-body">
-                <h5 class="card-title">{{stack.name}}</h5>
+                <h5 class="card-title">
+                    {{stack.name}}
+                    <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'"><i class="fas fa-star-of-life"></i> new</span>
+                    <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'"><i class="far fa-check-square"></i> running</span>
+                    <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> to update</span>
+                    <span class="badge badge-pill badge-danger" v-if="stack.state === 'DESTROYED'"><i class="fas fa-snowplow"></i> destroyed</span>
+                </h5>
                 <a :href="'/stacks/' + stack.id" data-toggle="tooltip" title="Edit this stack" class="btn btn-primary"><i class="far fa-edit"></i></a>
             </div>
         </div>
@@ -55,9 +61,10 @@
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 
 <script type="application/ecmascript">
+    let stacks;
     $.get("/api/stacks")
         .then(data => {
-           const stacks = data._embedded.stacks;
+            stacks = data._embedded.stacks;
 
            new Vue({
                el: "#placeholder",
