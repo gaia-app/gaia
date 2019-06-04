@@ -62,6 +62,24 @@
                 <small>This is gaia's external URL. This is needed to allow terraform backend support.</small>
             </div>
 
+            <div class="heading1">
+                <h2>Environment Variables <button type="button" class="btn btn-success" @click="addEnvVar()">+</button></h2>
+                <small>This is the environment variables which are fed to the runner.</small>
+            </div>
+            <div class="form-row align-items-end" v-for="(envVar, index) in envVars">
+                <div class="form-group col-md-4" >
+                    <label for="var-name">Name: </label>
+                    <input type="text" class="form-control" id="var-name" v-model="envVar.name">
+                </div>
+                <div class="form-group col-md-4" >
+                    <label for="var-value">Value: </label>
+                    <input type="text" class="form-control" id="var-value" v-model="envVar.value">
+                </div>
+                <div class="form-group col-md-1" >
+                    <button type="button" class="form-control btn btn-danger" @click="removeEnvVar(index)">-</button>
+                </div>
+            </div>
+
             <button class="btn btn-primary" onclick="saveSettings()"><i class="far fa-save"></i> Save</button>
         </div>
     </div>
@@ -75,11 +93,19 @@
 
 <script th:inline="javascript" type="application/ecmascript">
     const settings = [[${settings}]];
-
+    const envVars = settings.envVars;
     new Vue({
         el: "#app",
         data : settings,
-        template: "#template"
+        template: "#template",
+        methods: {
+            removeEnvVar(index){
+                settings.envVars.splice(index, 1);
+            },
+            addEnvVar(){
+                settings.envVars.push({});
+            }
+        }
     });
 
     function saveSettings(){

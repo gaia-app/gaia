@@ -29,7 +29,7 @@ public class StackRunner {
 
     private DockerClient dockerClient;
 
-    private ContainerConfig containerConfig;
+    private ContainerConfig.Builder containerConfigBuilder;
 
     private Settings settings;
 
@@ -38,9 +38,9 @@ public class StackRunner {
     private Map<String, Job> jobs = new HashMap<>();
 
     @Autowired
-    public StackRunner(DockerClient dockerClient, ContainerConfig containerConfig, Settings settings, StackCommandBuilder stackCommandBuilder) {
+    public StackRunner(DockerClient dockerClient, ContainerConfig.Builder containerConfigBuilder, Settings settings, StackCommandBuilder stackCommandBuilder) {
         this.dockerClient = dockerClient;
-        this.containerConfig = containerConfig;
+        this.containerConfigBuilder = containerConfigBuilder;
         this.settings = settings;
         this.stackCommandBuilder = stackCommandBuilder;
     }
@@ -51,7 +51,10 @@ public class StackRunner {
         job.start();
 
         try{
-            System.err.println("Create container");
+            // FIXME This is certainly no thread safe
+            var containerConfig = containerConfigBuilder.env(settings.env()).build();
+
+            System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
             var containerId = containerCreation.id();
 

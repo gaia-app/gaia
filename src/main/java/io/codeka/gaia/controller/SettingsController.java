@@ -29,10 +29,10 @@ public class SettingsController {
     }
 
     @PutMapping("/settings")
-    public String saveModule(@RequestBody Settings settings){
+    public void saveModule(@RequestBody Settings settings){
         // update global settings bean
         this.settings.setExternalUrl( settings.getExternalUrl() );
-        return "settings";
+        this.settings.setEnvVars(settings.getEnvVars());
     }
 
 }

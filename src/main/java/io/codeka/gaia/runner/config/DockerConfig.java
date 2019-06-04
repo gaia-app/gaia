@@ -7,7 +7,6 @@ import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.HostConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Configuration of the docker client
@@ -31,7 +30,7 @@ public class DockerConfig {
     }
 
     @Bean
-    ContainerConfig containerConfig(){
+    ContainerConfig.Builder containerConfig(){
         return ContainerConfig.builder()
                 .image("hashicorp/terraform:0.11.14")
                 .hostConfig(HostConfig.builder().binds(HostConfig.Bind.builder().from("/var/run/docker.sock").to("/var/run/docker.sock").build()).build())
@@ -44,8 +43,7 @@ public class DockerConfig {
                 .attachStderr(true)
                 .stdinOnce(true)
                 .openStdin(true)
-                .tty(false)
-                .build();
+                .tty(false);
     }
 
 }
