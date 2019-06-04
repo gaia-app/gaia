@@ -38,6 +38,8 @@ public class Stack {
      */
     private String providerSpec;
 
+    private StackState state = StackState.NEW;
+
     public String getId() {
         return id;
     }
@@ -76,5 +78,13 @@ public class Stack {
 
     public void setProviderSpec(String providerSpec) {
         this.providerSpec = providerSpec;
+    }
+
+    public StackState getState() {
+        return state;
+    }
+
+    public void setState(StackState state) {
+        this.state = state;
     }
 }
