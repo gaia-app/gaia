@@ -2,12 +2,11 @@ package io.codeka.gaia.repository;
 
 import io.codeka.gaia.bo.Job;
 import io.codeka.gaia.bo.JobStatus;
+import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.test.context.support.TestPropertySourceUtils;
-import org.testcontainers.containers.GenericContainer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -17,7 +16,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
-@Testcontainers()
+@Testcontainers
+@DirtiesContext
 class JobRepositoryTest {
 
     @Autowired
@@ -44,21 +44,6 @@ class JobRepositoryTest {
         assertEquals("42", job.getStackId());
         assertEquals(JobStatus.FINISHED, job.getStatus());
         assertEquals("some logs", job.getLogs());
-    }
-
-    static class MongoContainer extends GenericContainer{
-        MongoContainer(){
-            super("mongo");
-            setExposedPorts(List.of(27017));
-        }
-
-        @Override
-        public void start() {
-            super.start();
-            var port = getMappedPort(27017);
-            // register the port as property for spring
-            System.setProperty("spring.data.mongodb.port", String.valueOf(port));
-        }
     }
 
 }
