@@ -145,6 +145,9 @@ public class StackRunner {
                 job.fail();
             }
 
+            // save job to database
+            jobRepository.save(job);
+
         } catch (Exception e) {
             job.fail();
             e.printStackTrace();
