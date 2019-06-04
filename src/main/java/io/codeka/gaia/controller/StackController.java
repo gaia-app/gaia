@@ -35,9 +35,7 @@ public class StackController {
     }
 
     @GetMapping("/stacks")
-    public String listStacks(Model model){
-        model.addAttribute("stacks", stackRepository.findAll());
-
+    public String listStacks(){
         return "stacks";
     }
 
@@ -63,6 +61,7 @@ public class StackController {
         // create a new job
         var job = new Job();
         job.setId(UUID.randomUUID().toString());
+        job.setStackId(stackId);
 
         model.addAttribute("jobId", job.getId());
 
