@@ -33,13 +33,16 @@ public class StackRunner {
 
     private Settings settings;
 
+    private StackCommandBuilder stackCommandBuilder;
+
     private Map<String, Job> jobs = new HashMap<>();
 
     @Autowired
-    public StackRunner(DockerClient dockerClient, ContainerConfig containerConfig, Settings settings) {
+    public StackRunner(DockerClient dockerClient, ContainerConfig containerConfig, Settings settings, StackCommandBuilder stackCommandBuilder) {
         this.dockerClient = dockerClient;
         this.containerConfig = containerConfig;
         this.settings = settings;
+        this.stackCommandBuilder = stackCommandBuilder;
     }
 
     @Async
@@ -98,49 +101,7 @@ public class StackRunner {
                 }
             });
 
-            var backendGenCommand = String.format("echo \"terraform {\n" +
-                    "    backend \\\"http\\\" {\n" +
-                    "\t\taddress=\\\""+settings.getExternalUrl()+"/api/state/%s\\\"\n" +
-                    "\t}\n" +
-                    "}\n\" > backend.tf", stack.getId());
-
-            var varFormatString = " -var \"%s=%s\" ";
-            var variablesBuilder = new StringBuilder();
-
-            module.getVariables().forEach(terraformVariable -> {
-
-                var name = terraformVariable.getName();
-                String value = terraformVariable.getDefaultValue();
-                // try getting the value from the stack
-                if(stack.getVariableValues().containsKey(name)){
-                    value = stack.getVariableValues().get(name);
-                }
-                variablesBuilder.append(String.format(varFormatString, name, value));
-            });
-
-            stack.getVariableValues().forEach((s, s2) -> {
-                variablesBuilder.append(String.format(varFormatString, s, s2));
-            });
-
-            var applyCommand = String.format("terraform apply --auto-approve %s", variablesBuilder.toString());
-
-            System.out.println(applyCommand);
-
-            var commands = new String[]{
-                    "set -ex",
-                    String.format("git clone %s module", module.getGitRepositoryUrl()),
-                    "cd module",
-                    "echo 'generating backend configuration'",
-                    backendGenCommand,
-                    "cat backend.tf",
-                    "terraform version",
-                    "terraform init",
-                    applyCommand
-            };
-
-            // generate a backend.tf config !
-
-            var commandScript = String.join("\n", commands);
+            var commandScript = stackCommandBuilder.buildApplyScript(stack, module);
 
             System.err.println("Writing buffer");
             writable.write(ByteBuffer.wrap(commandScript.getBytes()));
