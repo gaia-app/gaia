@@ -31,7 +31,7 @@ public class Job {
     }
 
     public String getLogs() {
-        if(jobStatus == JobStatus.FINISHED){
+        if(jobStatus == JobStatus.FINISHED || jobStatus == JobStatus.FAILED){
             return logs;
         }
         return stringWriter.toString();
