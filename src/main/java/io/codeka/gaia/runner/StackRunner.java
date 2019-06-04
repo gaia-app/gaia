@@ -1,12 +1,10 @@
 package io.codeka.gaia.runner;
 
 import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.messages.ContainerConfig;
-import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.bo.Settings;
-import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.bo.TerraformModule;
+import io.codeka.gaia.bo.*;
+import io.codeka.gaia.repository.JobRepository;
+import io.codeka.gaia.repository.StackRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -37,12 +35,21 @@ public class StackRunner {
 
     private Map<String, Job> jobs = new HashMap<>();
 
+    private StackRepository stackRepository;
+
+    private HttpHijackWorkaround httpHijackWorkaround;
+
+    private JobRepository jobRepository;
+
     @Autowired
-    public StackRunner(DockerClient dockerClient, ContainerConfig.Builder containerConfigBuilder, Settings settings, StackCommandBuilder stackCommandBuilder) {
+    public StackRunner(DockerClient dockerClient, ContainerConfig.Builder containerConfigBuilder, Settings settings, StackCommandBuilder stackCommandBuilder, StackRepository stackRepository, HttpHijackWorkaround httpHijackWorkaround, JobRepository jobRepository) {
         this.dockerClient = dockerClient;
         this.containerConfigBuilder = containerConfigBuilder;
         this.settings = settings;
         this.stackCommandBuilder = stackCommandBuilder;
+        this.stackRepository = stackRepository;
+        this.httpHijackWorkaround = httpHijackWorkaround;
+        this.jobRepository = jobRepository;
     }
 
     @Async
@@ -52,7 +59,9 @@ public class StackRunner {
 
         try{
             // FIXME This is certainly no thread safe
-            var containerConfig = containerConfigBuilder.env(settings.env()).build();
+            var containerConfig = containerConfigBuilder
+                    .env(settings.env())
+                    .build();
 
             System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
@@ -61,7 +70,7 @@ public class StackRunner {
             // attach stdin
             System.err.println("Attach container");
             var logStream = dockerClient.attachContainer(containerId, DockerClient.AttachParameter.STDIN, DockerClient.AttachParameter.STDOUT, DockerClient.AttachParameter.STDERR, DockerClient.AttachParameter.STREAM);
-            var writable = HttpHijackWorkaround.getOutputStream(logStream, "unix:///var/run/docker.sock");
+            var writable = httpHijackWorkaround.getOutputStream(logStream, "unix:///var/run/docker.sock");
 
             System.err.println("Starting container");
             dockerClient.startContainer(containerId);
@@ -118,20 +127,23 @@ public class StackRunner {
             // docker.killContainer(containerId);
 
             // get full logs to validate the output
-            String logs;
-            try (LogStream stream = dockerClient.logs(containerCreation.id(), DockerClient.LogsParam.stdout(), DockerClient.LogsParam.stderr())) {
-                logs = stream.readFully();
-            }
+            // String logs;
+            // try (LogStream stream = dockerClient.logs(containerCreation.id(), DockerClient.LogsParam.stdout(), DockerClient.LogsParam.stderr())) {
+            //     logs = stream.readFully();
+            // }
 
             if(containerExit.statusCode() == 0){
                 job.end();
                 // delete container :)
                 dockerClient.removeContainer(containerCreation.id());
+
+                // update stack information
+                stack.setState(StackState.RUNNING);
+                stackRepository.save(stack);
             }
             else{
                 job.fail();
             }
-
 
         } catch (Exception e) {
             job.fail();

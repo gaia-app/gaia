@@ -9,6 +9,7 @@ import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.io.IdentityInputStream;
 import org.apache.http.impl.io.SessionInputBufferImpl;
 import org.glassfish.jersey.message.internal.EntityInputStream;
+import org.springframework.stereotype.Component;
 
 import java.io.FilterInputStream;
 import java.io.InputStream;
@@ -19,8 +20,10 @@ import java.nio.channels.WritableByteChannel;
 import java.util.LinkedList;
 import java.util.List;
 
+@Component
 public class HttpHijackWorkaround {
-    public static WritableByteChannel getOutputStream(final LogStream stream, final String uri) throws Exception {
+
+    WritableByteChannel getOutputStream(final LogStream stream, final String uri) throws Exception {
         // @formatter:off
         final String[] fields =
                 new String[] {"reader",
