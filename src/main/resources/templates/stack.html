@@ -38,6 +38,7 @@
 
 <template id="template">
     <div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="white_shd full margin_bottom_30">
@@ -139,7 +140,7 @@
                             <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in stack.module.variables">
                                 <div class="form-group col-md-4" >
                                     <label for="var-name">{{modVar.name}}: </label>
-                                    <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]">
+                                    <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]" @change="recomputeState">
                                     <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
                                 </div>
                             </div>
@@ -237,6 +238,13 @@
                 settings
             },
             template: "#template",
+            methods: {
+                recomputeState: function(){
+                    if(stack.state === "RUNNING"){
+                        stack.state = "TO_UPDATE";
+                    }
+                }
+            }
         });
 
         // highlight code !
