@@ -46,6 +46,9 @@
                 <a href="#" class="btn btn-primary" @click="save"><i class="far fa-save"></i> Save</a>
                 <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'NEW'" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
                 <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'TO_UPDATE'" class="btn btn-warning"><i class="fas fa-upload"></i> Update</a>
+
+                <a :href="'/stacks/' + stack.id + '/preview'" v-if="stack.state === 'NEW' || stack.state === 'TO_UPDATE'" class="btn btn-info"><i class="fas fa-binoculars"></i> Preview</a>
+
             </div>
         </div>
     </div>

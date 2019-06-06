@@ -67,7 +67,7 @@ class StackRunnerTest {
         when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
-        stackRunner.run(job, module, stack);
+        stackRunner.apply(job, module, stack);
 
         // then
         verify(jobRepository).save(job);
@@ -98,7 +98,7 @@ class StackRunnerTest {
         when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
-        stackRunner.run(job, module, stack);
+        stackRunner.apply(job, module, stack);
 
         // then
         assertEquals(StackState.RUNNING, stack.getState());
