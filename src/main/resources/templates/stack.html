@@ -18,14 +18,8 @@
 
             <div class="midde_cont">
                 <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="full">
-                            <div class="page_title">
-                                <button class="btn btn-primary" onclick="saveStack()"><i class="far fa-save"></i> Save</button>
-                                <a href="" th:href="@{/stacks/{stackId}/apply(stackId=${stackId})}" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
-                            </div>
-                        </div>
-                    </div>
+
+                    <div id="controls"></div>
 
                     <div id="app"></div>
 
@@ -35,6 +29,27 @@
         </div>
     </div>
 </div>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="/webjars/ace-builds/1.4.4/src-min/ace.js"></script>
+<script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<template id="stack-controls">
+    <div class="row column_title">
+        <div class="full">
+            <div class="page_title">
+                <a href="#" class="btn btn-primary" @click="save"><i class="far fa-save"></i> Save</a>
+                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'NEW'" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
+                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'TO_UPDATE'" class="btn btn-warning"><i class="fas fa-upload"></i> Update</a>
+            </div>
+        </div>
+    </div>
+</template>
 
 <template id="template">
     <div>
@@ -157,15 +172,6 @@
     </div>
 </template>
 
-<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/prism.js"></script>
-<script src="/webjars/ace-builds/1.4.4/src-min/ace.js"></script>
-<script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
-
-<script src="/webjars/vue/2.5.16/vue.js"></script>
-
 <template id="job-history">
     <div class="job_history">
         <div class="job_history_head">
@@ -192,7 +198,7 @@
     });
 
     Vue.filter('dateTime', function (value) {
-        if (!value) return ''
+        if (!value) return '';
         return new Date(value).toLocaleString();
     })
 </script>
@@ -247,6 +253,26 @@
             }
         });
 
+        new Vue({
+            el: "#controls",
+            data: {
+                stack
+            },
+            template: "#stack-controls",
+            methods: {
+                save: function(){
+                    // getting custom provider data
+                    stackData.providerSpec = providerEditor.getValue();
+                    $.ajax({
+                        url: `/api/stacks/${stackId}`,
+                        data: JSON.stringify(stackData),
+                        contentType: "application/json",
+                        method: "PUT"
+                    });
+                }
+            }
+        });
+
         // highlight code !
         Prism.highlightAll();
 
@@ -254,17 +280,6 @@
         providerEditor = ace.edit("provider-editor");
         let jsonMode = ace.require("ace/mode/hjson").Mode;
         providerEditor.session.setMode(new jsonMode());
-    }
-
-    function saveStack(){
-        // getting custom provider data
-        stackData.providerSpec = providerEditor.getValue();
-        $.ajax({
-            url: `/api/stacks/${stackId}`,
-            data: JSON.stringify(stackData),
-            contentType: "application/json",
-            method: "PUT"
-        })
     }
 </script>
 
