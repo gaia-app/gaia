@@ -52,11 +52,7 @@ public class StackRunner {
         this.jobRepository = jobRepository;
     }
 
-    @Async
-    public void run(Job job, TerraformModule module, Stack stack) {
-        this.jobs.put(job.getId(), job);
-        job.start();
-
+    private int runContainerForJob(Job job, String script){
         try{
             // FIXME This is certainly no thread safe
             var containerConfig = containerConfigBuilder
@@ -70,7 +66,7 @@ public class StackRunner {
             // attach stdin
             System.err.println("Attach container");
             var logStream = dockerClient.attachContainer(containerId, DockerClient.AttachParameter.STDIN, DockerClient.AttachParameter.STDOUT, DockerClient.AttachParameter.STDERR, DockerClient.AttachParameter.STREAM);
-            var writable = httpHijackWorkaround.getOutputStream(logStream, "unix:///var/run/docker.sock");
+            var writable = httpHijackWorkaround.getOutputStream(logStream, "unix:///var/apply/docker.sock");
 
             System.err.println("Starting container");
             dockerClient.startContainer(containerId);
@@ -86,7 +82,7 @@ public class StackRunner {
                 try {
                     System.err.println("Copying to System.err");
                     System.err.println("Attaching stdout and stderr");
-                    // run another attachment for stdout and stderr (who knows why?)
+                    // apply another attachment for stdout and stderr (who knows why?)
                     dockerClient.attachContainer(containerId,
                             DockerClient.AttachParameter.LOGS, DockerClient.AttachParameter.STDOUT,
                             DockerClient.AttachParameter.STDERR, DockerClient.AttachParameter.STREAM)
@@ -113,49 +109,84 @@ public class StackRunner {
                 }
             });
 
-            var commandScript = stackCommandBuilder.buildApplyScript(stack, module);
-
             System.err.println("Writing buffer");
-            writable.write(ByteBuffer.wrap(commandScript.getBytes()));
+            writable.write(ByteBuffer.wrap(script.getBytes()));
             writable.close();
 
             // wait for the container to exit
             System.err.println("Waiting container exit");
             var containerExit = dockerClient.waitContainer(containerCreation.id());
 
-            // no need to kill, the container should exit on its own
-            // docker.killContainer(containerId);
+            dockerClient.removeContainer(containerCreation.id());
 
-            // get full logs to validate the output
-            // String logs;
-            // try (LogStream stream = dockerClient.logs(containerCreation.id(), DockerClient.LogsParam.stdout(), DockerClient.LogsParam.stderr())) {
-            //     logs = stream.readFully();
-            // }
+            return Math.toIntExact(containerExit.statusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 99;
+        }
+    }
 
-            if(containerExit.statusCode() == 0){
-                job.end();
-                // delete container :)
-                dockerClient.removeContainer(containerCreation.id());
+    @Async
+    public void apply(Job job, TerraformModule module, Stack stack) {
+        this.jobs.put(job.getId(), job);
+        job.start();
 
-                // update stack information
-                stack.setState(StackState.RUNNING);
+        var applyScript = stackCommandBuilder.buildApplyScript(stack, module);
+
+        var result = runContainerForJob(job, applyScript);
+
+        if(result == 0){
+            job.end();
+
+            // update stack information
+            stack.setState(StackState.RUNNING);
+            stackRepository.save(stack);
+        }
+        else{
+            job.fail();
+        }
+
+        // save job to database
+        jobRepository.save(job);
+        this.jobs.remove(job.getId());
+    }
+
+    /**
+     * Runs a "plan job".
+     * A plan job runs a 'terraform plan'
+     * @param job
+     * @param module
+     * @param stack
+     */
+    @Async
+    public void plan(Job job, TerraformModule module, Stack stack) {
+        this.jobs.put(job.getId(), job);
+        job.start();
+
+        var planScript = stackCommandBuilder.buildPlanScript(stack, module);
+
+        var result = runContainerForJob(job, planScript);
+
+        if(result == 0){
+            // diff is empty
+            job.end();
+        }
+        else if(result == 2){
+            // there is a diff, set the status of the stack to : "TO_UPDATE"
+            if(StackState.RUNNING != stack.getState()){
+                stack.setState(StackState.TO_UPDATE);
                 stackRepository.save(stack);
             }
-            else{
-                job.fail();
-            }
-
-            // save job to database
-            jobRepository.save(job);
-            this.jobs.remove(job.getId());
-
-        } catch (Exception e) {
-            // in case of exception, fail and save
-            job.fail();
-            jobRepository.save(job);
-            this.jobs.remove(job.getId());
-            e.printStackTrace();
+            job.end();
         }
+        else{
+            // error
+            job.fail();
+        }
+
+        // save job to database
+        jobRepository.save(job);
+        this.jobs.remove(job.getId());
     }
 
     public Job getJob(String jobId) {

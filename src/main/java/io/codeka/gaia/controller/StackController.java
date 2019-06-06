@@ -76,9 +76,35 @@ public class StackController {
         // get the module
         var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
 
-        this.stackRunner.run(job, module, stack);
+        this.stackRunner.apply(job, module, stack);
 
-        return "stack_apply";
+        return "job";
+    }
+
+    @GetMapping("/stacks/{stackId}/preview")
+    public String previewStack(@PathVariable String stackId, Model model){
+        // checking if the stack exists
+        // TODO throw an exception (404) if not
+        if(stackRepository.existsById(stackId)){
+            model.addAttribute("stackId", stackId);
+        }
+
+        // create a new job
+        var job = new Job();
+        job.setId(UUID.randomUUID().toString());
+        job.setStackId(stackId);
+        job.setDateTime(LocalDateTime.now());
+
+        model.addAttribute("jobId", job.getId());
+
+        // get the stack
+        var stack = this.stackRepository.findById(stackId).get();
+        // get the module
+        var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
+
+        this.stackRunner.plan(job, module, stack);
+
+        return "job";
     }
 
     @GetMapping("/stacks/{stackId}/jobs/{jobId}")
@@ -92,7 +118,7 @@ public class StackController {
             model.addAttribute("jobId", jobId);
         }
 
-        return "stack_apply";
+        return "job";
     }
 
     @GetMapping("/api/stacks/{stackId}/jobs/{jobId}")
