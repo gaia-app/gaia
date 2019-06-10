@@ -54,11 +54,38 @@
     </div>
 </template>
 
+<template id="stack-outputs">
+    <div class="col-md-6">
+        <div class="white_shd full margin_bottom_30">
+            <div class="full graph_head">
+                <div class="heading1 margin_0">
+                    <h2>Outputs</h2>
+                    <small>These are the outputs of your stack.</small>
+                </div>
+            </div>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th>Variable</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(output, key) in outputs">
+                    <td>{{key}}</td>
+                    <td>{{output.value}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
 <template id="template">
     <div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="white_shd full margin_bottom_30">
                     <div>
                         <div class="full graph_head">
@@ -82,6 +109,8 @@
                     </div>
                 </div>
             </div>
+
+            <stack-outputs v-bind:outputs="stack.outputs"></stack-outputs>
         </div>
         <div class="row margin_bottom_30">
             <div class="col-md-6">
@@ -200,6 +229,11 @@
         props: ["jobs"]
     });
 
+    Vue.component('stack-outputs', {
+        template: "#stack-outputs",
+        props: ["outputs"]
+    });
+
     Vue.filter('dateTime', function (value) {
         if (!value) return '';
         return new Date(value).toLocaleString();
@@ -211,35 +245,42 @@
 <script th:inline="javascript" type="application/ecmascript">
     const settings = [[${settings}]];
 
-    let stackData;
+    let stack;
+
     let providerEditor;
 
+    console.log("loadStack");
     $.get(`/api/stacks/${stackId}`)
-        .then(data => {
+        .then(data => stack = data)
+        .then(loadModule)
+        .then(loadJobs)
+        .then(loadOuputs)
+        .then(initFront);
 
-            stackData = data;
-
-            getModule(stackData.moduleId).then(module => {
-                stackData.module = module;
-                initFront(stackData);
-            });
-
-
+    function loadModule(){
+        console.log("loadModule");
+        return $.get(`/api/terraformModules/${stack.moduleId}`).then(module => {
+            stack.module = module;
         });
-
-    let jobs;
-
-    $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
-        .then(data => {
-            jobs = data._embedded.jobs;
-            stackData.jobs = jobs;
-        });
-
-    function getModule(id){
-        return $.get(`/api/terraformModules/${id}`);
     }
 
-    function initFront(stack){
+    function loadOuputs(){
+        console.log("loadOuputs");
+        // calling terraform backend
+        return $.get(`/api/state/${stackId}`)
+            .then(data => {
+                // finding stack output
+                stack.outputs = data.modules[0].outputs;
+            });
+    }
+
+    function loadJobs(){
+        console.log("loadJobs");
+        return $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
+            .then(data => stack.jobs = data._embedded.jobs);
+    }
+
+    function initFront(){
         new Vue({
             el: "#app",
             data: {
@@ -265,10 +306,10 @@
             methods: {
                 save: function(){
                     // getting custom provider data
-                    stackData.providerSpec = providerEditor.getValue();
+                    stack.providerSpec = providerEditor.getValue();
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
-                        data: JSON.stringify(stackData),
+                        data: JSON.stringify(stack),
                         contentType: "application/json",
                         method: "PUT"
                     });
