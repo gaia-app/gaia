@@ -543,7 +543,21 @@ a:focus {
     background: #009688 !important;
 }
 
-.heading1 h2 {
+/* a block element, with white background and a cool shadow */
+.block{
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    margin-top: 0;
+}
+
+.block_head{
+    padding: 18px 25px 15px;
+    width: 100%;
+    border-bottom: solid #f3f3f3 2px;
+}
+
+.block h2 {
     line-height: normal;
     font-size: 21px;
     font-weight: 400;
@@ -551,6 +565,12 @@ a:focus {
     padding-left: 0;
     color: #15283c;
     letter-spacing: 0px;
+}
+
+.block_content{
+    padding: 18px 25px 15px;
+    width: 100%;
+    border-bottom: solid #f3f3f3 2px;
 }
 
 .margin_top_50 {
@@ -1411,10 +1431,16 @@ a[data-toggle="collapse"] {
     margin-top: 0;
 }
 
+
+.block_head.dark_bg {
+    border-bottom: 0;
+}
+
 .dark_bg {
     background: #214162;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     margin-top: 0;
 }
 
@@ -1716,7 +1742,6 @@ a[data-toggle="collapse"] {
 }
 
 .job_list {
-    float: left;
     width: 100%;
     list-style: none;
     margin: 0;
@@ -2117,15 +2142,6 @@ i.icon {
 
 
 /** tabbar style 1 **/
-
-.tabbar {
-    float: left;
-    width: 100%;
-}
-
-.tab-content {
-    padding: 20px 0;
-}
 
 .tab-content p {
     margin: 0;

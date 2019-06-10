@@ -36,34 +36,27 @@
 </div>
 
 <template id="template">
-    <div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white_shd full margin_bottom_30">
-                    <div>
-                        <div class="full graph_head">
-                            <div class="heading1 margin_0">
-                                <h2>Stack {{stack.name}}</h2>
-                            </div>
-                        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block">
+                <div class="block_head">
+                    <h2>Stack {{stack.name}}</h2>
+                </div>
+                <div class="block_content">
 
-                        <div class="padding_infor_info">
-
-                            <div class="alert alert-primary" role="alert" v-if="job.status === 'RUNNING'">
-                                Your deployment is running ! <i class="fas fa-circle-notch fa-spin"></i>
-                            </div>
-
-                            <div class="alert alert-success" role="alert" v-if="job.status === 'FINISHED'">
-                                Your deployment is finished ! <i class="far fa-grin-stars"></i>
-                            </div>
-
-                            <div class="alert alert-warning" role="alert" v-if="job.status === 'FAILED'">
-                                Your deployment has failed ! <i class="far fa-frown"></i>
-                            </div>
-
-                           <pre><code class="language-shellOutput" v-html="job.logs"></code></pre>
-                        </div>
+                    <div class="alert alert-primary" role="alert" v-if="job.status === 'RUNNING'">
+                        Your deployment is running ! <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
+
+                    <div class="alert alert-success" role="alert" v-if="job.status === 'FINISHED'">
+                        Your deployment is finished ! <i class="far fa-grin-stars"></i>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert" v-if="job.status === 'FAILED'">
+                        Your deployment has failed ! <i class="far fa-frown"></i>
+                    </div>
+
+                    <pre><code class="language-shellOutput" v-html="job.logs"></code></pre>
                 </div>
             </div>
         </div>

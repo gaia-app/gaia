@@ -48,14 +48,12 @@
 </html>
 
 <template id="template">
-    <div>
-        <div class="full graph_head">
-            <div class="heading1 margin_0">
-                <h2>Module {{name}}</h2>
-            </div>
+    <div class="block">
+        <div class="block_head">
+            <h2>Module {{name}}</h2>
         </div>
 
-        <div class="padding_infor_info">
+        <div class="block_content">
             <form v-on:submit.prevent="post">
                 <div class="form-group">
                     <label for="name">Name</label>
@@ -74,9 +72,8 @@
                     <input type="text" class="form-control" id="directory" v-model="directory">
                 </div>
 
-                <div class="heading1">
-                    <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
-                </div>
+                <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
+
                 <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
                     <div class="form-group col-md-4" >
                         <label for="var-name">Name: </label>

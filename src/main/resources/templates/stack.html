@@ -56,12 +56,10 @@
 
 <template id="stack-outputs">
     <div class="col-md-6">
-        <div class="white_shd full margin_bottom_30">
-            <div class="full graph_head">
-                <div class="heading1 margin_0">
-                    <h2>Outputs</h2>
-                    <small>These are the outputs of your stack.</small>
-                </div>
+        <div class="block">
+            <div class="block_head">
+                <h2>Outputs</h2>
+                <small>These are the outputs of your stack.</small>
             </div>
             <table class="table">
                 <thead class="thead-light">
@@ -84,27 +82,22 @@
 <template id="template">
     <div>
 
-        <div class="row">
+        <div class="row margin_bottom_30">
             <div class="col-md-6">
-                <div class="white_shd full margin_bottom_30">
-                    <div>
-                        <div class="full graph_head">
-                            <div class="heading1 margin_0">
-                                <h2>Stack {{stack.name}}</h2>
-                                <h2>
-                                    <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
-                                    <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
-                                    <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'" data-toggle="tooltip" title="Your stack needs an update !"><i class="fas fa-upload"></i> to update</span>
-                                    <span class="badge badge-pill badge-danger" v-if="stack.state === 'DESTROYED'" data-toggle="tooltip" title="Your stack has been destroyed."><i class="fas fa-snowplow"></i> destroyed</span>
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div class="padding_infor_info">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" v-model="stack.name">
-                            </div>
+                <div class="block">
+                    <div class="block_head">
+                        <h2>Stack {{stack.name}}</h2>
+                        <h2>
+                            <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
+                            <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
+                            <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'" data-toggle="tooltip" title="Your stack needs an update !"><i class="fas fa-upload"></i> to update</span>
+                            <span class="badge badge-pill badge-danger" v-if="stack.state === 'DESTROYED'" data-toggle="tooltip" title="Your stack has been destroyed."><i class="fas fa-snowplow"></i> destroyed</span>
+                        </h2>
+                    </div>
+                    <div class="block_content">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" v-model="stack.name">
                         </div>
                     </div>
                 </div>
@@ -112,84 +105,70 @@
 
             <stack-outputs v-bind:outputs="stack.outputs"></stack-outputs>
         </div>
+
         <div class="row margin_bottom_30">
             <div class="col-md-6">
-                <div class="white_shd full">
-                    <div>
-                        <div class="full graph_head">
-                            <div class="heading1 margin_0">
-                                <h2>Backend configuration</h2>
-                                <small>This backend configuration is for information only. Gaia generates it for you !</small>
-                            </div>
-                        </div>
+                <div class="block">
+                    <div class="block_head">
+                        <h2>Backend configuration</h2>
+                        <small>This backend configuration is for information only. Gaia generates it for you !</small>
+                    </div>
 
-                        <div class="tab_style1 full">
-                            <div class="tabbar">
-                                <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active show" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">HCL</a>
-                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">JSON</a>
-                                    </div>
-                                </nav>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="block_content">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active show" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">HCL</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">JSON</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 <pre><code class="language-hcl">terraform {
-    backend "http" {
-        address = "{{settings.externalUrl}}/api/state/{{stack.id}}"
-    }
+  backend "http" {
+    address = "{{settings.externalUrl}}/api/state/{{stack.id}}"
+  }
 }</code></pre>
-                                    </div>
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 <pre><code class="language-json">{
-    "terraform" : {
-        "backend" : {
-            "http": {
-                "address": "{{settings.externalUrl}}/api/state/{{stack.id}}"
-            }
-        }
+  "terraform" : {
+    "backend" : {
+      "http": {
+        "address": "{{settings.externalUrl}}/api/state/{{stack.id}}"
+      }
     }
+  }
 }</code></pre>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-6">
-                <div class="white_shd full">
-                    <div>
-                        <div class="full graph_head">
-                            <div class="heading1 margin_0">
-                                <h2>Provider configuration</h2>
-                                <small>Input here your provider configuration (in HCL format)</small>
-                            </div>
-                        </div>
-                        <div class="full">
-                        <div id="provider-editor" style="height: 200px;">{{ stack.providerSpec }}</div>
-                        </div>
+                <div class="block">
+                    <div class="block_head">
+                        <h2>Provider configuration</h2>
+                        <small>Input here your provider configuration (in HCL format)</small>
+                    </div>
+                    <div id="provider-editor" style="height: 200px;">{{ stack.providerSpec }}</div>
                 </div>
             </div>
-        </div>
+
         </div>
         <div class="row margin_bottom_30">
-            <div class="col-md-12">
-                <div class="white_shd full">
-                    <div>
-                        <div class="full graph_head">
-                            <div class="heading1 margin_0">
-                                <h2>Module variables values</h2>
-                                <small>This is the configuration of your module's variables !</small>
-                            </div>
-                        </div>
-
-                        <div class="padding_infor_info">
-                            <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in stack.module.variables">
-                                <div class="form-group col-md-4" >
-                                    <label for="var-name">{{modVar.name}}: </label>
-                                    <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]" @change="recomputeState">
-                                    <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
-                                </div>
+            <div class="col-md-6">
+                <div class="block">
+                    <div class="block_head">
+                        <h2>Module variables values</h2>
+                        <small>This is the configuration of your module's variables !</small>
+                    </div>
+                    <div class="block_content">
+                        <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in stack.module.variables">
+                            <div class="form-group col-md-4" >
+                                <label for="var-name">{{modVar.name}}: </label>
+                                <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]" @change="recomputeState">
+                                <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
                             </div>
                         </div>
                     </div>
@@ -205,19 +184,17 @@
 </template>
 
 <template id="job-history">
-    <div class="job_history">
-        <div class="job_history_head">
-            <h3><span><i class="fas fa-history"></i> Job history</span></h3>
+    <div class="block">
+        <div class="block_head dark_bg">
+            <h2><span><i class="fas fa-history"></i> Job history</span></h2>
         </div>
-        <div class="job_list_main">
-            <ul class="job_list">
-                <li v-for="(job, index) in jobs" :class="job.status">
-                    <a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}} - {{job.status}}</a>
-                    <br>
-                    <strong>{{job.dateTime | dateTime}}</strong>
-                </li>
-            </ul>
-        </div>
+        <ul class="job_list">
+            <li v-for="(job, index) in jobs" :class="job.status">
+                <a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}} - {{job.status}}</a>
+                <br>
+                <strong>{{job.dateTime | dateTime}}</strong>
+            </li>
+        </ul>
     </div>
 </template>
 
