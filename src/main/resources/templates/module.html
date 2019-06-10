@@ -75,19 +75,26 @@
                 <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
 
                 <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-3" >
                         <label for="var-name">Name: </label>
                         <input type="text" class="form-control" id="var-name" v-model="modVar.name">
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-3" >
                         <label for="var-description">Description: </label>
                         <input type="text" class="form-control" id="var-description" v-model="modVar.description">
                     </div>
-                    <div class="form-group col-md-3" >
+                    <div class="form-group col-md-2" >
                         <label for="var-defaultValue">Default value: </label>
                         <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
                     </div>
-                    <div class="form-group col-md-1" >
+                    <div class="form-group col-md-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" :id="'check-' + modVarIdx" v-model="modVar.editable">
+                            <label class="form-check-label" :for="'check-' + modVarIdx"
+                                   data-toggle="tooltip" data-placement="top" title="Set this variable as editable for module users">Editable</label>
+                        </div>
+                    </div>
+                    <div class="form-group" >
                         <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>
                     </div>
                 </div>
@@ -132,7 +139,8 @@
                         data.variables.push({});
                     }
                 }
-            })
+            });
+            $('[data-toggle="tooltip"]').tooltip();
         });
 </script>
 

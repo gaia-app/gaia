@@ -1,5 +1,8 @@
 package io.codeka.gaia.bo;
 
+/**
+ * Represents a module variable
+ */
 public class TerraformVariable {
 
     private String name;
@@ -7,6 +10,8 @@ public class TerraformVariable {
     private String description;
 
     private String defaultValue;
+
+    private boolean editable;
 
     public String getName() {
         return name;
@@ -30,5 +35,13 @@ public class TerraformVariable {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }

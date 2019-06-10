@@ -3417,3 +3417,11 @@ pre[class*="language-"] {
 code[class*="language-"] b {
     font-weight: bold;
 }
+
+.form-check{
+    margin-bottom: 0.5rem;
+}
+.form-check-input{
+    margin-top: 0;
+    margin-left: -1.5rem;
+}
