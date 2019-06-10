@@ -2,13 +2,10 @@ package io.codeka.gaia.bo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +25,12 @@ public class Settings {
      * Environment variables for the runner
      */
     private List<EnvVar> envVars = Collections.emptyList();
+
+    /**
+     * The docker daemon url used by Gaia to spawn its runners
+     */
+    @Value(("${:unix:///var/run/docker.sock}"))
+    private String dockerDaemonUrl;
 
     public String getExternalUrl() {
         return externalUrl;
@@ -49,6 +52,14 @@ public class Settings {
         return this.envVars.stream()
                 .map(envVar -> envVar.name + "=" + envVar.value)
                 .collect(Collectors.toList());
+    }
+
+    public String getDockerDaemonUrl() {
+        return dockerDaemonUrl;
+    }
+
+    public void setDockerDaemonUrl(String dockerDaemonUrl) {
+        this.dockerDaemonUrl = dockerDaemonUrl;
     }
 
     static class EnvVar{

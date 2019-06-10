@@ -2,9 +2,9 @@ package io.codeka.gaia.runner.config;
 
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.HostConfig;
+import io.codeka.gaia.bo.Settings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,23 +16,22 @@ public class DockerConfig {
 
     /**
      * builds the docker client
-     * @return
+     * @param settings the Gaia's settings
+     * @return a docker client
      */
     @Bean
-    DockerClient client() throws DockerException, InterruptedException {
-        var dockerClient = DefaultDockerClient
+    DockerClient client(Settings settings) {
+        return DefaultDockerClient
                 .builder()
-                .uri("unix:///var/run/docker.sock")
+                .uri(settings.getDockerDaemonUrl())
                 .build();
-        // also pull the image
-        dockerClient.pull("hashicorp/terraform:0.11.14");
-        return dockerClient;
     }
 
     @Bean
     ContainerConfig.Builder containerConfig(){
         return ContainerConfig.builder()
                 .image("hashicorp/terraform:0.11.14")
+                // bind mounting the docker sock (to be able to use docker provider in terraform)
                 .hostConfig(HostConfig.builder().binds(HostConfig.Bind.builder().from("/var/run/docker.sock").to("/var/run/docker.sock").build()).build())
                 // resetting entrypoint to empty
                 .entrypoint()

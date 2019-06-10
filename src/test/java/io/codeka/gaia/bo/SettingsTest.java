@@ -26,4 +26,9 @@ class SettingsTest {
         assertEquals("http://172.17.0.1:8080", settings.getExternalUrl());
     }
 
+    @Test
+    void dockerDaemonUrl_shouldBeConfigurableViaProperty(){
+        assertEquals("unix:///var/run/docker.sock", settings.getDockerDaemonUrl());
+    }
+
 }
