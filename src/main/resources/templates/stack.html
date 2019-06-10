@@ -45,6 +45,12 @@
                         <div class="full graph_head">
                             <div class="heading1 margin_0">
                                 <h2>Stack {{stack.name}}</h2>
+                                <h2>
+                                    <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
+                                    <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
+                                    <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'" data-toggle="tooltip" title="Your stack needs an update !"><i class="fas fa-upload"></i> to update</span>
+                                    <span class="badge badge-pill badge-danger" v-if="stack.state === 'DESTROYED'" data-toggle="tooltip" title="Your stack has been destroyed."><i class="fas fa-snowplow"></i> destroyed</span>
+                                </h2>
                             </div>
                         </div>
 
@@ -118,7 +124,7 @@
             </div>
         </div>
         </div>
-        <div class="row">
+        <div class="row margin_bottom_30">
             <div class="col-md-12">
                 <div class="white_shd full">
                     <div>
@@ -142,6 +148,11 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <job-history v-bind:jobs="stack.jobs"></job-history>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -154,8 +165,40 @@
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 
+<template id="job-history">
+    <div class="job_history">
+        <div class="job_history_head">
+            <h3><span><i class="fas fa-history"></i> Job history</span></h3>
+        </div>
+        <div class="job_list_main">
+            <ul class="job_list">
+                <li v-for="(job, index) in jobs" :class="job.status">
+                    <a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}} - {{job.status}}</a>
+                    <br>
+                    <strong>{{job.dateTime | dateTime}}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
+
+    Vue.component('job-history', {
+        template: "#job-history",
+        props: ["jobs"]
+    });
+
+    Vue.filter('dateTime', function (value) {
+        if (!value) return ''
+        return new Date(value).toLocaleString();
+    })
+</script>
+
+
+
+<script th:inline="javascript" type="application/ecmascript">
     const settings = [[${settings}]];
 
     let stackData;
@@ -172,6 +215,14 @@
             });
 
 
+        });
+
+    let jobs;
+
+    $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
+        .then(data => {
+            jobs = data._embedded.jobs;
+            stackData.jobs = jobs;
         });
 
     function getModule(id){

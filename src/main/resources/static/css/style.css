@@ -1655,10 +1655,10 @@ a[data-toggle="collapse"] {
 
 
 /*------------------------------------------------------------------
-    11. Blog Section
+    11. Job History Section
 -------------------------------------------------------------------*/
 
-.dash_head {
+.job_history_head {
     font-weight: normal;
     height: auto;
     border-radius: 5px 5px 0 0;
@@ -1668,15 +1668,15 @@ a[data-toggle="collapse"] {
     position: relative;
 }
 
-.dash_head h3 {
+.job_history_head h3 {
     color: #fff;
     text-transform: none;
     font-weight: 400;
     font-size: 22px;
 }
 
-.dash_blog {
-    min-height: 650px;
+.job_history {
+    min-height: 300px;
     background: #fff;
     border-radius: 5px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
@@ -1704,25 +1704,25 @@ a[data-toggle="collapse"] {
     font-weight: 500;
 }
 
-.dash_blog_inner .list_cont {
+.job_history_inner .list_cont {
     border-bottom: 1px solid #f2f2f2;
     padding: 25px 40px;
 }
 
-.dash_blog_inner .list_cont p {
+.job_history_inner .list_cont p {
     margin: 2px 0 0 0;
     font-size: 16px;
     color: #455a64;
 }
 
-.task_list {
+.job_list {
     float: left;
     width: 100%;
     list-style: none;
     margin: 0;
 }
 
-.task_list li {
+.job_list li {
     padding: 20px 40px;
     border-bottom: solid #eee 1px;
     line-height: normal;
@@ -1757,33 +1757,33 @@ button.main_bt {
     color: #fff;
 }
 
-.task_list li a {
+.job_list li a {
     color: #99abb4;
     font-size: 16px;
 }
 
-.task_list li strong {
+.job_list li strong {
     font-weight: 600;
     color: #455a64;
 }
 
-.task_list li:nth-child(1) {
-    border-left-color: #ff9800;
-}
+/*.job_list li:nth-child(1) {*/
+/*    border-left-color: #ff9800;*/
+/*}*/
 
-.task_list li:nth-child(2) {
+.job_list li.RUNNING {
     border-left-color: #2196f3;
 }
 
-.task_list li:nth-child(3) {
-    border-left-color: #673ab7;
-}
+/*.job_list li:nth-child(3) {*/
+/*    border-left-color: #673ab7;*/
+/*}*/
 
-.task_list li:nth-child(4) {
+.job_list li.FAILED {
     border-left-color: #e91e63;
 }
 
-.task_list li:nth-child(5) {
+.job_list li.FINISHED {
     border-left-color: #1ed085;
 }
 
@@ -1807,18 +1807,7 @@ button.main_bt {
     border-left-color: #1ed085;
 }
 
-.task_list_main {
-    float: left;
-    width: 100%;
-}
-
-.read_more {
-    float: left;
-    width: 100%;
-    margin: 30px 0;
-}
-
-.dash_blog_inner {
+.job_list_main {
     float: left;
     width: 100%;
 }
@@ -1924,10 +1913,6 @@ button.main_bt {
     text-align: right;
     margin-bottom: 10px;
     padding: 0 20px;
-}
-
-.dashboard_2 .dash_blog {
-    padding: 25px;
 }
 
 #chart-0,

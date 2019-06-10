@@ -147,14 +147,23 @@ public class StackRunner {
 
             // save job to database
             jobRepository.save(job);
+            this.jobs.remove(job.getId());
 
         } catch (Exception e) {
+            // in case of exception, fail and save
             job.fail();
+            jobRepository.save(job);
+            this.jobs.remove(job.getId());
             e.printStackTrace();
         }
     }
 
     public Job getJob(String jobId) {
-        return this.jobs.get(jobId);
+        if (this.jobs.containsKey(jobId)) {
+            // try in memory
+            return this.jobs.get(jobId);
+        }
+        // or find in repository
+        return this.jobRepository.findById(jobId).get();
     }
 }
