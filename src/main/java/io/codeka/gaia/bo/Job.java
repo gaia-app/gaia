@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Transient;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * A job is the instanciation of a stack
@@ -14,6 +16,16 @@ public class Job {
     private String id;
 
     private String stackId;
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    private LocalDateTime dateTime;
 
     @Transient
     private StringWriter stringWriter = new StringWriter();
