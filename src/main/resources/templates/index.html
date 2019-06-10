@@ -43,40 +43,40 @@
                                 </div>
                             </a>
                         </div>
-<!--                        <div class="col-md-6 col-lg-4">-->
-<!--                            <a href="/stacks">-->
-<!--                                <div class="full counter_section margin_bottom_30 blue2_bg">-->
-<!--                                    <div class="couter_icon">-->
-<!--                                        <div>-->
-<!--                                            <i class="fas fa-layer-group"></i>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="counter_no">-->
-<!--                                        <div>-->
-<!--                                            <p class="total_no">12</p>-->
-<!--                                            <p class="head_couter">Running Stacks</p>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="col-md-6 col-lg-4">-->
-<!--                            <a href="/stacks">-->
-<!--                                <div class="full counter_section margin_bottom_30 yellow_bg">-->
-<!--                                    <div class="couter_icon">-->
-<!--                                        <div>-->
-<!--                                            <i class="far fa-caret-square-up"></i>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="counter_no">-->
-<!--                                        <div>-->
-<!--                                            <p class="total_no">1</p>-->
-<!--                                            <p class="head_couter">Stacks to update</p>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                        </div>-->
+                        <div class="col-md-6 col-lg-4">
+                            <a href="/stacks">
+                                <div class="full counter_section margin_bottom_30 blue2_bg">
+                                    <div class="couter_icon">
+                                        <div>
+                                            <i class="fas fa-layer-group"></i>
+                                        </div>
+                                    </div>
+                                    <div class="counter_no">
+                                        <div>
+                                            <p class="total_no" th:text="${runningStackCount}">12</p>
+                                            <p class="head_couter">Running Stacks</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <a href="/stacks">
+                                <div class="full counter_section margin_bottom_30 yellow_bg">
+                                    <div class="couter_icon">
+                                        <div>
+                                            <i class="far fa-caret-square-up"></i>
+                                        </div>
+                                    </div>
+                                    <div class="counter_no">
+                                        <div>
+                                            <p class="total_no" th:text="${toUpdateStackCount}">1</p>
+                                            <p class="head_couter">Stacks to update</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
