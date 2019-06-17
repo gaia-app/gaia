@@ -30,7 +30,7 @@ public class DockerConfig {
     @Bean
     ContainerConfig.Builder containerConfig(){
         return ContainerConfig.builder()
-                .image("hashicorp/terraform:0.11.14")
+                .image("hashicorp/terraform:latest")
                 // bind mounting the docker sock (to be able to use docker provider in terraform)
                 .hostConfig(HostConfig.builder().binds(HostConfig.Bind.builder().from("/var/run/docker.sock").to("/var/run/docker.sock").build()).build())
                 // resetting entrypoint to empty

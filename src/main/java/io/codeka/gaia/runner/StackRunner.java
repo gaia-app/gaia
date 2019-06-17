@@ -54,13 +54,13 @@ public class StackRunner {
 
     private int runContainerForJob(Job job, String script){
         try{
-            // FIXME This is certainly no thread safe
+            // FIXME This is certainly no thread safe !
             var containerConfig = containerConfigBuilder
                     .env(settings.env())
                     .build();
 
             // pull the image
-            dockerClient.pull("hashicorp/terraform:0.11.14");
+            dockerClient.pull("hashicorp/terraform:latest");
 
             System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
@@ -73,7 +73,6 @@ public class StackRunner {
 
             System.err.println("Starting container");
             dockerClient.startContainer(containerId);
-
 
             final PipedInputStream stdout = new PipedInputStream();
             final PipedInputStream stderr = new PipedInputStream();
