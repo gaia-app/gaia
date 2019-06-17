@@ -110,56 +110,6 @@
             <div class="col-md-6">
                 <div class="block">
                     <div class="block_head">
-                        <h2>Backend configuration</h2>
-                        <small>This backend configuration is for information only. Gaia generates it for you !</small>
-                    </div>
-
-                    <div class="block_content">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active show" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">HCL</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">JSON</a>
-                            </div>
-                        </nav>
-                        <div class="tab-content">
-                            <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-<pre><code class="language-hcl">terraform {
-  backend "http" {
-    address = "{{settings.externalUrl}}/api/state/{{stack.id}}"
-  }
-}</code></pre>
-                            </div>
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-<pre><code class="language-json">{
-  "terraform" : {
-    "backend" : {
-      "http": {
-        "address": "{{settings.externalUrl}}/api/state/{{stack.id}}"
-      }
-    }
-  }
-}</code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="block">
-                    <div class="block_head">
-                        <h2>Provider configuration</h2>
-                        <small>Input here your provider configuration (in HCL format)</small>
-                    </div>
-                    <div id="provider-editor" style="height: 200px;">{{ stack.providerSpec }}</div>
-                </div>
-            </div>
-
-        </div>
-        <div class="row margin_bottom_30">
-            <div class="col-md-6">
-                <div class="block">
-                    <div class="block_head">
                         <h2>Module variables values</h2>
                         <small>This is the configuration of your module's variables !</small>
                     </div>
@@ -291,7 +241,7 @@
             methods: {
                 save: function(){
                     // getting custom provider data
-                    stack.providerSpec = providerEditor.getValue();
+                    // stack.providerSpec = providerEditor.getValue();
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
