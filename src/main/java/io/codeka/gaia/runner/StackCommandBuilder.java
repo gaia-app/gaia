@@ -7,6 +7,9 @@ import io.codeka.gaia.bo.backend.Backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A builder class to create stack commands
  */
@@ -35,21 +38,24 @@ public class StackCommandBuilder {
 
         System.out.println(applyCommand);
 
-        var commands = new String[]{
+        var commands = new LinkedList<>(List.of(
                 "set -ex",
                 String.format("git clone %s module", module.getGitRepositoryUrl()),
-                "cd module",
+                "cd module"));
+
+        if(module.getDirectory() != null && !module.getDirectory().isBlank()) {
+            commands.add(String.format("cd %s", module.getDirectory()));
+        }
+
+        commands.addAll(List.of(
                 "echo 'generating backend configuration'",
                 backendGenCommand,
                 "cat backend.tf",
                 "terraform version",
                 "terraform init",
-                applyCommand
-        };
+                applyCommand));
 
-        // generate a backend.tf config !
-
-        return String.join("\n", commands);
+        return String.join("\n", commands.toArray(new String[]{}));
     }
 
     /**
@@ -63,25 +69,28 @@ public class StackCommandBuilder {
                 "\t}\n" +
                 "}\n\" > backend.tf", stack.getId());
 
-        String applyCommand = buildPlanCommand(stack, module);
+        String planCommand = buildPlanCommand(stack, module);
 
-        System.out.println(applyCommand);
+        System.out.println(planCommand);
 
-        var commands = new String[]{
+        var commands = new LinkedList<>(List.of(
                 "set -ex",
                 String.format("git clone %s module", module.getGitRepositoryUrl()),
-                "cd module",
+                "cd module"));
+
+        if(module.getDirectory() != null && !module.getDirectory().isBlank()) {
+            commands.add(String.format("cd %s", module.getDirectory()));
+        }
+
+        commands.addAll(List.of(
                 "echo 'generating backend configuration'",
                 backendGenCommand,
                 "cat backend.tf",
                 "terraform version",
                 "terraform init",
-                applyCommand
-        };
+                planCommand));
 
-        // generate a backend.tf config !
-
-        return String.join("\n", commands);
+        return String.join("\n", commands.toArray(new String[]{}));
     }
 
     String buildApplyCommand(Stack stack, TerraformModule module) {

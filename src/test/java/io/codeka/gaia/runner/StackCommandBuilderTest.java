@@ -4,13 +4,15 @@ import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.bo.TerraformModule;
 import io.codeka.gaia.bo.TerraformVariable;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StackCommandBuilderTest {
 
@@ -80,6 +82,83 @@ class StackCommandBuilderTest {
         var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
 
         assertEquals("terraform apply --auto-approve -var \"test=defaultValue\" ", applyCommand);
+    }
+
+    @Test
+    void buildApplyScript_shouldGenerateAFullScript(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildApplyScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform apply"));
+    }
+
+    @Test
+    void buildApplyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithoutDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildApplyScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform apply"));
+    }
+
+    @Test
+    void buildPlanScript_shouldGenerateAFullScript(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildPlanScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform plan"));
+    }
+
+    @Test
+    void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithoutDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildPlanScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform plan"));
+    }
+
+    @NotNull
+    private TerraformModule moduleWithDirectory() {
+        var module = new TerraformModule();
+        module.setGitRepositoryUrl("git://test");
+        module.setDirectory("directory");
+
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setDefaultValue("defaultValue");
+        module.setVariables(List.of(variable));
+        return module;
+    }
+
+    @NotNull
+    private TerraformModule moduleWithoutDirectory() {
+        var module = new TerraformModule();
+        module.setGitRepositoryUrl("git://test");
+
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setDefaultValue("defaultValue");
+        module.setVariables(List.of(variable));
+        return module;
     }
 
 }
