@@ -87,6 +87,7 @@
                 <div class="block">
                     <div class="block_head">
                         <h2>Stack {{stack.name}}</h2>
+                        <small>{{stack.description}}</small>
                         <h2>
                             <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
                             <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
@@ -98,6 +99,10 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" v-model="stack.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="description" v-model="stack.description">
                         </div>
                     </div>
                 </div>

@@ -41,6 +41,7 @@
         <div class="card" v-for="stack in stacks">
             <div class="card-body">
                 <h5 class="card-title">{{stack.name}}</h5>
+                <p class="card-text">{{stack.description}}</p>
                 <h4>
                     <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
                     <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>

@@ -34,6 +34,11 @@ public class Stack {
     private String name;
 
     /**
+     * The description of the stack
+     */
+    private String description;
+
+    /**
      * The provider spec
      */
     private String providerSpec;
@@ -70,6 +75,14 @@ public class Stack {
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getProviderSpec() {
