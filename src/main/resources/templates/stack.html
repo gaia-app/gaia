@@ -216,7 +216,7 @@
     function loadJobs(){
         console.log("loadJobs");
         return $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
-            .then(data => stack.jobs = data._embedded.jobs);
+            .then(data => stack.jobs = data._embedded.jobs.reverse());
     }
 
     function initFront(){
