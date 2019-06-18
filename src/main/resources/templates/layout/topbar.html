@@ -1,20 +1,33 @@
-<!-- topbar -->
+<html xmlns:th="http://www.thymeleaf.org/"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <div class="topbar">
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="full">
             <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fas fa-bars"></i></button>
             <div class="logo_section">
-                <a href="/"><img class="img-responsive" src="/images/gaia.png" alt="#" /></a>
+                <a href="/"><img class="img-responsive" src="/images/gaia.png" alt="#"/></a>
             </div>
             <div class="right_topbar">
                 <div class="icon_info">
-                    <ul>
-<!--                        <li><a href="#"><i class="far fa-bell"></i><span class="badge">2</span></a></li>-->
-<!--                        <li><a href="#"><i class="far fa-question-circle"></i></a></li>-->
+                    <ul class="user_profile_dd">
+                        <li>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="img-responsive rounded-circle far fa-user text-white"></i>
+                                <span class="name_user" sec:authentication="name">John David</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/logout"><span>Log Out</span> <i
+                                        class="fas fa-sign-out-alt"></i></a>
+                            </div>
+                        </li>
                     </ul>
+
                 </div>
             </div>
         </div>
     </nav>
 </div>
-<!-- end topbar -->
+
+</html>
