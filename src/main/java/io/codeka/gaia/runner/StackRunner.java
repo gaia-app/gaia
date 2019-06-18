@@ -60,7 +60,7 @@ public class StackRunner {
                     .build();
 
             // pull the image
-            dockerClient.pull("hashicorp/terraform:latest");
+            dockerClient.pull("hashicorp/terraform:0.11.14");
 
             System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
@@ -175,7 +175,7 @@ public class StackRunner {
         }
         else if(result == 2){
             // there is a diff, set the status of the stack to : "TO_UPDATE"
-            if(StackState.RUNNING != stack.getState()){
+            if(StackState.RUNNING != stack.getState() && StackState.NEW != stack.getState()){
                 stack.setState(StackState.TO_UPDATE);
                 stackRepository.save(stack);
             }
@@ -199,4 +199,36 @@ public class StackRunner {
         // or find in repository
         return this.jobRepository.findById(jobId).get();
     }
+
+    /**
+     * Runs a "stop job".
+     * A stop job runs a 'terraform destroy'
+     * @param job
+     * @param module
+     * @param stack
+     */
+    @Async
+    public void stop(Job job, TerraformModule module, Stack stack) {
+        this.jobs.put(job.getId(), job);
+        job.start();
+
+        var destroyScript = stackCommandBuilder.buildDestroyScript(stack, module);
+
+        var result = runContainerForJob(job, destroyScript);
+
+        if(result == 0){
+            job.end();
+            // update state
+            stack.setState(StackState.STOPPED);
+            stackRepository.save(stack);
+        } else{
+            // error
+            job.fail();
+        }
+
+        // save job to database
+        jobRepository.save(job);
+        this.jobs.remove(job.getId());
+    }
+
 }

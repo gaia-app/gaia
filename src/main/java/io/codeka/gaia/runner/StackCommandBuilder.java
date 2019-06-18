@@ -93,6 +93,41 @@ public class StackCommandBuilder {
         return String.join("\n", commands.toArray(new String[]{}));
     }
 
+    /**
+     * builds the terraform destroy script
+     * @return
+     */
+    String buildDestroyScript(Stack stack, TerraformModule module){
+        var backendGenCommand = String.format("echo \"terraform {\n" +
+                "    backend \\\"http\\\" {\n" +
+                "\t\taddress=\\\""+settings.getExternalUrl()+"/api/state/%s\\\"\n" +
+                "\t}\n" +
+                "}\n\" > backend.tf", stack.getId());
+
+        String destroyCommand = buildDestroyCommand(stack, module);
+
+        System.out.println(destroyCommand);
+
+        var commands = new LinkedList<>(List.of(
+                "set -ex",
+                String.format("git clone %s module", module.getGitRepositoryUrl()),
+                "cd module"));
+
+        if(module.getDirectory() != null && !module.getDirectory().isBlank()) {
+            commands.add(String.format("cd %s", module.getDirectory()));
+        }
+
+        commands.addAll(List.of(
+                "echo 'generating backend configuration'",
+                backendGenCommand,
+                "cat backend.tf",
+                "terraform version",
+                "terraform init",
+                destroyCommand));
+
+        return String.join("\n", commands.toArray(new String[]{}));
+    }
+
     String buildApplyCommand(Stack stack, TerraformModule module) {
         var varFormatString = "-var \"%s=%s\" ";
         var variablesBuilder = new StringBuilder();
@@ -127,6 +162,24 @@ public class StackCommandBuilder {
         });
 
         return String.format("terraform plan -detailed-exitcode %s", variablesBuilder.toString());
+    }
+
+    String buildDestroyCommand(Stack stack, TerraformModule module) {
+        var varFormatString = "-var \"%s=%s\" ";
+        var variablesBuilder = new StringBuilder();
+
+        module.getVariables().forEach(terraformVariable -> {
+
+            var name = terraformVariable.getName();
+            String value = terraformVariable.getDefaultValue();
+            // try getting the value from the stack
+            if(stack.getVariableValues().containsKey(name)){
+                value = stack.getVariableValues().get(name);
+            }
+            variablesBuilder.append(String.format(varFormatString, name, value));
+        });
+
+        return String.format("terraform destroy --auto-approve %s", variablesBuilder.toString());
     }
 
 }
