@@ -204,7 +204,7 @@
         return $.get(`/api/state/${stackId}`)
             .then(data => {
                 // finding stack output
-                stack.outputs = data.outputs;
+                stack.outputs = data.modules[0].outputs;
             })
             .catch(e => {
                 // a 404 means that the stack is new
