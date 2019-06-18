@@ -246,6 +246,7 @@
                 save: function(){
                     // getting custom provider data
                     // stack.providerSpec = providerEditor.getValue();
+                    stack.state = 'TO_UPDATE';
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
