@@ -3,6 +3,7 @@ package io.codeka.gaia.controller;
 import io.codeka.gaia.bo.TerraformModule;
 import io.codeka.gaia.repository.TerraformModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Secured("ROLE_ADMIN")
 public class TerraformModuleController {
 
     private TerraformModuleRepository terraformModuleRepository;

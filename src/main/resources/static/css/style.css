@@ -706,15 +706,6 @@ a:focus {
 
 .icon_info ul.user_profile_dd li>a::after {
     color: #fff;
-    top: 13px;
-    right: 28px;
-    display: block;
-    position: absolute;
-    transform: translateY(-50%);
-    content: "\f107";
-    font-family: 'fontawesome';
-    border: none;
-    font-size: 18px;
 }
 
 .icon_info ul.user_profile_dd {
