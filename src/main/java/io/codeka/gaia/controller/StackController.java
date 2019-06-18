@@ -127,4 +127,30 @@ public class StackController {
         return this.stackRunner.getJob(jobId);
     }
 
+    @GetMapping("/stacks/{stackId}/stop")
+    public String stopStack(@PathVariable String stackId, Model model){
+        // checking if the stack exists
+        // TODO throw an exception (404) if not
+        if(stackRepository.existsById(stackId)){
+            model.addAttribute("stackId", stackId);
+        }
+
+        // create a new job
+        var job = new Job();
+        job.setId(UUID.randomUUID().toString());
+        job.setStackId(stackId);
+        job.setDateTime(LocalDateTime.now());
+
+        model.addAttribute("jobId", job.getId());
+
+        // get the stack
+        var stack = this.stackRepository.findById(stackId).get();
+        // get the module
+        var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
+
+        this.stackRunner.stop(job, module, stack);
+
+        return "job";
+    }
+
 }
