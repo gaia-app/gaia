@@ -1,0 +1,18 @@
+set -ex
+
+git clone {{gitRepositoryUrl}} module
+cd module
+{{#gitDirectory}}
+    cd {{gitDirectory}}
+{{/gitDirectory}}
+
+echo 'generating backend configuration'
+echo 'terraform {
+    backend "http" {
+        address = "{{externalUrl}}/api/state/{{stackId}}"
+    }
+}' > backend.tf
+
+terraform version
+terraform init
+{{&command}}
