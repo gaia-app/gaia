@@ -44,11 +44,12 @@
         <div class="full">
             <div class="page_title">
                 <a href="#" class="btn btn-primary" @click="save"><i class="far fa-save"></i> Save</a>
-                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'NEW'" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
+                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
                 <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'TO_UPDATE'" class="btn btn-warning"><i class="fas fa-upload"></i> Update</a>
 
-                <a :href="'/stacks/' + stack.id + '/preview'" v-if="stack.state === 'NEW' || stack.state === 'TO_UPDATE'" class="btn btn-info"><i class="fas fa-binoculars"></i> Preview</a>
+                <a :href="'/stacks/' + stack.id + '/preview'" v-if="stack.state !== 'RUNNING'" class="btn btn-info"><i class="fas fa-binoculars"></i> Preview</a>
 
+                <a :href="'/stacks/' + stack.id + '/stop'" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'" class="btn btn-danger"><i class="fas fa-stop-circle"></i> Stop</a>
             </div>
         </div>
     </div>
@@ -91,7 +92,7 @@
                             <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
                             <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
                             <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'" data-toggle="tooltip" title="Your stack needs an update !"><i class="fas fa-upload"></i> to update</span>
-                            <span class="badge badge-pill badge-danger" v-if="stack.state === 'DESTROYED'" data-toggle="tooltip" title="Your stack has been destroyed."><i class="fas fa-snowplow"></i> destroyed</span>
+                            <span class="badge badge-pill badge-danger" v-if="stack.state === 'STOPPED'" data-toggle="tooltip" title="Your stack has been stopped."><i class="fas fa-stop-circle"></i> stopped</span>
                         </h2>
                     </div>
                     <div class="block_content">

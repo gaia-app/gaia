@@ -21,13 +21,8 @@ public enum StackState {
     TO_UPDATE,
 
     /**
-     * When the stack has been destroyed
+     * When the stack has been stopped
      */
-    DESTROYED,
-
-    /**
-     * When the stack is not visible anaymore
-     */
-    ARCHIVED
+    STOPPED
 
 }

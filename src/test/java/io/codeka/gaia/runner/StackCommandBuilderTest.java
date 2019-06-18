@@ -136,6 +136,32 @@ class StackCommandBuilderTest {
         assertTrue(script.contains("terraform version\nterraform init\nterraform plan"));
     }
 
+    @Test
+    void buildDestroyScript_shouldGenerateAFullScript(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildDestroyScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform destroy"));
+    }
+
+    @Test
+    void buildDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
+        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+
+        TerraformModule module = moduleWithoutDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildDestroyScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version\nterraform init\nterraform destroy"));
+    }
+
     @NotNull
     private TerraformModule moduleWithDirectory() {
         var module = new TerraformModule();
