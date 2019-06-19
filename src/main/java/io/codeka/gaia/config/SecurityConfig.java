@@ -14,13 +14,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${gaia.ldap.userDnPatterns}")
+    @Value("${gaia.ldap.userDnPatterns:}")
     private String userDnPatterns;
 
-    @Value("${gaia.ldap.url}")
+    @Value("${gaia.ldap.url:}")
     private String url;
 
-    @Value("${gaia.ldap.enabled}")
+    @Value("${gaia.ldap.enabled:false}")
     private boolean ldapEnabled;
 
     @Bean

@@ -1,24 +1,35 @@
 package io.codeka.gaia.runner;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.bo.TerraformModule;
 import io.codeka.gaia.bo.TerraformVariable;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class StackCommandBuilderTest {
 
+    private Mustache mustache;
+
+    @BeforeEach
+    void setup() {
+        var factory = new DefaultMustacheFactory();
+        mustache = factory.compile("mustache/terraform.mustache");
+    }
+
     @Test
-    void buildApplyCommand_shouldGenerateASimpleApplyCommand(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyCommand_shouldGenerateASimpleApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         var module = new TerraformModule();
         module.setVariables(Collections.emptyList());
@@ -31,8 +42,8 @@ class StackCommandBuilderTest {
     }
 
     @Test
-    void buildApplyCommand_shouldGenerateASingleVariableApplyCommand(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyCommand_shouldGenerateASingleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         var module = new TerraformModule();
         var variable = new TerraformVariable();
@@ -48,8 +59,8 @@ class StackCommandBuilderTest {
     }
 
     @Test
-    void buildApplyCommand_shouldGenerateAMultipleVariableApplyCommand(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyCommand_shouldGenerateAMultipleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         var module = new TerraformModule();
         var variable = new TerraformVariable();
@@ -67,8 +78,8 @@ class StackCommandBuilderTest {
     }
 
     @Test
-    void buildApplyCommand_shouldUseDefaultVariableValues(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyCommand_shouldUseDefaultVariableValues() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         var module = new TerraformModule();
         var variable = new TerraformVariable();
@@ -85,81 +96,111 @@ class StackCommandBuilderTest {
     }
 
     @Test
-    void buildApplyScript_shouldGenerateAFullScript(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyScript_shouldGenerateAFullScript() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildApplyScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform apply"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertTrue(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform apply"));
     }
 
     @Test
-    void buildApplyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildApplyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithoutDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildApplyScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform apply"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertFalse(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform apply"));
     }
 
     @Test
-    void buildPlanScript_shouldGenerateAFullScript(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildPlanScript_shouldGenerateAFullScript() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform plan"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertTrue(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform plan"));
     }
 
     @Test
-    void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithoutDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform plan"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertFalse(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform plan"));
     }
 
     @Test
-    void buildDestroyScript_shouldGenerateAFullScript(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildDestroyScript_shouldGenerateAFullScript() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildDestroyScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\ncd directory\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform destroy"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertTrue(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform destroy"));
     }
 
     @Test
-    void buildDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory(){
-        var stackCommandBuilder = new StackCommandBuilder(new Settings());
+    void buildDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithoutDirectory();
 
         var stack = new Stack();
         var script = stackCommandBuilder.buildDestroyScript(stack, module);
 
-        assertTrue(script.contains("git clone git://test module\ncd module\necho 'generating backend configuration'"));
-        assertTrue(script.contains("terraform version\nterraform init\nterraform destroy"));
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertFalse(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform destroy"));
     }
 
     @NotNull
