@@ -235,7 +235,7 @@
                 save: function(){
                     const message = Messenger().post({
                         type: "info",
-                    stack.state = 'TO_UPDATE';
+                        message: "Saving stack."
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
