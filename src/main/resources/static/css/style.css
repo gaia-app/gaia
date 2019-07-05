@@ -3569,3 +3569,7 @@ span.round-tab:hover {
         left: 35%;
     }
 }
+
+ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
+    top: 75px;
+}

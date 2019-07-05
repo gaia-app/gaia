@@ -164,6 +164,7 @@
     })
 </script>
 
+<div th:replace="helpers/messenger"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
     let stack;
@@ -236,11 +237,14 @@
                     const message = Messenger().post({
                         type: "info",
                         message: "Saving stack."
+                    });
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
                         contentType: "application/json",
-                        method: "PUT"
+                        method: "PUT",
+                        success: () => message.update({type: "success", message: "Stack saved."}),
+                        error: () => message.update({type: "error", message: "Error saving stack."})
                     });
                 }
             }
