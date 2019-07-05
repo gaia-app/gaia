@@ -39,6 +39,12 @@ public class StackController {
         this.jobRepository = jobRepository;
     }
 
+    @GetMapping("/modules/{moduleId}/run")
+    public String newStack(@PathVariable String moduleId, Model model){
+        model.addAttribute("moduleId", moduleId);
+        return "new_stack";
+    }
+
     @GetMapping("/stacks")
     public String listStacks(){
         return "stacks";

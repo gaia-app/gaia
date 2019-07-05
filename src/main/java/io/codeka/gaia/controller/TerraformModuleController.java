@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@Secured("ROLE_ADMIN")
 public class TerraformModuleController {
 
     private TerraformModuleRepository terraformModuleRepository;
@@ -29,12 +28,14 @@ public class TerraformModuleController {
         return "modules";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/modules/{id}")
     public String module(@PathVariable String id, Model model){
         model.addAttribute("module", terraformModuleRepository.findById(id).orElseThrow());
         return "module";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/modules/{id}")
     public String saveModule(@ModelAttribute TerraformModule module, Model model){
         terraformModuleRepository.save(module);

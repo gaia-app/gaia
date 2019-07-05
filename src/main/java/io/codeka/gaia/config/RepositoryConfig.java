@@ -2,7 +2,9 @@ package io.codeka.gaia.config;
 
 import io.codeka.gaia.bo.Job;
 import io.codeka.gaia.bo.Stack;
+import io.codeka.gaia.repository.StackRepositoryEventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
@@ -12,6 +14,10 @@ public class RepositoryConfig {
     @Autowired
     public void configureRest(RepositoryRestConfiguration repositoryRestConfiguration){
         repositoryRestConfiguration.exposeIdsFor(Stack.class, Job.class);
+    }
 
+    @Bean
+    StackRepositoryEventHandler stackRepositoryEventHandler(){
+        return new StackRepositoryEventHandler();
     }
 }
