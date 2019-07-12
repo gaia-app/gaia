@@ -28,3 +28,4 @@ Gaia can be configured using :
 
 * `DOCKER_DAEMON_URL` / `gaia.dockerDaemonUrl` (default `unix:///var/run/docker.sock`) : configure docker daemon url for Gaia runner
 * `EXTERNAL_URL` / `gaia.externalUrl` (default `http://localhost:8080`) : configure Gaia url for embedded terraform backend support
+* `MONGODB_URI`  / `gaia.mongodb.uri` (default `mongodb://localhost/gaia`) : configure Gaia database access
