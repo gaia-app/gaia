@@ -19,6 +19,6 @@ public class MongoContainer extends GenericContainer {
         super.start();
         var port = getMappedPort(27017);
         // register the port as property for spring
-        System.setProperty("spring.data.mongodb.port", String.valueOf(port));
+        System.setProperty("gaia.mongodb.uri", String.format("mongodb://localhost:%d/gaia", port));
     }
 }
