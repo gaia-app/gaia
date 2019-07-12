@@ -38,7 +38,7 @@ class StackCommandBuilderTest {
 
         var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply --auto-approve ", applyCommand);
+        assertEquals("terraform apply -auto-approve ", applyCommand);
     }
 
     @Test
@@ -55,7 +55,7 @@ class StackCommandBuilderTest {
 
         var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply --auto-approve -var \"test=value\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=value\" ", applyCommand);
     }
 
     @Test
@@ -74,7 +74,7 @@ class StackCommandBuilderTest {
 
         var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply --auto-approve -var \"test=value\" -var \"test2=value2\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=value\" -var \"test2=value2\" ", applyCommand);
     }
 
     @Test
@@ -92,7 +92,7 @@ class StackCommandBuilderTest {
 
         var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply --auto-approve -var \"test=defaultValue\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=defaultValue\" ", applyCommand);
     }
 
     @Test

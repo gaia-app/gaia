@@ -46,7 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // configure default admin user
         auth
             .inMemoryAuthentication()
-                .withUser("admin").password(bcrypt().encode("admin123")).authorities("ROLE_ADMIN");
+                .withUser("admin").password(bcrypt().encode("admin123")).authorities("ROLE_ADMIN")
+                .and()
+                .withUser("user").password(bcrypt().encode("user123")).authorities("ROLE_USER");
 
         // configure ldap auth if needed
         if(ldapEnabled){

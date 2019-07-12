@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -35,27 +34,7 @@ public class Gaia {
 			stackRepository.deleteAll();
 
 			// create dummy module for tests
-			var module = new TerraformModule();
-			module.setId("e01f9925-a559-45a2-8a55-f93dc434c676");
-			module.setName("terraform-docker-mongo");
-			module.setDescription("A sample terraform \uD83C\uDF0D module for running a mongodb \uD83C\uDF43 database inside a docker \uD83D\uDC33 container");
-			module.setGitRepositoryUrl("https://github.com/juwit/terraform-docker-mongo.git");
-			module.setDirectory("");
-			module.setGitBranch("master");
-
-			var tvar = new TerraformVariable();
-			tvar.setName("mongo_container_name");
-			tvar.setDescription("the name of the docker container");
-
-			var tvar2 = new TerraformVariable();
-			tvar2.setName("mongo_exposed_port");
-			tvar2.setDescription("the exposed port of the mongo container");
-			tvar2.setDefaultValue("27017");
-
-			module.setVariables(List.of(tvar, tvar2));
-
-			repository.saveAll(List.of(module));
-
+			repository.saveAll(List.of(buildDockerMongoModule()));
 
 			var stack = new Stack();
 			stack.setId("5a215b6b-fe53-4afa-85f0-a10175a7f264");
@@ -64,7 +43,7 @@ public class Gaia {
 			stack.setModuleId("e01f9925-a559-45a2-8a55-f93dc434c676");
 			stack.getVariableValues().put("mongo_container_name", "test");
 			stack.getVariableValues().put("mongo_exposed_port", "27117");
-			stack.setProviderSpec("provider \"poulp\" {\n" +
+			stack.setProviderSpec("provider \"docker\" {\n" +
 					"    host = \"unix:///var/run/docker.sock\"\n" +
 					"}");
 			stackRepository.save(stack);
@@ -76,6 +55,30 @@ public class Gaia {
 			stack2.setModuleId("e01f9925-a559-45a2-8a55-f93dc434c676");
 			stackRepository.save(stack2);
 		};
+	}
+
+	private TerraformModule buildDockerMongoModule() {
+		var module = new TerraformModule();
+		module.setId("e01f9925-a559-45a2-8a55-f93dc434c676");
+		module.setName("terraform-docker-mongo");
+		module.setDescription("A sample terraform \uD83C\uDF0D module for running a mongodb \uD83C\uDF43 database inside a docker \uD83D\uDC33 container");
+		module.setGitRepositoryUrl("https://github.com/juwit/terraform-docker-mongo.git");
+		module.setDirectory("");
+		module.setGitBranch("master");
+
+		var tvar = new TerraformVariable();
+		tvar.setName("mongo_container_name");
+		tvar.setDescription("the name of the docker container");
+		tvar.setEditable(true);
+
+		var tvar2 = new TerraformVariable();
+		tvar2.setName("mongo_exposed_port");
+		tvar2.setDescription("the exposed port of the mongo container");
+		tvar2.setDefaultValue("27017");
+		tvar2.setEditable(true);
+
+		module.setVariables(List.of(tvar, tvar2));
+		return module;
 	}
 
 }

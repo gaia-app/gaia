@@ -39,6 +39,8 @@
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 
+<div th:replace="vue_templates/stack-vars"></div>
+
 <template id="stack-controls">
     <div class="row column_title">
         <div class="full">
@@ -120,16 +122,7 @@
                         <small>This is the configuration of your module's variables !</small>
                     </div>
                     <div class="block_content">
-                        <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in editableVars" v-if="editableVars.length > 0">
-                            <div class="form-group col">
-                                <label for="var-name">{{modVar.name}}: </label>
-                                <input type="text" class="form-control" id="var-name" v-model="stack.variableValues[modVar.name]" @change="recomputeState">
-                                <small id="emailHelp" class="form-text text-muted">{{modVar.description}}</small>
-                            </div>
-                        </div>
-                        <div v-if="editableVars.length === 0">
-                            <p>No editable variable defined for this module.</p>
-                        </div>
+                        <stack-vars v-bind:module="stack.module" v-bind:stack="stack"></stack-vars>
                     </div>
                 </div>
             </div>
