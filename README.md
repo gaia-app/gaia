@@ -2,6 +2,9 @@
 
 A terraform 🌍 ui
 
+[![Build Status](https://travis-ci.org/CodeKaio/gaia.svg?branch=master)](https://travis-ci.org/CodeKaio/gaia)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=io.codeka%3Agaia&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.codeka%3Agaia)
+
 ## using state mgmt
 
 gaia serves terraform state mgmt as an API, and can be used as a backend for `terraform`.
