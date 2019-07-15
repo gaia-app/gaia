@@ -89,6 +89,8 @@
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 
+<div th:replace="helpers/messenger"></div>
+
 <script th:inline="javascript" type="application/ecmascript">
     const settings = [[${settings}]];
     const envVars = settings.envVars;
@@ -107,12 +109,18 @@
     });
 
     function saveSettings(){
+        const message = Messenger().post({
+            type: "info",
+            message: "Saving settings."
+        });
         $.ajax({
             url: `/settings`,
             data: JSON.stringify(settings),
             contentType: "application/json",
-            method: "PUT"
-        })
+            method: "PUT",
+            success: () => message.update({type: "success", message: "Settings saved."}),
+            error: () => message.update({type: "error", message: "Error saving settings"})
+        });
     }
 </script>
 

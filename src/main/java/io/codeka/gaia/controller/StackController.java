@@ -26,16 +26,13 @@ public class StackController {
 
     private TerraformModuleRepository terraformModuleRepository;
 
-    private Settings settings;
-
     private JobRepository jobRepository;
 
     @Autowired
-    public StackController(StackRepository stackRepository, StackRunner stackRunner, TerraformModuleRepository terraformModuleRepository, Settings settings, JobRepository jobRepository) {
+    public StackController(StackRepository stackRepository, StackRunner stackRunner, TerraformModuleRepository terraformModuleRepository, JobRepository jobRepository) {
         this.stackRepository = stackRepository;
         this.stackRunner = stackRunner;
         this.terraformModuleRepository = terraformModuleRepository;
-        this.settings = settings;
         this.jobRepository = jobRepository;
     }
 
@@ -56,7 +53,6 @@ public class StackController {
         // TODO throw an exception (404) if not
         if(stackRepository.existsById(stackId)){
             model.addAttribute("stackId", stackId);
-            model.addAttribute("settings", settings);
         }
         return "stack";
     }

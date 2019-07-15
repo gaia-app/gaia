@@ -33,9 +33,6 @@
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/js/prism.js"></script>
-<script src="/webjars/ace-builds/1.4.4/src-min/ace.js"></script>
-<script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 
@@ -167,14 +164,10 @@
     })
 </script>
 
-
+<div th:replace="helpers/messenger"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
-    const settings = [[${settings}]];
-
     let stack;
-
-    let providerEditor;
 
     console.log("loadStack");
     $.get(`/api/stacks/${stackId}`)
@@ -216,8 +209,7 @@
         new Vue({
             el: "#app",
             data: {
-                stack,
-                settings
+                stack
             },
             template: "#template",
             methods: {
@@ -242,26 +234,21 @@
             template: "#stack-controls",
             methods: {
                 save: function(){
-                    // getting custom provider data
-                    // stack.providerSpec = providerEditor.getValue();
-                    stack.state = 'TO_UPDATE';
+                    const message = Messenger().post({
+                        type: "info",
+                        message: "Saving stack."
+                    });
                     $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
                         contentType: "application/json",
-                        method: "PUT"
+                        method: "PUT",
+                        success: () => message.update({type: "success", message: "Stack saved."}),
+                        error: () => message.update({type: "error", message: "Error saving stack."})
                     });
                 }
             }
         });
-
-        // highlight code !
-        Prism.highlightAll();
-
-        // activating code editor
-        providerEditor = ace.edit("provider-editor");
-        let jsonMode = ace.require("ace/mode/hjson").Mode;
-        providerEditor.session.setMode(new jsonMode());
     }
 </script>
 

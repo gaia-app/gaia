@@ -1,0 +1,28 @@
+<script src="/webjars/messenger/1.5.0/build/js/messenger.min.js"></script>
+
+<script>
+    // load messenger css dynamically
+    const messengerCssId = "messengerCss";
+    if( $("#messengerCss").length === 0 ){
+        loadCss("/webjars/messenger/1.5.0/build/css/messenger.css");
+        loadCss("/webjars/messenger/1.5.0/build/css/messenger-spinner.css");
+        loadCss("/webjars/messenger/1.5.0/build/css/messenger-theme-air.css");
+    }
+
+    function loadCss(stylesheet){
+        const head  = $("head")[0];
+        const link  = document.createElement("link");
+        link.id   = messengerCssId;
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = stylesheet;
+        link.media = 'all';
+        head.appendChild(link);
+    }
+
+    Messenger.options = {
+        extraClasses: 'messenger-fixed messenger-on-top messenger-on-right custom-messenger-on-top',
+        theme: 'air',
+        parentLocations: ["#content", "body"]
+    };
+</script>
