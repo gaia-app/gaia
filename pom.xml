@@ -12,7 +12,7 @@
 
 	<groupId>io.codeka</groupId>
 	<artifactId>gaia</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>gaia</name>
 	<description>gaia runs yours terraform modules</description>
 
