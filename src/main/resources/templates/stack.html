@@ -35,6 +35,7 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/stack-vars"></div>
 
@@ -48,7 +49,7 @@
 
                 <a :href="'/stacks/' + stack.id + '/preview'" v-if="stack.state !== 'RUNNING'" class="btn btn-info"><i class="fas fa-binoculars"></i> Preview</a>
 
-                <a :href="'/stacks/' + stack.id + '/stop'" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'" class="btn btn-danger"><i class="fas fa-stop-circle"></i> Stop</a>
+                <a href="#" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'" class="btn btn-danger"><i class="fas fa-stop-circle"></i> Stop</a>
             </div>
         </div>
     </div>
@@ -246,7 +247,24 @@
                         success: () => message.update({type: "success", message: "Stack saved."}),
                         error: () => message.update({type: "error", message: "Error saving stack."})
                     });
-                }
+                },
+                stopStack: function () {
+                    // ask for confirmation
+                    this.$bvModal.msgBoxConfirm('This will completely stop the stack. Continue?', {
+                        title: 'Stop request',
+                        centered: true,
+                        noCloseOnBackdrop: true,
+                        cancelTitle: 'No',
+                        okVariant: 'danger',
+                        okTitle: 'Yes',
+                        returnFocus: 'body'
+                    }).then(value => {
+                        if (value) {
+                           // redirect
+                            window.location = `/stacks/${stack.id}/stop`;
+                        }
+                    })
+                },
             }
         });
     }
