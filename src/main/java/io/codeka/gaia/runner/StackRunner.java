@@ -60,7 +60,7 @@ public class StackRunner {
                     .build();
 
             // pull the image
-            dockerClient.pull("hashicorp/terraform:0.11.14");
+            dockerClient.pull("hashicorp/terraform:0.12.3");
 
             System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
