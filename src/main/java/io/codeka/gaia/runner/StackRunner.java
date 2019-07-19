@@ -146,7 +146,7 @@ public class StackRunner {
         }
         else if(result == 2){
             // there is a diff, set the status of the stack to : "TO_UPDATE"
-            if(StackState.RUNNING != stack.getState() && StackState.NEW != stack.getState()){
+            if(StackState.NEW != stack.getState()){
                 stack.setState(StackState.TO_UPDATE);
                 stackRepository.save(stack);
             }
