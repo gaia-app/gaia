@@ -2,7 +2,6 @@ package io.codeka.gaia.runner;
 
 import com.spotify.docker.client.LogReader;
 import com.spotify.docker.client.LogStream;
-import jnr.unixsocket.UnixSocketChannel;
 import org.apache.http.conn.EofSensorInputStream;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.entity.HttpEntityWrapper;
@@ -12,7 +11,9 @@ import org.glassfish.jersey.message.internal.EntityInputStream;
 import org.springframework.stereotype.Component;
 
 import java.io.FilterInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.Socket;
 import java.nio.channels.Channels;
@@ -23,7 +24,7 @@ import java.util.List;
 @Component
 public class HttpHijackWorkaround {
 
-    WritableByteChannel getOutputStream(final LogStream stream, final String uri) throws Exception {
+    OutputStream getOutputStream(final LogStream stream, final String uri) throws IOException {
         // @formatter:off
         final String[] fields =
                 new String[] {"reader",
@@ -71,9 +72,9 @@ public class HttpHijackWorkaround {
 
         final Object res = getInternalField(stream, fieldClassTuples);
         if (res instanceof WritableByteChannel) {
-            return (WritableByteChannel) res;
+            return Channels.newOutputStream((WritableByteChannel) res);
         } else if (res instanceof Socket) {
-            return Channels.newChannel(((Socket) res).getOutputStream());
+            return ((Socket) res).getOutputStream();
         } else {
             throw new AssertionError("Expected " + WritableByteChannel.class.getName() + " or " + Socket.class.getName() + " but found: " +
                     res.getClass().getName());

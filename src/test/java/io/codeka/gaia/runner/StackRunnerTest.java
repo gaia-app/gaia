@@ -13,6 +13,7 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.OutputStream;
 import java.nio.channels.WritableByteChannel;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +57,7 @@ class StackRunnerTest {
         when(dockerClient.createContainer(any())).thenReturn(containerCreation);
 
         // setting mocks to let test pass till the end
-        var writableByteChannel = mock(WritableByteChannel.class);
+        var writableByteChannel = mock(OutputStream.class);
         when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
 
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
@@ -87,7 +88,7 @@ class StackRunnerTest {
         when(dockerClient.createContainer(any())).thenReturn(containerCreation);
 
         // setting mocks to let test pass till the end
-        var writableByteChannel = mock(WritableByteChannel.class);
+        var writableByteChannel = mock(OutputStream.class);
         when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
 
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");

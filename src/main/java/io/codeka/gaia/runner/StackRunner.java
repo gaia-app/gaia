@@ -1,19 +1,20 @@
 package io.codeka.gaia.runner;
 
 import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import io.codeka.gaia.bo.*;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.WriterOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class StackRunner {
         this.jobRepository = jobRepository;
     }
 
-    private int runContainerForJob(Job job, String script){
+    private int runContainerForJob(Job job, String script) {
         try{
             // FIXME This is certainly no thread safe !
             var containerConfig = containerConfigBuilder
@@ -62,68 +63,38 @@ public class StackRunner {
             // pull the image
             dockerClient.pull("hashicorp/terraform:0.12.3");
 
-            System.out.println("Create container");
             var containerCreation = dockerClient.createContainer(containerConfig);
             var containerId = containerCreation.id();
 
-            // attach stdin
-            System.err.println("Attach container");
-            var logStream = dockerClient.attachContainer(containerId, DockerClient.AttachParameter.STDIN, DockerClient.AttachParameter.STDOUT, DockerClient.AttachParameter.STDERR, DockerClient.AttachParameter.STREAM);
-            var writable = httpHijackWorkaround.getOutputStream(logStream, "unix:///var/apply/docker.sock");
+            var dockerContainer = new DockerContainer(containerId, dockerClient, httpHijackWorkaround);
 
-            System.err.println("Starting container");
             dockerClient.startContainer(containerId);
 
-            final PipedInputStream stdout = new PipedInputStream();
-            final PipedInputStream stderr = new PipedInputStream();
-            final PipedOutputStream stdout_pipe = new PipedOutputStream(stdout);
-            final PipedOutputStream stderr_pipe = new PipedOutputStream(stderr);
-
-            // writing to System.err
+            // attaching the outputs in a background thread
             CompletableFuture.runAsync(() -> {
-                try {
-                    System.err.println("Copying to System.err");
-                    System.err.println("Attaching stdout and stderr");
-                    // apply another attachment for stdout and stderr (who knows why?)
-                    dockerClient.attachContainer(containerId,
-                            DockerClient.AttachParameter.LOGS, DockerClient.AttachParameter.STDOUT,
-                            DockerClient.AttachParameter.STDERR, DockerClient.AttachParameter.STREAM)
-                            .attach(stdout_pipe, stderr_pipe, true);
-                } catch (Exception e) {
+                try( var writerOutputStream = new WriterOutputStream(job.getLogsWriter(), Charset.defaultCharset()) ) {
+                    // this code is blocking I/O !
+                    dockerContainer.attach(writerOutputStream, writerOutputStream);
+                } catch (IOException | StackRunnerException e) {
                     e.printStackTrace();
                 }
             });
 
-            CompletableFuture.runAsync(() -> {
-                try {
-                    IOUtils.copy(stdout, job.getLogsWriter(), Charset.defaultCharset());
-                    System.err.println("Copy done !");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            CompletableFuture.runAsync(() -> {
-                try {
-                    IOUtils.copy(stderr, job.getLogsWriter(), Charset.defaultCharset());
-                    System.err.println("Copy done !");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            System.err.println("Writing buffer");
-            writable.write(ByteBuffer.wrap(script.getBytes()));
-            writable.close();
+            // write the content of the script to the container's std in
+            try( WritableByteChannel stdIn = Channels.newChannel(dockerContainer.getStdIn()) ){
+                stdIn.write(ByteBuffer.wrap(script.getBytes()));
+            }
 
             // wait for the container to exit
-            System.err.println("Waiting container exit");
             var containerExit = dockerClient.waitContainer(containerCreation.id());
 
             dockerClient.removeContainer(containerCreation.id());
 
             return Math.toIntExact(containerExit.statusCode());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return 99;
+        } catch (DockerException | IOException | StackRunnerException e) {
             return 99;
         }
     }
@@ -197,7 +168,7 @@ public class StackRunner {
             return this.jobs.get(jobId);
         }
         // or find in repository
-        return this.jobRepository.findById(jobId).get();
+        return this.jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("job not found"));
     }
 
     /**
