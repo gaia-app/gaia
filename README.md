@@ -44,3 +44,8 @@ docker build -t gaia .
 We provide a simple `docker-compose.yml` to allow you to start gaia with a mongo database.
 
 Just run `docker-compose up -d`
+
+
+## healthcheck
+
+healthcheck is available at the `/admin/health` URI.
