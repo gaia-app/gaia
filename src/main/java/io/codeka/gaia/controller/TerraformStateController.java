@@ -20,7 +20,7 @@ public class TerraformStateController {
     }
 
     @GetMapping("/api/state/{id}")
-    Map<String, Object> getState(@PathVariable String id){
+    public Map<String, Object> getState(@PathVariable String id){
         return repository.findById(id)
                 .orElseThrow(
                         () -> new ResponseStatusException(HttpStatus.NOT_FOUND))
@@ -28,7 +28,7 @@ public class TerraformStateController {
     }
 
     @PostMapping("/api/state/{id}")
-    void postState(@PathVariable String id, @RequestBody Map<String, Object> body){
+    public void postState(@PathVariable String id, @RequestBody Map<String, Object> body){
         var terraformState = new TerraformState();
         terraformState.setId(id);
         terraformState.setValue(body);
