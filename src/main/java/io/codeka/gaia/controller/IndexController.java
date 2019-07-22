@@ -20,7 +20,7 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    String index(Model model){
+    public String index(Model model){
         model.addAttribute("moduleCount", this.moduleRepository.count());
 
         model.addAttribute("runningStackCount", stackRepository.countStacksByState(StackState.RUNNING));
