@@ -34,6 +34,8 @@ public class Job {
 
     private JobStatus jobStatus;
 
+    private JobType jobType;
+
     public String getId() {
         return id;
     }
@@ -58,8 +60,9 @@ public class Job {
         return this.jobStatus;
     }
 
-    public void start() {
+    public void start(JobType jobType) {
         this.jobStatus = JobStatus.RUNNING;
+        this.jobType = jobType;
     }
 
     public void end(){
@@ -81,4 +84,9 @@ public class Job {
     public void setStackId(String stackId) {
         this.stackId = stackId;
     }
+
+    public JobType getType() {
+        return this.jobType;
+    }
+
 }
