@@ -102,7 +102,7 @@ public class StackRunner {
     @Async
     public void apply(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
-        job.start();
+        job.start(JobType.RUN);
 
         var applyScript = stackCommandBuilder.buildApplyScript(stack, module);
 
@@ -134,7 +134,7 @@ public class StackRunner {
     @Async
     public void plan(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
-        job.start();
+        job.start(JobType.PREVIEW);
 
         var planScript = stackCommandBuilder.buildPlanScript(stack, module);
 
@@ -181,7 +181,7 @@ public class StackRunner {
     @Async
     public void stop(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
-        job.start();
+        job.start(JobType.STOP);
 
         var destroyScript = stackCommandBuilder.buildDestroyScript(stack, module);
 

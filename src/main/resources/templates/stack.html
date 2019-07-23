@@ -137,10 +137,13 @@
             <h2><span><i class="fas fa-history"></i> Job history</span></h2>
         </div>
         <ul class="job_list">
-            <li v-for="(job, index) in jobs" :class="job.status">
-                <a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}} - {{job.status}}</a>
-                <br>
-                <strong>{{job.dateTime | dateTime}}</strong>
+            <li v-for="(job, index) in jobs" :class="job.status" class="job">
+                <div class="job_id"><a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}}</a></div>
+                <div class="job_detail">
+                    <div><span class="job_attr_id">Type</span><span class="job_attr_value" :class="job.type">{{job.type}}</span></div>
+                    <div><span class="job_attr_id">Status</span><span class="job_attr_value" :class="job.status">{{job.status}}</span></div>
+                    <div><span class="job_attr_id">Date</span><span class="job_attr_value">{{job.dateTime | dateTime}}</span></div>
+                </div>
             </li>
         </ul>
     </div>
