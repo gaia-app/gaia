@@ -1739,7 +1739,7 @@ a[data-toggle="collapse"] {
 }
 
 .job_list li {
-    padding: 20px 40px;
+    padding: 10px;
     border-bottom: solid #eee 1px;
     line-height: normal;
     font-size: 16px;
@@ -1801,6 +1801,63 @@ button.main_bt {
 
 .job_list li.FINISHED {
     border-left-color: #1ed085;
+}
+
+.job_list .job {
+    display: flex;
+}
+
+.job_list .job .job_id {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+}
+
+.job_list .job .job_id a {
+    font-size: larger;
+}
+
+.job_list .job .job_detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 2px dashed cadetblue;
+    margin-left: 10px;
+    padding-left: 10px;
+}
+
+.job_list .job .job_attr_id {
+    width: 50px;
+}
+
+.job_list .job .job_attr_value {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.job_list .job .job_attr_value.FINISHED {
+    color: #1ed085;
+}
+
+.job_list .job .job_attr_value.RUNNING {
+    color: #2196f3;
+}
+
+.job_list .job .job_attr_value.FAILED {
+    color: #e91e63;
+}
+
+.job_list .job .job_attr_value.PREVIEW {
+    color: #17a2b8;
+}
+
+.job_list .job .job_attr_value.RUN {
+    color: #007bff;
+}
+
+.job_list .job .job_attr_value.STOP {
+    color: #dc3545;
 }
 
 .msg_list li:nth-child(1) {

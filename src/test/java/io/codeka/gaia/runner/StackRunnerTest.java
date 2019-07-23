@@ -9,6 +9,7 @@ import com.spotify.docker.client.messages.ContainerExit;
 import io.codeka.gaia.bo.*;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
@@ -46,29 +47,37 @@ class StackRunnerTest {
     @Mock
     private JobRepository jobRepository;
 
+    @BeforeEach
+    void containerCreateMock() throws Exception {
+        // simulating a container with id 12
+        var containerCreation = mock(ContainerCreation.class);
+        when(containerCreation.id()).thenReturn("12");
+        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
+    }
+
+    void httpHijackWorkaroundMock() throws Exception {
+        // setting mocks to let test pass till the end
+        var writableByteChannel = mock(OutputStream.class);
+        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
+    }
+
+    void containerExitMock(Long statusCode) throws Exception {
+        // given
+        var containerExit = mock(ContainerExit.class);
+        when(containerExit.statusCode()).thenReturn(statusCode);
+        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
+    }
+
     @Test
     void job_shouldBeSavedToDatabaseAfterRun() throws Exception {
         var job = new Job();
         var module = new TerraformModule();
         var stack = new Stack();
-
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
-        // setting mocks to let test pass till the end
-        var writableByteChannel = mock(OutputStream.class);
-        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
-
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
-
-        // given
-        var containerExit = mock(ContainerExit.class);
-        when(containerExit.statusCode()).thenReturn(0L);
-        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
         stackRunner.apply(job, module, stack);
@@ -82,24 +91,11 @@ class StackRunnerTest {
         var job = new Job();
         var module = new TerraformModule();
         var stack = new Stack();
-
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
-        // setting mocks to let test pass till the end
-        var writableByteChannel = mock(OutputStream.class);
-        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
-
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
-
-        // given
-        var containerExit = mock(ContainerExit.class);
-        when(containerExit.statusCode()).thenReturn(0L);
-        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
         stackRunner.apply(job, module, stack);
@@ -115,24 +111,11 @@ class StackRunnerTest {
         var module = new TerraformModule();
         var stack = new Stack();
         stack.setState(StackState.RUNNING);
-
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
-        // setting mocks to let test pass till the end
-        var writableByteChannel = mock(OutputStream.class);
-        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
-
+        httpHijackWorkaroundMock();
+        containerExitMock(2L);
         when(stackCommandBuilder.buildPlanScript(stack, module)).thenReturn("");
-
-        // given
-        var containerExit = mock(ContainerExit.class);
-        when(containerExit.statusCode()).thenReturn(2L);
-        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
         stackRunner.plan(job, module, stack);
@@ -150,24 +133,11 @@ class StackRunnerTest {
         var module = new TerraformModule();
         var stack = new Stack();
         stack.setState(StackState.NEW);
-
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
-        // setting mocks to let test pass till the end
-        var writableByteChannel = mock(OutputStream.class);
-        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
-
+        httpHijackWorkaroundMock();
+        containerExitMock(2L);
         when(stackCommandBuilder.buildPlanScript(stack, module)).thenReturn("");
-
-        // given
-        var containerExit = mock(ContainerExit.class);
-        when(containerExit.statusCode()).thenReturn(2L);
-        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
         stackRunner.plan(job, module, stack);
@@ -185,24 +155,11 @@ class StackRunnerTest {
         var module = new TerraformModule();
         var stack = new Stack();
         stack.setState(StackState.RUNNING);
-
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
-        // setting mocks to let test pass till the end
-        var writableByteChannel = mock(OutputStream.class);
-        when(httpHijackWorkaround.getOutputStream(any(), any())).thenReturn(writableByteChannel);
-
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
         when(stackCommandBuilder.buildDestroyScript(stack, module)).thenReturn("");
-
-        // given
-        var containerExit = mock(ContainerExit.class);
-        when(containerExit.statusCode()).thenReturn(0L);
-        when(dockerClient.waitContainer("12")).thenReturn(containerExit);
 
         // when
         stackRunner.stop(job, module, stack);
@@ -223,13 +180,7 @@ class StackRunnerTest {
 
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
-        // simulating a container with id 12
-        var containerCreation = mock(ContainerCreation.class);
-        when(containerCreation.id()).thenReturn("12");
-        when(dockerClient.createContainer(any())).thenReturn(containerCreation);
-
         doThrow(new DockerException("test")).when(dockerClient).startContainer("12");
-
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
 
         // when
@@ -238,6 +189,60 @@ class StackRunnerTest {
         // then
         assertEquals(JobStatus.FAILED, job.getStatus());
         verify(jobRepository).save(job);
+    }
+
+    @Test
+    void plan_shouldStartPreviewJob() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildPlanScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.plan(job, module, stack);
+
+        // then
+        assertEquals(JobType.PREVIEW, job.getType());
+    }
+
+    @Test
+    void apply_shouldStartRunob() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.apply(job, module, stack);
+
+        // then
+        assertEquals(JobType.RUN, job.getType());
+    }
+
+    @Test
+    void stop_shouldStartStopJob() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildDestroyScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.stop(job, module, stack);
+
+        // then
+        assertEquals(JobType.STOP, job.getType());
     }
 
 }
