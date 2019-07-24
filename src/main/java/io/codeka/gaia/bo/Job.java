@@ -36,6 +36,8 @@ public class Job {
 
     private JobType jobType;
 
+    private String cliVersion;
+
     public String getId() {
         return id;
     }
@@ -87,6 +89,14 @@ public class Job {
 
     public JobType getType() {
         return this.jobType;
+    }
+
+    public String getCliVersion() {
+        return cliVersion;
+    }
+
+    public void setCliVersion(String cliVersion) {
+        this.cliVersion = cliVersion;
     }
 
 }

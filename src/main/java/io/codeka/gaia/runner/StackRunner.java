@@ -58,10 +58,11 @@ public class StackRunner {
             // FIXME This is certainly no thread safe !
             var containerConfig = containerConfigBuilder
                     .env(settings.env())
+                    .image("hashicorp/terraform:" + job.getCliVersion())
                     .build();
 
             // pull the image
-            dockerClient.pull("hashicorp/terraform:0.12.3");
+            dockerClient.pull("hashicorp/terraform:" + job.getCliVersion());
 
             var containerCreation = dockerClient.createContainer(containerConfig);
             var containerId = containerCreation.id();
@@ -102,6 +103,7 @@ public class StackRunner {
     @Async
     public void apply(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
+        job.setCliVersion(module.getCliVersion());
         job.start(JobType.RUN);
 
         var applyScript = stackCommandBuilder.buildApplyScript(stack, module);
@@ -134,6 +136,7 @@ public class StackRunner {
     @Async
     public void plan(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
+        job.setCliVersion(module.getCliVersion());
         job.start(JobType.PREVIEW);
 
         var planScript = stackCommandBuilder.buildPlanScript(stack, module);
@@ -181,6 +184,7 @@ public class StackRunner {
     @Async
     public void stop(Job job, TerraformModule module, Stack stack) {
         this.jobs.put(job.getId(), job);
+        job.setCliVersion(module.getCliVersion());
         job.start(JobType.STOP);
 
         var destroyScript = stackCommandBuilder.buildDestroyScript(stack, module);

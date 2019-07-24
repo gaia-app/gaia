@@ -32,6 +32,7 @@
                             <div th:each="module: ${modules}" class="card" style="width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${module.name}">Card title</h5>
+                                    <img sec:authorize="hasRole('ADMIN')" th:attr="src=@{https://img.shields.io/badge/terraform-{version}-blue.svg?style=flat-square(version=${module.cliVersion})},alt=${module.cliVersion},title=${module.cliVersion}" style="margin-bottom: .75rem" />
                                     <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                     <a href="#" sec:authorize="hasRole('ADMIN')" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
                                     <a href="#" th:href="@{/modules/{moduleId}/run(moduleId=${module.id})}" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>

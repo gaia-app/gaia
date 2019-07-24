@@ -16,6 +16,8 @@ public class TerraformModule {
     private String name;
     private String description;
 
+    private String cliVersion;
+
     public String getId() {
         return id;
     }
@@ -71,4 +73,13 @@ public class TerraformModule {
     public void setVariables(List<TerraformVariable> variables) {
         this.variables = variables;
     }
+
+    public String getCliVersion() {
+        return cliVersion;
+    }
+
+    public void setCliVersion(String cliVersion) {
+        this.cliVersion = cliVersion;
+    }
+
 }
