@@ -1,7 +1,6 @@
 package io.codeka.gaia.runner;
 
 import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
@@ -16,11 +15,9 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.WritableByteChannel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -243,6 +240,69 @@ class StackRunnerTest {
 
         // then
         assertEquals(JobType.STOP, job.getType());
+    }
+
+    @Test
+    void plan_shouldConsiderModuleCLIVersion() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        module.setCliVersion("0.12.0");
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildPlanScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.plan(job, module, stack);
+
+        // then
+        assertEquals("0.12.0", job.getCliVersion());
+        verify(builder).image("hashicorp/terraform:0.12.0");
+        verify(dockerClient).pull("hashicorp/terraform:0.12.0");
+    }
+
+    @Test
+    void apply_shouldConsiderModuleCLIVersion() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        module.setCliVersion("0.12.0");
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.apply(job, module, stack);
+
+        // then
+        assertEquals("0.12.0", job.getCliVersion());
+        verify(builder).image("hashicorp/terraform:0.12.0");
+        verify(dockerClient).pull("hashicorp/terraform:0.12.0");
+    }
+
+    @Test
+    void stop_shouldConsiderModuleCLIVersion() throws Exception {
+        var job = new Job();
+        var module = new TerraformModule();
+        module.setCliVersion("0.12.0");
+        var stack = new Stack();
+        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
+
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildDestroyScript(stack, module)).thenReturn("");
+
+        // when
+        stackRunner.stop(job, module, stack);
+
+        // then
+        assertEquals("0.12.0", job.getCliVersion());
+        verify(builder).image("hashicorp/terraform:0.12.0");
+        verify(dockerClient).pull("hashicorp/terraform:0.12.0");
     }
 
 }
