@@ -23,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${gaia.ldap.enabled:false}")
     private boolean ldapEnabled;
 
+    @Value("${gaia.admin-password:admin123}")
+    private String adminPassword;
+
     @Bean
     PasswordEncoder bcrypt(){
         return new BCryptPasswordEncoder();
@@ -46,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // configure default admin user
         auth
             .inMemoryAuthentication()
-                .withUser("admin").password(bcrypt().encode("admin123")).authorities("ROLE_ADMIN")
+                .withUser("admin").password(bcrypt().encode(adminPassword)).authorities("ROLE_ADMIN")
                 .and()
                 .withUser("user").password(bcrypt().encode("user123")).authorities("ROLE_USER");
 
