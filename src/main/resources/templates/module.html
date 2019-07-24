@@ -49,25 +49,29 @@
 
         <div class="block_content">
             <form v-on:submit.prevent="post">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" v-model="module.name">
+                <div class="form-row">
+                    <div class="form-group col-11">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" v-model="module.name">
+                    </div>
+                    <div class="form-group col-1">
+                        <label for="cliVersion">CLI Version</label>
+                        <b-form-select class="form-control" id="cliVersion" v-model="module.cliVersion" :options="versions"></b-form-select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
                     <input type="text" class="form-control" id="description" v-model="module.description">
                 </div>
-                <div class="form-group">
-                    <label for="cliVersion">CLI Version</label>
-                    <b-form-select class="form-control" id="cliVersion" v-model="module.cliVersion" :options="versions"></b-form-select>
-                </div>
-                <div class="form-group">
-                    <label for="gitRepositoryUrl">Git Repository URL</label>
-                    <input type="text" class="form-control" id="gitRepositoryUrl" v-model="module.gitRepositoryUrl">
-                </div>
-                <div class="form-group">
-                    <label for="directory">Git repository directory</label>
-                    <input type="text" class="form-control" id="directory" v-model="module.directory">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="gitRepositoryUrl">Git Repository URL</label>
+                        <input type="text" class="form-control" id="gitRepositoryUrl" v-model="module.gitRepositoryUrl">
+                    </div>
+                    <div class="form-group col">
+                        <label for="directory">Git repository directory</label>
+                        <input type="text" class="form-control" id="directory" v-model="module.directory">
+                    </div>
                 </div>
 
                 <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
