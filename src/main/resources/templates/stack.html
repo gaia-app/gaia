@@ -43,13 +43,13 @@
     <div class="row column_title">
         <div class="full">
             <div class="page_title">
-                <a href="#" class="btn btn-primary" @click="save"><i class="far fa-save"></i> Save</a>
-                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'" class="btn btn-primary"><i class="fas fa-rocket"></i> Run</a>
-                <a :href="'/stacks/' + stack.id + '/apply'" v-if="stack.state === 'TO_UPDATE'" class="btn btn-warning"><i class="fas fa-upload"></i> Update</a>
+                <a href="#" class="btn btn-primary" @click="saveStack"><i class="far fa-save"></i> Save</a>
+                <a href="#" class="btn btn-primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</a>
+                <a href="#" class="btn btn-warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</a>
 
-                <a :href="'/stacks/' + stack.id + '/preview'" v-if="stack.state !== 'RUNNING'" class="btn btn-info"><i class="fas fa-binoculars"></i> Preview</a>
+                <a href="#" class="btn btn-info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</a>
 
-                <a href="#" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'" class="btn btn-danger"><i class="fas fa-stop-circle"></i> Stop</a>
+                <a href="#" class="btn btn-danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</a>
             </div>
         </div>
     </div>
@@ -173,7 +173,6 @@
 <script th:inline="javascript" type="application/ecmascript">
     let stack;
 
-    console.log("loadStack");
     $.get(`/api/stacks/${stackId}`)
         .then(data => stack = data)
         .then(loadModule)
@@ -182,14 +181,12 @@
         .then(initFront);
 
     function loadModule(){
-        console.log("loadModule");
         return $.get(`/api/terraformModules/${stack.moduleId}`).then(module => {
             stack.module = module;
         });
     }
 
     function loadOuputs(){
-        console.log("loadOuputs");
         // calling terraform backend
         return $.get(`/api/state/${stackId}`)
             .then(data => {
@@ -205,7 +202,6 @@
     }
 
     function loadJobs(){
-        console.log("loadJobs");
         return $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
             .then(data => stack.jobs = data._embedded.jobs.reverse());
     }
@@ -231,6 +227,7 @@
             }
         });
 
+        let stack_backup = JSON.stringify(stack);
         new Vue({
             el: "#controls",
             data: {
@@ -238,37 +235,70 @@
             },
             template: "#stack-controls",
             methods: {
-                save: function(){
+                previewStack: function() {
+                    let current_stack = JSON.stringify(stack);
+                    if (current_stack === stack_backup) {
+                        window.location = `/stacks/${stack.id}/preview`;
+                    } else {
+                        this.confirmDialog('Preview request', 'Modifications must be saved before. Continue?')
+                            .then(value => {
+                                if (value) {
+                                    return this.saveStack().then(_ => window.location = `/stacks/${stack.id}/preview`);
+                                }
+                            })
+                    }
+                },
+                runStack: function () {
+                    let current_stack = JSON.stringify(stack);
+                    if (current_stack === stack_backup) {
+                        window.location = `/stacks/${stack.id}/apply`;
+                    } else {
+                        this.confirmDialog('Run request', 'Modifications must be saved before. Continue?')
+                            .then(value => {
+                                if (value) {
+                                    return this.saveStack().then(_ => window.location = `/stacks/${stack.id}/apply`);
+                                }
+                            })
+                    }
+                },
+                saveStack: function(){
                     const message = Messenger().post({
                         type: "info",
                         message: "Saving stack."
                     });
-                    $.ajax({
+                    return $.ajax({
                         url: `/api/stacks/${stackId}`,
                         data: JSON.stringify(stack),
                         contentType: "application/json",
                         method: "PUT",
-                        success: () => message.update({type: "success", message: "Stack saved."}),
+                        success: () => {
+                            message.update({type: "success", message: "Stack saved."});
+                            stack_backup = JSON.stringify(stack);
+                        },
                         error: () => message.update({type: "error", message: "Error saving stack."})
                     });
                 },
                 stopStack: function () {
                     // ask for confirmation
-                    this.$bvModal.msgBoxConfirm('This will completely stop the stack. Continue?', {
-                        title: 'Stop request',
+                    this.confirmDialog('Stop request', 'This will completely stop the stack. Continue?')
+                        .then(value => {
+                            if (value) {
+                                // redirect
+                                window.location = `/stacks/${stack.id}/stop`;
+                            }
+                        });
+                },
+                confirmDialog: function(title, message) {
+                    return this.$bvModal.msgBoxConfirm(message, {
+                        title: title,
                         centered: true,
                         noCloseOnBackdrop: true,
                         cancelTitle: 'No',
                         okVariant: 'danger',
                         okTitle: 'Yes',
                         returnFocus: 'body'
-                    }).then(value => {
-                        if (value) {
-                           // redirect
-                            window.location = `/stacks/${stack.id}/stop`;
-                        }
-                    })
-                },
+                    });
+                 }
             }
         });
     }
