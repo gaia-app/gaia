@@ -39,8 +39,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="block">
-                <div class="block_head">
+                <div class="block_head_flex">
                     <h2>Stack {{stack.name}}</h2>
+                    <img :src="'https://img.shields.io/badge/terraform-' + job.cliVersion + '-blue.svg?style=for-the-badge'" :alt="job.cliVersion" :title="job.cliVersion" />
                 </div>
                 <div class="block_content">
 

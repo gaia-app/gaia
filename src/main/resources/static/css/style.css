@@ -551,10 +551,15 @@ a:focus {
     margin-top: 0;
 }
 
-.block_head{
+.block_head, .block_head_flex {
     padding: 18px 25px 15px;
     width: 100%;
     border-bottom: solid #f3f3f3 2px;
+}
+
+.block_head_flex {
+    display: flex;
+    justify-content: space-between;
 }
 
 .block h2 {

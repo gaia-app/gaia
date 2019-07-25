@@ -44,31 +44,39 @@
 <template id="template">
     <div class="block">
         <div class="block_head">
-            <h2>Module {{name}}</h2>
+            <h2>Module {{module.name}}</h2>
         </div>
 
         <div class="block_content">
             <form v-on:submit.prevent="post">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" v-model="name">
+                <div class="form-row">
+                    <div class="form-group col-11">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" v-model="module.name">
+                    </div>
+                    <div class="form-group col-1">
+                        <label for="cliVersion">CLI Version</label>
+                        <b-form-select class="form-control" id="cliVersion" v-model="module.cliVersion" :options="versions"></b-form-select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="name">Description</label>
-                    <input type="text" class="form-control" id="description" v-model="description">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" v-model="module.description">
                 </div>
-                <div class="form-group">
-                    <label for="gitRepositoryUrl">Git Repository URL</label>
-                    <input type="text" class="form-control" id="gitRepositoryUrl" v-model="gitRepositoryUrl">
-                </div>
-                <div class="form-group">
-                    <label for="directory">Git repository directory</label>
-                    <input type="text" class="form-control" id="directory" v-model="directory">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="gitRepositoryUrl">Git Repository URL</label>
+                        <input type="text" class="form-control" id="gitRepositoryUrl" v-model="module.gitRepositoryUrl">
+                    </div>
+                    <div class="form-group col">
+                        <label for="directory">Git repository directory</label>
+                        <input type="text" class="form-control" id="directory" v-model="module.directory">
+                    </div>
                 </div>
 
                 <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
 
-                <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in variables">
+                <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in module.variables">
                     <div class="form-group col-md-3" >
                         <label for="var-name">Name: </label>
                         <input type="text" class="form-control" id="var-name" v-model="modVar.name">
@@ -104,17 +112,16 @@
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="helpers/messenger"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
     const moduleId = [[${module.id}]];
 
-    let moduleData;
-
     $.get(`/api/terraformModules/${moduleId}`)
+        .then(module => $.get('/api/terraform-cli/versions').then(versions => ({module, versions})))
         .then(data => {
-            moduleData = data;
             new Vue({
                 el: "#app",
                 data,
@@ -127,7 +134,7 @@
                         });
                         $.ajax({
                             url: `/api/terraformModules/${moduleId}`,
-                            data: JSON.stringify(moduleData),
+                            data: JSON.stringify(data.module),
                             contentType: "application/json",
                             method: "PUT",
                             success: () => message.update({type: "success", message: "Module saved."}),
