@@ -1,6 +1,7 @@
 package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Settings;
+import io.codeka.gaia.repository.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,12 @@ public class SettingsController {
 
     private Settings settings;
 
+    private SettingsRepository settingsRepository;
+
     @Autowired
-    public SettingsController(Settings settings) {
+    public SettingsController(Settings settings, SettingsRepository settingsRepository) {
         this.settings = settings;
+        this.settingsRepository = settingsRepository;
     }
 
     @GetMapping("/settings")
@@ -31,10 +35,12 @@ public class SettingsController {
     }
 
     @PutMapping("/settings")
-    public void saveModule(@RequestBody Settings settings){
+    public void saveSettings(@RequestBody Settings settings){
         // update global settings bean
         this.settings.setExternalUrl( settings.getExternalUrl() );
         this.settings.setEnvVars(settings.getEnvVars());
+        // saving the data
+        this.settingsRepository.save();
     }
 
 }

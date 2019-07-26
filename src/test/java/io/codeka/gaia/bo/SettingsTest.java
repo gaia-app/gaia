@@ -4,8 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = Settings.class)
@@ -39,6 +43,32 @@ class SettingsTest {
     void envVars_shouldBeConfigurableViaProperty(){
         assertEquals("test", settings.getEnvVars().get(0).name);
         assertEquals("value", settings.getEnvVars().get(0).value);
+    }
+
+    @Test
+    @DirtiesContext // this test changes the settings objet
+    void settings_shouldBeMergedWithSavedSettings(){
+        var savedSettings = new Settings();
+        savedSettings.setExternalUrl("https://gaia.io");
+
+        var testVar = new Settings.EnvVar();
+        testVar.setName("name");
+        testVar.setValue("value");
+
+        var otherTestVar = new Settings.EnvVar();
+        otherTestVar.setName("anotherName");
+        otherTestVar.setValue("anotherValue");
+
+        var existingEnvVar = this.settings.getEnvVars().get(0);
+
+        savedSettings.setEnvVars(List.of(testVar, otherTestVar));
+
+        settings.merge(savedSettings);
+
+        assertEquals("https://gaia.io", settings.getExternalUrl());
+        assertEquals("unix:///var/run/docker.sock", settings.getDockerDaemonUrl());
+        assertThat(settings.getEnvVars()).hasSize(3)
+                .containsExactlyInAnyOrder(existingEnvVar, testVar, otherTestVar);
     }
 
 }
