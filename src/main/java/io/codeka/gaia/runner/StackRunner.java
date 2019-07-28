@@ -16,6 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -55,9 +56,13 @@ public class StackRunner {
 
     private int runContainerForJob(Job job, String script) {
         try{
+            var env = new ArrayList<String>();
+            env.add("TF_IN_AUTOMATION=true");
+            env.addAll(settings.env());
+
             // FIXME This is certainly no thread safe !
             var containerConfig = containerConfigBuilder
-                    .env(settings.env())
+                    .env(env)
                     .image("hashicorp/terraform:" + job.getCliVersion())
                     .build();
 
