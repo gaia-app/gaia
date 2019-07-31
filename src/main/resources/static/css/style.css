@@ -3461,13 +3461,12 @@ table.projects tr td:first-child {
     28. Custom style for stack logs
 -------------------------------------------------------------------*/
 
-code[class*="language-"],
-pre[class*="language-"] {
+pre.background_black, pre.background_black code {
     color: white;
     background: black;
 }
 
-code[class*="language-"] b {
+pre.background_black code b {
     font-weight: bold;
 }
 
