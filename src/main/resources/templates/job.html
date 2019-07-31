@@ -41,7 +41,7 @@
             <div class="block">
                 <div class="block_head_flex">
                     <h2>Stack {{stack.name}}</h2>
-                    <img :src="'https://img.shields.io/badge/terraform-' + job.cliVersion + '-blue.svg?style=for-the-badge'" :alt="job.cliVersion" :title="job.cliVersion" />
+                    <cli-badge :cli-version="job.cliVersion" :badge-style="'for-the-badge'"></cli-badge>
                 </div>
                 <div class="block_content">
 
@@ -71,6 +71,8 @@
 <script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+
+<div th:replace="vue_templates/cli-badge"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 
