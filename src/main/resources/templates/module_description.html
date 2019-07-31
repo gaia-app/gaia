@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - Module description</title>
+
+</head>
+<body class="dashboard dashboard_2">
+<div class="full_container">
+    <div class="inner_container">
+
+        <div th:replace="~{layout/sidebar}"></div>
+
+        <!-- right content -->
+        <div id="content">
+
+            <div th:replace="~{layout/topbar}"></div>
+
+            <div class="midde_cont">
+                <div class="container-fluid">
+                    <div class="row column_title">
+                        <div class="col-md-12">
+                            <div class="page_title">
+                                <h2> Module </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="white_shd full">
+
+                                <div id="app"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<template id="template">
+    <div class="block module_description">
+        <section class="block_head row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img :src="'/images/' + mainProvider + '.png'" :alt="mainProvider"/>
+                    </div>
+                    <div class="col-md-10">
+                        <h1>
+                            <span>{{name}}</span>
+                            <cli-badge :cli-version="cliVersion" :badge-style="'for-the-badge'"></cli-badge>
+                        </h1>
+                        <div th:text="${module.id}" class="provider"></div>
+                        <div class="desc">{{description}}</div>
+                        <hr>
+                        <div class="metadata">
+                            <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy}}</a></p>
+                            <p>Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy}}</a></p>
+                            <p>Module managed by <a href="#">{{owner}}</a></p>
+                            <p>Total stacks: <a href="#">{{nbStacks}}</a></p>
+                            <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <nav class="navbar navbar-expand">
+                <div class="navbar-nav">
+                    <a class="nav-item active" href="#"><i class="fab fa-markdown"></i> Readme</a>
+                </div>
+            </nav>
+        </section>
+        <div class="block_content">
+            <readme :module-id="id"></readme>
+        </div>
+    </div>
+</template>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/webjars/marked/0.6.2/marked.min.js"></script>
+<script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
+
+<div th:replace="vue_templates/cli-badge"></div>
+<div th:replace="vue_templates/readme"></div>
+
+<div th:replace="helpers/messenger"></div>
+
+<script th:inline="javascript" type="application/ecmascript">
+    const moduleId = [[${module.id}]];
+
+    $.get(`/api/terraformModules/${moduleId}`)
+        .then(data => {
+            data.id = moduleId;
+            // START FIXME: link with real data once implemented in the model
+            data.mainProvider = 'aws';
+            data.createdAt = moment().subtract(10, 'days');
+            data.createdBy = 'Richard Bullit';
+            data.updatedAt = moment();
+            data.updatedBy = 'Douglas Riper';
+            data.owner = 'Ze Team';
+            data.nbStacks = 10;
+            // END FIXME
+            new Vue({
+                el: "#app",
+                data,
+                template: "#template",
+            });
+        });
+
+    Vue.filter('dateTime', function (value) {
+        if (!value || !moment(value).isValid()) return '';
+        return moment(value).format('LLL');
+    })
+</script>
+
+<script type="application/ecmascript">
+    $(document).ready(function () {
+        /*-- sidebar js --*/
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>
