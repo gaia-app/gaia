@@ -25,7 +25,7 @@ public class TerraformCLIRepository {
     private String terraformReleasesVersionMin;
     private RestTemplate restTemplate;
 
-    private class CLIVersion {
+    private static class CLIVersion {
         private short major;
         private short minor;
         private short patch;
@@ -50,8 +50,6 @@ public class TerraformCLIRepository {
     /**
      * Returns acceptable Terraform CLI versions by scanning HashiCorp releases url for terraform.
      * Versions lower than the one in parameter and non final versions are ignored.
-     *
-     * @return
      */
     public List<String> listCLIVersion() {
         var response = restTemplate.exchange(
@@ -103,9 +101,9 @@ public class TerraformCLIRepository {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-        var result = new CLIVersion(Short.valueOf(matcher.group(1)),
-                Short.valueOf(matcher.group(2)),
-                Short.valueOf(matcher.group(3)));
+        var result = new CLIVersion(Short.parseShort(matcher.group(1)),
+                Short.parseShort(matcher.group(2)),
+                Short.parseShort(matcher.group(3)));
         return Optional.of(result);
     }
 
