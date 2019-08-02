@@ -36,19 +36,17 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="col-md-12">
-                            <div class="page_title">
-                                <h2>  </h2>
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <h2>  </h2>
                         </div>
                     </div>
-                    <div class="row column1">
+                </div>
+                <div class="row column1">
 
 
-                    </div>
                 </div>
             </div>
 

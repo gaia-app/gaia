@@ -16,30 +16,25 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="col-md-12">
-                            <div class="page_title">
-                                <h2>Modules</h2>
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
                         </div>
                     </div>
-                    <div class="row column1">
-
-                        <div class="card-columns">
-
-                            <div th:each="module: ${modules}" class="card" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title" th:text="${module.name}">Card title</h5>
-                                    <img sec:authorize="hasRole('ADMIN')" th:attr="src=@{https://img.shields.io/badge/terraform-{version}-blue.svg?style=flat-square(version=${module.cliVersion})},alt=${module.cliVersion},title=${module.cliVersion}" style="margin-bottom: .75rem" />
-                                    <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" sec:authorize="hasRole('ADMIN')" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
-                                    <a href="#" th:href="@{/modules/{moduleId}/description(moduleId=${module.id})}" data-toggle="tooltip" title="Detail of this module" class="btn btn-primary"><i class="fas fa-info"></i></a>
-                                    <a href="#" th:href="@{/modules/{moduleId}/run(moduleId=${module.id})}" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
-                                </div>
+                </div>
+                <div class="row column1">
+                    <div class="card-columns">
+                        <div th:each="module: ${modules}" class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${module.name}">Card title</h5>
+                                <img sec:authorize="hasRole('ADMIN')" th:attr="src=@{https://img.shields.io/badge/terraform-{version}-blue.svg?style=flat-square(version=${module.cliVersion})},alt=${module.cliVersion},title=${module.cliVersion}" style="margin-bottom: .75rem" />
+                                <p class="card-text" th:text="${module.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" sec:authorize="hasRole('ADMIN')" th:href="@{/modules/{moduleId}(moduleId=${module.id})}" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
+                                <a href="#" th:href="@{/modules/{moduleId}/description(moduleId=${module.id})}" data-toggle="tooltip" title="Detail of this module" class="btn btn-primary"><i class="fas fa-info"></i></a>
+                                <a href="#" th:href="@{/modules/{moduleId}/run(moduleId=${module.id})}" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -48,10 +43,20 @@
         </div>
     </div>
 </div>
+
+<template id="template-navigation">
+    <breadcrumb :page="page"></breadcrumb>
+</template>
+
 <!-- jQuery & bootstrap-->
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
+
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <script type="application/ecmascript">
     $(document).ready(function () {
@@ -62,6 +67,12 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         });
+    });
+
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'modules' }),
+        template: "#template-navigation",
     });
 </script>
 

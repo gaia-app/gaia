@@ -16,14 +16,20 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-
-                    <div id="controls"></div>
-
-                    <div id="app"></div>
-
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
+                        </div>
+                    </div>
                 </div>
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div id="controls"></div>
+                    </div>
+                </div>
+                <div id="app"></div>
             </div>
 
         </div>
@@ -38,20 +44,17 @@
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/stack-vars"></div>
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <template id="stack-controls">
-    <div class="row column_title">
-        <div class="full">
-            <div class="page_title">
-                <a href="#" class="btn btn-primary" @click="saveStack"><i class="far fa-save"></i> Save</a>
-                <a href="#" class="btn btn-primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</a>
-                <a href="#" class="btn btn-warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</a>
+    <div class="page_controls">
+        <a href="#" class="btn btn-primary" @click="saveStack"><i class="far fa-save"></i> Save</a>
+        <a href="#" class="btn btn-primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</a>
+        <a href="#" class="btn btn-warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</a>
 
-                <a href="#" class="btn btn-info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</a>
+        <a href="#" class="btn btn-info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</a>
 
-                <a href="#" class="btn btn-danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</a>
-            </div>
-        </div>
+        <a href="#" class="btn btn-danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</a>
     </div>
 </template>
 
@@ -82,7 +85,6 @@
 
 <template id="template">
     <div>
-
         <div class="row margin_bottom_30">
             <div class="col-md-6">
                 <div class="block">
@@ -147,6 +149,10 @@
             </li>
         </ul>
     </div>
+</template>
+
+<template id="template-navigation">
+    <breadcrumb :page="page"></breadcrumb>
 </template>
 
 <script th:inline="javascript" type="application/ecmascript">
@@ -302,6 +308,13 @@
             }
         });
     }
+
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'stack' }),
+        template: "#template-navigation",
+    });
+
 </script>
 
 <script type="application/ecmascript">

@@ -16,22 +16,18 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="col-md-12">
-                            <div class="page_title">
-                                <h2> Module </h2>
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="white_shd full">
-
-                                <div id="app"></div>
-
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="white_shd full">
+                            <div id="app"></div>
                         </div>
                     </div>
                 </div>
@@ -107,6 +103,10 @@
     </div>
 </template>
 
+<template id="template-navigation">
+    <breadcrumb :page="page"></breadcrumb>
+</template>
+
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -115,6 +115,7 @@
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="helpers/messenger"></div>
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
     const moduleId = [[${module.id}]];
@@ -151,6 +152,12 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'module' }),
+        template: "#template-navigation",
+    });
 </script>
 
 <script type="application/ecmascript">

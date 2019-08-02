@@ -37,6 +37,7 @@
     28. Custom style for stack logs
     29. Custom style for wizard
     30. Custom style for module description
+    31. Custom style for navigation
    
 -------------------------------------------------------------------*/
 
@@ -926,15 +927,20 @@ a[data-toggle="collapse"] {
     background: #f8f8f8;
 }
 
-.page_title {
+.page_title, .page_controls {
     background: #fff;
     margin-top: 0;
     margin-bottom: 30px;
-    padding: 25px 35px 22px 38px;
+    padding: 25px 35px;
     box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
     margin-left: -40px;
     margin-right: -40px;
     position: relative;
+}
+
+.page_controls {
+    margin-top: -30px;
+    padding: 10px 35px;
 }
 
 .page_title h2 {
@@ -3691,4 +3697,18 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
     height: 2px;
     width: 100%;
     background-color: #5c4ee5;
+}
+
+/*------------------------------------------------------------------
+    31. Custom style for navigation
+-------------------------------------------------------------------*/
+
+.navigation .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation .breadcrumb .breadcrumb-item.active {
+    color: #0971b8;
 }
