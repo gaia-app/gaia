@@ -16,19 +16,15 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="col-md-12">
-                            <div class="page_title">
-                                <h2>Stacks</h2>
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
                         </div>
                     </div>
-
-                    <div class="row column1" id="placeholder"></div>
-
                 </div>
+                <div class="row column1" id="placeholder"></div>
             </div>
 
         </div>
@@ -54,12 +50,19 @@
     </div>
 </template>
 
+<template id="template-navigation">
+    <breadcrumb :page="page"></breadcrumb>
+</template>
+
 <!-- jQuery & bootstrap-->
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
+
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <script type="application/ecmascript">
     let stacks;
@@ -86,6 +89,12 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         });
+    });
+
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'stacks' }),
+        template: "#template-navigation",
     });
 </script>
 

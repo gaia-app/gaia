@@ -16,20 +16,15 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-
-                    <div class="row column_title">
-                        <div class="col-md-12">
-                            <div class="page_title">
-                                <h2>New Stack</h2>
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
                         </div>
                     </div>
-
-                    <div id="app"></div>
-
                 </div>
+                <div id="app"></div>
             </div>
 
         </div>
@@ -44,8 +39,10 @@
 <script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/stack-vars"></div>
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <template id="template">
     <div>
@@ -134,6 +131,10 @@
         </div>
 
     </div>
+</template>
+
+<template id="template-navigation">
+    <breadcrumb :page="page"></breadcrumb>
 </template>
 
 <script th:inline="javascript" type="application/ecmascript">
@@ -235,6 +236,14 @@ function run(){
         window.location = `/stacks/${stack.id}/apply`;
     })
 }
+</script>
+
+<script type="application/ecmascript">
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'new_stack' }),
+        template: "#template-navigation",
+    });
 </script>
 
 <script type="application/ecmascript">

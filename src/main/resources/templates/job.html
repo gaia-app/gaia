@@ -16,19 +16,15 @@
 
             <div th:replace="~{layout/topbar}"></div>
 
-            <div class="midde_cont">
-                <div class="container-fluid">
-                    <div class="row column_title">
-                        <div class="full">
-                            <div class="page_title">
-
-                            </div>
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <div id="navigation"></div>
                         </div>
                     </div>
-
-                    <div id="app"></div>
-
                 </div>
+                <div id="app"></div>
             </div>
 
         </div>
@@ -64,6 +60,10 @@
     </div>
 </template>
 
+<template id="template-navigation">
+    <breadcrumb :page="page" :stack-id="stackId"></breadcrumb>
+</template>
+
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -71,8 +71,10 @@
 <script src="/webjars/ace-builds/1.4.4/src-min/mode-hjson.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/cli-badge"></div>
+<div th:replace="vue_templates/breadcrumb"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 
@@ -130,6 +132,14 @@
             template: "#template"
         });
     }
+</script>
+
+<script th:inline="javascript" type="application/ecmascript">
+    new Vue({
+        el: "#navigation",
+        data: () => ({ page: 'job', stackId }),
+        template: "#template-navigation",
+    });
 </script>
 
 <script type="application/ecmascript">

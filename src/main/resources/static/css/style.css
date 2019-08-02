@@ -927,15 +927,20 @@ a[data-toggle="collapse"] {
     background: #f8f8f8;
 }
 
-.page_title {
+.page_title, .page_controls {
     background: #fff;
     margin-top: 0;
     margin-bottom: 30px;
-    padding: 25px 35px 22px 38px;
+    padding: 25px 35px;
     box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
     margin-left: -40px;
     margin-right: -40px;
     position: relative;
+}
+
+.page_controls {
+    margin-top: -30px;
+    padding: 10px 35px;
 }
 
 .page_title h2 {
