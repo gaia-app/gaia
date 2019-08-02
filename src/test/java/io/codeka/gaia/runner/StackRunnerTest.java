@@ -8,14 +8,18 @@ import com.spotify.docker.client.messages.ContainerExit;
 import io.codeka.gaia.bo.*;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.OutputStream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -44,12 +48,25 @@ class StackRunnerTest {
     @Mock
     private JobRepository jobRepository;
 
+    private Job job;
+
+    private TerraformModule module;
+
+    private Stack stack;
+
+    @InjectMocks
+    private StackRunner stackRunner;
+
     @BeforeEach
-    void containerCreateMock() throws Exception {
+    void setUp() throws Exception {
         // simulating a container with id 12
         var containerCreation = mock(ContainerCreation.class);
         when(containerCreation.id()).thenReturn("12");
         when(dockerClient.createContainer(any())).thenReturn(containerCreation);
+
+        stack = new Stack();
+        job = new Job();
+        module = new TerraformModule();
     }
 
     void httpHijackWorkaroundMock() throws Exception {
@@ -67,11 +84,7 @@ class StackRunnerTest {
 
     @Test
     void job_shouldBeSavedToDatabaseAfterRun() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
-
+        // given
         httpHijackWorkaroundMock();
         containerExitMock(0L);
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
@@ -85,11 +98,7 @@ class StackRunnerTest {
 
     @Test
     void successfullJob_shouldSetTheStackStateToRunning() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
-
+        // given
         httpHijackWorkaroundMock();
         containerExitMock(0L);
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
@@ -104,11 +113,8 @@ class StackRunnerTest {
 
     @Test
     void plan_shouldUpdateTheStackState_whenThereIsADiffForRunningStacks() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
+        // given
         stack.setState(StackState.RUNNING);
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(2L);
@@ -126,11 +132,8 @@ class StackRunnerTest {
 
     @Test
     void plan_shouldNotUpdateTheStackState_whenThereIsADiffForNewStacks() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
+        // given
         stack.setState(StackState.NEW);
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(2L);
@@ -148,11 +151,8 @@ class StackRunnerTest {
 
     @Test
     void stop_shouldUpdateTheStackState_whenSuccessful() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
+        // given
         stack.setState(StackState.RUNNING);
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(0L);
@@ -170,9 +170,7 @@ class StackRunnerTest {
 
     @Test
     void jobShouldFail_whenFailingToStartContainer() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
+        // given
         stack.setState(StackState.RUNNING);
 
         var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
@@ -190,11 +188,7 @@ class StackRunnerTest {
 
     @Test
     void plan_shouldStartPreviewJob() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
-
+        // given
         httpHijackWorkaroundMock();
         containerExitMock(0L);
         when(stackCommandBuilder.buildPlanScript(stack, module)).thenReturn("");
@@ -208,11 +202,7 @@ class StackRunnerTest {
 
     @Test
     void apply_shouldStartRunob() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
-
+        // given
         httpHijackWorkaroundMock();
         containerExitMock(0L);
         when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
@@ -226,11 +216,7 @@ class StackRunnerTest {
 
     @Test
     void stop_shouldStartStopJob() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
-
+        // given
         httpHijackWorkaroundMock();
         containerExitMock(0L);
         when(stackCommandBuilder.buildDestroyScript(stack, module)).thenReturn("");
@@ -244,11 +230,8 @@ class StackRunnerTest {
 
     @Test
     void plan_shouldConsiderModuleCLIVersion() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
+        // given
         module.setCliVersion("0.12.0");
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(0L);
@@ -265,11 +248,8 @@ class StackRunnerTest {
 
     @Test
     void apply_shouldConsiderModuleCLIVersion() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
+        // given
         module.setCliVersion("0.12.0");
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(0L);
@@ -286,11 +266,8 @@ class StackRunnerTest {
 
     @Test
     void stop_shouldConsiderModuleCLIVersion() throws Exception {
-        var job = new Job();
-        var module = new TerraformModule();
+        // given
         module.setCliVersion("0.12.0");
-        var stack = new Stack();
-        var stackRunner = new StackRunner(dockerClient, builder, settings, stackCommandBuilder, stackRepository, httpHijackWorkaround, jobRepository);
 
         httpHijackWorkaroundMock();
         containerExitMock(0L);
@@ -303,6 +280,22 @@ class StackRunnerTest {
         assertEquals("0.12.0", job.getCliVersion());
         verify(builder).image("hashicorp/terraform:0.12.0");
         verify(dockerClient).pull("hashicorp/terraform:0.12.0");
+    }
+
+    @Test
+    void jobShouldBeRunned_with_TF_IN_AUTOMATION_envVar() throws Exception {
+        // given
+        httpHijackWorkaroundMock();
+        containerExitMock(0L);
+        when(stackCommandBuilder.buildApplyScript(stack, module)).thenReturn("");
+
+        when(settings.env()).thenReturn(List.of("SOME_VAR=SOME_VALUE"));
+
+        // when
+        stackRunner.apply(job, module, stack);
+
+        // then
+        verify(builder).env(List.of("TF_IN_AUTOMATION=true", "SOME_VAR=SOME_VALUE"));
     }
 
 }
