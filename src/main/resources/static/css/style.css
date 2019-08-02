@@ -3469,15 +3469,6 @@ table.projects tr td:first-child {
     28. Custom style for stack logs
 -------------------------------------------------------------------*/
 
-pre.background_black, pre.background_black code {
-    color: white;
-    background: black;
-}
-
-pre.background_black code b {
-    font-weight: bold;
-}
-
 .form-check{
     margin-bottom: 0.5rem;
 }
