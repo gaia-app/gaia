@@ -50,11 +50,11 @@
         <div class="block_content">
             <form v-on:submit.prevent="post">
                 <div class="form-row">
-                    <div class="form-group col-11">
+                    <div class="form-group col-md-11">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" v-model="module.name">
                     </div>
-                    <div class="form-group col-1">
+                    <div class="form-group col-md-1">
                         <label for="cliVersion">CLI Version</label>
                         <b-form-select class="form-control" id="cliVersion" v-model="module.cliVersion" :options="versions"></b-form-select>
                     </div>
