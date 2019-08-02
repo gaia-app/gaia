@@ -37,6 +37,7 @@
     28. Custom style for stack logs
     29. Custom style for wizard
     30. Custom style for module description
+    31. Custom style for navigation
    
 -------------------------------------------------------------------*/
 
@@ -3691,4 +3692,18 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
     height: 2px;
     width: 100%;
     background-color: #5c4ee5;
+}
+
+/*------------------------------------------------------------------
+    31. Custom style for navigation
+-------------------------------------------------------------------*/
+
+.navigation .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation .breadcrumb .breadcrumb-item.active {
+    color: #0971b8;
 }
