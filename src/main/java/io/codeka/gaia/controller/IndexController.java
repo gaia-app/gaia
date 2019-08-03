@@ -3,6 +3,8 @@ package io.codeka.gaia.controller;
 import io.codeka.gaia.bo.StackState;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.bo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +22,17 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String index(Model model){
-        model.addAttribute("moduleCount", this.moduleRepository.count());
-
-        model.addAttribute("runningStackCount", stackRepository.countStacksByState(StackState.RUNNING));
-        model.addAttribute("toUpdateStackCount", stackRepository.countStacksByState(StackState.TO_UPDATE));
+    public String index(Model model, User user, Team userTeam){
+        if(user.isAdmin()){
+            model.addAttribute("moduleCount", this.moduleRepository.count());
+            model.addAttribute("runningStackCount", this.stackRepository.countStacksByState(StackState.RUNNING));
+            model.addAttribute("toUpdateStackCount", this.stackRepository.countStacksByState(StackState.TO_UPDATE));
+        }
+        else{
+            model.addAttribute("moduleCount", this.moduleRepository.countByAuthorizedTeamsContaining(userTeam));
+            model.addAttribute("runningStackCount", stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, userTeam));
+            model.addAttribute("toUpdateStackCount", stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, userTeam));
+        }
 
         return "index";
     }

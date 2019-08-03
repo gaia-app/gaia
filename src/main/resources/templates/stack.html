@@ -191,7 +191,7 @@
         .then(initFront);
 
     function loadModule(){
-        return $.get(`/api/terraformModules/${stack.moduleId}`).then(module => {
+        return $.get(`/api/modules/${stack.moduleId}`).then(module => {
             stack.module = module;
         });
     }
@@ -212,8 +212,8 @@
     }
 
     function loadJobs(){
-        return $.get(`/api/jobs/search/findAllByStackId?stackId=${stackId}`)
-            .then(data => stack.jobs = data._embedded.jobs.reverse());
+        return $.get(`/api/jobs?stackId=${stackId}`)
+            .then(data => stack.jobs = data.reverse());
     }
 
     function initFront(){

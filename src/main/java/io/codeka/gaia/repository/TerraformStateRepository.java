@@ -2,8 +2,8 @@ package io.codeka.gaia.repository;
 
 import io.codeka.gaia.bo.TerraformState;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(exported = false)
+@Repository
 public interface TerraformStateRepository extends MongoRepository<TerraformState, String> {
 }

@@ -3,6 +3,8 @@ package io.codeka.gaia.controller;
 import io.codeka.gaia.bo.TerraformModule;
 import io.codeka.gaia.repository.TerraformModuleGitRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,9 +31,16 @@ class TerraformModuleControllerTest {
     @Mock
     private TerraformModuleGitRepository moduleGitRepository;
 
+    private User admin = new User("admin");
+
+    private User standardUser = new User("Odile Deray");
+
+    private Team userTeam = new Team("userTeam");
+
     @BeforeEach
     void setup() {
         controller = new TerraformModuleController(moduleRepository, moduleGitRepository);
+        standardUser.setTeam(userTeam);
     }
 
     @Test
@@ -92,6 +101,92 @@ class TerraformModuleControllerTest {
         // then
         verify(moduleRepository).findById("TEST");
         verifyZeroInteractions(moduleGitRepository);
+    }
+
+    @Test
+    void modulesList_shouldShowAllModules_forAdminUser(){
+        // given
+        var model = mock(Model.class);
+
+        // when
+        controller.modulesList(model, admin);
+
+        // then
+        verify(moduleRepository).findAll();
+        verify(model).addAttribute(eq("modules"), any());
+    }
+
+    @Test
+    void modulesList_shouldShowUserTeamModules_forStandardUser(){
+        // given
+        var model = mock(Model.class);
+
+        // when
+        controller.modulesList(model, standardUser);
+
+        // then
+        verify(moduleRepository).findAllByAuthorizedTeamsContaining(userTeam);
+        verify(model).addAttribute(eq("modules"), any());
+    }
+
+    @Test
+    void module_shouldShowModule_forAuthorizedUser(){
+        // given
+        var model = mock(Model.class);
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(standardUser)).thenReturn(true);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        controller.module("12", model, standardUser);
+
+        // then
+        verify(moduleRepository).findById("12");
+        verify(model).addAttribute("module", module);
+    }
+
+    @Test
+    void module_shouldThrowException_forUnauthorizedUser(){
+        // given
+        var model = mock(Model.class);
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(standardUser)).thenReturn(false);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        assertThrows(ModuleForbiddenException.class, () -> controller.module("12", model, standardUser));
+
+        // then
+        verify(moduleRepository).findById("12");
+        verifyZeroInteractions(model);
+    }
+
+    @Test
+    void module_shouldThrowException_forUnexistingModule(){
+        // given
+        var model = mock(Model.class);
+        when(moduleRepository.findById("12")).thenReturn(Optional.empty());
+
+        // when
+        assertThrows(ModuleNotFoundException.class, () -> controller.module("12", model, standardUser));
+
+        // then
+        verify(moduleRepository).findById("12");
+        verifyZeroInteractions(model);
+    }
+
+
+    @Test
+    void saveModule_shouldSaveModule(){
+        // given
+        var module = mock(TerraformModule.class);
+        var model = mock(Model.class);
+
+        // when
+        controller.saveModule(module, model, admin);
+
+        // then
+        verify(moduleRepository).save(module);
     }
 
 }

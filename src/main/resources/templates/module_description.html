@@ -99,7 +99,7 @@
 <script th:inline="javascript" type="application/ecmascript">
     const moduleId = [[${module.id}]];
 
-    $.get(`/api/terraformModules/${moduleId}`)
+    $.get(`/api/modules/${moduleId}`)
         .then(data => {
             data.id = moduleId;
             // START FIXME: link with real data once implemented in the model

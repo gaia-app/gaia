@@ -68,7 +68,7 @@
     let stacks;
     $.get("/api/stacks")
         .then(data => {
-            stacks = data._embedded.stacks;
+            stacks = data;
 
            new Vue({
                el: "#placeholder",

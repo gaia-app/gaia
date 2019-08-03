@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataMongoTest
 @Testcontainers
 @DirtiesContext
-class JobRepositoryTest {
+class JobRepositoryIT {
 
     @Autowired
     JobRepository jobRepository;
