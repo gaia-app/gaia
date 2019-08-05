@@ -53,7 +53,7 @@
                         Your deployment has failed ! <i class="far fa-frown"></i>
                     </div>
 
-                    <pre class="background_black"><code v-html="job.logs"></code></pre>
+                    <console :id="'job-logs'" :css-style="'max-height: 500px'" :logs="job.logs"></console>
                 </div>
             </div>
         </div>
@@ -73,16 +73,17 @@
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
+<div th:replace="helpers/messenger"></div>
+
 <div th:replace="vue_templates/cli-badge"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/console"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
     const jobId = [[${jobId}]];
-
-    let logs = "";
 
     let stack;
     let job;
@@ -115,10 +116,6 @@
             .then(data => {
                 job = data;
                 vueData.job = job;
-
-                // applying html colors instead of ANSI streams
-                job.logs= new Filter().toHtml(job.logs)
-
                 if(job.status !== "RUNNING"){
                     clearInterval(interval);
                 }
@@ -126,7 +123,7 @@
     }
 
     function initFront(){
-        const vue = new Vue({
+        new Vue({
             el: "#app",
             data: vueData,
             template: "#template"
