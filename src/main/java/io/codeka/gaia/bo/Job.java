@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -17,15 +17,11 @@ public class Job {
 
     private String stackId;
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+    private LocalDateTime startDateTime;
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+    private LocalDateTime endDateTime;
 
-    private LocalDateTime dateTime;
+    private Long executionTime;
 
     @Transient
     private StringWriter stringWriter = new StringWriter();
@@ -65,18 +61,23 @@ public class Job {
     public void start(JobType jobType) {
         this.jobStatus = JobStatus.RUNNING;
         this.jobType = jobType;
+        this.startDateTime = LocalDateTime.now();
     }
 
-    public void end(){
+    public void end() {
         this.jobStatus = JobStatus.FINISHED;
         // getting final logs
         this.logs = this.stringWriter.toString();
+        this.endDateTime = LocalDateTime.now();
+        this.executionTime = Duration.between(startDateTime, endDateTime).toMillis();
     }
 
     public void fail() {
         this.jobStatus = JobStatus.FAILED;
         // getting final logs
         this.logs = this.stringWriter.toString();
+        this.endDateTime = LocalDateTime.now();
+        this.executionTime = Duration.between(startDateTime, endDateTime).toMillis();
     }
 
     public String getStackId() {
@@ -99,4 +100,27 @@ public class Job {
         this.cliVersion = cliVersion;
     }
 
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public Long getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Long executionTime) {
+        this.executionTime = executionTime;
+    }
 }
