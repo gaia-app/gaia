@@ -110,6 +110,7 @@ public class StackRunner {
         this.jobs.put(job.getId(), job);
         job.setCliVersion(module.getCliVersion());
         job.start(JobType.RUN);
+        jobRepository.save(job);
 
         var applyScript = stackCommandBuilder.buildApplyScript(stack, module);
 
@@ -143,6 +144,7 @@ public class StackRunner {
         this.jobs.put(job.getId(), job);
         job.setCliVersion(module.getCliVersion());
         job.start(JobType.PREVIEW);
+        jobRepository.save(job);
 
         var planScript = stackCommandBuilder.buildPlanScript(stack, module);
 
@@ -191,6 +193,7 @@ public class StackRunner {
         this.jobs.put(job.getId(), job);
         job.setCliVersion(module.getCliVersion());
         job.start(JobType.STOP);
+        jobRepository.save(job);
 
         var destroyScript = stackCommandBuilder.buildDestroyScript(stack, module);
 
