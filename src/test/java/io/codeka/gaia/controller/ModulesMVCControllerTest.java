@@ -16,14 +16,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TerraformModuleControllerTest {
+class ModulesMVCControllerTest {
 
-    private TerraformModuleController controller;
+    private ModulesMVCController controller;
 
     @Mock
     private TerraformModuleRepository moduleRepository;
@@ -39,7 +40,7 @@ class TerraformModuleControllerTest {
 
     @BeforeEach
     void setup() {
-        controller = new TerraformModuleController(moduleRepository, moduleGitRepository);
+        controller = new ModulesMVCController(moduleRepository, moduleGitRepository);
         standardUser.setTeam(userTeam);
     }
 
@@ -104,29 +105,15 @@ class TerraformModuleControllerTest {
     }
 
     @Test
-    void modulesList_shouldShowAllModules_forAdminUser(){
+    void modulesList_shouldShowModulesView(){
         // given
         var model = mock(Model.class);
 
         // when
-        controller.modulesList(model, admin);
+        var res = controller.modulesList();
 
         // then
-        verify(moduleRepository).findAll();
-        verify(model).addAttribute(eq("modules"), any());
-    }
-
-    @Test
-    void modulesList_shouldShowUserTeamModules_forStandardUser(){
-        // given
-        var model = mock(Model.class);
-
-        // when
-        controller.modulesList(model, standardUser);
-
-        // then
-        verify(moduleRepository).findAllByAuthorizedTeamsContaining(userTeam);
-        verify(model).addAttribute(eq("modules"), any());
+        assertEquals("modules", res);
     }
 
     @Test
