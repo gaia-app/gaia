@@ -93,7 +93,7 @@ class StackRunnerTest {
         stackRunner.apply(job, module, stack);
 
         // then
-        verify(jobRepository).save(job);
+        verify(jobRepository, times(2)).save(job);
     }
 
     @Test
@@ -124,7 +124,7 @@ class StackRunnerTest {
         stackRunner.plan(job, module, stack);
 
         // then
-        verify(jobRepository).save(job);
+        verify(jobRepository, times(2)).save(job);
 
         assertEquals(StackState.TO_UPDATE, stack.getState());
         verify(stackRepository).save(stack);
@@ -143,7 +143,7 @@ class StackRunnerTest {
         stackRunner.plan(job, module, stack);
 
         // then
-        verify(jobRepository).save(job);
+        verify(jobRepository, times(2)).save(job);
 
         assertEquals(StackState.NEW, stack.getState());
         verifyZeroInteractions(stackRepository);
@@ -162,7 +162,7 @@ class StackRunnerTest {
         stackRunner.stop(job, module, stack);
 
         // then
-        verify(jobRepository).save(job);
+        verify(jobRepository, times(2)).save(job);
 
         assertEquals(StackState.STOPPED, stack.getState());
         verify(stackRepository).save(stack);
@@ -183,7 +183,7 @@ class StackRunnerTest {
 
         // then
         assertEquals(JobStatus.FAILED, job.getStatus());
-        verify(jobRepository).save(job);
+        verify(jobRepository, times(2)).save(job);
     }
 
     @Test

@@ -39,6 +39,7 @@
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
@@ -144,7 +145,10 @@
                 <div class="job_detail">
                     <div><span class="job_attr_id">Type</span><span class="job_attr_value" :class="job.type">{{job.type}}</span></div>
                     <div><span class="job_attr_id">Status</span><span class="job_attr_value" :class="job.status">{{job.status}}</span></div>
-                    <div><span class="job_attr_id">Date</span><span class="job_attr_value">{{job.dateTime | dateTime}}</span></div>
+                    <div>
+                        <span class="job_attr_id">Date</span><span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
+                        ({{job.executionTime}}&nbsp;ms)
+                    </div>
                 </div>
             </li>
         </ul>
@@ -169,8 +173,8 @@
     });
 
     Vue.filter('dateTime', function (value) {
-        if (!value) return '';
-        return new Date(value).toLocaleString();
+        if (!value || !moment(value).isValid()) return '';
+        return moment(value).format('L LTS');
     })
 </script>
 

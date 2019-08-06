@@ -1,7 +1,6 @@
 package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
-
 
 @Controller
 public class StackController {
@@ -69,7 +66,6 @@ public class StackController {
         var job = new Job();
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
-        job.setDateTime(LocalDateTime.now());
 
         model.addAttribute("jobId", job.getId());
 
@@ -95,7 +91,6 @@ public class StackController {
         var job = new Job();
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
-        job.setDateTime(LocalDateTime.now());
 
         model.addAttribute("jobId", job.getId());
 
@@ -141,7 +136,6 @@ public class StackController {
         var job = new Job();
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
-        job.setDateTime(LocalDateTime.now());
 
         model.addAttribute("jobId", job.getId());
 

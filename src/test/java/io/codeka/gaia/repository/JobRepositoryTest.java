@@ -33,6 +33,7 @@ class JobRepositoryTest {
         job.setStackId("42");
 
         job.getLogsWriter().write("some logs");
+        job.start(null);
         job.end();
 
         jobRepository.save(job);
