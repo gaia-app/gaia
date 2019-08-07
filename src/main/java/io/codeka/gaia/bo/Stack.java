@@ -1,6 +1,7 @@
 package io.codeka.gaia.bo;
 
-import io.codeka.gaia.bo.backend.Backend;
+import io.codeka.gaia.teams.bo.Team;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,9 @@ public class Stack {
     private String providerSpec;
 
     private StackState state = StackState.NEW;
+
+    @DBRef
+    private Team ownerTeam;
 
     public String getId() {
         return id;
@@ -100,4 +104,9 @@ public class Stack {
     public void setState(StackState state) {
         this.state = state;
     }
+
+    public void setOwnerTeam(Team ownerTeam) {
+        this.ownerTeam = ownerTeam;
+    }
+
 }

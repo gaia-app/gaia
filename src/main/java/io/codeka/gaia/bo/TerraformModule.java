@@ -1,5 +1,10 @@
 package io.codeka.gaia.bo;
 
+import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.bo.User;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class TerraformModule {
@@ -12,11 +17,16 @@ public class TerraformModule {
 
     private String directory;
 
-    private List<TerraformVariable> variables;
+    private List<TerraformVariable> variables = new ArrayList<>();
+
     private String name;
+
     private String description;
 
     private String cliVersion;
+
+    @DBRef
+    private List<Team> authorizedTeams = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -82,4 +92,15 @@ public class TerraformModule {
         this.cliVersion = cliVersion;
     }
 
+    public List<Team> getAuthorizedTeams() {
+        return authorizedTeams;
+    }
+
+    public void setAuthorizedTeams(List<Team> authorizedTeams) {
+        this.authorizedTeams = authorizedTeams;
+    }
+
+    public boolean isAuthorizedFor(User user) {
+        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam());
+    }
 }

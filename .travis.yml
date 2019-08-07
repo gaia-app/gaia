@@ -13,6 +13,9 @@ cache:
   directories:
     - $HOME/.m2
 
+git:
+  depth: false
+
 script:
   # fetching master refs when building other branches helps sonar computing PRs
   - git fetch origin +refs/heads/master:refs/remotes/origin/master

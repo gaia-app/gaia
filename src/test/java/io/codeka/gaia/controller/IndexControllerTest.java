@@ -3,6 +3,8 @@ package io.codeka.gaia.controller;
 import io.codeka.gaia.bo.StackState;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class IndexControllerTest {
+class IndexControllerTest {
 
     @InjectMocks
     private IndexController indexController;
@@ -28,13 +30,34 @@ public class IndexControllerTest {
     @Mock
     private Model model;
 
+    private User user = new User("user");
+
+    private User admin = new User("admin");
+
+    @Mock
+    private Team team;
+
     @Test
     void index_shouldShowModuleCount(){
+        // given
+        when(terraformModuleRepository.countByAuthorizedTeamsContaining(team)).thenReturn(12);
+
+        // when
+        var result = indexController.index(model, user, team);
+
+        // then
+        assertEquals("index", result);
+        verify(terraformModuleRepository).countByAuthorizedTeamsContaining(team);
+        verify(model).addAttribute("moduleCount", 12);
+    }
+
+    @Test
+    void index_shouldShowModuleCount_forAdmin(){
         // given
         when(terraformModuleRepository.count()).thenReturn(12L);
 
         // when
-        var result = indexController.index(model);
+        var result = indexController.index(model, admin, team);
 
         // then
         assertEquals("index", result);
@@ -45,11 +68,28 @@ public class IndexControllerTest {
     @Test
     void index_shouldShowStacksCount(){
         // given
+        doReturn(1).when(stackRepository).countStacksByStateAndOwnerTeam(StackState.RUNNING, team);
+        doReturn(2).when(stackRepository).countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team);
+
+        // when
+        var result = indexController.index(model, user, team);
+
+        // then
+        assertEquals("index", result);
+        verify(stackRepository).countStacksByStateAndOwnerTeam(StackState.RUNNING, team);
+        verify(stackRepository).countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team);
+        verify(model).addAttribute("runningStackCount", 1);
+        verify(model).addAttribute("toUpdateStackCount", 2);
+    }
+
+    @Test
+    void index_shouldShowStacksCount_forAdmin(){
+        // given
         doReturn(1).when(stackRepository).countStacksByState(StackState.RUNNING);
         doReturn(2).when(stackRepository).countStacksByState(StackState.TO_UPDATE);
 
         // when
-        var result = indexController.index(model);
+        var result = indexController.index(model, admin, team);
 
         // then
         assertEquals("index", result);

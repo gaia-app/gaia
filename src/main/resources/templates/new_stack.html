@@ -184,7 +184,7 @@ let stack = {
 
 function loadModule(){
     console.log("loadModule");
-    return $.get(`/api/terraformModules/${moduleId}`).then(data => {
+    return $.get(`/api/modules/${moduleId}`).then(data => {
         module = data;
     });
 }

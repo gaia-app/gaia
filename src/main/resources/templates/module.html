@@ -120,7 +120,7 @@
 <script th:inline="javascript" type="application/ecmascript">
     const moduleId = [[${module.id}]];
 
-    $.get(`/api/terraformModules/${moduleId}`)
+    $.get(`/api/modules/${moduleId}`)
         .then(module => $.get('/api/terraform-cli/versions').then(versions => ({module, versions})))
         .then(data => {
             new Vue({
@@ -134,7 +134,7 @@
                             message: "Saving module."
                         });
                         $.ajax({
-                            url: `/api/terraformModules/${moduleId}`,
+                            url: `/api/modules/${moduleId}`,
                             data: JSON.stringify(data.module),
                             contentType: "application/json",
                             method: "PUT",
