@@ -95,11 +95,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
-			<artifactId>ace-builds</artifactId>
-			<version>1.4.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
 			<artifactId>bootstrap-vue</artifactId>
 			<version>2.0.0-rc.26</version>
 		</dependency>
