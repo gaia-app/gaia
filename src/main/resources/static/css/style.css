@@ -38,6 +38,7 @@
     29. Custom style for wizard
     30. Custom style for module description
     31. Custom style for navigation
+    32. Multiselect customization
    
 -------------------------------------------------------------------*/
 
@@ -3702,4 +3703,33 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
 
 .navigation .breadcrumb .breadcrumb-item.active {
     color: #0971b8;
+}
+
+/*------------------------------------------------------------------
+    32. Multiselect customization
+-------------------------------------------------------------------*/
+
+.multiselect__tag {
+    background: #0971b8;
+}
+.multiselect__tag-icon:after {
+    color: white;
+}
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+    background: #0069d9;
+}
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+    color: white;
+}
+.multiselect__option--highlight {
+    background: #0069d9;
+    outline: none;
+    color: white;
+}
+.multiselect__option--highlight:after {
+    content: attr(data-select);
+    background: #0069d9;
+    color: white;
 }
