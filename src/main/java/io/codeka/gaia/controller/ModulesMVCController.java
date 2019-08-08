@@ -16,13 +16,13 @@ import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 
 @Controller
-public class TerraformModuleController {
+public class ModulesMVCController {
 
     private TerraformModuleRepository terraformModuleRepository;
     private TerraformModuleGitRepository terraformModuleGitRepository;
 
     @Autowired
-    public TerraformModuleController(
+    public ModulesMVCController(
             TerraformModuleRepository terraformModuleRepository,
             TerraformModuleGitRepository terraformModuleGitRepository) {
         this.terraformModuleRepository = terraformModuleRepository;
@@ -30,14 +30,7 @@ public class TerraformModuleController {
     }
 
     @GetMapping("/modules")
-    public String modulesList(Model model, User user){
-        if(user.isAdmin()){
-            model.addAttribute("modules", terraformModuleRepository.findAll());
-        }
-        else{
-            model.addAttribute("modules", terraformModuleRepository.findAllByAuthorizedTeamsContaining(user.getTeam()));
-        }
-
+    public String modulesList(){
         return "modules";
     }
 
@@ -55,7 +48,7 @@ public class TerraformModuleController {
     @PostMapping("/modules/{id}")
     public String saveModule(@ModelAttribute TerraformModule module, Model model, User user){
         terraformModuleRepository.save(module);
-        return modulesList(model, user);
+        return modulesList();
     }
 
     @GetMapping("/modules/{id}/description")

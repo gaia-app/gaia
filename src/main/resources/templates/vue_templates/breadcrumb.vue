@@ -14,6 +14,7 @@
             module_description: [{text: 'Modules', href: '/modules'}, {text: 'Module description'},],
             stacks: [{text: 'Stacks'}],
             stack: [{text: 'Stacks', href: '/stacks'}, {text: 'Stack'}],
+            users: [{text: 'Users'}],
             job: [{text: 'Stacks', href: '/stacks'}, {text: 'Stack', href: `/stacks/${stackId}`}, {text: 'Job'}],
             settings: [{text: 'Settings'}],
         }
