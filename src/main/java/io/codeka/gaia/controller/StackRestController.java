@@ -2,6 +2,7 @@ package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.repository.StackRepository;
+import io.codeka.gaia.service.StackCostCalculator;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,12 @@ public class StackRestController {
 
     private StackRepository stackRepository;
 
+    private StackCostCalculator stackCostCalculator;
+
     @Autowired
-    public StackRestController(StackRepository stackRepository) {
+    public StackRestController(StackRepository stackRepository, StackCostCalculator stackCostCalculator) {
         this.stackRepository = stackRepository;
+        this.stackCostCalculator = stackCostCalculator;
     }
 
     @GetMapping
@@ -32,10 +36,15 @@ public class StackRestController {
 
     @GetMapping("/{id}")
     public Stack getStack(@PathVariable String id, User user){
+        Stack stack;
         if(user.isAdmin()){
-            return stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
+            stack = stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
         }
-        return stackRepository.findByIdAndOwnerTeam(id, user.getTeam()).orElseThrow(StackNotFoundException::new);
+        else{
+            stack = stackRepository.findByIdAndOwnerTeam(id, user.getTeam()).orElseThrow(StackNotFoundException::new);
+        }
+        stack.setEstimatedRunningCost(stackCostCalculator.calculateRunningCostEstimation(stack));
+        return stack;
     }
 
     @PostMapping()
