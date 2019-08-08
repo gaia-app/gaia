@@ -4,6 +4,7 @@ import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class TerraformModule {
 
     @DBRef
     private List<Team> authorizedTeams = new ArrayList<>();
+
+    private BigDecimal estimatedMonthlyCost;
+
+    private String estimatedMonthlyCostDescription;
 
     public String getId() {
         return id;
@@ -102,5 +107,21 @@ public class TerraformModule {
 
     public boolean isAuthorizedFor(User user) {
         return user.isAdmin() || this.authorizedTeams.contains(user.getTeam());
+    }
+
+    public BigDecimal getEstimatedMonthlyCost() {
+        return estimatedMonthlyCost;
+    }
+
+    public void setEstimatedMonthlyCost(BigDecimal estimatedMonthlyCost) {
+        this.estimatedMonthlyCost = estimatedMonthlyCost;
+    }
+
+    public String getEstimatedMonthlyCostDescription() {
+        return estimatedMonthlyCostDescription;
+    }
+
+    public void setEstimatedMonthlyCostDescription(String estimatedMonthlyCostDescription) {
+        this.estimatedMonthlyCostDescription = estimatedMonthlyCostDescription;
     }
 }

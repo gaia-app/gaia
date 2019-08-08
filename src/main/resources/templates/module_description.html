@@ -59,21 +59,32 @@
                             <p>Module managed by <a href="#">{{owner}}</a></p>
                             <p>Total stacks: <a href="#">{{nbStacks}}</a></p>
                             <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
+                            <p>Estimated monthly cost: {{estimatedMonthlyCost}} US $</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <section>
-            <nav class="navbar navbar-expand">
-                <div class="navbar-nav">
-                    <a class="nav-item active" href="#"><i class="fab fa-markdown"></i> Readme</a>
-                </div>
-            </nav>
+            <b-tabs>
+                <b-tab active>
+                    <template slot="title">
+                        <i class="fab fa-markdown"></i> Readme
+                    </template>
+                    <readme :module-id="id"></readme>
+                </b-tab>
+                <b-tab>
+                    <template slot="title">
+                        <i class="fab fa-markdown"></i> Cost Of Ownership
+                    </template>
+                    <b-container fluid>
+                        <markdown :content="estimatedMonthlyCostDescription"></markdown>
+                    </b-container>
+                </b-tab>
+            </b-tabs>
         </section>
-        <div class="block_content">
-            <readme :module-id="id"></readme>
-        </div>
+<!--        <div class="block_content">-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -92,6 +103,7 @@
 
 <div th:replace="vue_templates/cli-badge"></div>
 <div th:replace="vue_templates/readme"></div>
+<div th:replace="vue_templates/markdown"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
 
 <div th:replace="helpers/messenger"></div>

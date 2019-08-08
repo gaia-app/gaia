@@ -1,10 +1,10 @@
 <template id="readme">
-    <div>
+    <b-container fluid>
         <b-spinner label="Loading..." class="m-5" style="height: 2.5rem; width: 2.5rem" v-if="!loaded"></b-spinner>
         <div class="markdown-body" v-if="loaded">
             <div v-html="content"></div>
         </div>
-    </div>
+    </b-container>
 </template>
 
 <script>
