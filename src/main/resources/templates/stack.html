@@ -153,7 +153,7 @@
                     <div><span class="job_attr_id">Status</span><span class="job_attr_value" :class="job.status">{{job.status}}</span></div>
                     <div>
                         <span class="job_attr_id">Date</span><span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
-                        ({{job.executionTime}}&nbsp;ms)
+                        <span v-if="job.executionTime">({{job.executionTime}}&nbsp;ms)</span>
                     </div>
                     <div><span class="job_attr_id">User</span><user-badge :user="job.user" :css-class="'job_attr_value'"></user-badge></div>
                 </div>
