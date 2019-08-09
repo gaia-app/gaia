@@ -1,5 +1,6 @@
 package io.codeka.gaia.bo;
 
+import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
@@ -8,12 +9,13 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JobTest {
 
     @Test
     void getLogs_shouldReturnOutputStreamResult() {
-        var job = new Job();
+        var job = new Job(new User());
 
         PrintWriter printWriter = new PrintWriter(job.getLogsWriter());
         printWriter.println("Test Line 1");
@@ -26,7 +28,7 @@ class JobTest {
 
     @Test
     void start_shouldSetStatusToRunning() {
-        var job = new Job();
+        var job = new Job(new User());
 
         job.start(null);
 
@@ -35,7 +37,7 @@ class JobTest {
 
     @Test
     void start_shouldSetType() {
-        var job = new Job();
+        var job = new Job(new User());
 
         job.start(JobType.RUN);
 
@@ -44,7 +46,7 @@ class JobTest {
 
     @Test
     void start_shouldSetStartDateTime() {
-        var job = new Job();
+        var job = new Job(new User());
         job.setStartDateTime(null);
 
         job.start(null);
@@ -54,7 +56,7 @@ class JobTest {
 
     @Test
     void end_shouldSetStatusToFinished() {
-        var job = new Job();
+        var job = new Job(new User());
         job.setStartDateTime(LocalDateTime.now());
 
         job.end();
@@ -64,7 +66,7 @@ class JobTest {
 
     @Test
     void end_shouldSetEndDateTime() {
-        var job = new Job();
+        var job = new Job(new User());
         job.setStartDateTime(LocalDateTime.now());
         job.setEndDateTime(null);
         job.setExecutionTime(null);
@@ -78,7 +80,7 @@ class JobTest {
 
     @Test
     void fail_shouldSetStatusToFinished() {
-        var job = new Job();
+        var job = new Job(new User());
         job.setStartDateTime(LocalDateTime.now());
 
         job.fail();
@@ -88,7 +90,7 @@ class JobTest {
 
     @Test
     void fail_shouldSetEndDateTime() {
-        var job = new Job();
+        var job = new Job(new User());
         job.setStartDateTime(LocalDateTime.now());
         job.setEndDateTime(null);
         job.setExecutionTime(null);
@@ -98,6 +100,20 @@ class JobTest {
 
         assertThat(job.getEndDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
         assertThat(job.getExecutionTime()).isNotNull().isEqualTo(timer);
+    }
+
+    @Test
+    void job_shouldSetUser() {
+        var user = new User("test");
+
+        var job = new Job(user);
+
+        assertThat(job.getUser()).isNotNull().isEqualTo(user);
+    }
+
+    @Test
+    void job_shouldThrowAnExceptionIfUserIsNull() {
+        assertThrows(AssertionError.class, () -> new Job(null));
     }
 
 }

@@ -2,6 +2,8 @@ package io.codeka.gaia.repository;
 
 import io.codeka.gaia.bo.Job;
 import io.codeka.gaia.bo.JobStatus;
+import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.repository.UserRepository;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,18 @@ class JobRepositoryIT {
     @Autowired
     JobRepository jobRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Container
     private static MongoContainer mongo = new MongoContainer();
 
     @Test
     void jobShouldBeSavedWithLogs() throws IOException {
-        var job = new Job();
+        var user = new User("test_it");
+        userRepository.save(user);
+
+        var job = new Job(user);
         job.setId("12");
         job.setStackId("42");
 
@@ -45,6 +53,7 @@ class JobRepositoryIT {
         assertEquals("42", job.getStackId());
         assertEquals(JobStatus.FINISHED, job.getStatus());
         assertEquals("some logs", job.getLogs());
+        assertEquals(user, job.getUser());
     }
 
 }

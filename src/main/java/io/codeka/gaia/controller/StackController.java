@@ -5,6 +5,7 @@ import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
+import io.codeka.gaia.teams.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +56,7 @@ public class StackController {
     }
 
     @GetMapping("/stacks/{stackId}/apply")
-    public String applyStack(@PathVariable String stackId, Model model){
+    public String applyStack(@PathVariable String stackId, Model model, User user){
         // checking if the stack exists
         // TODO throw an exception (404) if not
         if(stackRepository.existsById(stackId)){
@@ -63,7 +64,7 @@ public class StackController {
         }
 
         // create a new job
-        var job = new Job();
+        var job = new Job(user);
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
 
@@ -80,7 +81,7 @@ public class StackController {
     }
 
     @GetMapping("/stacks/{stackId}/preview")
-    public String previewStack(@PathVariable String stackId, Model model){
+    public String previewStack(@PathVariable String stackId, Model model, User user){
         // checking if the stack exists
         // TODO throw an exception (404) if not
         if(stackRepository.existsById(stackId)){
@@ -88,7 +89,7 @@ public class StackController {
         }
 
         // create a new job
-        var job = new Job();
+        var job = new Job(user);
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
 
@@ -125,7 +126,7 @@ public class StackController {
     }
 
     @GetMapping("/stacks/{stackId}/stop")
-    public String stopStack(@PathVariable String stackId, Model model){
+    public String stopStack(@PathVariable String stackId, Model model, User user){
         // checking if the stack exists
         // TODO throw an exception (404) if not
         if(stackRepository.existsById(stackId)){
@@ -133,7 +134,7 @@ public class StackController {
         }
 
         // create a new job
-        var job = new Job();
+        var job = new Job(user);
         job.setId(UUID.randomUUID().toString());
         job.setStackId(stackId);
 

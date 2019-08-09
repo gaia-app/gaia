@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Repository
 public class TerraformCLIRepository {
 
-    private static final Pattern TERRAFORM_VERSION_PATTERN = Pattern.compile("terraform_([\\d]+.[\\d]+.[\\d]+)");
+    private static final Pattern TERRAFORM_VERSION_PATTERN = Pattern.compile("terraform_([\\d]+.[\\d]+.[\\d]+)[^-]");
     private static final Pattern SEMVER_PATTERN = Pattern.compile("([\\d]*).([\\d]*).([\\d]*)");
 
     private String terraformReleasesUrl;
@@ -64,7 +64,6 @@ public class TerraformCLIRepository {
                     .matcher(response.getBody())
                     .results()
                     .map(m -> m.group(1))
-                    .distinct() // to remove duplicate generating by alpha, beta, rc...
                     .filter(this::isVersionAccepted)
                     .collect(Collectors.toList());
         }

@@ -8,12 +8,11 @@ import com.spotify.docker.client.messages.ContainerExit;
 import io.codeka.gaia.bo.*;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
-import org.hamcrest.Matchers;
+import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -65,7 +64,7 @@ class StackRunnerTest {
         when(dockerClient.createContainer(any())).thenReturn(containerCreation);
 
         stack = new Stack();
-        job = new Job();
+        job = new Job(new User());
         module = new TerraformModule();
     }
 
