@@ -1,9 +1,11 @@
 package io.codeka.gaia.bo;
 
 import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.bo.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,16 @@ public class Stack {
     private Team ownerTeam;
 
     private BigDecimal estimatedRunningCost;
+
+    @DBRef
+    private User createdBy;
+
+    private LocalDateTime createdAt;
+
+    @DBRef
+    private User updatedBy;
+
+    private LocalDateTime updatedAt;
 
     public String getId() {
         return id;
@@ -112,6 +124,10 @@ public class Stack {
         this.ownerTeam = ownerTeam;
     }
 
+    public Team getOwnerTeam() {
+        return ownerTeam;
+    }
+
     public BigDecimal getEstimatedRunningCost() {
         return estimatedRunningCost;
     }
@@ -119,4 +135,37 @@ public class Stack {
     public void setEstimatedRunningCost(BigDecimal estimatedRunningCost) {
         this.estimatedRunningCost = estimatedRunningCost;
     }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

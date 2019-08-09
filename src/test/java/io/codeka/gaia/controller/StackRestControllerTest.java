@@ -12,9 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,8 +32,7 @@ class StackRestControllerTest {
 
     private Team userTeam = new Team();
 
-    @Mock
-    private Stack stack;
+    private Stack stack = new Stack();
 
     @InjectMocks
     private StackRestController stackRestController;
@@ -114,20 +117,24 @@ class StackRestControllerTest {
     @Test
     void save_shouldSaveStack(){
         // when
-        stackRestController.save(stack, userTeam);
+        stackRestController.save(stack, userTeam, standardUser);
 
         // then
-        verify(stack).setId(anyString());
-        verify(stack).setOwnerTeam(userTeam);
+        assertThat(stack.getId()).isNotBlank();
+        assertThat(stack.getOwnerTeam()).isEqualTo(userTeam);
+        assertThat(stack.getCreatedBy()).isEqualTo(standardUser);
+        assertThat(stack.getCreatedAt()).isEqualToIgnoringSeconds(LocalDateTime.now());
         verify(stackRepository).save(stack);
     }
 
     @Test
     void update_shouldSaveStack(){
         // when
-        stackRestController.update("12", stack);
+        stackRestController.update("12", stack, standardUser);
 
         // then
+        assertThat(stack.getUpdatedBy()).isEqualTo(standardUser);
+        assertThat(stack.getUpdatedAt()).isEqualToIgnoringSeconds(LocalDateTime.now());
         verify(stackRepository).save(stack);
     }
 }

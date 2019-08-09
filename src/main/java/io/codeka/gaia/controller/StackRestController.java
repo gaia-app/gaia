@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,14 +49,18 @@ public class StackRestController {
     }
 
     @PostMapping()
-    public Stack save(@RequestBody Stack stack, Team userTeam){
+    public Stack save(@RequestBody Stack stack, Team userTeam, User user){
         stack.setOwnerTeam(userTeam);
         stack.setId(UUID.randomUUID().toString());
+        stack.setCreatedBy(user);
+        stack.setCreatedAt(LocalDateTime.now());
         return stackRepository.save(stack);
     }
 
     @PutMapping("/{id}")
-    public Stack update(@PathVariable String id, @RequestBody Stack stack){
+    public Stack update(@PathVariable String id, @RequestBody Stack stack, User user){
+        stack.setUpdatedBy(user);
+        stack.setUpdatedAt(LocalDateTime.now());
         return stackRepository.save(stack);
     }
 
