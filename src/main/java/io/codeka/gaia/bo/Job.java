@@ -1,7 +1,9 @@
 package io.codeka.gaia.bo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.codeka.gaia.teams.bo.User;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -33,6 +35,16 @@ public class Job {
     private JobType jobType;
 
     private String cliVersion;
+
+    @DBRef
+    private User user;
+
+    public Job(User user) {
+        if (user == null) {
+            throw new AssertionError("A job must have a non null user!");
+        }
+        this.user = user;
+    }
 
     public String getId() {
         return id;
@@ -122,5 +134,9 @@ public class Job {
 
     public void setExecutionTime(Long executionTime) {
         this.executionTime = executionTime;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

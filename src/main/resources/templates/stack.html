@@ -46,6 +46,7 @@
 
 <div th:replace="vue_templates/stack-vars"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/user-badge"></div>
 
 <template id="stack-controls">
     <div class="page_controls">
@@ -150,6 +151,7 @@
                         <span class="job_attr_id">Date</span><span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
                         ({{job.executionTime}}&nbsp;ms)
                     </div>
+                    <div><span class="job_attr_id">User</span><user-badge :user="job.user" :css-class="'job_attr_value'"></user-badge></div>
                 </div>
             </li>
         </ul>
