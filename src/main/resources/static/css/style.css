@@ -3670,18 +3670,18 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
     text-decoration: none;
 }
 
-.module_description .navbar {
+.module_description .nav {
     background-color: #f3f3f3;
     padding: 0 1rem;
 }
-.module_description .navbar .nav-item {
+.module_description .nav .nav-item {
     font-weight: 700;
     font-size: 14px;
     line-height: 76px;
     position: relative;
     padding: .5rem .75rem;
 }
-.module_description .navbar .nav-item.active:after {
+.module_description .nav .nav-item .nav-link.active:after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -3689,6 +3689,12 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
     height: 2px;
     width: 100%;
     background-color: #5c4ee5;
+}
+
+.module_description .nav .nav-item .nav-link {
+    /*color: #495057;*/
+    background-color: transparent;
+    border-color: transparent;
 }
 
 /*------------------------------------------------------------------

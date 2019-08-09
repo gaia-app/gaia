@@ -59,6 +59,29 @@
                     <label for="description">Description</label>
                     <input type="text" class="form-control" id="description" v-model="module.description">
                 </div>
+
+                <b-form-row>
+                    <b-col cols="3">
+                        <b-form-group id="estimatedMonthlyCost-fieldSet"
+                                      label="Estimated monthly cost"
+                                      label-for="estimatedMonthlyCost">
+                            <b-input-group append="$">
+                                <b-form-input id="estimatedMonthlyCost" v-model="module.estimatedMonthlyCost"></b-form-input>
+                            </b-input-group>
+
+                        </b-form-group>
+                    </b-col>
+                </b-form-row>
+
+                <b-form-group id="estimatedMonthlyCostDescription-fieldSet"
+                              label="Description of estimated monthly cost"
+                              label-for="estimatedMonthlyCostDescription">
+                    <b-input-group>
+                        <b-input-group-text slot="append"><i class="fab fa-markdown"></i></b-input-group-text>
+                        <b-form-textarea :id="estimatedMonthlyCostDescription" v-model="module.estimatedMonthlyCostDescription"></b-form-textarea>
+                    </b-input-group>
+                </b-form-group>
+
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="gitRepositoryUrl">Git Repository URL</label>

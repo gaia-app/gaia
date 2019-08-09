@@ -2,6 +2,7 @@ package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Stack;
 import io.codeka.gaia.repository.StackRepository;
+import io.codeka.gaia.service.StackCostCalculator;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +36,9 @@ class StackRestControllerTest {
 
     @Mock
     private StackRepository stackRepository;
+
+    @Mock
+    private StackCostCalculator stackCostCalculator;
 
     @BeforeEach
     void setUp() {
@@ -81,6 +85,19 @@ class StackRestControllerTest {
 
         // then
         verify(stackRepository).findByIdAndOwnerTeam("42", userTeam);
+    }
+
+    @Test
+    void getStack_shouldCalculateRunningCost_forStandardUser(){
+        // given
+        when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.of(stack));
+
+        // when
+        stackRestController.getStack("42", standardUser);
+
+        // then
+        verify(stackRepository).findByIdAndOwnerTeam("42", userTeam);
+        verify(stackCostCalculator).calculateRunningCostEstimation(stack);
     }
 
     @Test

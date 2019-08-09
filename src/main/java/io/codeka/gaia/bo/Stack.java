@@ -3,6 +3,7 @@ package io.codeka.gaia.bo;
 import io.codeka.gaia.teams.bo.Team;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +49,8 @@ public class Stack {
 
     @DBRef
     private Team ownerTeam;
+
+    private BigDecimal estimatedRunningCost;
 
     public String getId() {
         return id;
@@ -109,4 +112,11 @@ public class Stack {
         this.ownerTeam = ownerTeam;
     }
 
+    public BigDecimal getEstimatedRunningCost() {
+        return estimatedRunningCost;
+    }
+
+    public void setEstimatedRunningCost(BigDecimal estimatedRunningCost) {
+        this.estimatedRunningCost = estimatedRunningCost;
+    }
 }

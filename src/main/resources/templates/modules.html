@@ -44,11 +44,14 @@
             <b-card-text>
                 <img sec:authorize="hasRole('ADMIN')" :src="'https://img.shields.io/badge/terraform-'+module.cliVersion+'-blue.svg?style=flat-square,alt='+module.cliVersion+',title='+module.cliVersion" style="margin-bottom: .75rem" />
                 <p :text="module.description">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" sec:authorize="hasRole('ADMIN')" :href="'/modules/'+module.id" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
-                <a href="#" :href="'/modules/'+module.id+'/description'" data-toggle="tooltip" title="Detail of this module" class="btn btn-primary"><i class="fas fa-info"></i></a>
-                <a href="#" :href="'/modules/'+module.id+'/run'" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
-            </div>
-        </b-card-text>
+
+                <p v-if="module.estimatedMonthlyCost">Estimated monthly cost : <b-badge variant="info">{{module.estimatedMonthlyCost}} $</b-badge></p>
+            </b-card-text>
+
+            <a href="#" sec:authorize="hasRole('ADMIN')" :href="'/modules/'+module.id" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
+            <a href="#" :href="'/modules/'+module.id+'/description'" data-toggle="tooltip" title="Detail of this module" class="btn btn-primary"><i class="fas fa-info"></i></a>
+            <a href="#" :href="'/modules/'+module.id+'/run'" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
+        </b-card>
     </b-card-group>
 </template>
 
