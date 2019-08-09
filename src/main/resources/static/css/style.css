@@ -3660,12 +3660,13 @@ ul.messenger.messenger-fixed.messenger-on-top.custom-messenger-on-top {
     font-size: 16px
 }
 
-.module_description .metadata p {
+.metadata p {
     font-size: 12px;
     color: #8d8d8d;
     margin-bottom: 5px;
 }
-.module_description .metadata p a {
+
+.metadata p a {
     color: #3273dc;
     text-decoration: none;
 }

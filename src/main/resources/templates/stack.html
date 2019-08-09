@@ -93,7 +93,11 @@
                     <div class="block_head">
                         <h2>Stack {{stack.name}}</h2>
                         <small>{{stack.description}}</small>
-                        <p v-if="stack.estimatedRunningCost">Estimated total running cost : <b-badge variant="info">{{stack.estimatedRunningCost}} $</b-badge></p>
+                        <div class="metadata">
+                            <p>Published <b>{{stack.createdAt | dateTimeLong}}</b> by <user-badge :user="stack.createdBy"></user-badge></p>
+                            <p v-if="stack.updatedBy">Last modified <b>{{stack.updatedAt | dateTimeLong}}</b> by <user-badge :user="stack.updatedBy"></user-badge></p>
+                            <p v-if="stack.estimatedRunningCost">Estimated total running cost : <b-badge variant="info">{{stack.estimatedRunningCost}} $</b-badge></p>
+                        </div>
                         <h2>
                             <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
                             <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
@@ -179,6 +183,12 @@
         if (!value || !moment(value).isValid()) return '';
         return moment(value).format('L LTS');
     })
+
+    Vue.filter('dateTimeLong', function (value) {
+        if (!value || !moment(value).isValid()) return '';
+        return moment(value).format('LLL');
+    })
+
 </script>
 
 <div th:replace="helpers/messenger"></div>
