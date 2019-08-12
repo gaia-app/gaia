@@ -87,17 +87,16 @@ class StackControllerTest {
     void applyStack_shouldReturnTheView() {
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.applyStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "apply",model, user);
 
         assertEquals("job", result);
     }
 
     @Test
     void applyStack_shouldSetModelIfStackExists() {
-        when(stackRepository.existsById(anyString())).thenReturn(true);
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.applyStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "apply", model, user);
 
         assertEquals("job", result);
         verify(model).addAttribute("stackId", "test_stack");
@@ -110,7 +109,7 @@ class StackControllerTest {
 
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.applyStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "apply", model, user);
 
         assertEquals("job", result);
 
@@ -127,17 +126,16 @@ class StackControllerTest {
     void previewStack_shouldReturnTheView() {
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.previewStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "preview", model, user);
 
         assertEquals("job", result);
     }
 
     @Test
     void previewStack_shouldSetModelIfStackExists() {
-        when(stackRepository.existsById(anyString())).thenReturn(true);
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.previewStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "preview", model, user);
 
         assertEquals("job", result);
         verify(model).addAttribute("stackId", "test_stack");
@@ -150,7 +148,7 @@ class StackControllerTest {
 
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.previewStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "preview", model, user);
 
         assertEquals("job", result);
 
@@ -168,17 +166,16 @@ class StackControllerTest {
     void stopStack_shouldReturnTheView() {
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.stopStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "stop", model, user);
 
         assertEquals("job", result);
     }
 
     @Test
     void stopStack_shouldSetModelIfStackExists() {
-        when(stackRepository.existsById(anyString())).thenReturn(true);
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.stopStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "stop", model, user);
 
         assertEquals("job", result);
         verify(model).addAttribute("stackId", "test_stack");
@@ -191,7 +188,7 @@ class StackControllerTest {
 
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.stopStack("test_stack", model, user);
+        var result = controller.startJob("test_stack", "stop", model, user);
 
         assertEquals("job", result);
 

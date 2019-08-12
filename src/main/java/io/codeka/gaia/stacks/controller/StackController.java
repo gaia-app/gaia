@@ -1,10 +1,10 @@
 package io.codeka.gaia.stacks.controller;
 
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
+import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
-import io.codeka.gaia.modules.repository.TerraformModuleRepository;
-import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,13 +55,11 @@ public class StackController {
         return "stack";
     }
 
-    @GetMapping("/stacks/{stackId}/apply")
-    public String applyStack(@PathVariable String stackId, Model model, User user){
-        // checking if the stack exists
-        // TODO throw an exception (404) if not
-        if(stackRepository.existsById(stackId)){
-            model.addAttribute("stackId", stackId);
-        }
+    @GetMapping("/stacks/{stackId}/{jobType}")
+    public String startJob(@PathVariable String stackId, @PathVariable String jobType,  Model model, User user){
+        // get the stack
+        var stack = this.stackRepository.findById(stackId).orElseThrow(StackNotFoundException::new);
+        model.addAttribute("stackId", stackId);
 
         // create a new job
         var job = new Job(user);
@@ -70,37 +68,16 @@ public class StackController {
 
         model.addAttribute("jobId", job.getId());
 
-        // get the stack
-        var stack = this.stackRepository.findById(stackId).get();
         // get the module
-        var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
+        var module = this.terraformModuleRepository.findById(stack.getModuleId()).orElseThrow();
 
-        this.stackRunner.apply(job, module, stack);
-
-        return "job";
-    }
-
-    @GetMapping("/stacks/{stackId}/preview")
-    public String previewStack(@PathVariable String stackId, Model model, User user){
-        // checking if the stack exists
-        // TODO throw an exception (404) if not
-        if(stackRepository.existsById(stackId)){
-            model.addAttribute("stackId", stackId);
+        if ("apply".equals(jobType)) {
+            this.stackRunner.apply(job, module, stack);
+        } else if ("preview".equals(jobType)) {
+            this.stackRunner.plan(job, module, stack);
+        } else if ("stop".equals(jobType)) {
+            this.stackRunner.stop(job, module, stack);
         }
-
-        // create a new job
-        var job = new Job(user);
-        job.setId(UUID.randomUUID().toString());
-        job.setStackId(stackId);
-
-        model.addAttribute("jobId", job.getId());
-
-        // get the stack
-        var stack = this.stackRepository.findById(stackId).get();
-        // get the module
-        var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
-
-        this.stackRunner.plan(job, module, stack);
 
         return "job";
     }
@@ -123,31 +100,6 @@ public class StackController {
     @ResponseBody
     public Job getJob(@PathVariable String stackId, @PathVariable String jobId){
         return this.stackRunner.getJob(jobId);
-    }
-
-    @GetMapping("/stacks/{stackId}/stop")
-    public String stopStack(@PathVariable String stackId, Model model, User user){
-        // checking if the stack exists
-        // TODO throw an exception (404) if not
-        if(stackRepository.existsById(stackId)){
-            model.addAttribute("stackId", stackId);
-        }
-
-        // create a new job
-        var job = new Job(user);
-        job.setId(UUID.randomUUID().toString());
-        job.setStackId(stackId);
-
-        model.addAttribute("jobId", job.getId());
-
-        // get the stack
-        var stack = this.stackRepository.findById(stackId).get();
-        // get the module
-        var module = this.terraformModuleRepository.findById(stack.getModuleId()).get();
-
-        this.stackRunner.stop(job, module, stack);
-
-        return "job";
     }
 
 }
