@@ -1,7 +1,8 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.stacks.repository;
 
-import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.bo.StackState;
+import io.codeka.gaia.stacks.bo.Stack;
+import io.codeka.gaia.stacks.bo.StackState;
+import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.BeforeEach;

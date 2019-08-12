@@ -1,9 +1,9 @@
-package io.codeka.gaia.service;
+package io.codeka.gaia.stacks.service;
 
-import io.codeka.gaia.bo.JobStatus;
-import io.codeka.gaia.bo.JobType;
-import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.repository.JobRepository;
+import io.codeka.gaia.stacks.bo.JobStatus;
+import io.codeka.gaia.stacks.bo.JobType;
+import io.codeka.gaia.stacks.bo.Stack;
+import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

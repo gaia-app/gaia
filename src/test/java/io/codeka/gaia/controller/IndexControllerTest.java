@@ -1,7 +1,7 @@
 package io.codeka.gaia.controller;
 
-import io.codeka.gaia.bo.StackState;
-import io.codeka.gaia.repository.StackRepository;
+import io.codeka.gaia.stacks.bo.StackState;
+import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;

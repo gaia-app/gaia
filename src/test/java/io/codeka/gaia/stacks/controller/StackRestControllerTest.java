@@ -1,8 +1,8 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.repository.StackRepository;
-import io.codeka.gaia.service.StackCostCalculator;
+import io.codeka.gaia.stacks.bo.Stack;
+import io.codeka.gaia.stacks.repository.StackRepository;
+import io.codeka.gaia.stacks.service.StackCostCalculator;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

@@ -1,9 +1,9 @@
 package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.repository.strategy.GitHubStrategy;
-import io.codeka.gaia.repository.strategy.GitLabStrategy;
-import io.codeka.gaia.repository.strategy.GitPlatformStrategy;
+import io.codeka.gaia.modules.repository.strategy.GitHubStrategy;
+import io.codeka.gaia.modules.repository.strategy.GitLabStrategy;
+import io.codeka.gaia.modules.repository.strategy.GitPlatformStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

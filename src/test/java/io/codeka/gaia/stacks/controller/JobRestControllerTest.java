@@ -1,7 +1,9 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.repository.JobRepository;
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.repository.JobRepository;
+import io.codeka.gaia.stacks.controller.JobNotFoundException;
+import io.codeka.gaia.stacks.controller.JobRestController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

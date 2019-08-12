@@ -1,7 +1,7 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.repository.JobRepository;
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

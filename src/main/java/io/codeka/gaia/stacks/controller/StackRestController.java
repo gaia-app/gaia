@@ -1,8 +1,8 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.repository.StackRepository;
-import io.codeka.gaia.service.StackCostCalculator;
+import io.codeka.gaia.stacks.bo.Stack;
+import io.codeka.gaia.stacks.repository.StackRepository;
+import io.codeka.gaia.stacks.service.StackCostCalculator;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;

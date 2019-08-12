@@ -1,4 +1,4 @@
-package io.codeka.gaia.bo.mustache;
+package io.codeka.gaia.stacks.bo.mustache;
 
 /**
  * Object matching the terraform mustache template

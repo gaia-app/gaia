@@ -1,7 +1,7 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.TerraformState;
-import io.codeka.gaia.repository.TerraformStateRepository;
+import io.codeka.gaia.stacks.bo.TerraformState;
+import io.codeka.gaia.stacks.repository.TerraformStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

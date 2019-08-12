@@ -1,6 +1,6 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.stacks.repository;
 
-import io.codeka.gaia.bo.TerraformState;
+import io.codeka.gaia.stacks.bo.TerraformState;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

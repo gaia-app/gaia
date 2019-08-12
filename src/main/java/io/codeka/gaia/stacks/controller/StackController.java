@@ -1,8 +1,8 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.stacks.controller;
 
-import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.repository.JobRepository;
-import io.codeka.gaia.repository.StackRepository;
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.repository.JobRepository;
+import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.teams.bo.User;

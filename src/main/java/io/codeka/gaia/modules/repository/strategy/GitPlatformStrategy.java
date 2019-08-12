@@ -1,4 +1,4 @@
-package io.codeka.gaia.repository.strategy;
+package io.codeka.gaia.modules.repository.strategy;
 
 import org.apache.commons.lang.StringUtils;
 

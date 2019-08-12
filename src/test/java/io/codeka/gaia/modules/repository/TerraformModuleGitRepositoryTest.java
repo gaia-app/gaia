@@ -1,7 +1,7 @@
 package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.repository.strategy.GitPlatformStrategy;
+import io.codeka.gaia.modules.repository.strategy.GitPlatformStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

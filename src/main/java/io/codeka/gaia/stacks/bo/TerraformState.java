@@ -1,4 +1,4 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.stacks.bo;
 
 import java.util.Map;
 

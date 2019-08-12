@@ -1,5 +1,8 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.stacks.bo;
 
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.bo.JobStatus;
+import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
 

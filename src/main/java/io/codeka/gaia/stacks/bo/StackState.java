@@ -1,4 +1,4 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.stacks.bo;
 
 /**
  * Represents the state of a Stack.

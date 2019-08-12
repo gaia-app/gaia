@@ -1,10 +1,10 @@
-package io.codeka.gaia.service;
+package io.codeka.gaia.stacks.service;
 
-import io.codeka.gaia.bo.Job;
-import io.codeka.gaia.bo.JobType;
-import io.codeka.gaia.bo.Stack;
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.bo.JobType;
+import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.repository.JobRepository;
+import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
