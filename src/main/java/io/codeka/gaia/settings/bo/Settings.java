@@ -1,4 +1,4 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.settings.bo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

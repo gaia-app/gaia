@@ -1,7 +1,7 @@
 package io.codeka.gaia.runner;
 
 import com.github.mustachejava.Mustache;
-import io.codeka.gaia.bo.Settings;
+import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.stacks.bo.mustache.TerraformScript;

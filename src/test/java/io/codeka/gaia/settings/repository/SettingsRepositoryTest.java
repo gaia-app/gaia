@@ -1,6 +1,6 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.settings.repository;
 
-import io.codeka.gaia.bo.Settings;
+import io.codeka.gaia.settings.bo.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

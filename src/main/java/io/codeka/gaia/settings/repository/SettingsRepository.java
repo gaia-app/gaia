@@ -1,6 +1,6 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.settings.repository;
 
-import io.codeka.gaia.bo.Settings;
+import io.codeka.gaia.settings.bo.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.settings.controller;
 
-import io.codeka.gaia.bo.Settings;
-import io.codeka.gaia.repository.SettingsRepository;
+import io.codeka.gaia.settings.bo.Settings;
+import io.codeka.gaia.settings.repository.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

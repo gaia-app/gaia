@@ -1,7 +1,7 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.settings.controller;
 
-import io.codeka.gaia.bo.Settings;
-import io.codeka.gaia.repository.SettingsRepository;
+import io.codeka.gaia.settings.bo.Settings;
+import io.codeka.gaia.settings.repository.SettingsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,10 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class SettingsControllerTest {

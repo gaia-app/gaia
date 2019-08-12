@@ -1,5 +1,6 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.settings.bo;
 
+import io.codeka.gaia.settings.bo.Settings;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
