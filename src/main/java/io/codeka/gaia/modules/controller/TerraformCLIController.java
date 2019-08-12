@@ -1,6 +1,6 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.modules.controller;
 
-import io.codeka.gaia.repository.TerraformCLIRepository;
+import io.codeka.gaia.modules.repository.TerraformCLIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

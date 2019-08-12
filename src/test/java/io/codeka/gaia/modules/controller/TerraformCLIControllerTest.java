@@ -1,6 +1,6 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.modules.controller;
 
-import io.codeka.gaia.repository.TerraformCLIRepository;
+import io.codeka.gaia.modules.repository.TerraformCLIRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

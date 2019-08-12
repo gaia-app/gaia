@@ -6,6 +6,7 @@ import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
 import com.spotify.docker.client.messages.ContainerExit;
 import io.codeka.gaia.bo.*;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
 import io.codeka.gaia.teams.bo.User;

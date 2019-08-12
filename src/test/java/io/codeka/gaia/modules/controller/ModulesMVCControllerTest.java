@@ -1,8 +1,8 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.modules.controller;
 
-import io.codeka.gaia.bo.TerraformModule;
-import io.codeka.gaia.repository.TerraformModuleGitRepository;
-import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.modules.repository.TerraformModuleGitRepository;
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;

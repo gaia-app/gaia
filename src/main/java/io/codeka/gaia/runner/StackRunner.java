@@ -4,6 +4,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import io.codeka.gaia.bo.*;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
 import org.apache.commons.io.output.WriterOutputStream;

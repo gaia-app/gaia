@@ -2,10 +2,10 @@ package io.codeka.gaia.controller;
 
 import io.codeka.gaia.bo.Job;
 import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.bo.TerraformModule;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
-import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;

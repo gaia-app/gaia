@@ -1,7 +1,7 @@
-package io.codeka.gaia.controller;
+package io.codeka.gaia.modules.controller;
 
-import io.codeka.gaia.bo.TerraformModule;
-import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,14 +10,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

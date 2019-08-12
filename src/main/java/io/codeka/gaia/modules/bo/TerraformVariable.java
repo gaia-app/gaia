@@ -1,4 +1,4 @@
-package io.codeka.gaia.bo;
+package io.codeka.gaia.modules.bo;
 
 /**
  * Represents a module variable

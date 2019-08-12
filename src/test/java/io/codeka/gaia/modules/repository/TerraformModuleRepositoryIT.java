@@ -1,6 +1,6 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.modules.repository;
 
-import io.codeka.gaia.bo.TerraformModule;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.BeforeEach;

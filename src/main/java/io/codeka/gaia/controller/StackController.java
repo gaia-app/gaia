@@ -3,7 +3,7 @@ package io.codeka.gaia.controller;
 import io.codeka.gaia.bo.Job;
 import io.codeka.gaia.repository.JobRepository;
 import io.codeka.gaia.repository.StackRepository;
-import io.codeka.gaia.repository.TerraformModuleRepository;
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;

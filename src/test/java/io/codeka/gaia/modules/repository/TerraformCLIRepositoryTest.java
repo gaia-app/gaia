@@ -1,4 +1,4 @@
-package io.codeka.gaia.repository;
+package io.codeka.gaia.modules.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

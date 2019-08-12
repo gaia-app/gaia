@@ -3,7 +3,7 @@ package io.codeka.gaia.runner;
 import com.github.mustachejava.Mustache;
 import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.bo.TerraformModule;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.bo.mustache.TerraformScript;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

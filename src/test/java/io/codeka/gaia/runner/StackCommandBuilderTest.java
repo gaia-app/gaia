@@ -2,11 +2,10 @@ package io.codeka.gaia.runner;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import io.codeka.gaia.bo.Settings;
 import io.codeka.gaia.bo.Stack;
-import io.codeka.gaia.bo.TerraformModule;
-import io.codeka.gaia.bo.TerraformVariable;
+import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.modules.bo.TerraformVariable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
