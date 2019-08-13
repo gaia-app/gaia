@@ -1,9 +1,8 @@
 package io.codeka.gaia.runner.config;
 
 
-import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
-import io.codeka.gaia.bo.Settings;
+import io.codeka.gaia.settings.bo.Settings;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
