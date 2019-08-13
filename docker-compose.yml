@@ -1,10 +1,15 @@
 version: "3"
 services:
     gaia:
-        image: gaia 
+        build: .
+        image: gaia
         ports:
-        - '8080:8080'
+            - '8080:8080'
         environment:
-        - "GAIA_MONGODB_URI=mongodb://mongo/gaia"
+            - "GAIA_MONGODB_URI=mongodb://mongo/gaia"
+
     mongo:
-        image: mongo
+        build:
+            context: .
+            dockerfile: ./Dockerfile-db
+        image: gaia-db

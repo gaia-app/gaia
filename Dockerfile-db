@@ -1,0 +1,3 @@
+FROM mongo
+
+COPY /src/test/resources/db/*.js /docker-entrypoint-initdb.d/

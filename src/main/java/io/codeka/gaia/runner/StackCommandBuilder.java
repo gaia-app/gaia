@@ -1,9 +1,9 @@
 package io.codeka.gaia.runner;
 
 import com.github.mustachejava.Mustache;
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Stack;
-import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.stacks.bo.mustache.TerraformScript;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

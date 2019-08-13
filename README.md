@@ -41,7 +41,13 @@ Building Gaia with docker is simple :
 docker build -t gaia .
 ```
 
-We provide a simple `docker-compose.yml` to allow you to start gaia with a mongo database.
+To build mongo database with initiated data :
+
+```bash
+docker build -f Dockerfile-db -t gaia-db .
+```
+
+Either, we provide a simple `docker-compose.yml` to allow you to start gaia with the mongo database.
 
 Just run `docker-compose up -d`
 
