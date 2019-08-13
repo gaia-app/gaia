@@ -2,7 +2,6 @@ package io.codeka.gaia.stacks.repository;
 
 import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.JobStatus;
-import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.teams.bo.User;
 import io.codeka.gaia.teams.repository.UserRepository;
 import io.codeka.gaia.test.MongoContainer;

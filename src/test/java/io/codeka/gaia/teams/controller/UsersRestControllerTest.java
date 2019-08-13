@@ -1,7 +1,6 @@
 package io.codeka.gaia.teams.controller;
 
 import io.codeka.gaia.teams.bo.User;
-import io.codeka.gaia.teams.repository.TeamRepository;
 import io.codeka.gaia.teams.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

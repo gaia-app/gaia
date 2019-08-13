@@ -2,8 +2,6 @@ package io.codeka.gaia.stacks.controller;
 
 import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.repository.JobRepository;
-import io.codeka.gaia.stacks.controller.JobNotFoundException;
-import io.codeka.gaia.stacks.controller.JobRestController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
