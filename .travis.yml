@@ -16,11 +16,27 @@ cache:
 git:
   depth: false
 
-script:
-  # fetching master refs when building other branches helps sonar computing PRs
-  - git fetch origin +refs/heads/master:refs/remotes/origin/master
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
+stages:
+  - name: test
+  - name: deploy
+    if: branch = master AND tag IS present
+
+jobs:
+  include:
+    - stage: test
+      name: "Unit Tests"
+      script:
+      # fetching master refs when building other branches helps sonar computing PRs
+      - git fetch origin +refs/heads/master:refs/remotes/origin/master
+      # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+      - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
+    - stage: deploy
+      name: "Deploy to hub.docker.com"
+      script:
+      - export DOCKER_TAG=`echo $TRAVIS_TAG | cut -d 'v' -f 2`
+      - echo "$DOCKER_PASSWORD" | docker login -u codekaio --password-stdin
+      - docker build -t codekaio/gaia:$DOCKER_TAG .
+      - docker push codekaio/gaia:$DOCKER_TAG
 
 after_success:
   - wget https://raw.githubusercontent.com/CodeKaio/travis-ci-discord-webhook/master/send.sh
