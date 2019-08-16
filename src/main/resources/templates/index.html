@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/header :: header(~{::title})">
 
     <title>Gaia - A terraform UI</title>
@@ -37,6 +38,20 @@
             <dashboard-widget text="Running Stacks" :value="runningStacksCount" variant="blue2_bg" icon="fa-layer-group" link="/stacks"></dashboard-widget>
             <dashboard-widget text="Stacks to update" :value="toUpdateStackCount" variant="yellow_bg" icon="fa-caret-square-up" link="/stacks"></dashboard-widget>
         </div>
+
+        <div sec:authorize="principal.username != 'admin'" v-if="! team" class="full_container">
+            <div class="center">
+                <div class="error_page">
+                    <div class="center">
+                        <img class="img-responsive" src="/images/waving-hand-sign.png" alt="#">
+                    </div>
+                    <br>
+                    <h3>Hi there ! </h3>
+                    <p>It seems that you're not a member of a team yet. Ask your admin to add you a team !</p>
+                    <p>Until then, you'll only be able to use public modules.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -66,6 +81,7 @@
     const moduleCount = [[${moduleCount}]];
     const runningStacksCount = [[${runningStackCount}]];
     const toUpdateStackCount = [[${toUpdateStackCount}]];
+    const team = [[${team}]];
 
     new Vue({
         el: "#dashboard-content",
@@ -73,6 +89,7 @@
             moduleCount,
             runningStacksCount,
             toUpdateStackCount,
+            team
         }),
         template: "#dashboard-template",
     });
