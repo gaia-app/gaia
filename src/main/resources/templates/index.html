@@ -24,68 +24,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="row column1">
-                    <div sec:authorize="hasRole('ADMIN')" class="col-md-6 col-lg-4">
-                        <a href="/modules">
-                            <div class="full counter_section margin_bottom_30 blue1_bg">
-                                <div class="couter_icon">
-                                    <div>
-                                        <i class="fa fa-object-group"></i>
-                                    </div>
-                                </div>
-                                <div class="counter_no">
-                                    <div>
-                                        <p class="total_no" th:text="${moduleCount}">12</p>
-                                        <p class="head_couter">Modules</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <a href="/stacks">
-                            <div class="full counter_section margin_bottom_30 blue2_bg">
-                                <div class="couter_icon">
-                                    <div>
-                                        <i class="fas fa-layer-group"></i>
-                                    </div>
-                                </div>
-                                <div class="counter_no">
-                                    <div>
-                                        <p class="total_no" th:text="${runningStackCount}">12</p>
-                                        <p class="head_couter">Running Stacks</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <a href="/stacks">
-                            <div class="full counter_section margin_bottom_30 yellow_bg">
-                                <div class="couter_icon">
-                                    <div>
-                                        <i class="far fa-caret-square-up"></i>
-                                    </div>
-                                </div>
-                                <div class="counter_no">
-                                    <div>
-                                        <p class="total_no" th:text="${toUpdateStackCount}">1</p>
-                                        <p class="head_couter">Stacks to update</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                <div id="dashboard-content"></div>
             </div>
-
         </div>
     </div>
 </div>
 
+<template id="dashboard-template">
+    <div>
+        <div class="row column1">
+            <dashboard-widget text="Modules" :value="moduleCount" variant="blue2_bg" icon="fa-object-group" link="/modules"></dashboard-widget>
+            <dashboard-widget text="Running Stacks" :value="runningStacksCount" variant="blue2_bg" icon="fa-layer-group" link="/stacks"></dashboard-widget>
+            <dashboard-widget text="Stacks to update" :value="toUpdateStackCount" variant="yellow_bg" icon="fa-caret-square-up" link="/stacks"></dashboard-widget>
+        </div>
+    </div>
+</template>
+
 <template id="template-navigation">
     <breadcrumb :page="page"></breadcrumb>
 </template>
+
 
 <!-- jQuery & bootstrap-->
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
@@ -96,12 +54,27 @@
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/dashboard-widget"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
     new Vue({
         el: "#navigation",
         data: () => ({ page: 'index' }),
         template: "#template-navigation",
+    });
+
+    const moduleCount = [[${moduleCount}]];
+    const runningStacksCount = [[${runningStackCount}]];
+    const toUpdateStackCount = [[${toUpdateStackCount}]];
+
+    new Vue({
+        el: "#dashboard-content",
+        data: () => ({
+            moduleCount,
+            runningStacksCount,
+            toUpdateStackCount,
+        }),
+        template: "#dashboard-template",
     });
 </script>
 
