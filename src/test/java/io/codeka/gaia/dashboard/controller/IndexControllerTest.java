@@ -5,6 +5,7 @@ import io.codeka.gaia.stacks.bo.StackState;
 import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +38,11 @@ class IndexControllerTest {
     @Mock
     private Team team;
 
+    @BeforeEach
+    void setUp() {
+        user.setTeam(team);
+    }
+
     @Test
     void index_shouldShowModuleCount(){
         // given
@@ -48,7 +54,7 @@ class IndexControllerTest {
         // then
         assertEquals("index", result);
         verify(terraformModuleRepository).countByAuthorizedTeamsContaining(team);
-        verify(model).addAttribute("moduleCount", 12);
+        verify(model).addAttribute("moduleCount", 12L);
     }
 
     @Test
@@ -78,8 +84,9 @@ class IndexControllerTest {
         assertEquals("index", result);
         verify(stackRepository).countStacksByStateAndOwnerTeam(StackState.RUNNING, team);
         verify(stackRepository).countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team);
-        verify(model).addAttribute("runningStackCount", 1);
-        verify(model).addAttribute("toUpdateStackCount", 2);
+        verify(model).addAttribute("moduleCount", 0L);
+        verify(model).addAttribute("runningStackCount", 1L);
+        verify(model).addAttribute("toUpdateStackCount", 2L);
     }
 
     @Test
@@ -95,8 +102,22 @@ class IndexControllerTest {
         assertEquals("index", result);
         verify(stackRepository).countStacksByState(StackState.RUNNING);
         verify(stackRepository).countStacksByState(StackState.TO_UPDATE);
-        verify(model).addAttribute("runningStackCount", 1);
-        verify(model).addAttribute("toUpdateStackCount", 2);
+        verify(model).addAttribute("moduleCount", 0L);
+        verify(model).addAttribute("runningStackCount", 1L);
+        verify(model).addAttribute("toUpdateStackCount", 2L);
+    }
+
+    @Test
+    void usersWIthNoTeam_shouldNotSeeAnyModuleOrStacks(){
+        // when
+        var result = indexController.index(model, user, null);
+
+        // then
+        assertEquals("index", result);
+        verifyZeroInteractions(terraformModuleRepository, stackRepository);
+        verify(model).addAttribute("moduleCount", 0L);
+        verify(model).addAttribute("runningStackCount", 0L);
+        verify(model).addAttribute("toUpdateStackCount", 0L);
     }
 
 }
