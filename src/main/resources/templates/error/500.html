@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/header :: header(~{::title})">
+
+    <title>Gaia - Page not found</title>
+
+</head>
+<body>
+
+<div id="placeholder" class="full_container">
+</div>
+
+<template id="error_tpl">
+    <div class="center verticle_center full_height">
+        <div class="error_page">
+            <div class="center">
+                <img class="img-responsive" src="/images/collision-symbol.png" alt="#">
+            </div>
+            <br>
+            <h3>OH NO, SERVER ERROR !</h3>
+            <p>YOU SHOULD OPEN A BUG REPORT</p>
+            <div class="center">
+                <b-button variant="warning" class="mr-1" v-b-modal.modal-issue>Yes, cool !</b-button>
+                <a class="btn btn-success" href="/">No, go To Home Page</a>
+            </div>
+        </div>
+
+        <b-modal id="modal-issue" title="How to open an issue ?" ok-only>
+            <p>Go to Gaia's <a :href="newIssueUrl" target="_blank"><i class="fab fa-github"></i> Github issues</a> and open a new issue !</p>
+            <b-button variant="outline-primary" @click="copyDetailsToClipboard">Copy error details to clipboard</b-button>
+        </b-modal>
+    </div>
+
+</template>
+
+<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
+
+<script src="/webjars/vue/2.5.16/vue.js"></script>
+<script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
+
+<div th:replace="helpers/messenger"></div>
+
+<script th:inline="javascript" type="application/ecmascript">
+    const timestamp = [[${timestamp}]];
+    const status = [[${status}]];
+    const error = [[${error}]];
+    const message = [[${message}]];
+    const trace = [[${trace}]];
+    const path = [[${path}]];
+
+    const report = `**${error} on ${path} : ${message}**
+
+* HTTP Code : ${status}
+* Date : ${timestamp}
+* Error : ${error}
+* Message : ${message}
+* Path : ${path}
+
+**Stacktrace**
+
+\`\`\`
+${trace}
+\`\`\`
+`;
+
+    const newIssueUrl = `https://github.com/CodeKaio/gaia/issues/new?assignees=&labels=%F0%9F%90%9B+bug&title=%F0%9F%90%9B+%3A+bug+title`;
+
+    new Vue({
+        "el": "#placeholder",
+        "template": "#error_tpl",
+        data: {
+            newIssueUrl
+        },
+        methods:{
+            copyDetailsToClipboard: function () {
+                navigator.clipboard.writeText(report);
+
+                Messenger().post({
+                    id: `message-${this.id}`,
+                    hideAfter: 2,
+                    type: "info",
+                    message: "Error details copied on clipboard."
+                });
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

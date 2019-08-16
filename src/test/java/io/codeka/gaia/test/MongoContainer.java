@@ -27,7 +27,7 @@ public class MongoContainer extends GenericContainer {
     private MongoDatabase database;
 
     public MongoContainer() {
-        super("mongo");
+        super("mongo:4.0");
         setExposedPorts(List.of(MONGO_PORT));
     }
 
