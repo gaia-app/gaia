@@ -43,7 +43,7 @@
                 :title="module.name">
             <b-card-text>
                 <img sec:authorize="hasRole('ADMIN')" :src="'https://img.shields.io/badge/terraform-'+module.cliVersion+'-blue.svg?style=flat-square,alt='+module.cliVersion+',title='+module.cliVersion" style="margin-bottom: .75rem" />
-                <p :text="module.description">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p>{{module.description}}</p>
 
                 <p v-if="module.estimatedMonthlyCost">Estimated monthly cost : <b-badge variant="info">{{module.estimatedMonthlyCost}} $</b-badge></p>
             </b-card-text>
