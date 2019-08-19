@@ -33,21 +33,20 @@
 
 
 <template id="template">
-    <div class="card-columns">
-        <div class="card" v-for="stack in stacks">
-            <div class="card-body">
-                <h5 class="card-title">{{stack.name}}</h5>
-                <p class="card-text">{{stack.description}}</p>
-                <h4>
+    <b-card-group columns>
+        <b-card v-for="stack in stacks"
+            :title="stack.name"
+            :sub-title="stack.description">
+                <b-card-text>
                     <span class="badge badge-pill badge-success" v-if="stack.state === 'NEW'" data-toggle="tooltip" title="Your stack is new and has not been started yet."><i class="fas fa-star-of-life"></i> new</span>
                     <span class="badge badge-pill badge-primary" v-if="stack.state === 'RUNNING'" data-toggle="tooltip" title="Your stack is up and running !"><i class="far fa-check-square"></i> running</span>
                     <span class="badge badge-pill badge-warning" v-if="stack.state === 'TO_UPDATE'" data-toggle="tooltip" title="Your stack needs an update !"><i class="fas fa-upload"></i> to update</span>
                     <span class="badge badge-pill badge-danger" v-if="stack.state === 'STOPPED'" data-toggle="tooltip" title="Your stack has been stopped."><i class="fas fa-stop-circle"></i> stopped</span>
-                </h4>
+                </b-card-text>
                 <a :href="'/stacks/' + stack.id" data-toggle="tooltip" title="Edit this stack" class="btn btn-primary"><i class="far fa-edit"></i></a>
             </div>
-        </div>
-    </div>
+        </b-card>
+    </b-card-group>
 </template>
 
 <template id="template-navigation">
