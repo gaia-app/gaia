@@ -23,16 +23,23 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, User user, Team userTeam){
+        long moduleCount = 0;
+        long runningStackCount = 0;
+        long toUpdateStackCount = 0;
         if(user.isAdmin()){
-            model.addAttribute("moduleCount", this.moduleRepository.count());
-            model.addAttribute("runningStackCount", this.stackRepository.countStacksByState(StackState.RUNNING));
-            model.addAttribute("toUpdateStackCount", this.stackRepository.countStacksByState(StackState.TO_UPDATE));
+            moduleCount = this.moduleRepository.count();
+            runningStackCount = this.stackRepository.countStacksByState(StackState.RUNNING);
+            toUpdateStackCount = this.stackRepository.countStacksByState(StackState.TO_UPDATE);
         }
-        else{
-            model.addAttribute("moduleCount", this.moduleRepository.countByAuthorizedTeamsContaining(userTeam));
-            model.addAttribute("runningStackCount", stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, userTeam));
-            model.addAttribute("toUpdateStackCount", stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, userTeam));
+        else if(userTeam != null){
+            moduleCount = this.moduleRepository.countByAuthorizedTeamsContaining(userTeam);
+            runningStackCount = stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, userTeam);
+            toUpdateStackCount = stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, userTeam);
         }
+
+        model.addAttribute("moduleCount", moduleCount);
+        model.addAttribute("runningStackCount", runningStackCount);
+        model.addAttribute("toUpdateStackCount", toUpdateStackCount);
 
         return "index";
     }
