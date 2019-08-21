@@ -179,6 +179,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<!-- build information generation for /admin/info endpoint -->
+							<!-- see https://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-build-info -->
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -189,6 +198,13 @@
 						<include>**/*IT.java</include>
 					</includes>
 				</configuration>
+			</plugin>
+
+			<!-- git information generation for /admin/info endpoint -->
+			<!-- see https://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-build-info -->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

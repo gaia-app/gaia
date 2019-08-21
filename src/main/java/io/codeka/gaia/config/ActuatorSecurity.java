@@ -16,7 +16,7 @@ public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatcher(EndpointRequest.to("health")).authorizeRequests()
+        http.requestMatcher(EndpointRequest.to("health", "info")).authorizeRequests()
                 .anyRequest().permitAll();
     }
 
