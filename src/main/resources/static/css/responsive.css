@@ -82,6 +82,10 @@
         font-size: 13px;
     }
     #sidebar ul li a i {}
+
+    #sidebar.active .sidebar-footer{
+        display: none
+    }
 }
 
 

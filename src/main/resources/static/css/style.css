@@ -843,13 +843,25 @@ span {
     position: fixed;
     height: 100%;
     overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.sidebar_blog_1,
-.sidebar_blog_2,
-.sidebar_blog_3 {
+.sidebar-part {
     float: left;
     width: 100%;
+}
+
+.sidebar-footer {
+    background: #f3f3f3;
+    color: #222;
+    padding: 21px 25px 19px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #sidebar ul li a {
