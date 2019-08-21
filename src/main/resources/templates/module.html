@@ -78,7 +78,7 @@
                               label-for="estimatedMonthlyCostDescription">
                     <b-input-group>
                         <b-input-group-text slot="append"><i class="fab fa-markdown"></i></b-input-group-text>
-                        <b-form-textarea :id="estimatedMonthlyCostDescription" v-model="module.estimatedMonthlyCostDescription"></b-form-textarea>
+                        <b-form-textarea id="estimatedMonthlyCostDescription" v-model="module.estimatedMonthlyCostDescription"></b-form-textarea>
                     </b-input-group>
                 </b-form-group>
 
@@ -189,10 +189,10 @@
                         });
                     },
                     removeVar(varIdx){
-                        data.variables.splice(varIdx,1);
+                        data.module.variables.splice(varIdx,1);
                     },
                     addVar(){
-                        data.variables.push({});
+                        data.module.variables.push({});
                     }
                 }
             });
