@@ -1,7 +1,3 @@
-# git files
-.git/
-.gitignore
-
 # idea files
 .idea/
 
