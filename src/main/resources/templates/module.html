@@ -125,11 +125,8 @@
                         <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
                     </div>
                     <div class="form-group col-md-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" :id="'check-' + modVarIdx" v-model="modVar.editable">
-                            <label class="form-check-label" :for="'check-' + modVarIdx"
-                                   data-toggle="tooltip" data-placement="top" title="Set this variable as editable for module users">Editable</label>
-                        </div>
+                        <b-form-checkbox v-model="modVar.editable" switch inline>Editable</b-form-checkbox>
+                        <b-form-checkbox v-model="modVar.mandatory" switch inline>Mandatory</b-form-checkbox>
                     </div>
                     <div class="form-group" >
                         <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>

@@ -13,6 +13,8 @@ public class TerraformVariable {
 
     private boolean editable;
 
+    private boolean mandatory;
+
     public String getName() {
         return name;
     }
@@ -43,5 +45,13 @@ public class TerraformVariable {
 
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
     }
 }
