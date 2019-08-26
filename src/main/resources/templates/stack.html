@@ -50,13 +50,13 @@
 
 <template id="stack-controls">
     <div class="page_controls">
-        <a href="#" class="btn btn-primary" @click="saveStack"><i class="far fa-save"></i> Save</a>
-        <a href="#" class="btn btn-primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</a>
-        <a href="#" class="btn btn-warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</a>
+        <b-button variant="primary" @click="saveStack"><i class="far fa-save"></i> Save</b-button>
+        <b-button varian="primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</b-button>
+        <b-button variant="warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</b-button>
 
-        <a href="#" class="btn btn-info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</a>
+        <b-button variant="info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</b-button>
 
-        <a href="#" class="btn btn-danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</a>
+        <b-button variant="danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</b-button>
     </div>
 </template>
 
