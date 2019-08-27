@@ -57,9 +57,9 @@ class ModuleRestControllerIT {
     void findAllModules_shouldReturnAllModules_forAdmin() throws Exception {
         mockMvc.perform(get("/api/modules"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited")))
-                .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team")));
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited","terraform-docker-mongo-with-mandatory-variable")))
+                .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team", "Ze Team")));
     }
 
     @Test

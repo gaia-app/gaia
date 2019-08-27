@@ -90,10 +90,10 @@ class StackRestControllerIT {
 
     @Test
     @WithMockUser("Mary J")
-    void saveModule_shouldBeAccessible() throws Exception {
+    void saveStack_shouldBeAccessible_forStandardUser() throws Exception {
         mockMvc.perform(post("/api/stacks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"stack-test\"}"))
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.ownerTeam.id", is("Not Ze Team")))
@@ -103,13 +103,66 @@ class StackRestControllerIT {
 
     @Test
     @WithMockUser("Mary J")
-    void updateModule_shouldBeAccessible() throws Exception {
+    void updateStack_shouldBeAccessible_forStandardUser() throws Exception {
         mockMvc.perform(put("/api/stacks/test")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"stack-test\"}"))
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.updatedBy.username", is("Mary J")))
                 .andExpect(jsonPath("$.updatedAt", notNullValue()));
+    }
+
+    @Test
+    void saveStack_shouldValidateStackContent() throws Exception {
+        mockMvc.perform(post("/api/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty name and module id
+                .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("name must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
+    }
+
+    @Test
+    void saveStack_shouldValidateStackContent_forBlankFields() throws Exception {
+        mockMvc.perform(post("/api/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty name and module id
+                .content("{\"name\":\"      \",\"moduleId\":\"   \"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("name must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
+    }
+
+    @Test
+    void updateStack_shouldValidateStackContent() throws Exception {
+        mockMvc.perform(put("/api/stacks/test")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty name
+                .content("{\"name\":\"\", \"moduleId\": \"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("name must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
+    }
+
+    @Test
+    void saveStack_shouldValidateStackVariables() throws Exception {
+        mockMvc.perform(post("/api/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty name
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variablesValues\":{}}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("mandatory variables should not be blank")));
+    }
+
+    @Test
+    void saveStack_shouldWork_stackIsValid() throws Exception {
+        mockMvc.perform(post("/api/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty name
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variablesValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("mandatory variables should not be blank")));
     }
 
 }
