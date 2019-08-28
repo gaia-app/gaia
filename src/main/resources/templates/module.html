@@ -48,12 +48,14 @@
                 <b-form-row>
                     <b-col cols="11">
                         <b-form-group label="Name" description="The name of your module">
-                            <b-input v-model="module.name"></b-input>
+                            <b-input v-model="module.name" :state="notEmpty(module.name)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
                         </b-form-group>
                     </b-col>
                     <b-col>
                         <b-form-group label="CLI Version">
-                            <b-form-select v-model="module.cliVersion" :options="versions"></b-form-select>
+                            <b-form-select v-model="module.cliVersion" :options="versions" :state="notEmpty(module.cliVersion)"></b-form-select>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
                         </b-form-group>
                     </b-col>
                 </b-form-row>
@@ -82,7 +84,8 @@
                 <b-form-row>
                     <b-col>
                         <b-form-group label="Git Repository URL" description="The URL of the module's git repository">
-                            <b-input v-model="module.gitRepositoryUrl"></b-input>
+                            <b-input v-model="module.gitRepositoryUrl" :state="notEmpty(module.gitRepositoryUrl)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
                         </b-form-group>
                     </b-col>
                     <b-col>
@@ -114,7 +117,8 @@
                 <b-form-row class="align-items-center" v-for="(modVar,modVarIdx) in module.variables">
                     <b-col cols="3">
                         <b-form-group label="Name">
-                            <b-input v-model="modVar.name"></b-input>
+                            <b-input v-model="modVar.name" :state="notEmpty(modVar.name)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
                         </b-form-group>
                     </b-col>
                     <b-col cols="3">
@@ -138,7 +142,7 @@
                     </b-col>
                 </b-form-row>
 
-                <b-button variant="primary" @click="post"><i class="far fa-save"></i> Save</b-button>
+                <b-button variant="primary" :disabled="!formValid" @click="post"><i class="far fa-save"></i> Save</b-button>
             </form>
         </div>
     </div>
@@ -164,6 +168,10 @@
     Vue.component('vue-multiselect', window.VueMultiselect.default);
 
     const moduleId = [[${module.id}]];
+
+    function notEmpty(field){
+        return typeof field !== "undefined" && field !== null && field.trim() !== "";
+    }
 
     $.get(`/api/modules/${moduleId}`)
         .then(module => $.get('/api/terraform-cli/versions').then(versions => ({module, versions})))
@@ -195,6 +203,13 @@
                     },
                     addVar(){
                         data.module.variables.push({});
+                    },
+                    notEmpty
+                },
+                computed: {
+                    formValid: _ => {
+                        return [this.module.name, this.module.cliVersion, this.module.gitRepositoryUrl].every(notEmpty)
+                            && this.module.variables.map(variable => variable.name).every(notEmpty);
                     }
                 }
             });
