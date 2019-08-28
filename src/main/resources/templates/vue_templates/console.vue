@@ -1,11 +1,11 @@
 <template id="console-template">
     <div class="console">
         <div class="console_actions">
-            <a href="#" class="btn" @click="copyToClipboard"><i class="far fa-copy"></i> copy raw</a>
-            <a href="#" class="btn" @click="goToTop"><i class="fas fa-angle-double-up"></i> top</a>
-            <a href="#" class="btn" @click="goToBottom"><i class="fas fa-angle-double-down"></i> bottom</a>
+            <b-button variant="outline-light" @click="copyToClipboard"><i class="far fa-copy"></i> copy raw</b-button>
+            <b-button variant="outline-light" @click="goToTop"><i class="fas fa-angle-double-up"></i> top</b-button>
+            <b-button variant="outline-light" @click="goToBottom"><i class="fas fa-angle-double-down"></i> bottom</b-button>
         </div>
-        <div :id="id" class="console_body" :style="cssStyle">
+        <div :id="'console-' + id" class="console_body" :style="cssStyle">
             <pre><code v-html="content"></code></pre>
         </div>
     </div>
@@ -35,10 +35,10 @@
         },
         methods: {
             goToTop: function () {
-                $(`#${this.id}`).animate({scrollTop: 0}, 500);
+                $(`#console-${this.id}`).animate({scrollTop: 0}, 500);
             },
             goToBottom: function () {
-                const consoleElt = $(`#${this.id}`);
+                const consoleElt = $(`#console-${this.id}`);
                 consoleElt.animate({scrollTop: consoleElt[0].scrollHeight}, 500);
             },
             copyToClipboard: function () {
@@ -68,7 +68,6 @@
     }
 
     .console_actions .btn {
-        border: 1px solid #f1f1f1;
         color: #f1f1f1;
         font-size: 12px;
         margin-left: 10px;
