@@ -4,9 +4,11 @@ import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
 import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
+import io.codeka.gaia.stacks.workflow.JobWorkflow;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,121 +85,44 @@ class StackControllerTest {
     }
 
     @Test
-    void applyStack_shouldReturnTheView() {
+    void launchJob_shouldReturnTheView() {
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "apply",model, user);
+        var result = controller.launchJob("test_stack", JobType.RUN, model, user);
 
         assertEquals("job", result);
     }
 
     @Test
-    void applyStack_shouldSetModelIfStackExists() {
+    void launchJob_shouldSetModelIfStackExists() {
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "apply", model, user);
+        var result = controller.launchJob("test_stack", JobType.RUN, model, user);
 
         assertEquals("job", result);
         verify(model).addAttribute("stackId", "test_stack");
     }
 
     @Test
-    void applyStack_shouldConfigureAndLaunchTheJob() {
+    void launchJob_shouldConfigureAndSaveTheJob() {
         var stack = new Stack();
         var module = new TerraformModule();
+        module.setCliVersion("test_cli_version");
 
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.startJob("test_stack", "apply", model, user);
+        var result = controller.launchJob("test_stack", JobType.RUN, model, user);
 
         assertEquals("job", result);
 
         var captor = ArgumentCaptor.forClass(Job.class);
-        verify(stackRunner).apply(captor.capture(), eq(module), eq(stack));
+        verify(jobRepository).save(captor.capture());
         var job = captor.getValue();
         assertNotNull(job);
-        assertEquals(user, job.getUser());
-        assertNotNull(job.getId());
+        assertEquals(JobType.RUN, job.getType());
         assertEquals("test_stack", job.getStackId());
-    }
-
-    @Test
-    void previewStack_shouldReturnTheView() {
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "preview", model, user);
-
-        assertEquals("job", result);
-    }
-
-    @Test
-    void previewStack_shouldSetModelIfStackExists() {
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "preview", model, user);
-
-        assertEquals("job", result);
-        verify(model).addAttribute("stackId", "test_stack");
-    }
-
-    @Test
-    void previewStack_shouldConfigureAndLaunchTheJob() {
-        var stack = new Stack();
-        var module = new TerraformModule();
-
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.startJob("test_stack", "preview", model, user);
-
-        assertEquals("job", result);
-
-        var captor = ArgumentCaptor.forClass(Job.class);
-        verify(stackRunner).plan(captor.capture(), eq(module), eq(stack));
-        var job = captor.getValue();
-        assertNotNull(job);
         assertEquals(user, job.getUser());
-        assertNotNull(job.getId());
-        assertEquals("test_stack", job.getStackId());
-    }
-
-
-    @Test
-    void stopStack_shouldReturnTheView() {
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "stop", model, user);
-
-        assertEquals("job", result);
-    }
-
-    @Test
-    void stopStack_shouldSetModelIfStackExists() {
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(new Stack()));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(new TerraformModule()));
-        var result = controller.startJob("test_stack", "stop", model, user);
-
-        assertEquals("job", result);
-        verify(model).addAttribute("stackId", "test_stack");
-    }
-
-    @Test
-    void stopStack_shouldConfigureAndLaunchTheJob() {
-        var stack = new Stack();
-        var module = new TerraformModule();
-
-        when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
-        var result = controller.startJob("test_stack", "stop", model, user);
-
-        assertEquals("job", result);
-
-        var captor = ArgumentCaptor.forClass(Job.class);
-        verify(stackRunner).stop(captor.capture(), eq(module), eq(stack));
-        var job = captor.getValue();
-        assertNotNull(job);
-        assertEquals(user, job.getUser());
-        assertNotNull(job.getId());
-        assertEquals("test_stack", job.getStackId());
+        assertEquals("test_cli_version", job.getCliVersion());
     }
 
     @Test
@@ -226,8 +151,16 @@ class StackControllerTest {
     }
 
     @Test
+    void viewJob_shouldSetEditionMode() {
+        var result = controller.viewJob("test_stack", "test_job", model);
+
+        assertEquals("job", result);
+        verify(model).addAttribute("edition", true);
+    }
+
+    @Test
     void getJob_shouldReturnTheJob() {
-        var job = new Job(new User());
+        var job = new Job();
 
         when(stackRunner.getJob(anyString())).thenReturn(job);
         var result = controller.getJob("test_stack", "test_job");

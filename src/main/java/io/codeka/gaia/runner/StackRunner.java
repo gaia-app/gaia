@@ -1,30 +1,23 @@
 package io.codeka.gaia.runner;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerException;
-import com.spotify.docker.client.messages.ContainerConfig;
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.bo.StackState;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
-import org.apache.commons.io.output.WriterOutputStream;
+import io.codeka.gaia.stacks.repository.StepRepository;
+import io.codeka.gaia.stacks.workflow.JobWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.WritableByteChannel;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+import java.util.function.Supplier;
 
 /**
  * Runs a module instance
@@ -32,149 +25,115 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class StackRunner {
 
-    private DockerClient dockerClient;
-
-    private ContainerConfig.Builder containerConfigBuilder;
-
-    private Settings settings;
-
+    private DockerRunner dockerRunner;
     private StackCommandBuilder stackCommandBuilder;
+    private StackRepository stackRepository;
+    private JobRepository jobRepository;
+    private StepRepository stepRepository;
 
     private Map<String, Job> jobs = new HashMap<>();
 
-    private StackRepository stackRepository;
-
-    private HttpHijackWorkaround httpHijackWorkaround;
-
-    private JobRepository jobRepository;
-
     @Autowired
-    public StackRunner(DockerClient dockerClient, ContainerConfig.Builder containerConfigBuilder, Settings settings, StackCommandBuilder stackCommandBuilder, StackRepository stackRepository, HttpHijackWorkaround httpHijackWorkaround, JobRepository jobRepository) {
-        this.dockerClient = dockerClient;
-        this.containerConfigBuilder = containerConfigBuilder;
-        this.settings = settings;
+    public StackRunner(DockerRunner dockerRunner, StackCommandBuilder stackCommandBuilder,
+                       StackRepository stackRepository, JobRepository jobRepository, StepRepository stepRepository) {
+        this.dockerRunner = dockerRunner;
         this.stackCommandBuilder = stackCommandBuilder;
         this.stackRepository = stackRepository;
-        this.httpHijackWorkaround = httpHijackWorkaround;
         this.jobRepository = jobRepository;
+        this.stepRepository = stepRepository;
     }
 
-    private int runContainerForJob(Job job, String script) {
-        try{
-            var env = new ArrayList<String>();
-            env.add("TF_IN_AUTOMATION=true");
-            env.addAll(settings.env());
-
-            // FIXME This is certainly no thread safe !
-            var containerConfig = containerConfigBuilder
-                    .env(env)
-                    .image("hashicorp/terraform:" + job.getCliVersion())
-                    .build();
-
-            // pull the image
-            dockerClient.pull("hashicorp/terraform:" + job.getCliVersion());
-
-            var containerCreation = dockerClient.createContainer(containerConfig);
-            var containerId = containerCreation.id();
-
-            var dockerContainer = new DockerContainer(containerId, dockerClient, httpHijackWorkaround);
-
-            dockerClient.startContainer(containerId);
-
-            // attaching the outputs in a background thread
-            CompletableFuture.runAsync(() -> {
-                try( var writerOutputStream = new WriterOutputStream(job.getLogsWriter(), Charset.defaultCharset()) ) {
-                    // this code is blocking I/O !
-                    dockerContainer.attach(writerOutputStream, writerOutputStream);
-                } catch (IOException | StackRunnerException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            // write the content of the script to the container's std in
-            try( WritableByteChannel stdIn = Channels.newChannel(dockerContainer.getStdIn()) ){
-                stdIn.write(ByteBuffer.wrap(script.getBytes()));
-            }
-
-            // wait for the container to exit
-            var containerExit = dockerClient.waitContainer(containerCreation.id());
-
-            dockerClient.removeContainer(containerCreation.id());
-
-            return Math.toIntExact(containerExit.statusCode());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return 99;
-        } catch (DockerException | IOException | StackRunnerException e) {
-            return 99;
+    private String managePlanScript(JobType jobType, Stack stack, TerraformModule module) {
+        if (jobType == JobType.RUN) {
+            return stackCommandBuilder.buildPlanScript(stack, module);
         }
+        return stackCommandBuilder.buildPlanDestroyScript(stack, module);
     }
 
-    @Async
-    public void apply(Job job, TerraformModule module, Stack stack) {
-        this.jobs.put(job.getId(), job);
-        job.setCliVersion(module.getCliVersion());
-        job.start(JobType.RUN);
-        jobRepository.save(job);
-
-        var applyScript = stackCommandBuilder.buildApplyScript(stack, module);
-
-        var result = runContainerForJob(job, applyScript);
-
-        if(result == 0){
-            job.end();
-
-            // update stack information
-            stack.setState(StackState.RUNNING);
-            stackRepository.save(stack);
-        }
-        else{
-            job.fail();
-        }
-
-        // save job to database
-        jobRepository.save(job);
-        this.jobs.remove(job.getId());
-    }
-
-    /**
-     * Runs a "plan job".
-     * A plan job runs a 'terraform plan'
-     * @param job
-     * @param module
-     * @param stack
-     */
-    @Async
-    public void plan(Job job, TerraformModule module, Stack stack) {
-        this.jobs.put(job.getId(), job);
-        job.setCliVersion(module.getCliVersion());
-        job.start(JobType.PREVIEW);
-        jobRepository.save(job);
-
-        var planScript = stackCommandBuilder.buildPlanScript(stack, module);
-
-        var result = runContainerForJob(job, planScript);
-
-        if(result == 0){
+    private void managePlanResult(Integer result, JobWorkflow jobWorkflow, Stack stack) {
+        if (result == 0) {
             // diff is empty
-            job.end();
-        }
-        else if(result == 2){
+            jobWorkflow.end();
+        } else if (result == 2) {
             // there is a diff, set the status of the stack to : "TO_UPDATE"
-            if(StackState.NEW != stack.getState()){
+            if (StackState.NEW != stack.getState() && jobWorkflow.getJob().getType() != JobType.DESTROY) {
                 stack.setState(StackState.TO_UPDATE);
                 stackRepository.save(stack);
             }
-            job.end();
-        }
-        else{
+            jobWorkflow.end();
+        } else {
             // error
-            job.fail();
+            jobWorkflow.fail();
         }
+    }
+
+    private String manageApplyScript(JobType jobType, Stack stack, TerraformModule module) {
+        if (jobType == JobType.RUN) {
+            return stackCommandBuilder.buildApplyScript(stack, module);
+        }
+        return stackCommandBuilder.buildDestroyScript(stack, module);
+    }
+
+    private void manageApplyResult(Integer result, JobWorkflow jobWorkflow, Stack stack) {
+        if (result == 0) {
+            jobWorkflow.end();
+
+            // update stack information
+            stack.setState(jobWorkflow.getJob().getType() == JobType.RUN ? StackState.RUNNING : StackState.STOPPED);
+            stackRepository.save(stack);
+        } else {
+            jobWorkflow.fail();
+        }
+    }
+
+    /**
+     * @param jobWorkflow
+     * @param jobActionFn function applying o the job
+     * @param scriptFn    function allowing to get the right script to execute
+     * @param resultFn    function treating the result ot the executed script
+     */
+    private void treatJob(JobWorkflow jobWorkflow, Consumer<JobWorkflow> jobActionFn,
+                          Supplier<String> scriptFn, IntConsumer resultFn) {
+        // execute the workflow of the job
+        jobActionFn.accept(jobWorkflow);
+
+        var job = jobWorkflow.getJob();
+        this.jobs.put(job.getId(), job);
+        stepRepository.saveAll(job.getSteps());
+        jobRepository.save(job);
+
+        // get the wanted script
+        var script = scriptFn.get();
+
+        var result = this.dockerRunner.runContainerForJob(jobWorkflow, script);
+
+        // manage the result of the execution of the script
+        resultFn.accept(result);
 
         // save job to database
+        stepRepository.saveAll(job.getSteps());
         jobRepository.save(job);
         this.jobs.remove(job.getId());
+    }
+
+    @Async
+    public void plan(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        treatJob(
+                jobWorkflow,
+                JobWorkflow::plan,
+                () -> managePlanScript(jobWorkflow.getJob().getType(), stack, module),
+                result -> managePlanResult(result, jobWorkflow, stack)
+        );
+    }
+
+    @Async
+    public void apply(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        treatJob(
+                jobWorkflow,
+                JobWorkflow::apply,
+                () -> manageApplyScript(jobWorkflow.getJob().getType(), stack, module),
+                result -> manageApplyResult(result, jobWorkflow, stack)
+        );
     }
 
     public Job getJob(String jobId) {
@@ -184,39 +143,6 @@ public class StackRunner {
         }
         // or find in repository
         return this.jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("job not found"));
-    }
-
-    /**
-     * Runs a "stop job".
-     * A stop job runs a 'terraform destroy'
-     * @param job
-     * @param module
-     * @param stack
-     */
-    @Async
-    public void stop(Job job, TerraformModule module, Stack stack) {
-        this.jobs.put(job.getId(), job);
-        job.setCliVersion(module.getCliVersion());
-        job.start(JobType.STOP);
-        jobRepository.save(job);
-
-        var destroyScript = stackCommandBuilder.buildDestroyScript(stack, module);
-
-        var result = runContainerForJob(job, destroyScript);
-
-        if(result == 0){
-            job.end();
-            // update state
-            stack.setState(StackState.STOPPED);
-            stackRepository.save(stack);
-        } else{
-            // error
-            job.fail();
-        }
-
-        // save job to database
-        jobRepository.save(job);
-        this.jobs.remove(job.getId());
     }
 
 }

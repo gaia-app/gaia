@@ -3,117 +3,127 @@ package io.codeka.gaia.stacks.bo;
 import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
 
-import java.io.PrintWriter;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JobTest {
 
     @Test
-    void getLogs_shouldReturnOutputStreamResult() {
-        var job = new Job(new User());
+    void start_shouldSetStatusToPlanStarted() {
+        var job = new Job();
 
-        PrintWriter printWriter = new PrintWriter(job.getLogsWriter());
-        printWriter.println("Test Line 1");
-        printWriter.println("Test Line 2");
+        job.start();
 
-        var logs = job.getLogs();
-
-        assertEquals("Test Line 1\nTest Line 2\n", logs);
-    }
-
-    @Test
-    void start_shouldSetStatusToRunning() {
-        var job = new Job(new User());
-
-        job.start(null);
-
-        assertEquals(JobStatus.RUNNING, job.getStatus());
-    }
-
-    @Test
-    void start_shouldSetType() {
-        var job = new Job(new User());
-
-        job.start(JobType.RUN);
-
-        assertEquals(JobType.RUN, job.getType());
+        assertEquals(JobStatus.PLAN_STARTED, job.getStatus());
     }
 
     @Test
     void start_shouldSetStartDateTime() {
-        var job = new Job(new User());
+        var job = new Job();
         job.setStartDateTime(null);
 
-        job.start(null);
+        job.start();
 
         assertThat(job.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
     }
 
     @Test
-    void end_shouldSetStatusToFinished() {
-        var job = new Job(new User());
+    void end_shouldSetStatus() {
+        var job = new Job();
         job.setStartDateTime(LocalDateTime.now());
 
-        job.end();
+        job.end(JobStatus.PLAN_FINISHED);
 
-        assertEquals(JobStatus.FINISHED, job.getStatus());
+        assertEquals(JobStatus.PLAN_FINISHED, job.getStatus());
     }
 
     @Test
     void end_shouldSetEndDateTime() {
-        var job = new Job(new User());
+        var job = new Job();
         job.setStartDateTime(LocalDateTime.now());
         job.setEndDateTime(null);
-        job.setExecutionTime(null);
 
-        job.end();
-        var timer = Duration.between(job.getStartDateTime(), job.getEndDateTime()).toMillis();
+        job.end(JobStatus.PLAN_FINISHED);
 
         assertThat(job.getEndDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
-        assertThat(job.getExecutionTime()).isNotNull().isEqualTo(timer);
     }
 
     @Test
-    void fail_shouldSetStatusToFinished() {
-        var job = new Job(new User());
-        job.setStartDateTime(LocalDateTime.now());
+    void job_shouldSetId() {
+        var job = new Job(null, null, null);
 
-        job.fail();
-
-        assertEquals(JobStatus.FAILED, job.getStatus());
+        assertThat(job.getId()).isNotBlank();
     }
 
     @Test
-    void fail_shouldSetEndDateTime() {
-        var job = new Job(new User());
-        job.setStartDateTime(LocalDateTime.now());
-        job.setEndDateTime(null);
-        job.setExecutionTime(null);
+    void job_shouldSetType() {
+        var job = new Job(JobType.RUN, null, null);
 
-        job.fail();
-        var timer = Duration.between(job.getStartDateTime(), job.getEndDateTime()).toMillis();
+        assertThat(job.getType()).isNotNull().isEqualTo(JobType.RUN);
+    }
 
-        assertThat(job.getEndDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
-        assertThat(job.getExecutionTime()).isNotNull().isEqualTo(timer);
+    @Test
+    void job_shouldSetStackId() {
+        var job = new Job(null, "stackId_test", null);
+
+        assertThat(job.getStackId()).isNotNull().isEqualTo("stackId_test");
     }
 
     @Test
     void job_shouldSetUser() {
         var user = new User("test");
 
-        var job = new Job(user);
+        var job = new Job(null, null, user);
 
         assertThat(job.getUser()).isNotNull().isEqualTo(user);
     }
 
     @Test
-    void job_shouldThrowAnExceptionIfUserIsNull() {
-        assertThrows(AssertionError.class, () -> new Job(null));
+    void getExecutionTime_shouldReturnSumOfStepExecutionTime() {
+        // given
+        var job = new Job();
+        var step = new Step();
+        step.setExecutionTime(10L);
+        job.getSteps().add(step);
+        step = new Step();
+        step.setExecutionTime(20L);
+        job.getSteps().add(step);
+        job.getSteps().add(new Step());
+
+        // when
+        var result = job.getExecutionTime();
+
+        // then
+        assertEquals(30L, result);
     }
 
+    @Test
+    void getExecutionTime_shouldReturnNullIfNoSteps() {
+        // given
+        var job = new Job();
+
+        // when
+        var result = job.getExecutionTime();
+
+        // then
+        assertNull(result);
+    }
+
+    @Test
+    void getExecutionTime_shouldReturnNullIfNoStepsWithExecutionTime() {
+        // given
+        var job = new Job();
+        job.getSteps().add(new Step());
+        job.getSteps().add(new Step());
+        job.getSteps().add(new Step());
+
+        // when
+        var result = job.getExecutionTime();
+
+        // then
+        assertNull(result);
+    }
 }

@@ -3,10 +3,10 @@ package io.codeka.gaia.stacks.service;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.bo.JobStatus;
 import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.repository.JobRepository;
-import io.codeka.gaia.teams.bo.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class StackCostCalculatorTest {
     private StackCostCalculator calculator;
 
     @Test
-    void stacksWithNoJob_shouldHaveZeroCost(){
+    void stacksWithNoJob_shouldHaveZeroCost() {
         // given
         var stack = new Stack();
         stack.setId("12");
@@ -50,7 +50,7 @@ class StackCostCalculatorTest {
     }
 
     @Test
-    void stacksWithOneRunJob_shouldHaveCostEqualToRunningTime(){
+    void stacksWithOneRunJob_shouldHaveCostEqualToRunningTime() {
         // given
         var stack = new Stack();
         stack.setId("12");
@@ -61,9 +61,10 @@ class StackCostCalculatorTest {
         when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
 
         // a job started two days ago
-        var job = new Job(new User());
-        job.start(JobType.RUN);
-        job.end();
+        var job = new Job();
+        job.setType(JobType.RUN);
+        job.start();
+        job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
         when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job));
 
@@ -75,7 +76,7 @@ class StackCostCalculatorTest {
     }
 
     @Test
-    void stacksWithOneRunJobAndOneStopJob_shouldHaveCostEqualToRunningTime(){
+    void stacksWithOneRunJobAndOneStopJob_shouldHaveCostEqualToRunningTime() {
         // given
         var stack = new Stack();
         stack.setId("12");
@@ -86,15 +87,17 @@ class StackCostCalculatorTest {
         when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
 
         // a job started two days ago
-        var job = new Job(new User());
-        job.start(JobType.RUN);
-        job.end();
+        var job = new Job();
+        job.setType(JobType.RUN);
+        job.start();
+        job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
 
         // a job stopped one day ago
-        var jobStop = new Job(new User());
-        jobStop.start(JobType.STOP);
-        jobStop.end();
+        var jobStop = new Job();
+        jobStop.setType(JobType.DESTROY);
+        jobStop.start();
+        jobStop.end(JobStatus.APPLY_FINISHED);
         jobStop.setStartDateTime(LocalDateTime.now().minusDays(1));
 
         when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job, jobStop));
@@ -107,7 +110,7 @@ class StackCostCalculatorTest {
     }
 
     @Test
-    void stacksWithOneRunJobAndOneStopJobAndRelaunchedOneHourAgo_shouldHaveCostEqualToRunningTime(){
+    void stacksWithOneRunJobAndOneStopJobAndRelaunchedOneHourAgo_shouldHaveCostEqualToRunningTime() {
         // given
         var stack = new Stack();
         stack.setId("12");
@@ -118,21 +121,24 @@ class StackCostCalculatorTest {
         when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
 
         // a job started two days ago
-        var job = new Job(new User());
-        job.start(JobType.RUN);
-        job.end();
+        var job = new Job();
+        job.setType(JobType.RUN);
+        job.start();
+        job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
 
         // a job stopped one day ago
-        var jobStop = new Job(new User());
-        jobStop.start(JobType.STOP);
-        jobStop.end();
+        var jobStop = new Job();
+        jobStop.setType(JobType.DESTROY);
+        jobStop.start();
+        jobStop.end(JobStatus.APPLY_FINISHED);
         jobStop.setStartDateTime(LocalDateTime.now().minusDays(1));
 
         // a job started 6 hours ago
-        var jobRelaunch = new Job(new User());
-        jobRelaunch.start(JobType.RUN);
-        jobRelaunch.end();
+        var jobRelaunch = new Job();
+        jobRelaunch.setType(JobType.RUN);
+        jobRelaunch.start();
+        jobRelaunch.end(JobStatus.APPLY_FINISHED);
         jobRelaunch.setStartDateTime(LocalDateTime.now().minusHours(1));
 
         when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job, jobStop, jobRelaunch));
@@ -145,16 +151,17 @@ class StackCostCalculatorTest {
     }
 
     @Test
-    void stacksWithModuleHavingNoCost_shouldHaveZeroCost(){
+    void stacksWithModuleHavingNoCost_shouldHaveZeroCost() {
         // given
         var stack = new Stack();
         stack.setId("12");
         stack.setModuleId("42");
 
         // a job started two days ago
-        var job = new Job(new User());
-        job.start(JobType.RUN);
-        job.end();
+        var job = new Job();
+        job.setType(JobType.RUN);
+        job.start();
+        job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
         when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job));
 
