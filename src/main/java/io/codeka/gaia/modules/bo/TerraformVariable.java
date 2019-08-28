@@ -1,10 +1,13 @@
 package io.codeka.gaia.modules.bo;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Represents a module variable
  */
 public class TerraformVariable {
 
+    @NotBlank
     private String name;
 
     private String description;
