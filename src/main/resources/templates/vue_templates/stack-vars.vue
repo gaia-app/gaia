@@ -3,10 +3,16 @@
         <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in editableVars" v-if="editableVars.length > 0">
             <b-col>
                 <b-form-group :label="modVar.name" :description="modVar.description">
-                    <b-input v-model="stack.variableValues[modVar.name]"
+                    <b-input v-if="! isListRegex(modVar.validationRegex)"
+                             v-model="stack.variableValues[modVar.name]"
                              :state="validateVariable(modVar).result"
                              @update="recomputeState"
                              trim></b-input>
+                    <b-select v-if="isListRegex(modVar.validationRegex)"
+                              v-model="stack.variableValues[modVar.name]"
+                              :state="validateVariable(modVar).result"
+                              @change="recomputeState"
+                              :options="listOptions(modVar.validationRegex)"></b-select>
                     <b-form-invalid-feedback>{{validateVariable(modVar).message}}</b-form-invalid-feedback>
                 </b-form-group>
             </b-col>
@@ -57,6 +63,16 @@ Vue.component('stack-vars', {
             }
 
             return {result:true};
+        },
+        isListRegex: function(regex){
+            const listRegex = /^\((\w*)(\|(\w*))*\)$/;
+            return listRegex.test(regex);
+        },
+        listOptions: function(regex){
+            const listExtractRegex = /[^()|]+/g;
+            // extracting the values from the regex
+            // also adding empty string to the result to be able to not select anything !
+            return ["", ...regex.match(listExtractRegex)];
         }
     },
     computed: {
