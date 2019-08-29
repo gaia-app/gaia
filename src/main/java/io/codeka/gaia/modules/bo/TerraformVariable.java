@@ -18,6 +18,8 @@ public class TerraformVariable {
 
     private boolean mandatory;
 
+    private String validationRegex;
+
     public String getName() {
         return name;
     }
@@ -56,5 +58,13 @@ public class TerraformVariable {
 
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
+    }
+
+    public String getValidationRegex() {
+        return validationRegex;
+    }
+
+    public void setValidationRegex(String validationRegex) {
+        this.validationRegex = validationRegex;
     }
 }

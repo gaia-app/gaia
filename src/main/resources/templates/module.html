@@ -135,6 +135,11 @@
                         <b-form-checkbox v-model="modVar.editable" switch inline>Editable</b-form-checkbox>
                         <b-form-checkbox v-model="modVar.mandatory" switch inline>Mandatory</b-form-checkbox>
                     </b-col>
+                    <b-col>
+                        <b-form-group label="Validation Regex">
+                            <b-input v-model="modVar.validationRegex"></b-input>
+                        </b-form-group>
+                    </b-col>
                     <b-col cols="1">
                         <b-form-group>
                             <b-button variant="danger" @click="removeVar(modVarIdx)"><i class="fas fa-minus"></i></b-button>

@@ -135,7 +135,7 @@
                         <small>This is the configuration of your module's variables !</small>
                     </div>
                     <div class="block_content">
-                        <stack-vars v-bind:module="stack.module" v-bind:stack="stack" @validated="variablesValidated"></stack-vars>
+                        <stack-vars v-bind:module="stack.module" v-bind:stack="stack" @validated="valid => {debugger;this.state.variablesValid = valid}"></stack-vars>
                     </div>
                 </div>
             </div>
@@ -253,11 +253,7 @@
                     if(this.stack.state === "RUNNING"){
                         this.stack.state = "TO_UPDATE";
                     }
-                },
-                variablesValidated: function(valid){
-                    this.state.variablesValid = valid;
                 }
-
             },
             computed: {
                 editableVars: function() {
@@ -315,7 +311,11 @@
                             message.update({type: "success", message: "Stack saved."});
                             stack_backup = JSON.stringify(this.stack);
                         },
-                        error: () => message.update({type: "error", message: "Error saving stack."})
+                        error: (e) => {
+                            if(e.responseJSON){
+                                message.update({type: "error", message: `Error saving stack : ${e.responseJSON.message}`})
+                            }
+                        }
                     });
                 },
                 stopStack: function () {
