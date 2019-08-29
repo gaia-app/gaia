@@ -58,7 +58,7 @@ class ModuleRestControllerIT {
         mockMvc.perform(get("/api/modules"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited","terraform-docker-mongo-with-mandatory-variable")))
+                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited","terraform-docker-mongo-with-validation")))
                 .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team", "Ze Team")));
     }
 

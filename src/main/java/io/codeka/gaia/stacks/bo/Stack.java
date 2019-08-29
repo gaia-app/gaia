@@ -16,7 +16,8 @@ import java.util.Map;
  * It references the module it is based on, with all the values of its variables.
  * It also has a backend configuration, and a provider configuration (in terraform terms).
  */
-@StackVariablesValidation
+@MandatoryStackVariablesValidation
+@RegexStackVariablesValidation
 public class Stack {
 
     /**

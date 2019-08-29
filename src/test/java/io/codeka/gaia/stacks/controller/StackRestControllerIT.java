@@ -138,7 +138,7 @@ class StackRestControllerIT {
     void updateStack_shouldValidateStackContent() throws Exception {
         mockMvc.perform(put("/api/stacks/test")
                 .contentType(MediaType.APPLICATION_JSON)
-                // empty name
+                // empty name and module id
                 .content("{\"name\":\"\", \"moduleId\": \"\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("name must not be blank")))
@@ -149,8 +149,8 @@ class StackRestControllerIT {
     void saveStack_shouldValidateStackVariables() throws Exception {
         mockMvc.perform(post("/api/stacks")
                 .contentType(MediaType.APPLICATION_JSON)
-                // empty name
-                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variablesValues\":{}}"))
+                // null variable
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{}}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("mandatory variables should not be blank")));
     }
@@ -160,9 +160,18 @@ class StackRestControllerIT {
         mockMvc.perform(post("/api/stacks")
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty name
-                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variablesValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void saveStack_shouldValidateStackVariablesRegex() throws Exception {
+        mockMvc.perform(post("/api/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // null variable
+                .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\",\"mongo_exposed_port\":\"toto\"}}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", is("mandatory variables should not be blank")));
+                .andExpect(jsonPath("$.message", is("variables should match the regex")));
     }
 
 }

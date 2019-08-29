@@ -3,7 +3,7 @@ package io.codeka.gaia.stacks.service;
 import io.codeka.gaia.modules.bo.TerraformVariable;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.stacks.bo.Stack;
-import io.codeka.gaia.stacks.bo.StackVariablesValidation;
+import io.codeka.gaia.stacks.bo.MandatoryStackVariablesValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,13 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Service
-public class StackVariablesValidator implements ConstraintValidator<StackVariablesValidation, Stack> {
+public class MandatoryStackVariablesValidator implements ConstraintValidator<MandatoryStackVariablesValidation, Stack> {
 
     @Autowired
     private TerraformModuleRepository moduleRepository;
 
     @Override
-    public void initialize(StackVariablesValidation constraintAnnotation) {
+    public void initialize(MandatoryStackVariablesValidation constraintAnnotation) {
         // nothing to do here
     }
 

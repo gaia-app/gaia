@@ -42,7 +42,7 @@ gaia.terraformModule.insert([
     },
     {
         "_id": "b39ccd07-80f5-455f-a6b3-b94f915738c4",
-        "name": "terraform-docker-mongo-with-mandatory-variable",
+        "name": "terraform-docker-mongo-with-validation",
         "description": "A sample terraform 🌍 module for running a mongodb 🍃 database inside a docker 🐳 container",
         "gitRepositoryUrl": "https://github.com/juwit/terraform-docker-mongo.git",
         "directory": null,
@@ -63,7 +63,8 @@ gaia.terraformModule.insert([
                 "name": "mongo_exposed_port",
                 "description": "the exposed port of the mongo container",
                 "defaultValue": 27017,
-                "editable": true
+                "editable": true,
+                "validationRegex": "\\d{3,6}"
             }
         ]
     }
