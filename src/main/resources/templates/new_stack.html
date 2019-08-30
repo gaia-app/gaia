@@ -228,7 +228,7 @@ function run(){
         method: "POST"
     }).then(saved => {
         this.stack = saved;
-        window.location = `/stacks/${this.stack.id}/apply`;
+        window.location = `/stacks/${this.stack.id}/RUN`;
     })
 }
 </script>
