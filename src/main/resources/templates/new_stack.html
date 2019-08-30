@@ -9,7 +9,7 @@
 <div class="full_container">
     <div class="inner_container">
 
-        <div th:replace="~{layout/sidebar}"></div>
+        <div id="sidebar" th:class="${sidebar_collapsed ? 'active' : ''}"></div>
 
         <!-- right content -->
         <div id="content">
@@ -41,6 +41,7 @@
 
 <div th:replace="vue_templates/stack-vars"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/sidebar"></div>
 
 <template id="template">
     <div>
@@ -237,15 +238,6 @@ function run(){
         el: "#navigation",
         data: () => ({ page: 'new_stack' }),
         template: "#template-navigation",
-    });
-</script>
-
-<script type="application/ecmascript">
-    $(document).ready(function () {
-        /*-- sidebar js --*/
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
     });
 </script>
 

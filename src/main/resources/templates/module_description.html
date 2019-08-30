@@ -9,7 +9,7 @@
 <div class="full_container">
     <div class="inner_container">
 
-        <div th:replace="~{layout/sidebar}"></div>
+        <div id="sidebar" th:class="${sidebar_collapsed ? 'active' : ''}"></div>
 
         <!-- right content -->
         <div id="content">
@@ -105,6 +105,7 @@
 <div th:replace="vue_templates/readme"></div>
 <div th:replace="vue_templates/markdown"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/sidebar"></div>
 
 <div th:replace="helpers/messenger"></div>
 
@@ -140,15 +141,6 @@
         if (!value || !moment(value).isValid()) return '';
         return moment(value).format('LLL');
     })
-</script>
-
-<script type="application/ecmascript">
-    $(document).ready(function () {
-        /*-- sidebar js --*/
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
 </script>
 
 </body>

@@ -29,7 +29,7 @@
 <div class="full_container">
     <div class="inner_container">
 
-        <div th:replace="~{layout/sidebar}"></div>
+        <div id="sidebar-placeholder"></div>
 
         <!-- right content -->
         <div id="content">
@@ -58,13 +58,7 @@
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<script type="application/ecmascript">
-    $(document).ready(function () {
-        /*-- sidebar js --*/
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
-</script>
+<div th:replace="vue_templates/sidebar"></div>
+
 </body>
 </html>

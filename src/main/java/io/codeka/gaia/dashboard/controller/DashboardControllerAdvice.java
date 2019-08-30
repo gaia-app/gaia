@@ -3,6 +3,7 @@ package io.codeka.gaia.dashboard.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Map;
@@ -21,4 +22,10 @@ public class DashboardControllerAdvice {
     public Map<String, Object> buildInformation(){
         return infoEndpoint.info();
     }
+
+    @ModelAttribute("sidebar_collapsed")
+    public boolean sidebarCollapsed(@CookieValue(name = "sidebar_collapsed", defaultValue = "false") String cookieValue){
+        return Boolean.valueOf(cookieValue);
+    }
+
 }
