@@ -4,6 +4,8 @@ import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +14,22 @@ public class TerraformModule {
 
     private String id;
 
+    @NotBlank
     private String gitRepositoryUrl;
 
     private String gitBranch;
 
     private String directory;
 
+    @Valid
     private List<TerraformVariable> variables = new ArrayList<>();
 
+    @NotBlank
     private String name;
 
     private String description;
 
+    @NotBlank
     private String cliVersion;
 
     @DBRef

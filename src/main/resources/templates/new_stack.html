@@ -86,29 +86,30 @@
                             <hr/>
 
                             <div class="form-group">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" v-model="stack.name">
-                                    <small>The name of your stack.</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" v-model="stack.description">
-                                    <small>The description of your stack.</small>
-                                </div>
+                                <b-form-group
+                                    label="Name"
+                                    description="The name of your stack">
+                                    <b-input v-model="stack.name" :state="typeof stack.name !== 'undefined' && stack.name !== ''" autofocus></b-input>
+                                    <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                                </b-form-group>
+                                <b-form-group
+                                    label="Description"
+                                    description="The description of your stack">
+                                    <b-input v-model="stack.description"></b-input>
+                                </b-form-group>
                             </div>
 
                             <ul class="list-inline float-right">
-                                <li><button type="button" class="btn btn-primary next-step">Next</button></li>
+                                <li><b-button variant="primary" class="next-step" :disabled="typeof stack.name === 'undefined' || stack.name.trim() === ''"><i class="fas fa-arrow-circle-right"></i> Next</b-button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step2">
                             <h2>Input variables</h2>
                             <hr/>
-                            <stack-vars v-bind:module="module" v-bind:stack="stack"></stack-vars>
+                            <stack-vars v-bind:module="module" v-bind:stack="stack" @validated="validated => this.stacksVariablesValidated = validated"></stack-vars>
                             <ul class="d-flex flex-row-reverse">
-                                <li><button type="button" class="btn btn-primary next-step ml-1">Next</button></li>
-                                <li><button type="button" class="btn btn-light prev-step">Previous</button></li>
+                                <li><b-button variant="primary" class="next-step ml-1" :disabled="!this.stacksVariablesValidated"><i class="fas fa-arrow-circle-right"></i> Next</b-button></li>
+                                <li><b-button variant="light" class="prev-step"><i class="fas fa-arrow-circle-left"></i> Previous</b-button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step3">
@@ -116,9 +117,9 @@
                             <hr/>
                             <p>Save your stack and run it !</p>
                             <ul class="d-flex flex-row-reverse flex-grow-0">
-                                <li><button type="button" class="btn btn-primary ml-1" @click="run"><i class="fas fa-rocket"></i> Save & Run</button></li>
-                                <li><button type="button" class="btn btn-primary ml-1" @click="save"><i class="far fa-save"></i> Save & Continue</button></li>
-                                <li><button type="button" class="btn btn-light prev-step">Previous</button></li>
+                                <li><b-button variant="primary" class="ml-1" @click="run"><i class="fas fa-rocket"></i> Save & Run</b-button></li>
+                                <li><b-button variant="primary" class="ml-1" @click="save"><i class="far fa-save"></i> Save & Continue</b-button></li>
+                                <li><b-button variant="light" class="prev-step"><i class="fas fa-arrow-circle-left"></i> Previous</b-button></li>
                             </ul>
                         </div>
                         <div class="clearfix"></div>
@@ -172,29 +173,30 @@ function prevTab(elem) {
     $(elem).prev().find('a[data-toggle="tab"]').click();
 }
 
-
 const moduleId = [[${moduleId}]];
-let module;
-let stack = {
-    moduleId,
-    variableValues: {}
+
+const store = {
+    state : {
+        stack : {
+            moduleId,
+            variableValues: {}
+        },
+        stacksVariablesValidated: false
+    }
 };
 
 function loadModule(){
     console.log("loadModule");
     return $.get(`/api/modules/${moduleId}`).then(data => {
-        module = data;
+        store.state.module = data;
     });
 }
 
 loadModule()
-    .then(() => {
+    .then(function () {
         new Vue({
             el: "#app",
-            data: {
-                stack,
-                module
-            },
+            data: _ => store.state,
             template: "#template",
             methods: {
                 save,
@@ -205,33 +207,27 @@ loadModule()
     });
 
 function save(){
-    console.log("save");
     $.ajax({
         url: `/api/stacks`,
-        data: JSON.stringify(stack),
+        data: JSON.stringify(this.stack),
         contentType: "application/json",
         method: "POST"
     }).then(saved => {
-        stack = saved;
-        console.log("save done !");
-        // redirect
-        window.location = `/stacks/${stack.id}`;
+        this.stack = saved;
+        window.location = `/stacks/${this.stack.id}`;
     });
 }
 
 function run(){
     // save the stack & run job
-    console.log("run");
     $.ajax({
         url: `/api/stacks`,
-        data: JSON.stringify(stack),
+        data: JSON.stringify(this.stack),
         contentType: "application/json",
         method: "POST"
     }).then(saved => {
-        stack = saved;
-        console.log("run done !");
-        // redirect
-        window.location = `/stacks/${stack.id}/apply`;
+        this.stack = saved;
+        window.location = `/stacks/${this.stack.id}/apply`;
     })
 }
 </script>

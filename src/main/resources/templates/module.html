@@ -44,61 +44,63 @@
         </div>
 
         <div class="block_content">
-            <form v-on:submit.prevent="post">
-                <div class="form-row">
-                    <div class="form-group col-md-11">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" v-model="module.name">
-                    </div>
-                    <div class="form-group col-md-1">
-                        <label for="cliVersion">CLI Version</label>
-                        <b-form-select class="form-control" id="cliVersion" v-model="module.cliVersion" :options="versions"></b-form-select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" v-model="module.description">
-                </div>
+            <form>
+                <b-form-row>
+                    <b-col cols="11">
+                        <b-form-group label="Name" description="The name of your module">
+                            <b-input v-model="module.name" :state="notEmpty(module.name)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-col>
+                    <b-col>
+                        <b-form-group label="CLI Version">
+                            <b-form-select v-model="module.cliVersion" :options="versions" :state="notEmpty(module.cliVersion)"></b-form-select>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-col>
+                </b-form-row>
+                <b-form-group label="Description" description="The description of your module">
+                    <b-input v-model="module.description"></b-input>
+                </b-form-group>
 
                 <b-form-row>
                     <b-col cols="3">
-                        <b-form-group id="estimatedMonthlyCost-fieldSet"
-                                      label="Estimated monthly cost"
-                                      label-for="estimatedMonthlyCost">
+                        <b-form-group label="Estimated monthly cost">
                             <b-input-group append="$">
-                                <b-form-input id="estimatedMonthlyCost" v-model="module.estimatedMonthlyCost"></b-form-input>
+                                <b-form-input v-model="module.estimatedMonthlyCost"></b-form-input>
                             </b-input-group>
 
                         </b-form-group>
                     </b-col>
                 </b-form-row>
 
-                <b-form-group id="estimatedMonthlyCostDescription-fieldSet"
-                              label="Description of estimated monthly cost"
-                              label-for="estimatedMonthlyCostDescription">
+                <b-form-group label="Description of estimated monthly cost">
                     <b-input-group>
                         <b-input-group-text slot="append"><i class="fab fa-markdown"></i></b-input-group-text>
-                        <b-form-textarea id="estimatedMonthlyCostDescription" v-model="module.estimatedMonthlyCostDescription"></b-form-textarea>
+                        <b-form-textarea v-model="module.estimatedMonthlyCostDescription"></b-form-textarea>
                     </b-input-group>
                 </b-form-group>
 
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label for="gitRepositoryUrl">Git Repository URL</label>
-                        <input type="text" class="form-control" id="gitRepositoryUrl" v-model="module.gitRepositoryUrl">
-                    </div>
-                    <div class="form-group col">
-                        <label for="directory">Git repository directory</label>
-                        <input type="text" class="form-control" id="directory" v-model="module.directory">
-                    </div>
-                </div>
+                <b-form-row>
+                    <b-col>
+                        <b-form-group label="Git Repository URL" description="The URL of the module's git repository">
+                            <b-input v-model="module.gitRepositoryUrl" :state="notEmpty(module.gitRepositoryUrl)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-col>
+                    <b-col>
+                        <b-form-group label="Git repository directory" description="The sub-directory of the module's code inside the repository (leave empty if root)">
+                            <b-input v-model="module.directory"></b-input>
+                        </b-form-group>
+                    </b-col>
+                </b-form-row>
 
                 <h2>Authorized Teams</h2>
 
-                <div class="form-row">
-                    <div class="form-group col-md-6">
+                <b-form-row>
+                    <b-col cols="6">
+                    <b-form-group>
                         <vue-multiselect
-
                             :multiple="true"
                             label="id"
                             track-by="id"
@@ -106,37 +108,46 @@
                             placeholder="Select teams"
                             v-model="module.authorizedTeams"
                             :options="teams"></vue-multiselect>
-                    </div>
-                </div>
+                    </b-form-group>
+                    </b-col>
+                </b-form-row>
 
-                <h2>Variables <button type="button" class="btn btn-success" @click="addVar()">+</button></h2>
+                <h2>Variables <b-button variant="success" @click="addVar()"><i class="fas fa-plus"></i></b-button></h2>
 
-                <div class="form-row align-items-end" v-for="(modVar,modVarIdx) in module.variables">
-                    <div class="form-group col-md-3" >
-                        <label for="var-name">Name: </label>
-                        <input type="text" class="form-control" id="var-name" v-model="modVar.name">
-                    </div>
-                    <div class="form-group col-md-3" >
-                        <label for="var-description">Description: </label>
-                        <input type="text" class="form-control" id="var-description" v-model="modVar.description">
-                    </div>
-                    <div class="form-group col-md-2" >
-                        <label for="var-defaultValue">Default value: </label>
-                        <input type="text" class="form-control" id="var-defaultValue" v-model="modVar.defaultValue">
-                    </div>
-                    <div class="form-group col-md-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" :id="'check-' + modVarIdx" v-model="modVar.editable">
-                            <label class="form-check-label" :for="'check-' + modVarIdx"
-                                   data-toggle="tooltip" data-placement="top" title="Set this variable as editable for module users">Editable</label>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <button type="button" class="form-control btn btn-danger" @click="removeVar(modVarIdx)">-</button>
-                    </div>
-                </div>
+                <b-form-row class="align-items-center" v-for="(modVar,modVarIdx) in module.variables">
+                    <b-col cols="3">
+                        <b-form-group label="Name">
+                            <b-input v-model="modVar.name" :state="notEmpty(modVar.name)"></b-input>
+                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-col>
+                    <b-col cols="3">
+                        <b-form-group label="Description">
+                            <b-input v-model="modVar.description"></b-input>
+                        </b-form-group>
+                    </b-col>
+                    <b-col cols="2">
+                        <b-form-group label="Default value">
+                            <b-input v-model="modVar.defaultValue"></b-input>
+                        </b-form-group>
+                    </b-col>
+                    <b-col cols="1">
+                        <b-form-checkbox v-model="modVar.editable" switch inline>Editable</b-form-checkbox>
+                        <b-form-checkbox v-model="modVar.mandatory" switch inline>Mandatory</b-form-checkbox>
+                    </b-col>
+                    <b-col>
+                        <b-form-group label="Validation Regex">
+                            <b-input v-model="modVar.validationRegex"></b-input>
+                        </b-form-group>
+                    </b-col>
+                    <b-col cols="1">
+                        <b-form-group>
+                            <b-button variant="danger" @click="removeVar(modVarIdx)"><i class="fas fa-minus"></i></b-button>
+                        </b-form-group>
+                    </b-col>
+                </b-form-row>
 
-                <button type="submit" class="btn btn-primary"><i class="far fa-save"></i> Save</button>
+                <b-button variant="primary" :disabled="!formValid" @click="post"><i class="far fa-save"></i> Save</b-button>
             </form>
         </div>
     </div>
@@ -162,6 +173,10 @@
     Vue.component('vue-multiselect', window.VueMultiselect.default);
 
     const moduleId = [[${module.id}]];
+
+    function notEmpty(field){
+        return typeof field !== "undefined" && field !== null && field.trim() !== "";
+    }
 
     $.get(`/api/modules/${moduleId}`)
         .then(module => $.get('/api/terraform-cli/versions').then(versions => ({module, versions})))
@@ -193,6 +208,13 @@
                     },
                     addVar(){
                         data.module.variables.push({});
+                    },
+                    notEmpty
+                },
+                computed: {
+                    formValid: _ => {
+                        return [this.module.name, this.module.cliVersion, this.module.gitRepositoryUrl].every(notEmpty)
+                            && this.module.variables.map(variable => variable.name).every(notEmpty);
                     }
                 }
             });

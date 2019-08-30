@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class ModuleRestController {
         this.moduleRepository = moduleRepository;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<TerraformModule> findAllModules(User user){
         if(user.isAdmin()){
             return moduleRepository.findAll();
@@ -41,7 +42,7 @@ public class ModuleRestController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")
-    public TerraformModule saveModule(@PathVariable String id, @RequestBody TerraformModule module){
+    public TerraformModule saveModule(@PathVariable String id, @RequestBody @Valid TerraformModule module){
         return moduleRepository.save(module);
     }
 

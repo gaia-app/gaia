@@ -50,13 +50,13 @@
 
 <template id="stack-controls">
     <div class="page_controls">
-        <a href="#" class="btn btn-primary" @click="saveStack"><i class="far fa-save"></i> Save</a>
-        <a href="#" class="btn btn-primary" @click="runStack" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</a>
-        <a href="#" class="btn btn-warning" @click="runStack" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</a>
+        <b-button variant="primary" @click="saveStack" :disabled="!formValid"><i class="far fa-save"></i> Save</b-button>
+        <b-button varian="primary" @click="runStack" :disabled="!formValid" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</b-button>
+        <b-button variant="warning" @click="runStack" :disabled="!formValid" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</b-button>
 
-        <a href="#" class="btn btn-info" @click="previewStack" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</a>
+        <b-button variant="info" @click="previewStack" :disabled="!formValid" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</b-button>
 
-        <a href="#" class="btn btn-danger" @click="stopStack" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</a>
+        <b-button variant="danger" @click="stopStack" :disabled="!formValid" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</b-button>
     </div>
 </template>
 
@@ -106,10 +106,16 @@
                         </h2>
                     </div>
                     <div class="block_content">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" v-model="stack.name">
-                        </div>
+                        <b-form-group label="Name">
+                            <b-input id="var-name"
+                                     v-model="stack.name"
+                                     :state="stack.name !== ''"
+                                     aria-describedby="input-live-help input-live-feedback"
+                                     trim></b-input>
+                            <b-form-invalid-feedback id="input-live-feedback">This field is mandatory</b-form-invalid-feedback>
+                            <b-form-text id="input-live-help">This is the name of your stack</b-form-text>
+                        </b-form-group>
+                        <b-form-invalid-feedback id="input-live-feedback">This field is mandatory</b-form-invalid-feedback>
                         <div class="form-group">
                             <label for="description">Description</label>
                             <input type="text" class="form-control" id="description" v-model="stack.description">
@@ -129,7 +135,7 @@
                         <small>This is the configuration of your module's variables !</small>
                     </div>
                     <div class="block_content">
-                        <stack-vars v-bind:module="stack.module" v-bind:stack="stack"></stack-vars>
+                        <stack-vars v-bind:module="stack.module" v-bind:stack="stack" @validated="valid => {debugger;this.state.variablesValid = valid}"></stack-vars>
                     </div>
                 </div>
             </div>
@@ -182,64 +188,70 @@
     Vue.filter('dateTime', function (value) {
         if (!value || !moment(value).isValid()) return '';
         return moment(value).format('L LTS');
-    })
+    });
 
     Vue.filter('dateTimeLong', function (value) {
         if (!value || !moment(value).isValid()) return '';
         return moment(value).format('LLL');
-    })
+    });
 
 </script>
 
 <div th:replace="helpers/messenger"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
-    let stack;
+    const store = {
+        state: {
+            stack: {},
+            variablesValid: true
+        }
+    };
 
     $.get(`/api/stacks/${stackId}`)
-        .then(data => stack = data)
+        .then(data => store.state.stack = data)
         .then(loadModule)
         .then(loadJobs)
-        .then(loadOuputs)
+        .then(loadOutputs)
         .then(initFront);
 
     function loadModule(){
-        return $.get(`/api/modules/${stack.moduleId}`).then(module => {
-            stack.module = module;
+        return $.get(`/api/modules/${store.state.stack.moduleId}`).then(module => {
+            store.state.stack.module = module;
         });
     }
 
-    function loadOuputs(){
+    function loadOutputs(){
         // calling terraform backend
         return $.get(`/api/state/${stackId}`)
             .then(data => {
                 // finding stack output
                 // data.modules[0].outputs for CLI <= 0.11.x
-                stack.outputs = data.outputs || data.modules[0].outputs;
+                store.state.stack.outputs = data.outputs || data.modules[0].outputs;
             })
             .catch(e => {
                 // a 404 means that the stack is new
-                stack.outputs = {};
+                store.state.stack.outputs = {};
                 return Promise.resolve();
             });
     }
 
     function loadJobs(){
         return $.get(`/api/jobs?stackId=${stackId}`)
-            .then(data => stack.jobs = data.reverse());
+            .then(data => store.state.stack.jobs = data.reverse());
     }
 
     function initFront(){
         new Vue({
             el: "#app",
-            data: {
-                stack
-            },
+            data: _ => ({
+                state: store.state,
+                stack: store.state.stack
+            }),
             template: "#template",
             methods: {
                 recomputeState: function(){
-                    if(stack.state === "RUNNING"){
-                        stack.state = "TO_UPDATE";
+                    if(this.stack.state === "RUNNING"){
+                        this.stack.state = "TO_UPDATE";
                     }
                 }
             },
@@ -250,36 +262,37 @@
             }
         });
 
-        let stack_backup = JSON.stringify(stack);
+        let stack_backup = JSON.stringify(store.state.stack);
         new Vue({
             el: "#controls",
-            data: {
-                stack
-            },
+            data: _ => ({
+                state: store.state,
+                stack: store.state.stack
+            }),
             template: "#stack-controls",
             methods: {
                 previewStack: function() {
-                    let current_stack = JSON.stringify(stack);
+                    let current_stack = JSON.stringify(this.stack);
                     if (current_stack === stack_backup) {
-                        window.location = `/stacks/${stack.id}/preview`;
+                        window.location = `/stacks/${this.stack.id}/preview`;
                     } else {
                         this.confirmDialog('Preview request', 'Modifications must be saved before. Continue?')
                             .then(value => {
                                 if (value) {
-                                    return this.saveStack().then(_ => window.location = `/stacks/${stack.id}/preview`);
+                                    return this.saveStack().then(_ => window.location = `/stacks/${this.stack.id}/preview`);
                                 }
                             })
                     }
                 },
                 runStack: function () {
-                    let current_stack = JSON.stringify(stack);
+                    let current_stack = JSON.stringify(this.stack);
                     if (current_stack === stack_backup) {
-                        window.location = `/stacks/${stack.id}/apply`;
+                        window.location = `/stacks/${this.stack.id}/apply`;
                     } else {
                         this.confirmDialog('Run request', 'Modifications must be saved before. Continue?')
                             .then(value => {
                                 if (value) {
-                                    return this.saveStack().then(_ => window.location = `/stacks/${stack.id}/apply`);
+                                    return this.saveStack().then(_ => window.location = `/stacks/${this.stack.id}/apply`);
                                 }
                             })
                     }
@@ -290,15 +303,19 @@
                         message: "Saving stack."
                     });
                     return $.ajax({
-                        url: `/api/stacks/${stackId}`,
-                        data: JSON.stringify(stack),
+                        url: `/api/stacks/${this.stack.id}`,
+                        data: JSON.stringify(this.stack),
                         contentType: "application/json",
                         method: "PUT",
                         success: () => {
                             message.update({type: "success", message: "Stack saved."});
-                            stack_backup = JSON.stringify(stack);
+                            stack_backup = JSON.stringify(this.stack);
                         },
-                        error: () => message.update({type: "error", message: "Error saving stack."})
+                        error: (e) => {
+                            if(e.responseJSON){
+                                message.update({type: "error", message: `Error saving stack : ${e.responseJSON.message}`})
+                            }
+                        }
                     });
                 },
                 stopStack: function () {
@@ -307,7 +324,7 @@
                         .then(value => {
                             if (value) {
                                 // redirect
-                                window.location = `/stacks/${stack.id}/stop`;
+                                window.location = `/stacks/${this.stack.id}/stop`;
                             }
                         });
                 },
@@ -322,8 +339,13 @@
                         returnFocus: 'body'
                     });
                  }
+            },
+            computed: {
+                formValid: function(){
+                    return this.state.variablesValid && this.stack.name.trim() !== "";
+                }
             }
-        });
+        })
     }
 
     new Vue({

@@ -4,6 +4,7 @@ import io.codeka.gaia.teams.bo.Team;
 import io.codeka.gaia.teams.bo.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.Map;
  * It references the module it is based on, with all the values of its variables.
  * It also has a backend configuration, and a provider configuration (in terraform terms).
  */
+@MandatoryStackVariablesValidation
+@RegexStackVariablesValidation
 public class Stack {
 
     /**
@@ -25,6 +28,7 @@ public class Stack {
     /**
      * The id of the referenced module
      */
+    @NotBlank
     private String moduleId;
 
     /**
@@ -35,6 +39,7 @@ public class Stack {
     /**
      * The name of the stack
      */
+    @NotBlank
     private String name;
 
     /**

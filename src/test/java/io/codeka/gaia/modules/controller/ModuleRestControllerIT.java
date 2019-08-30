@@ -57,9 +57,9 @@ class ModuleRestControllerIT {
     void findAllModules_shouldReturnAllModules_forAdmin() throws Exception {
         mockMvc.perform(get("/api/modules"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited")))
-                .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team")));
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited","terraform-docker-mongo-with-validation")))
+                .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team", "Ze Team")));
     }
 
     @Test
@@ -96,7 +96,7 @@ class ModuleRestControllerIT {
     void saveModule_shouldNotBeAccessible_forStandardUsers() throws Exception {
         mockMvc.perform(put("/api/modules/test")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"module-test\"}"))
+                .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isForbidden());
     }
 
@@ -104,10 +104,32 @@ class ModuleRestControllerIT {
     void saveModule_shouldBeAccessible_forAdmin() throws Exception {
         mockMvc.perform(put("/api/modules/test")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"module-test\"}"))
+                .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.name", is("module-test")));
+    }
+
+    @Test
+    void saveModule_shouldValidateModuleContent_forBlankFields() throws Exception {
+        mockMvc.perform(put("/api/modules/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty module
+                .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("name must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("cliVersion must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("gitRepositoryUrl must not be blank")));
+    }
+
+    @Test
+    void saveModule_shouldValidateModuleVariables_forBlankFields() throws Exception {
+        mockMvc.perform(put("/api/modules/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty variable name
+                .content("{\"variables\":[{\"name\":\"  \"}]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("variables[0].name must not be blank")));
     }
 
 }

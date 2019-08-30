@@ -1,10 +1,13 @@
 package io.codeka.gaia.modules.bo;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Represents a module variable
  */
 public class TerraformVariable {
 
+    @NotBlank
     private String name;
 
     private String description;
@@ -12,6 +15,10 @@ public class TerraformVariable {
     private String defaultValue;
 
     private boolean editable;
+
+    private boolean mandatory;
+
+    private String validationRegex;
 
     public String getName() {
         return name;
@@ -43,5 +50,21 @@ public class TerraformVariable {
 
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    public String getValidationRegex() {
+        return validationRegex;
+    }
+
+    public void setValidationRegex(String validationRegex) {
+        this.validationRegex = validationRegex;
     }
 }
