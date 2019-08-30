@@ -1,5 +1,5 @@
 <template id="sidebar-template">
-    <nav id="sidebar">
+    <nav id="sidebar" th:class="${sidebar_collapsed ? 'active' : ''}">
         <div>
             <div class="sidebar-part">
                 <div class="sidebar-header">
@@ -37,15 +37,20 @@
     </nav>
 </template>
 
-<script type="application/ecmascript">
+<script th:inline="javascript"  type="application/ecmascript">
+    let sidebar_collapsed = [[${sidebar_collapsed}]];
+
     new Vue({
-        el: "#sidebar-placeholder",
-        template: "#sidebar-template"
+        el: "#sidebar",
+        template: "#sidebar-template",
     });
 
     $(document).ready(function () {
         /*-- sidebar js --*/
+        // sidebarCollapse button is in another part (header)
         $('#sidebarCollapse').on('click', function () {
+            sidebar_collapsed = ! sidebar_collapsed;
+            document.cookie = `sidebar_collapsed=${sidebar_collapsed}`;
             $('#sidebar').toggleClass('active');
         });
     });
