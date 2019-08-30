@@ -10,7 +10,7 @@
 <div class="full_container">
     <div class="inner_container">
 
-        <div th:replace="~{layout/sidebar}"></div>
+        <div id="sidebar-placeholder"></div>
 
         <!-- right content -->
         <div id="content">
@@ -68,6 +68,8 @@
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
 
+<div th:replace="vue_templates/sidebar"></div>
+
 <div th:replace="vue_templates/breadcrumb"></div>
 <div th:replace="vue_templates/dashboard-widget"></div>
 
@@ -95,13 +97,5 @@
     });
 </script>
 
-<script type="application/ecmascript">
-    $(document).ready(function () {
-        /*-- sidebar js --*/
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
-</script>
 </body>
 </html>
