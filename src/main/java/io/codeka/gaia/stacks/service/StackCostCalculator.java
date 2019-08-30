@@ -55,11 +55,11 @@ public class StackCostCalculator {
 
         for(var job : jobs ){
             // add
-            if(job.getType() == JobType.RUN && job.getStatus() == JobStatus.FINISHED){
+            if(job.getType() == JobType.RUN && job.getStatus() == JobStatus.APPLY_FINISHED){
                 start =job.getStartDateTime();
                 end = LocalDateTime.now();
             }
-            if(job.getType() == JobType.STOP && job.getStatus() == JobStatus.FINISHED){
+            if(job.getType() == JobType.DESTROY && job.getStatus() == JobStatus.APPLY_FINISHED){
                 end = job.getStartDateTime();
                 duration = duration.plus(Duration.between(start, end));
 

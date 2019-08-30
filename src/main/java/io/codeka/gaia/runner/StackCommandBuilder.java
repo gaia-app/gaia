@@ -71,6 +71,15 @@ public class StackCommandBuilder {
     }
 
     /**
+     * builds the terraform plan script
+     *
+     * @return
+     */
+    String buildPlanScript(Stack stack, TerraformModule module) {
+        return buildScript(stack, module, this::buildPlanCommand);
+    }
+
+    /**
      * builds the terraform apply script
      *
      * @return
@@ -84,8 +93,8 @@ public class StackCommandBuilder {
      *
      * @return
      */
-    String buildPlanScript(Stack stack, TerraformModule module) {
-        return buildScript(stack, module, this::buildPlanCommand);
+    String buildPlanDestroyScript(Stack stack, TerraformModule module) {
+        return buildScript(stack, module, this::buildPlanDestroyCommand);
     }
 
     /**
@@ -95,6 +104,17 @@ public class StackCommandBuilder {
      */
     String buildDestroyScript(Stack stack, TerraformModule module) {
         return buildScript(stack, module, this::buildDestroyCommand);
+    }
+
+    /**
+     * builds the terraform plan command
+     *
+     * @param stack
+     * @param module
+     * @return
+     */
+    String buildPlanCommand(Stack stack, TerraformModule module) {
+        return buildCommand(stack, module, "terraform plan -detailed-exitcode");
     }
 
     /**
@@ -109,14 +129,14 @@ public class StackCommandBuilder {
     }
 
     /**
-     * builds the terraform plan command
+     * builds the terraform plan destroy command
      *
      * @param stack
      * @param module
      * @return
      */
-    String buildPlanCommand(Stack stack, TerraformModule module) {
-        return buildCommand(stack, module, "terraform plan -detailed-exitcode");
+    String buildPlanDestroyCommand(Stack stack, TerraformModule module) {
+        return buildCommand(stack, module, "terraform plan -destroy -detailed-exitcode");
     }
 
     /**

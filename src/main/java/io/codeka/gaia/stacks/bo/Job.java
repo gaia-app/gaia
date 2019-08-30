@@ -1,49 +1,50 @@
 package io.codeka.gaia.stacks.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.codeka.gaia.teams.bo.User;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.util.CollectionUtils;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
- * A job is the instanciation of a stack
+ * A job instantiates or stops a stack
  */
 public class Job {
 
     private String id;
-
     private String stackId;
-
     private LocalDateTime startDateTime;
-
     private LocalDateTime endDateTime;
-
-    private Long executionTime;
-
-    @Transient
-    private StringWriter stringWriter = new StringWriter();
-
-    private String logs;
-
-    private JobStatus jobStatus;
-
-    private JobType jobType;
-
+    private JobType type;
+    private JobStatus status;
     private String cliVersion;
-
+    @DBRef
+    private List<Step> steps = new ArrayList<>(2);
     @DBRef
     private User user;
 
-    public Job(User user) {
-        if (user == null) {
-            throw new AssertionError("A job must have a non null user!");
-        }
+    public Job() {
+    }
+
+    public Job(JobType jobType, String stackId, User user) {
+        this.id = UUID.randomUUID().toString();
+        this.type = jobType;
+        this.stackId = stackId;
         this.user = user;
+    }
+
+    public void start() {
+        this.status = JobStatus.PLAN_STARTED;
+        this.startDateTime = LocalDateTime.now();
+    }
+
+    public void end(JobStatus jobStatus) {
+        this.endDateTime = LocalDateTime.now();
+        this.status = jobStatus;
     }
 
     public String getId() {
@@ -54,62 +55,12 @@ public class Job {
         this.id = id;
     }
 
-    public String getLogs() {
-        if(jobStatus == JobStatus.FINISHED || jobStatus == JobStatus.FAILED){
-            return logs;
-        }
-        return stringWriter.toString();
-    }
-
-    @JsonIgnore
-    public Writer getLogsWriter(){
-        return stringWriter;
-    }
-
-    public JobStatus getStatus(){
-        return this.jobStatus;
-    }
-
-    public void start(JobType jobType) {
-        this.jobStatus = JobStatus.RUNNING;
-        this.jobType = jobType;
-        this.startDateTime = LocalDateTime.now();
-    }
-
-    public void end() {
-        this.jobStatus = JobStatus.FINISHED;
-        // getting final logs
-        this.logs = this.stringWriter.toString();
-        this.endDateTime = LocalDateTime.now();
-        this.executionTime = Duration.between(startDateTime, endDateTime).toMillis();
-    }
-
-    public void fail() {
-        this.jobStatus = JobStatus.FAILED;
-        // getting final logs
-        this.logs = this.stringWriter.toString();
-        this.endDateTime = LocalDateTime.now();
-        this.executionTime = Duration.between(startDateTime, endDateTime).toMillis();
-    }
-
     public String getStackId() {
         return stackId;
     }
 
     public void setStackId(String stackId) {
         this.stackId = stackId;
-    }
-
-    public JobType getType() {
-        return this.jobType;
-    }
-
-    public String getCliVersion() {
-        return cliVersion;
-    }
-
-    public void setCliVersion(String cliVersion) {
-        this.cliVersion = cliVersion;
     }
 
     public LocalDateTime getStartDateTime() {
@@ -128,15 +79,53 @@ public class Job {
         this.endDateTime = endDateTime;
     }
 
-    public Long getExecutionTime() {
-        return executionTime;
+    public JobType getType() {
+        return type;
     }
 
-    public void setExecutionTime(Long executionTime) {
-        this.executionTime = executionTime;
+    public void setType(JobType type) {
+        this.type = type;
+    }
+
+    public JobStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(JobStatus status) {
+        this.status = status;
+    }
+
+    public String getCliVersion() {
+        return cliVersion;
+    }
+
+    public void setCliVersion(String cliVersion) {
+        this.cliVersion = cliVersion;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getExecutionTime() {
+        if (CollectionUtils.isEmpty(this.steps)) {
+            return null;
+        }
+        return this.steps.stream()
+                .map(Step::getExecutionTime)
+                .filter(Objects::nonNull)
+                .reduce(null, (a, b) -> a == null ? b : a + b);
     }
 }

@@ -1813,7 +1813,7 @@ button.main_bt {
 /*    border-left-color: #ff9800;*/
 /*}*/
 
-.job_list li.RUNNING {
+.job_list li[class*=STARTED] {
     border-left-color: #2196f3;
 }
 
@@ -1821,11 +1821,11 @@ button.main_bt {
 /*    border-left-color: #673ab7;*/
 /*}*/
 
-.job_list li.FAILED {
+.job_list li[class*=FAILED] {
     border-left-color: #e91e63;
 }
 
-.job_list li.FINISHED {
+.job_list li[class*=FINISHED] {
     border-left-color: #1ed085;
 }
 
@@ -1862,27 +1862,23 @@ button.main_bt {
     margin-left: 5px;
 }
 
-.job_list .job .job_attr_value.FINISHED {
-    color: #1ed085;
-}
-
-.job_list .job .job_attr_value.RUNNING {
+.job_list .job .job_attr_value[class*=STARTED] {
     color: #2196f3;
 }
 
-.job_list .job .job_attr_value.FAILED {
-    color: #e91e63;
+.job_list .job .job_attr_value[class*=FINISHED] {
+    color: #1ed085;
 }
 
-.job_list .job .job_attr_value.PREVIEW {
-    color: #17a2b8;
+.job_list .job .job_attr_value[class*=FAILED] {
+    color: #dc3545;
 }
 
 .job_list .job .job_attr_value.RUN {
     color: #007bff;
 }
 
-.job_list .job .job_attr_value.STOP {
+.job_list .job .job_attr_value.DESTROY {
     color: #dc3545;
 }
 

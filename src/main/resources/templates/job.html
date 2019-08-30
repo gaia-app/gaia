@@ -41,19 +41,26 @@
                 </div>
                 <div class="block_content">
 
-                    <div class="alert alert-primary" role="alert" v-if="job.status === 'RUNNING'">
-                        Your deployment is running ! <i class="fas fa-circle-notch fa-spin"></i>
-                    </div>
+                    <job-metadata :job="job" :stack="stack"></job-metadata>
 
-                    <div class="alert alert-success" role="alert" v-if="job.status === 'FINISHED'">
-                        Your deployment is finished ! <i class="far fa-grin-stars"></i>
-                    </div>
+                    <job-step
+                            :id="'step-1'"
+                            :header-title="firstStepTitle"
+                            :step="job.steps[0]">
+                    </job-step>
 
-                    <div class="alert alert-warning" role="alert" v-if="job.status === 'FAILED'">
-                        Your deployment has failed ! <i class="far fa-frown"></i>
-                    </div>
+                    <job-apply-confirm
+                            v-if="isSecondStepDoable"
+                            :title="secondStepTitle"
+                            @apply="applyJob">
+                    </job-apply-confirm>
 
-                    <console :id="'job-logs'" :css-style="'max-height: 500px'" :logs="job.logs"></console>
+                    <job-step
+                            :id="'step-2'"
+                            :header-title="secondStepTitle"
+                            :step="job.steps[1]">
+                    </job-step>
+
                 </div>
             </div>
         </div>
@@ -67,6 +74,7 @@
 <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 <script src="/webjars/bootstrap-vue/2.0.0-rc.26/dist/bootstrap-vue.js"></script>
@@ -78,63 +86,82 @@
 <div th:replace="vue_templates/cli-badge"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
 <div th:replace="vue_templates/console"></div>
+<div th:replace="vue_templates/user-badge"></div>
+<div th:replace="vue_templates/job/job-metadata"></div>
+<div th:replace="vue_templates/job/job-step"></div>
+<div th:replace="vue_templates/job/job-apply-confirm"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
     const jobId = [[${jobId}]];
+    const editionMode = [[${edition}]];
 
-    let stack;
-    let job;
-    let vueData = {};
+    const store = {
+        state: {
+            stack: {},
+            job: {}
+        }
+    };
+
+    function getStack() {
+        return $.get(`/api/stacks/${stackId}`)
+            .then(data => store.state.stack = data);
+    }
+
+    function getJob() {
+        return $.get(`/api/stacks/${stackId}/jobs/${jobId}`)
+            .then(data => store.state.job = data);
+    }
 
     let interval;
-
-    function getStack(){
-        return $.get(`/api/stacks/${stackId}`)
-            .then(data => stack = data);
+    function planOrApplyJob(type) {
+        if (editionMode) return;
+        return $.post(`/api/jobs/${jobId}/${type}`)
+            .then(_ => interval = setInterval(refreshJob, 1000));
     }
 
-    function getJob(){
+    function refreshJob() {
         return $.get(`/api/stacks/${stackId}/jobs/${jobId}`)
-            .then(data => job = data);
-    }
-
-    Promise.all([getStack(), getJob()])
-        .then(_ => {
-            vueData = {
-                stack,
-                job
-            };
-            initFront();
-            interval = setInterval(refreshJob, 1000);
-        });
-
-    function refreshJob(){
-        $.get(`/api/stacks/${stackId}/jobs/${jobId}`)
             .then(data => {
-                job = data;
-                vueData.job = job;
-                if(job.status !== "RUNNING"){
+                store.state.job = data;
+                if (store.state.job.status.indexOf("STARTED") < 0) {
                     clearInterval(interval);
                 }
             });
     }
 
-    function initFront(){
-        new Vue({
-            el: "#app",
-            data: vueData,
-            template: "#template"
+    Promise.all([getStack(), getJob()])
+        .then(_ => planOrApplyJob('PLAN'))
+        .then(_ => {
+            new Vue({
+                el: "#app",
+                data: () => store.state,
+                template: "#template",
+                computed: {
+                    firstStepTitle: () => store.state.job.type === 'RUN' ? 'plan' : 'plan destroy',
+                    secondStepTitle: () => store.state.job.type === 'RUN' ? 'apply' : 'destroy',
+                    isSecondStepDoable: () => {
+                        if (editionMode) return false;
+                        return store.state.job.status.indexOf('STARTED') < 0 &&
+                            store.state.job.status.indexOf('FAILED') < 0 &&
+                            store.state.job.status.indexOf('APPLY') < 0;
+                    }
+                },
+                methods: {
+                    applyJob: function () {
+                        planOrApplyJob('APPLY');
+                    }
+                }
+            });
         });
-    }
 </script>
 
 <script th:inline="javascript" type="application/ecmascript">
     new Vue({
         el: "#navigation",
-        data: () => ({ page: 'job', stackId }),
+        data: () => ({page: 'job', stackId}),
         template: "#template-navigation",
     });
 </script>

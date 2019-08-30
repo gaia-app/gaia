@@ -54,10 +54,7 @@
         <b-button variant="primary" @click="saveStack" :disabled="!formValid"><i class="far fa-save"></i> Save</b-button>
         <b-button varian="primary" @click="runStack" :disabled="!formValid" v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"><i class="fas fa-rocket"></i> Run</b-button>
         <b-button variant="warning" @click="runStack" :disabled="!formValid" v-if="stack.state === 'TO_UPDATE'"><i class="fas fa-upload"></i> Update</b-button>
-
-        <b-button variant="info" @click="previewStack" :disabled="!formValid" v-if="stack.state !== 'RUNNING'"><i class="fas fa-binoculars"></i> Preview</b-button>
-
-        <b-button variant="danger" @click="stopStack" :disabled="!formValid" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Stop</b-button>
+        <b-button variant="danger" @click="stopStack" :disabled="!formValid" v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"><i class="fas fa-stop-circle"></i> Destroy</b-button>
     </div>
 </template>
 
@@ -272,32 +269,6 @@
             }),
             template: "#stack-controls",
             methods: {
-                previewStack: function() {
-                    let current_stack = JSON.stringify(this.stack);
-                    if (current_stack === stack_backup) {
-                        window.location = `/stacks/${this.stack.id}/preview`;
-                    } else {
-                        this.confirmDialog('Preview request', 'Modifications must be saved before. Continue?')
-                            .then(value => {
-                                if (value) {
-                                    return this.saveStack().then(_ => window.location = `/stacks/${this.stack.id}/preview`);
-                                }
-                            })
-                    }
-                },
-                runStack: function () {
-                    let current_stack = JSON.stringify(this.stack);
-                    if (current_stack === stack_backup) {
-                        window.location = `/stacks/${this.stack.id}/apply`;
-                    } else {
-                        this.confirmDialog('Run request', 'Modifications must be saved before. Continue?')
-                            .then(value => {
-                                if (value) {
-                                    return this.saveStack().then(_ => window.location = `/stacks/${this.stack.id}/apply`);
-                                }
-                            })
-                    }
-                },
                 saveStack: function(){
                     const message = Messenger().post({
                         type: "info",
@@ -319,13 +290,26 @@
                         }
                     });
                 },
+                runStack: function () {
+                    let current_stack = JSON.stringify(this.stack);
+                    if (current_stack === stack_backup) {
+                        window.location = `/stacks/${this.stack.id}/RUN`;
+                    } else {
+                        this.confirmDialog('Run request', 'Modifications must be saved before. Continue?')
+                            .then(value => {
+                                if (value) {
+                                    return this.saveStack().then(_ => window.location = `/stacks/${this.stack.id}/RUN`);
+                                }
+                            })
+                    }
+                },
                 stopStack: function () {
                     // ask for confirmation
                     this.confirmDialog('Stop request', 'This will completely stop the stack. Continue?')
                         .then(value => {
                             if (value) {
                                 // redirect
-                                window.location = `/stacks/${this.stack.id}/stop`;
+                                window.location = `/stacks/${this.stack.id}/DESTROY`;
                             }
                         });
                 },

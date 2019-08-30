@@ -27,6 +27,110 @@ class StackCommandBuilderTest {
     }
 
     @Test
+    void buildPlanCommand_shouldGenerateASimpleApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        module.setVariables(Collections.emptyList());
+
+        var stack = new Stack();
+
+        var command = stackCommandBuilder.buildPlanCommand(stack, module);
+
+        assertEquals("terraform plan -detailed-exitcode ", command);
+    }
+
+    @Test
+    void buildPlanCommand_shouldGenerateASingleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value"));
+
+        var command = stackCommandBuilder.buildPlanCommand(stack, module);
+
+        assertEquals("terraform plan -detailed-exitcode -var \"test=value\" ", command);
+    }
+
+    @Test
+    void buildPlanCommand_shouldGenerateAMultipleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        var variable2 = new TerraformVariable();
+        variable2.setName("test2");
+        module.setVariables(List.of(variable, variable2));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value", "test2", "value2"));
+
+        var command = stackCommandBuilder.buildPlanCommand(stack, module);
+
+        assertEquals("terraform plan -detailed-exitcode -var \"test=value\" -var \"test2=value2\" ", command);
+    }
+
+    @Test
+    void buildPlanCommand_shouldUseDefaultVariableValues() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setDefaultValue("defaultValue");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Collections.emptyMap());
+
+        var command = stackCommandBuilder.buildPlanCommand(stack, module);
+
+        assertEquals("terraform plan -detailed-exitcode -var \"test=defaultValue\" ", command);
+    }
+
+    @Test
+    void buildPlanScript_shouldGenerateAFullScript() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        TerraformModule module = moduleWithDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildPlanScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertTrue(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform plan"));
+    }
+
+    @Test
+    void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        TerraformModule module = moduleWithoutDirectory();
+
+        var stack = new Stack();
+        var script = stackCommandBuilder.buildPlanScript(stack, module);
+
+        assertTrue(script.contains("git clone git://test module"));
+        assertTrue(script.contains("cd module"));
+        assertFalse(script.contains("cd directory"));
+        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("terraform version"));
+        assertTrue(script.contains("terraform init"));
+        assertTrue(script.contains("terraform plan"));
+    }
+
+    @Test
     void buildApplyCommand_shouldGenerateASimpleApplyCommand() {
         var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
@@ -35,9 +139,9 @@ class StackCommandBuilderTest {
 
         var stack = new Stack();
 
-        var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
+        var command = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply -auto-approve ", applyCommand);
+        assertEquals("terraform apply -auto-approve ", command);
     }
 
     @Test
@@ -52,9 +156,9 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         stack.setVariableValues(Map.of("test", "value"));
 
-        var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
+        var command = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply -auto-approve -var \"test=value\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=value\" ", command);
     }
 
     @Test
@@ -71,9 +175,9 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         stack.setVariableValues(Map.of("test", "value", "test2", "value2"));
 
-        var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
+        var command = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply -auto-approve -var \"test=value\" -var \"test2=value2\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=value\" -var \"test2=value2\" ", command);
     }
 
     @Test
@@ -89,9 +193,9 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         stack.setVariableValues(Collections.emptyMap());
 
-        var applyCommand = stackCommandBuilder.buildApplyCommand(stack, module);
+        var command = stackCommandBuilder.buildApplyCommand(stack, module);
 
-        assertEquals("terraform apply -auto-approve -var \"test=defaultValue\" ", applyCommand);
+        assertEquals("terraform apply -auto-approve -var \"test=defaultValue\" ", command);
     }
 
     @Test
@@ -131,13 +235,81 @@ class StackCommandBuilderTest {
     }
 
     @Test
-    void buildPlanScript_shouldGenerateAFullScript() {
+    void buildPlanDestroyCommand_shouldGenerateASimpleApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        module.setVariables(Collections.emptyList());
+
+        var stack = new Stack();
+
+        var command = stackCommandBuilder.buildPlanDestroyCommand(stack, module);
+
+        assertEquals("terraform plan -destroy -detailed-exitcode ", command);
+    }
+
+    @Test
+    void buildPlanDestroyCommand_shouldGenerateASingleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value"));
+
+        var command = stackCommandBuilder.buildPlanDestroyCommand(stack, module);
+
+        assertEquals("terraform plan -destroy -detailed-exitcode -var \"test=value\" ", command);
+    }
+
+    @Test
+    void buildPlanDestroyCommand_shouldGenerateAMultipleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        var variable2 = new TerraformVariable();
+        variable2.setName("test2");
+        module.setVariables(List.of(variable, variable2));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value", "test2", "value2"));
+
+        var command = stackCommandBuilder.buildPlanDestroyCommand(stack, module);
+
+        assertEquals("terraform plan -destroy -detailed-exitcode -var \"test=value\" -var \"test2=value2\" ", command);
+    }
+
+    @Test
+    void buildPlanDestroyCommand_shouldUseDefaultVariableValues() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setDefaultValue("defaultValue");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Collections.emptyMap());
+
+        var command = stackCommandBuilder.buildPlanDestroyCommand(stack, module);
+
+        assertEquals("terraform plan -destroy -detailed-exitcode -var \"test=defaultValue\" ", command);
+    }
+
+    @Test
+    void buildPlanDestroyScript_shouldGenerateAFullScript() {
         var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithDirectory();
 
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanScript(stack, module);
+        var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
 
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -145,17 +317,17 @@ class StackCommandBuilderTest {
         assertTrue(script.contains("echo 'generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan"));
+        assertTrue(script.contains("terraform plan -destroy"));
     }
 
     @Test
-    void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
+    void buildPlanDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
         var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
 
         TerraformModule module = moduleWithoutDirectory();
 
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanScript(stack, module);
+        var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
 
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -163,7 +335,75 @@ class StackCommandBuilderTest {
         assertTrue(script.contains("echo 'generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan"));
+        assertTrue(script.contains("terraform plan -destroy"));
+    }
+
+    @Test
+    void buildDestroyCommand_shouldGenerateASimpleApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        module.setVariables(Collections.emptyList());
+
+        var stack = new Stack();
+
+        var command = stackCommandBuilder.buildDestroyCommand(stack, module);
+
+        assertEquals("terraform destroy -auto-approve ", command);
+    }
+
+    @Test
+    void buildDestroyCommand_shouldGenerateASingleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value"));
+
+        var command = stackCommandBuilder.buildDestroyCommand(stack, module);
+
+        assertEquals("terraform destroy -auto-approve -var \"test=value\" ", command);
+    }
+
+    @Test
+    void buildDestroyCommand_shouldGenerateAMultipleVariableApplyCommand() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        var variable2 = new TerraformVariable();
+        variable2.setName("test2");
+        module.setVariables(List.of(variable, variable2));
+
+        var stack = new Stack();
+        stack.setVariableValues(Map.of("test", "value", "test2", "value2"));
+
+        var command = stackCommandBuilder.buildDestroyCommand(stack, module);
+
+        assertEquals("terraform destroy -auto-approve -var \"test=value\" -var \"test2=value2\" ", command);
+    }
+
+    @Test
+    void buildDestroyCommand_shouldUseDefaultVariableValues() {
+        var stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache);
+
+        var module = new TerraformModule();
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setDefaultValue("defaultValue");
+        module.setVariables(List.of(variable));
+
+        var stack = new Stack();
+        stack.setVariableValues(Collections.emptyMap());
+
+        var command = stackCommandBuilder.buildDestroyCommand(stack, module);
+
+        assertEquals("terraform destroy -auto-approve -var \"test=defaultValue\" ", command);
     }
 
     @Test
