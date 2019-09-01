@@ -30,6 +30,9 @@
                 Duration&nbsp;<b>{{job.executionTime}}ms</b>
             </p>
         </div>
+        <div class="job-actions" v-if="isRetryAvailable">
+            <b-button variant="info" size="lg" @click="$emit('retry')"><i class="fas fa-redo"></i> Retry</b-button>
+        </div>
     </div>
 </template>
 
@@ -37,6 +40,12 @@
     Vue.component('job-metadata', {
         template: '#job-metadata-template',
         props: ['job', 'stack'],
+        computed: {
+            isRetryAvailable: function () {
+                return this.job.status !== null &&
+                    this.job.status.indexOf('FAILED') > 0;
+            },
+        },
         filters: {
             dateTime: function (value) {
                 if (!value || !moment(value).isValid()) return '';
@@ -58,8 +67,15 @@
         flex: 0 1 45%;
     }
 
-    .job-metadata-container .job-execution {
+    .job-metadata-container .job-execution, .job-metadata-container .job-actions {
         margin-left: 1rem;
+    }
+
+    .job-metadata-container .job-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        flex: 1 1 auto;
     }
 
     .job-metadata-container .metadata p {

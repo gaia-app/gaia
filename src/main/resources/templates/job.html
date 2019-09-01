@@ -41,7 +41,10 @@
                 </div>
                 <div class="block_content">
 
-                    <job-metadata :job="job" :stack="stack"></job-metadata>
+                    <job-metadata
+                            :job="job" :stack="stack"
+                            @retry="retryJob">
+                    </job-metadata>
 
                     <job-step
                             :id="'step-1'"
