@@ -144,15 +144,15 @@
                     secondStepTitle: () => store.state.job.type === 'RUN' ? 'apply' : 'destroy',
                     isSecondStepDoable: () => {
                         if (editionMode) return false;
-                        return store.state.job.status.indexOf('STARTED') < 0 &&
+                        return store.state.job.status !== null &&
+                            store.state.job.status.indexOf('STARTED') < 0 &&
                             store.state.job.status.indexOf('FAILED') < 0 &&
                             store.state.job.status.indexOf('APPLY') < 0;
                     }
                 },
                 methods: {
-                    applyJob: function () {
-                        planOrApplyJob('APPLY');
-                    }
+                    applyJob: () => planOrApplyJob('APPLY'),
+                    retryJob: () => planOrApplyJob('retry'),
                 }
             });
         });
