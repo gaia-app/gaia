@@ -47,6 +47,13 @@ public class Job {
         this.status = jobStatus;
     }
 
+    public void reset() {
+        this.status = null;
+        this.startDateTime = null;
+        this.endDateTime = null;
+        this.steps.clear();
+    }
+
     public String getId() {
         return id;
     }

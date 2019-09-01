@@ -136,6 +136,17 @@ public class StackRunner {
         );
     }
 
+    @Async
+    public void retry(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        stepRepository.deleteByJobId(jobWorkflow.getJob().getId());
+        treatJob(
+                jobWorkflow,
+                JobWorkflow::retry,
+                () -> managePlanScript(jobWorkflow.getJob().getType(), stack, module),
+                result -> managePlanResult(result, jobWorkflow, stack)
+        );
+    }
+
     public Job getJob(String jobId) {
         if (this.jobs.containsKey(jobId)) {
             // try in memory

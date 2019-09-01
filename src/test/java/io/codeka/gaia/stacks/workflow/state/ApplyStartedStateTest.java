@@ -109,4 +109,9 @@ class ApplyStartedStateTest {
         // then
         verify(jobWorkflow).setState(any(ApplyFailedState.class));
     }
+
+    @Test
+    void retry_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.retry(jobWorkflow));
+    }
 }

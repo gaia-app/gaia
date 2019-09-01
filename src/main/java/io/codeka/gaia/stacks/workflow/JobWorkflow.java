@@ -37,6 +37,10 @@ public class JobWorkflow {
         this.state.fail(this);
     }
 
+    public void retry() {
+        this.state.retry(this);
+    }
+
     public Job getJob() {
         return job;
     }

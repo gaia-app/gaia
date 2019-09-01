@@ -102,6 +102,18 @@ class JobWorkflowTest {
     }
 
     @Test
+    void retry_shouldRetryState() {
+        // given
+        jobWorkflow.setState(jobState);
+
+        // when
+        jobWorkflow.retry();
+
+        // then
+        verify(jobState).retry(jobWorkflow);
+    }
+
+    @Test
     void evalInitialState_shouldReturnDefaultState() {
         // when
         var result = jobWorkflow.evalInitialState(null);

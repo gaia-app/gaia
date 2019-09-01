@@ -268,6 +268,132 @@ class StackRunnerTest {
     }
 
     @Test
+    void retry_shouldDeletePreviousSteps() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(0);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(stepRepository).deleteByJobId(jobWorkflow.getJob().getId());
+    }
+
+    @Test
+    void retry_shouldExecuteRetryWorkflow() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(0);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(jobWorkflow).retry();
+    }
+
+    @Test
+    void retry_shouldUsePlanScript_WhenJobIsRun() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(0);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(stackCommandBuilder).buildPlanScript(stack, module);
+    }
+
+    @Test
+    void retry_shouldUsePlanDestroyScript_WhenJobIsStop() {
+        // given
+        job.setType(JobType.DESTROY);
+
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(0);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(stackCommandBuilder).buildPlanDestroyScript(stack, module);
+    }
+
+    @Test
+    void retry_shouldEndJob_WhenSuccessful() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(0);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(jobWorkflow).end();
+    }
+
+    @Test
+    void retry_shouldEndJob_WhenThereIsADiff() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(2);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(jobWorkflow).end();
+    }
+
+    @Test
+    void retry_shouldFailJob_WhenThereIsAError() {
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(99);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(jobWorkflow).fail();
+    }
+
+    @Test
+    void retry_shouldUpdateStack_WhenThereIsADiff() {
+        // given
+        stack.setState(StackState.RUNNING);
+
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(2);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        assertEquals(StackState.TO_UPDATE, stack.getState());
+        verify(stackRepository).save(stack);
+    }
+
+    @Test
+    void retry_shouldNotUpdateStack_WhenThereIsADiffForNewStacks() {
+        // given
+        stack.setState(StackState.NEW);
+
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(2);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        assertEquals(StackState.NEW, stack.getState());
+        verifyZeroInteractions(stackRepository);
+    }
+
+    @Test
+    void retry_shouldNotUpdateStack_WhenThereIsADiffAndJobIsStop() {
+        // given
+        stack.setState(StackState.RUNNING);
+        job.setType(JobType.DESTROY);
+
+        // when
+        when(dockerRunner.runContainerForJob(any(), any())).thenReturn(2);
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        assertEquals(StackState.RUNNING, stack.getState());
+        verifyZeroInteractions(stackRepository);
+    }
+
+    @Test
+    void retry_shouldSaveJobAndSteps() {
+        // when
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(jobRepository, times(2)).save(job);
+        verify(stepRepository, times(2)).saveAll(job.getSteps());
+    }
+
+    @Test
     void getJob_shouldReturnJob_whenNotInMemory() {
         // when
         when(jobRepository.findById(anyString())).thenReturn(Optional.of(job));

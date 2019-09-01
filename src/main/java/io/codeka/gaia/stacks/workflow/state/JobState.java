@@ -15,4 +15,5 @@ public interface JobState {
 
     void fail(JobWorkflow jobWorkflow);
 
+    void retry(JobWorkflow jobWorkflow);
 }

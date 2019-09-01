@@ -29,11 +29,16 @@ public class PlanFinishedState implements JobState {
 
     @Override
     public void end(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to end an plan finished");
+        throw new UnsupportedOperationException("Unable to end a plan finished");
     }
 
     @Override
     public void fail(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to fail an plan finished");
+        throw new UnsupportedOperationException("Unable to fail a plan finished");
+    }
+
+    @Override
+    public void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException("Unable to retry a job after a plan finished");
     }
 }

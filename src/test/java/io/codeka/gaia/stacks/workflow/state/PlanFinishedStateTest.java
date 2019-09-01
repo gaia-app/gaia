@@ -21,6 +21,7 @@ class PlanFinishedStateTest {
 
     @Mock
     JobWorkflow jobWorkflow;
+
     private Job job;
 
     private PlanFinishedState state;
@@ -83,5 +84,10 @@ class PlanFinishedStateTest {
     @Test
     void fail_shouldNotBePossible() {
         assertThrows(UnsupportedOperationException.class, () -> state.fail(jobWorkflow));
+    }
+
+    @Test
+    void retry_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.retry(jobWorkflow));
     }
 }

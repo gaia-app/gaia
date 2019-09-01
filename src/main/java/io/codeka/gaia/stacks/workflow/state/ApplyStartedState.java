@@ -30,4 +30,9 @@ public class ApplyStartedState implements JobState {
         jobWorkflow.getJob().end(JobStatus.APPLY_FAILED);
         jobWorkflow.setState(new ApplyFailedState());
     }
+
+    @Override
+    public void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException("Unable to retry a job after an apply started");
+    }
 }

@@ -30,4 +30,9 @@ public class PlanStartedState implements JobState {
         jobWorkflow.getJob().end(JobStatus.PLAN_FAILED);
         jobWorkflow.setState(new PlanFailedState());
     }
+
+    @Override
+    public void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException("Unable to retry a job after a plan started");
+    }
 }

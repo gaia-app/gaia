@@ -35,4 +35,9 @@ public class NotStartedState implements JobState {
     public void fail(JobWorkflow jobWorkflow) {
         throw new UnsupportedOperationException("Unable to fail the step of a job not even started");
     }
+
+    @Override
+    public void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException("Unable to retry a job not even started");
+    }
 }

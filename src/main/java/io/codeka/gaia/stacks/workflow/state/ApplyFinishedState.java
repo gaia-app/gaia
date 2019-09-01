@@ -25,4 +25,9 @@ public class ApplyFinishedState implements JobState {
     public void fail(JobWorkflow jobWorkflow) {
         throw new UnsupportedOperationException("Unable to fail an apply finished");
     }
+
+    @Override
+    public void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException("Unable to retry a job after an apply finished");
+    }
 }

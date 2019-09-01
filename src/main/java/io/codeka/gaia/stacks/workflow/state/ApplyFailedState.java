@@ -5,7 +5,7 @@ import io.codeka.gaia.stacks.workflow.JobWorkflow;
 /**
  * Describes a job which apply has been failed
  */
-public class ApplyFailedState implements JobState {
+public class ApplyFailedState extends RetryableState implements JobState {
     @Override
     public void plan(JobWorkflow jobWorkflow) {
         throw new UnsupportedOperationException("Unable to start a plan after an apply failed");
