@@ -6,14 +6,23 @@ import io.codeka.gaia.stacks.workflow.JobWorkflow;
  * Describe the state of job and its possible actions
  */
 public interface JobState {
+    default void plan(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException();
+    }
 
-    void plan(JobWorkflow jobWorkflow);
+    default void apply(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException();
+    }
 
-    void apply(JobWorkflow jobWorkflow);
+    default void end(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException();
+    }
 
-    void end(JobWorkflow jobWorkflow);
+    default void fail(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException();
+    }
 
-    void fail(JobWorkflow jobWorkflow);
-
-    void retry(JobWorkflow jobWorkflow);
+    default void retry(JobWorkflow jobWorkflow) {
+        throw new UnsupportedOperationException();
+    }
 }
