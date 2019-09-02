@@ -32,12 +32,12 @@ public class JobRestController {
     }
 
     @GetMapping(params = "stackId")
-    public List<Job> jobs(@RequestParam String stackId){
+    public List<Job> jobs(@RequestParam String stackId) {
         return this.jobRepository.findAllByStackId(stackId);
     }
 
     @GetMapping("/{id}")
-    public Job job(@PathVariable String id){
+    public Job job(@PathVariable String id) {
         return this.jobRepository.findById(id).orElseThrow(JobNotFoundException::new);
     }
 
@@ -54,8 +54,17 @@ public class JobRestController {
         }
     }
 
+    @PostMapping("/{id}/retry")
+    public void retryJob(@PathVariable String id) {
+        var job = this.jobRepository.findById(id).orElseThrow(JobNotFoundException::new);
+        var stack = this.stackRepository.findById(job.getStackId()).orElseThrow();
+        var module = this.moduleRepository.findById(stack.getModuleId()).orElseThrow();
+
+        this.stackRunner.retry(new JobWorkflow(job), module, stack);
+    }
+
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class JobNotFoundException extends RuntimeException{
+class JobNotFoundException extends RuntimeException {
 }

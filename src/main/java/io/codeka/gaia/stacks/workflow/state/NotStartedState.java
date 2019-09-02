@@ -20,19 +20,4 @@ public class NotStartedState implements JobState {
 
         jobWorkflow.setState(new PlanStartedState());
     }
-
-    @Override
-    public void apply(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to start an apply of a job not even started");
-    }
-
-    @Override
-    public void end(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to end the step of a job not even started");
-    }
-
-    @Override
-    public void fail(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to fail the step of a job not even started");
-    }
 }

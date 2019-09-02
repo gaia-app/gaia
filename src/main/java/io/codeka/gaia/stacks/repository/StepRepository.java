@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface StepRepository extends MongoRepository<Step, String> {
+
+    void deleteByJobId(String jobId);
+
 }

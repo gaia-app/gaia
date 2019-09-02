@@ -144,4 +144,54 @@ class JobRestControllerTest {
         assertThat(captor.getValue()).isNotNull();
         assertThat(captor.getValue().getJob()).isNotNull().isEqualTo(job);
     }
+
+    @Test
+    void retryJob_shouldThrowJobNotFoundException_forNonExistingJob() {
+        // when
+        when(jobRepository.findById(any())).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(JobNotFoundException.class, () -> controller.retryJob("test_jobId"));
+    }
+
+    @Test
+    void retryJob_shouldThrowException_forNonExistingStack() {
+        // when
+        when(jobRepository.findById(any())).thenReturn(Optional.of(new Job()));
+        when(stackRepository.findById(any())).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(NoSuchElementException.class, () -> controller.retryJob("test_jobId"));
+    }
+
+    @Test
+    void retryJob_shouldThrowException_forNonExistingModule() {
+        // when
+        when(jobRepository.findById(any())).thenReturn(Optional.of(new Job()));
+        when(stackRepository.findById(any())).thenReturn(Optional.of(new Stack()));
+        when(moduleRepository.findById(any())).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(NoSuchElementException.class, () -> controller.retryJob("test_jobId"));
+    }
+
+    @Test
+    void retryJob_shouldRetry() {
+        // given
+        var job = new Job();
+        var stack = new Stack();
+        var module = new TerraformModule();
+
+        // when
+        when(jobRepository.findById(any())).thenReturn(Optional.of(job));
+        when(stackRepository.findById(any())).thenReturn(Optional.of(stack));
+        when(moduleRepository.findById(any())).thenReturn(Optional.of(module));
+        controller.retryJob("test_jobId");
+
+        // then
+        var captor = ArgumentCaptor.forClass(JobWorkflow.class);
+        verify(stackRunner).retry(captor.capture(), eq(module), eq(stack));
+        assertThat(captor.getValue()).isNotNull();
+        assertThat(captor.getValue().getJob()).isNotNull().isEqualTo(job);
+    }
 }

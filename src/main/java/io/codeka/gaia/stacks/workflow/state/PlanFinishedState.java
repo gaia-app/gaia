@@ -10,11 +10,6 @@ import io.codeka.gaia.stacks.workflow.JobWorkflow;
  */
 public class PlanFinishedState implements JobState {
     @Override
-    public void plan(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to start a plan after a plan finished");
-    }
-
-    @Override
     public void apply(JobWorkflow jobWorkflow) {
         var job = jobWorkflow.getJob();
         job.setStatus(JobStatus.APPLY_STARTED);
@@ -25,15 +20,5 @@ public class PlanFinishedState implements JobState {
         step.start();
 
         jobWorkflow.setState(new ApplyStartedState());
-    }
-
-    @Override
-    public void end(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to end an plan finished");
-    }
-
-    @Override
-    public void fail(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to fail an plan finished");
     }
 }

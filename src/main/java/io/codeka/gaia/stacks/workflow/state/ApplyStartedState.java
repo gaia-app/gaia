@@ -8,16 +8,6 @@ import io.codeka.gaia.stacks.workflow.JobWorkflow;
  */
 public class ApplyStartedState implements JobState {
     @Override
-    public void plan(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to start a plan after an apply started");
-    }
-
-    @Override
-    public void apply(JobWorkflow jobWorkflow) {
-        throw new UnsupportedOperationException("Unable to start an apply after an apply started");
-    }
-
-    @Override
     public void end(JobWorkflow jobWorkflow) {
         jobWorkflow.getCurrentStep().end();
         jobWorkflow.getJob().end(JobStatus.APPLY_FINISHED);
