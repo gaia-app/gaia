@@ -1,5 +1,86 @@
 # Changelog
 
+<a name="1.2.0"></a>
+## 1.2.0 (2019-09-02)
+
+### Added
+
+- 👷‍♂️ : corrects integration test inclusion [[c49f0e5](https://github.com/CodeKaio/gaia/commit/c49f0e5c0a021b0b5c19dfeeceb91360877bbdd3)]
+- 👷‍♂️ : build docker images on tags [[2b1eb4e](https://github.com/CodeKaio/gaia/commit/2b1eb4ea02af70326491d751c1deee8dc350acfa)]
+- ✨ : add the possibility to execute scripts in mongo testcontainer [[4943c60](https://github.com/CodeKaio/gaia/commit/4943c60f16f331955c9098102b94490655829fb1)]
+- ✨ : add /admin/info endpoint [[883da5f](https://github.com/CodeKaio/gaia/commit/883da5f15aceb09b1eeb154733c85ca7bdfb8102)]
+- ✨ : add version and commit in sidebar footer [[bc9efc8](https://github.com/CodeKaio/gaia/commit/bc9efc8c327c1b5f2bf5241d84b672ba95828411)]
+- ✨ : add option to make module variable mandatory [[d2af11b](https://github.com/CodeKaio/gaia/commit/d2af11b0770939b1ff33a0a2ca0187f8c2c5a546)]
+- ✨ : add server-side validation for stacks [[eee74f5](https://github.com/CodeKaio/gaia/commit/eee74f5de604d8050afe43a5027550ecd7f19141)]
+- ✨ : add server-side validation for modules [[48b5969](https://github.com/CodeKaio/gaia/commit/48b59699225b4621290ffae888fb6056fa26b03d)]
+- ✨ : add client-side regex validation for variables [[ad22dee](https://github.com/CodeKaio/gaia/commit/ad22dee693976f45589a85aa43e1b597c113635b)]
+- ✨ : add server-side regex validation for stack variables [[a9b27b9](https://github.com/CodeKaio/gaia/commit/a9b27b9c9f6b3cc34b7f4b3c57fee5d7257ba9c0)]
+- ✨ : add vue component for job metadata [[b7b5ec6](https://github.com/CodeKaio/gaia/commit/b7b5ec67b4fc6b715f90002f38d830e2f5d02e3a)]
+- ✨ : add vue component for job step [[fb630ce](https://github.com/CodeKaio/gaia/commit/fb630ce4ca8ff179e2c9b0cd236dad147278ba39)]
+- ✨ : add retry in job workflow [[1b1686f](https://github.com/CodeKaio/gaia/commit/1b1686f22562b59849e3fd3b8de1df5a4b7d57a6)]
+- ✨ : add retry button in job page [[d151a52](https://github.com/CodeKaio/gaia/commit/d151a52153b453a1c83bdbddaef64cdb54bae3aa)]
+- ✨ : add vue component for job&#x27;s plan application [[5f4e076](https://github.com/CodeKaio/gaia/commit/5f4e07621be335336d197f045ddb94351e42b719)]
+- ✅ : add IT tests using scripts with mongo testcontainer [[b9e4442](https://github.com/CodeKaio/gaia/commit/b9e44424f087f8bd5518548f6af36adcbdcf082c)]
+
+### Changed
+
+- 🚸 : add 404 error page [[c40e7c3](https://github.com/CodeKaio/gaia/commit/c40e7c33df74fb3a172b6998356aa8d2e0c23fc0)]
+- 🚸 : add 500 error page [[6e8df1b](https://github.com/CodeKaio/gaia/commit/6e8df1b6c0a3b41c9471977e240bba2692e02861)]
+- 🚸 : add 403 error page [[319fa56](https://github.com/CodeKaio/gaia/commit/319fa564a71ead0d9d74b50379e233fe1fe2090c)]
+- 🚸 : show welcome message for users with no team [[4677629](https://github.com/CodeKaio/gaia/commit/46776292cd4603f2856bd1229bef46528d47414f)]
+- 🚸 : add variable validation to stack-vars component [[3e57d77](https://github.com/CodeKaio/gaia/commit/3e57d77ea25943f11910733f1bc952f312a0d2b9)]
+- 🚸 : disable save button when stack form is invalid [[e98b2db](https://github.com/CodeKaio/gaia/commit/e98b2db72aa4fdd6fa232f5d8044fe835a25c6be)]
+- 🚸 : add variable validation to new-stack [[73348d9](https://github.com/CodeKaio/gaia/commit/73348d9b9222e96662d2b689ca10d7a50e633ab0)]
+- 🚸 : add client-side validation to module fields [[d814b76](https://github.com/CodeKaio/gaia/commit/d814b763095ac30664e1291a8e34d849ff090900)]
+- 💄 : use columns card group layout [[88ec6fa](https://github.com/CodeKaio/gaia/commit/88ec6fa421bd6e8c1d20236e304919c82e295408)]
+- 💄 : add custom login page [[3834fba](https://github.com/CodeKaio/gaia/commit/3834fbaba60dff236c3b2185417f25170c0c6cdf)]
+- ♻️ : moves module feature to its own package [[090ab53](https://github.com/CodeKaio/gaia/commit/090ab53eaadb9ad50579c077c44076511274f8fb)]
+- ♻️ : moves stack feature to its own package [[3705dee](https://github.com/CodeKaio/gaia/commit/3705dee23d6ad94e7a87e09da006b8c4f0778eb8)]
+- ♻️ : moves dashboard feature to its own package [[d0237ec](https://github.com/CodeKaio/gaia/commit/d0237ec75345dcc4af41cb6026854f04f1ed3525)]
+- ♻️ : moves settings feature to its own package [[909fb51](https://github.com/CodeKaio/gaia/commit/909fb51d4c54b9f6aca84d8731828dc71037c76a)]
+- ♻️ : extract dashboard widget as a component [[522543b](https://github.com/CodeKaio/gaia/commit/522543be47b80deb4188d99c2caa0a45b1262615)]
+- ♻️ : use bootstrap-vue b-card component [[2b3d8a1](https://github.com/CodeKaio/gaia/commit/2b3d8a1414ad5b2f5a2d062e8a8d583eb263fe9b)]
+- ♻️ : use bootstrap-vue buttons [[86976be](https://github.com/CodeKaio/gaia/commit/86976be83f263e6d69db8ba19ef437862465c1be)]
+- ♻️ : use b-button for new_stack wizard [[f84f204](https://github.com/CodeKaio/gaia/commit/f84f204d7ebaf6bf45a197346e1089acbfca9083)]
+- ♻️ : use boostrap-vue components for module form [[f7190ff](https://github.com/CodeKaio/gaia/commit/f7190ffabb6b14410a5fd208533db2ca526ca094)]
+- ♻️ : make the sidebar a vue component [[008a029](https://github.com/CodeKaio/gaia/commit/008a029a789692cadea63e5ed8de8b37d5a5bed7)]
+- ♻️ : refactor job by adding workflow management [[57f53f3](https://github.com/CodeKaio/gaia/commit/57f53f31a32335e54bc533df380b8f58bfec4aae)]
+- ♻️ : refactor stack page considering new job workflow [[1cc8526](https://github.com/CodeKaio/gaia/commit/1cc85269d7bd16828a71576b2cdabe18e4cf6b26)]
+- ♻️ : refactor job page considering new workflow [[fb58bed](https://github.com/CodeKaio/gaia/commit/fb58bed6a7b6871c3ba6ff97b5f063cb4ded1acc)]
+- ♻️ : refactor new stack page considering new job workflow [[9b40b8d](https://github.com/CodeKaio/gaia/commit/9b40b8d76550fa4e8465c317eb04e7cc16a035a4)]
+- ♻️ : refactor state classes to use default method interfaces [[d283198](https://github.com/CodeKaio/gaia/commit/d283198a7f72c402d6049386ccde72a4f6823eaf)]
+- 🚨 : remove code duplication [[7bfbd9a](https://github.com/CodeKaio/gaia/commit/7bfbd9ae4b0ffb3215860ba0f86ca64ef9ae54d0)]
+- 🚨 : remove unused imports [[bc7d3a2](https://github.com/CodeKaio/gaia/commit/bc7d3a23ad1f843153006518d9a4adf17ed40174)]
+- 🚚 : move favicon to static files [[3aced84](https://github.com/CodeKaio/gaia/commit/3aced84e3b65942b33587ef91cfa6f482b7d876e)]
+
+### Removed
+
+- 🔥 : remove old terraform backend structure [[3c9ef89](https://github.com/CodeKaio/gaia/commit/3c9ef89816e9abd10563ecceef2a001bc91ad6d0)]
+
+### Fixed
+
+- 🐛 : correct module &amp; stack count for users without teams [[f9cafa1](https://github.com/CodeKaio/gaia/commit/f9cafa1885f351efab144e226a852853bd4c4749)]
+- 🐛 : correct module card description [[d8dc694](https://github.com/CodeKaio/gaia/commit/d8dc694e0062828cdbdf30320bcb874e410403ff)]
+- 🐛 : fix variable add/remove [[7a4e6ef](https://github.com/CodeKaio/gaia/commit/7a4e6ef66c1f351ca4b4f44db9ad52a54fa14f98)]
+- 🐛 : fix vue warn message [[8dd43aa](https://github.com/CodeKaio/gaia/commit/8dd43aaf0b7a29eb571b96077705a73cd394bfbe)]
+- 🐛 : corrects NPE on sidebar when build information is not available [[eaefe72](https://github.com/CodeKaio/gaia/commit/eaefe721282808af6973c1c0ba0b74a5ac1c55c2)]
+- 🐛 : keep sidebar status change changing route [[0b1643b](https://github.com/CodeKaio/gaia/commit/0b1643b280b0dc2187379853426c603e5db2ba87)]
+- 🐛 : replace anchors with buttons in component console [[fb5d366](https://github.com/CodeKaio/gaia/commit/fb5d36660c62f2c29c7f863749ebba3a69a59958)]
+- 🐛 : fix js error when job status is null [[9a65016](https://github.com/CodeKaio/gaia/commit/9a65016b2751f30abef01412877a34bd7e5ec42a)]
+- 💚 : use mongodb 4.0 version [[3725856](https://github.com/CodeKaio/gaia/commit/3725856c96726983a9582888456de344b540b61f)]
+
+### Security
+
+- 🔒 : expose public resources [[fe582f7](https://github.com/CodeKaio/gaia/commit/fe582f78a0db09afb05d15d977f38da173b51617)]
+
+### Miscellaneous
+
+- ⚗️ : show list component for list-alike regex validated variables [[aabf795](https://github.com/CodeKaio/gaia/commit/aabf79507194efb659b5c2eb4fa0d3a40438d523)]
+- 📝 : add information related to scm, license &amp; ci [[c30568e](https://github.com/CodeKaio/gaia/commit/c30568eb071986cb989f39ff874448549b4e0f9d)]
+- 🙈 : update dockerignore [[a6afc29](https://github.com/CodeKaio/gaia/commit/a6afc291dc847f77d4128e95953915f26168ef52)]
+- 🐳 : add scripts to initiate mongo database [[3aff994](https://github.com/CodeKaio/gaia/commit/3aff9941c93e7eb2420991ad456fe211b178ca11)]
+
+
 <a name="1.1.0"></a>
 ## 1.1.0 (2019-08-09)
 
