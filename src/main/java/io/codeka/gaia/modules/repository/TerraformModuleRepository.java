@@ -1,7 +1,7 @@
 package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

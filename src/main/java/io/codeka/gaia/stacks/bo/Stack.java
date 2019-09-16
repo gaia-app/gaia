@@ -1,7 +1,7 @@
 package io.codeka.gaia.stacks.bo;
 
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.validation.constraints.NotBlank;

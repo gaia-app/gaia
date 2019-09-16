@@ -1,6 +1,6 @@
 package io.codeka.gaia.teams.controller;
 
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.teams.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class UserControllerAdviceTest {
     @Test
     void user_shouldBeLoadedFromRepository(){
         // given
-        var bob = new User("bob");
+        var bob = new User("bob", null);
         when(userRepository.findById("bob")).thenReturn(Optional.of(bob));
         when(userRepository.existsById("bob")).thenReturn(true);
 

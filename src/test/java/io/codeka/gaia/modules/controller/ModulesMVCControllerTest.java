@@ -3,8 +3,8 @@ package io.codeka.gaia.modules.controller;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleGitRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,16 +32,15 @@ class ModulesMVCControllerTest {
     @Mock
     private TerraformModuleGitRepository moduleGitRepository;
 
-    private User admin = new User("admin");
+    private User admin = new User("admin", null);
 
-    private User standardUser = new User("Odile Deray");
+    private Team userTeam = new Team("Red Is Dead");
 
-    private Team userTeam = new Team("userTeam");
+    private User standardUser = new User("Odile Deray", userTeam);
 
     @BeforeEach
     void setup() {
         controller = new ModulesMVCController(moduleRepository, moduleGitRepository);
-        standardUser.setTeam(userTeam);
     }
 
     @Test

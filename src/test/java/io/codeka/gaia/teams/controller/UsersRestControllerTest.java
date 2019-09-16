@@ -1,6 +1,6 @@
 package io.codeka.gaia.teams.controller;
 
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.teams.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class UsersRestControllerTest {
 
     @Test
     void saveUser_shouldSaveTheUser() {
-        var john = new User();
+        var john = new User("john", null);
         usersRestController.saveUser(john);
 
         verify(userRepository).save(john);

@@ -1,6 +1,6 @@
 package io.codeka.gaia.stacks.bo;
 
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -144,7 +144,7 @@ class JobTest {
     @Test
     void job_shouldSetUser() {
         // given
-        var user = new User("test");
+        var user = new User("test", null);
 
         // when
         var job = new Job(null, null, user);

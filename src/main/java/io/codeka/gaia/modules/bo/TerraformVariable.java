@@ -67,4 +67,5 @@ public class TerraformVariable {
     public void setValidationRegex(String validationRegex) {
         this.validationRegex = validationRegex;
     }
+
 }

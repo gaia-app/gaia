@@ -2,8 +2,8 @@ package io.codeka.gaia.modules.controller;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,11 +35,10 @@ class ModuleRestControllerTest {
 
     @BeforeEach
     void setUp() {
-        admin = new User("admin");
+        admin = new User("admin", null);
 
-        bob = new User("Bob Kelso");
         bobsTeam = new Team("bobsTeam");
-        bob.setTeam(bobsTeam);
+        bob = new User("Bob Kelso", bobsTeam);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package io.codeka.gaia.teams.repository;
 
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class UserRepositoryTest {
     @Test
     void user_shouldBeSaved(){
         // given
-        var sam = new User("Samantha Carter");
+        var sam = new User("Samantha Carter", new Team("SG-1"));
 
         // when
         userRepository.save(sam);

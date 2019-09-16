@@ -6,7 +6,7 @@ import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

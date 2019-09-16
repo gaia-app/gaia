@@ -3,9 +3,8 @@ package io.codeka.gaia.stacks.controller;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.stacks.service.StackCostCalculator;
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
-import org.junit.jupiter.api.BeforeEach;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,11 +22,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class StackRestControllerTest {
 
-    private User adminUser = new User("admin");
+    private User adminUser = new User("admin", null);
 
-    private User standardUser = new User("Serge Karamazov");
+    private Team userTeam = new Team("Red Is Dead");
 
-    private Team userTeam = new Team();
+    private User standardUser = new User("Serge Karamazov", userTeam);
 
     private Stack stack = new Stack();
 
@@ -39,11 +38,6 @@ class StackRestControllerTest {
 
     @Mock
     private StackCostCalculator stackCostCalculator;
-
-    @BeforeEach
-    void setUp() {
-        standardUser.setTeam(userTeam);
-    }
 
     @Test
     void listStack_shouldFindAllStacks_forAdminUser(){
