@@ -23,6 +23,7 @@ class MandatoryStackVariablesValidator(@Autowired val moduleRepository: Terrafor
         val module = this.moduleRepository.findByIdOrNull(stack.moduleId) ?: return true
 
         return module.variables.filter { it.isMandatory }
+                .filter { it.defaultValue.isNullOrBlank() }
                 .all { ! stack.variableValues[it.name].isNullOrBlank() }
     }
 }
