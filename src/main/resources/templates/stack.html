@@ -151,7 +151,7 @@
         </div>
         <ul class="job_list">
             <li v-for="(job, index) in jobs" :class="job.status" class="job">
-                <div class="job_id"><a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{index+1}}</a></div>
+                <div class="job_id"><a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{jobs.length - index}}</a></div>
                 <div class="job_detail">
                     <div><span class="job_attr_id">Type</span><span class="job_attr_value" :class="job.type">{{job.type}}</span></div>
                     <div><span class="job_attr_id">Status</span><span class="job_attr_value" :class="job.status">{{job.status}}</span></div>
