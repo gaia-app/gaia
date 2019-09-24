@@ -8,8 +8,7 @@ import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
-import io.codeka.gaia.stacks.workflow.JobWorkflow;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +45,7 @@ class StackControllerTest {
     @Mock
     private Model model;
 
-    private User user = new User("test_user");
+    private User user = new User("test_user", null);
 
     @BeforeEach
     void setup() {

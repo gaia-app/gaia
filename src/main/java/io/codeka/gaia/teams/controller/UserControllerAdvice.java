@@ -1,7 +1,7 @@
 package io.codeka.gaia.teams.controller;
 
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.teams.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,7 @@ public class UserControllerAdvice {
         }
         if (! userRepository.existsById(authentication.getName())){
             // creating user
-            var user = new User(authentication.getName());
+            var user = new User(authentication.getName(), null);
             userRepository.save(user);
             return user;
         }

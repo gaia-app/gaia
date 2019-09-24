@@ -2,7 +2,7 @@ package io.codeka.gaia.stacks.repository;
 
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.bo.StackState;
-import io.codeka.gaia.teams.bo.Team;
+import io.codeka.gaia.teams.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

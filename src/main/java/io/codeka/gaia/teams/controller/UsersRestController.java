@@ -1,6 +1,6 @@
 package io.codeka.gaia.teams.controller;
 
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.teams.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

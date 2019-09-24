@@ -2,7 +2,7 @@ package io.codeka.gaia.modules.controller;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
-import io.codeka.gaia.teams.bo.User;
+import io.codeka.gaia.teams.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;

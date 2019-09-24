@@ -3,9 +3,8 @@ package io.codeka.gaia.dashboard.controller;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.stacks.bo.StackState;
 import io.codeka.gaia.stacks.repository.StackRepository;
-import io.codeka.gaia.teams.bo.Team;
-import io.codeka.gaia.teams.bo.User;
-import org.junit.jupiter.api.BeforeEach;
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,17 +30,11 @@ class IndexControllerTest {
     @Mock
     private Model model;
 
-    private User user = new User("user");
+    private Team team = new Team("userTeam");
 
-    private User admin = new User("admin");
+    private User user = new User("user", team);
 
-    @Mock
-    private Team team;
-
-    @BeforeEach
-    void setUp() {
-        user.setTeam(team);
-    }
+    private User admin = new User("admin", null);
 
     @Test
     void index_shouldShowModuleCount(){

@@ -75,6 +75,24 @@ class MandatoryStackVariablesValidatorTest {
     }
 
     @Test
+    void validator_shouldReturnTrue_whenMandatoryVariableWithDefaultValueIsBlank(){
+        var variable = new TerraformVariable();
+        variable.setName("test");
+        variable.setMandatory(true);
+        variable.setDefaultValue("default");
+
+        var module = new TerraformModule();
+        module.setVariables(List.of(variable));
+
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        var stack = new Stack();
+        stack.setModuleId("12");
+
+        assertThat(validator.isValid(stack, null)).isTrue();
+    }
+
+    @Test
     void validator_shouldReturnTrue_whenMandatoryVariableIsNotBlank(){
         var variable = new TerraformVariable();
         variable.setName("test");
