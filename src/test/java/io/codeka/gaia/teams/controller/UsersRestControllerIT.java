@@ -1,5 +1,8 @@
 package io.codeka.gaia.teams.controller;
 
+import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
+import io.codeka.gaia.teams.repository.UserRepository;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,6 +45,9 @@ class UsersRestControllerIT {
     private UsersRestController usersRestController;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
@@ -57,9 +65,9 @@ class UsersRestControllerIT {
     void users_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$..username", contains("admin", "Mary J")))
-                .andExpect(jsonPath("$..admin", contains(true, false)))
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader")))
+                .andExpect(jsonPath("$..admin", contains(true, false, false)))
                 .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
     }
 
@@ -72,6 +80,35 @@ class UsersRestControllerIT {
                 .andExpect(jsonPath("$.username", is("Bob")))
                 .andExpect(jsonPath("$.admin", is(false)))
                 .andExpect(jsonPath("$.team", isEmptyOrNullString()));
+
+        assertThat(userRepository.existsById("Bob")).isTrue();
+    }
+
+    @Test
+    void users_canBeChangedOfTeam() throws Exception {
+        // given
+        assertThat(userRepository.findById("Darth Vader"))
+                .isPresent()
+                .map(User::getTeam)
+                .isNotPresent();
+
+        // when
+        mockMvc.perform(put("/api/users/Darth Vader")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\": \"Darth Vader\",\"team\": {\"id\": \"Sith\"}}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("Darth Vader")))
+                .andExpect(jsonPath("$.admin", is(false)))
+                .andExpect(jsonPath("$.team.id", is("Sith")));
+
+        // then
+        assertThat(userRepository.findById("Darth Vader"))
+                .isPresent()
+                .map(User::getTeam)
+                .hasValue(new Team("Sith"));
+
+        mongoContainer.resetDatabase();
     }
 
 }

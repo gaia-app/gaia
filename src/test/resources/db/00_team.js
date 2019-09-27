@@ -6,5 +6,8 @@ gaia.team.insert([
     },
     {
         "_id": "Not Ze Team"
+    },
+    {
+        "_id": "Sith"
     }
 ]);

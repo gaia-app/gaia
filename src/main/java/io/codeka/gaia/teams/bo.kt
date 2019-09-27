@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef
 /**
  * A Gaia Team, which groups users
  */
-data class Team(val id: String?)
+data class Team(val id: String)
 
 /**
  * a Gaia user, which has granted access to modules

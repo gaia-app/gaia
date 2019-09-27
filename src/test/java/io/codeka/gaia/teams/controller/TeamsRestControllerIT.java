@@ -55,8 +55,8 @@ class TeamsRestControllerIT {
     void teams_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(get("/api/teams"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$..id", contains("Ze Team", "Not Ze Team")));
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$..id", contains("Ze Team", "Not Ze Team", "Sith")));
     }
 
 }
