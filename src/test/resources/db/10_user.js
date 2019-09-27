@@ -9,4 +9,8 @@ gaia.user.insert([
         "_id": "Mary J",
         "team": {"$ref": "team", "$id": "Not Ze Team"}
     }
+    ,
+    {
+        "_id": "Darth Vader"
+    }
 ]);
