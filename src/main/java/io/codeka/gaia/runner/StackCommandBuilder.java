@@ -2,6 +2,7 @@ package io.codeka.gaia.runner;
 
 import com.github.mustachejava.Mustache;
 import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.bo.mustache.TerraformScript;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.function.BiFunction;
 
 /**
@@ -20,13 +22,30 @@ import java.util.function.BiFunction;
 public class StackCommandBuilder {
 
     private Settings settings;
-
     private Mustache terraformMustache;
+    private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache) {
+    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
+        this.registryOAuth2Providers = registryOAuth2Providers;
+    }
+
+    /**
+     * Returns the url of the git repository filled with OAuth2 token if available
+     */
+    private String evalGitRepositoryUrl(TerraformModule module) {
+        var url = module.getGitRepositoryUrl();
+        var data = module.getCreatedBy().getOAuth2User();
+        if (data == null) {
+            return url;
+        }
+        return registryOAuth2Providers.stream()
+                .filter(p -> p.isAssignableFor(data.getProvider()))
+                .map(p -> p.getOAuth2Url(url, data.getToken()))
+                .findFirst()
+                .orElse(url);
     }
 
     private String buildScript(Stack stack, TerraformModule module,
@@ -34,7 +53,7 @@ public class StackCommandBuilder {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
                 .setStackId(stack.getId())
-                .setGitRepositoryUrl(module.getGitRepositoryUrl());
+                .setGitRepositoryUrl(evalGitRepositoryUrl(module));
 
         if (StringUtils.isNotBlank(module.getDirectory())) {
             script.setGitDirectory(module.getDirectory());
