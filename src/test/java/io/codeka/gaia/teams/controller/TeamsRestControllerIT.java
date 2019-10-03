@@ -32,7 +32,8 @@ class TeamsRestControllerIT {
 
     @Container
     private static MongoContainer mongoContainer = new MongoContainer()
-            .withScript("src/test/resources/db/00_team.js");
+            .withScript("src/test/resources/db/00_team.js")
+            .withScript("src/test/resources/db/10_user.js");
 
     @Autowired
     private TeamsRestController teamsRestController;
