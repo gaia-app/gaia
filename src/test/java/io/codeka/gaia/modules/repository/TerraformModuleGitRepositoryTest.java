@@ -1,7 +1,7 @@
 package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.modules.repository.strategy.GitPlatformStrategy;
+import io.codeka.gaia.registries.RegistryRawContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,15 +19,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TerraformModuleGitRepositoryTest {
 
-    private TerraformModuleGitRepository repository;
-
     @Mock
-    private GitPlatformStrategy strategy;
+    RegistryRawContent registryRawContent;
+
+    private TerraformModuleGitRepository repository;
 
     @BeforeEach
     void setup() {
-        repository = new TerraformModuleGitRepository();
-        repository.gitPlatformStrategies = List.of(strategy);
+        repository = new TerraformModuleGitRepository(List.of(registryRawContent));
     }
 
     @Test
@@ -39,14 +38,14 @@ class TerraformModuleGitRepositoryTest {
         module.setDirectory("directory");
 
         // when
-        when(strategy.matches(anyString())).thenReturn(true);
-        when(strategy.getRawUrl(anyString(), anyString(), anyString())).thenReturn("raw_url");
+        when(registryRawContent.matches(anyString())).thenReturn(true);
+        when(registryRawContent.getRawUrl(anyString(), anyString(), anyString())).thenReturn("raw_url");
         var result = repository.getReadme(module);
 
         // then
         assertThat(result).isPresent().get().isEqualTo("raw_url/README.md");
-        verify(strategy).matches("url");
-        verify(strategy).getRawUrl("url", "branch", "directory");
+        verify(registryRawContent).matches("url");
+        verify(registryRawContent).getRawUrl("url", "branch", "directory");
     }
 
     @Test
@@ -55,11 +54,10 @@ class TerraformModuleGitRepositoryTest {
         var module = new TerraformModule();
 
         // when
-        when(strategy.matches(any())).thenReturn(false);
+        when(registryRawContent.matches(any())).thenReturn(false);
         var result = repository.getReadme(module);
 
         // then
         assertThat(result).isEmpty();
     }
-
 }

@@ -1,13 +1,13 @@
-package io.codeka.gaia.modules.repository.strategy;
+package io.codeka.gaia.registries;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.regex.Pattern;
 
-public abstract class GitPlatformStrategy {
+public abstract class RegistryRawContent {
 
-    protected static final String DEFAULT_BRANCH = "master";
+    private static final String DEFAULT_BRANCH = "master";
 
     /**
      * Returns the pattern to match the repository url.
@@ -39,5 +39,4 @@ public abstract class GitPlatformStrategy {
         }
         return StringUtils.EMPTY;
     }
-
 }

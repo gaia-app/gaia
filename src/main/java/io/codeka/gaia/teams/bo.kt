@@ -17,4 +17,14 @@ data class User(
 
     val isAdmin: Boolean
         get() = "admin" == this.username
+
+    var oAuth2User: OAuth2User? = null
 }
+
+/**
+ * Gather data of user identified by OAuth2
+ */
+data class OAuth2User(
+        val provider: String?,
+        val token: String?,
+        val attributes: Map<String, Any>?)
