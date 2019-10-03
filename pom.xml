@@ -216,6 +216,11 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
+		<!-- oauth2 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
