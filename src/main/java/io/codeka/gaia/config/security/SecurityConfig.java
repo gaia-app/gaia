@@ -1,5 +1,6 @@
-package io.codeka.gaia.config;
+package io.codeka.gaia.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,20 +12,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Value("${gaia.ldap.userDnPatterns:}")
-    private String userDnPatterns;
-
-    @Value("${gaia.ldap.url:}")
-    private String url;
-
-    @Value("${gaia.ldap.enabled:false}")
-    private boolean ldapEnabled;
 
     @Value("${gaia.admin-password:admin123}")
     private String adminPassword;
+
+    private SuccessHandler successHandler;
+
+    @Autowired
+    public SecurityConfig(SuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
 
     @Bean
     PasswordEncoder bcrypt(){
@@ -41,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**", "/js/**", "/favicon.ico", "/images/**").permitAll()
                     .antMatchers("/**").authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").successHandler(successHandler).permitAll()
                 .and()
                 .logout().permitAll();
     }
@@ -54,15 +53,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password(bcrypt().encode(adminPassword)).authorities("ROLE_ADMIN")
                 .and()
                 .withUser("user").password(bcrypt().encode("user123")).authorities("ROLE_USER");
-
-        // configure ldap auth if needed
-        if(ldapEnabled){
-            auth
-                    .ldapAuthentication()
-                    .userDnPatterns(userDnPatterns)
-                    .contextSource()
-                    .url(url);
-        }
     }
-
 }

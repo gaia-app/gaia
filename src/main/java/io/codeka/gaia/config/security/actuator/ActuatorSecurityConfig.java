@@ -1,4 +1,4 @@
-package io.codeka.gaia.config;
+package io.codeka.gaia.config.security.actuator;
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @Configuration
 @Order(50)
-public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
-
+public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatcher(EndpointRequest.to("health", "info")).authorizeRequests()
-                .anyRequest().permitAll();
+        http
+                .requestMatcher(EndpointRequest.to("health", "info"))
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
     }
-
 }
