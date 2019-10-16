@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -36,15 +37,8 @@ class OAuth2ClientSecurityConfigIT {
     }
 
     @Nested
-    @SpringBootTest(properties = {
-            "spring.security.oauth2.client.registration.test_oauth2_client.client-id=ID",
-            "spring.security.oauth2.client.registration.test_oauth2_client.client-secret=SECRET",
-            "spring.security.oauth2.client.registration.test_oauth2_client.authorization-grant-type=authorization_code",
-            "spring.security.oauth2.client.registration.test_oauth2_client.redirect-uri=REDIRECT_URI",
-            "spring.security.oauth2.client.provider.test_oauth2_client.authorization-uri=AUTHORIZATION_URI",
-            "spring.security.oauth2.client.provider.test_oauth2_client.token-uri=TOKEN_URI",
-            "spring.security.oauth2.client.provider.test_oauth2_client.user-info-uri=USER_INFO_URI",
-    })
+    @SpringBootTest
+    @ActiveProfiles("oauth2")
     class OAuth2ClientSecurityConfigLoadedTest {
         @Test
         void oauth2ClientSecurityConfig_shouldBeInstantiated(
