@@ -39,6 +39,9 @@ public class TerraformModule {
 
     private String estimatedMonthlyCostDescription;
 
+    @DBRef
+    private User createdBy;
+
     public String getId() {
         return id;
     }
@@ -129,5 +132,13 @@ public class TerraformModule {
 
     public void setEstimatedMonthlyCostDescription(String estimatedMonthlyCostDescription) {
         this.estimatedMonthlyCostDescription = estimatedMonthlyCostDescription;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }

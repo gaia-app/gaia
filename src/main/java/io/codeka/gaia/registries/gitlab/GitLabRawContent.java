@@ -1,9 +1,10 @@
-package io.codeka.gaia.modules.repository.strategy;
+package io.codeka.gaia.registries.gitlab;
+
+import io.codeka.gaia.registries.RegistryRawContent;
 
 import java.util.regex.Pattern;
 
-public class GitLabStrategy extends GitPlatformStrategy {
-
+public class GitLabRawContent extends RegistryRawContent {
     @Override
     protected final Pattern getPattern() {
         return Pattern.compile("^(http[s]?://[www.]?gitlab.*).git$");
@@ -13,5 +14,4 @@ public class GitLabStrategy extends GitPlatformStrategy {
     protected String getTemplateRawUrl() {
         return "{0}/raw/{1}";
     }
-
 }

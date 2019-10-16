@@ -39,7 +39,7 @@
             <dashboard-widget text="Stacks to update" :value="toUpdateStackCount" variant="yellow_bg" icon="fa-caret-square-up" link="/stacks"></dashboard-widget>
         </div>
 
-        <div sec:authorize="principal.username != 'admin'" v-if="! team" class="full_container">
+        <div sec:authorize="authentication.name != 'admin'" v-if="! team" class="full_container">
             <div class="center">
                 <div class="error_page">
                     <div class="center">

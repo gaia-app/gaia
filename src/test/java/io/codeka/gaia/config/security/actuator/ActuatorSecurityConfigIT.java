@@ -1,4 +1,4 @@
-package io.codeka.gaia.config;
+package io.codeka.gaia.config.security.actuator;
 
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DirtiesContext
 @Testcontainers
-class ActuatorSecurityTest {
+class ActuatorSecurityConfigIT {
 
     @Autowired
     private MockMvc mockMvc;

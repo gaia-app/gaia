@@ -1,9 +1,7 @@
 package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.modules.repository.strategy.GitHubStrategy;
-import io.codeka.gaia.modules.repository.strategy.GitLabStrategy;
-import io.codeka.gaia.modules.repository.strategy.GitPlatformStrategy;
+import io.codeka.gaia.registries.RegistryRawContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +11,11 @@ import java.util.Optional;
 @Repository
 public class TerraformModuleGitRepository {
 
-    List<GitPlatformStrategy> gitPlatformStrategies;
+    private List<RegistryRawContent> registryRawContents;
 
     @Autowired
-    public TerraformModuleGitRepository() {
-        gitPlatformStrategies = List.of(new GitHubStrategy(), new GitLabStrategy());
+    public TerraformModuleGitRepository(List<RegistryRawContent> registryRawContents) {
+        this.registryRawContents = registryRawContents;
     }
 
     /**
@@ -27,7 +25,7 @@ public class TerraformModuleGitRepository {
      * @return the url of the README file
      */
     public Optional<String> getReadme(TerraformModule module) {
-        Optional<GitPlatformStrategy> strategy = gitPlatformStrategies.stream()
+        var strategy = registryRawContents.stream()
                 .filter(s -> s.matches(module.getGitRepositoryUrl()))
                 .findFirst();
 
@@ -37,5 +35,4 @@ public class TerraformModuleGitRepository {
         var url = strategy.get().getRawUrl(module.getGitRepositoryUrl(), module.getGitBranch(), module.getDirectory());
         return Optional.of(url + "/README.md");
     }
-
 }

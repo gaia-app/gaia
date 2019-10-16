@@ -67,6 +67,19 @@
                     </button>
                 </div>
 
+                <!-- OAuth2 connections -->
+                <div th:if="${clients != null and !clients.empty}">
+                    <h7 class="sign-in">or Sign In with</h7>
+                    <div class="login-oauth">
+                        <a th:each="client: ${clients}"
+                           th:href="@{/oauth2/authorization/{client}(client=${client})}"
+                           th:class="${'btn btn-outline-secondary btn-sm btn-' + client}">
+                            <i th:class="${'fab fa-' + client}"></i>
+                            <span th:text="${client}"></span>
+                        </a>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>

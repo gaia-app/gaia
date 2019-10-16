@@ -1,6 +1,8 @@
-set -ex
+set -e
 
+echo 'cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
 git clone {{gitRepositoryUrl}} module
+
 cd module
 {{#gitDirectory}}
     cd {{gitDirectory}}

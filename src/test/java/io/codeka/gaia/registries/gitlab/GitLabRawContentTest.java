@@ -1,4 +1,4 @@
-package io.codeka.gaia.modules.repository.strategy;
+package io.codeka.gaia.registries.gitlab;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,28 +6,28 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class GitLabStrategyTest {
+class GitLabRawContentTest {
 
-    private GitLabStrategy strategy;
+    private GitLabRawContent gitLabRawContent;
 
     @BeforeEach
     void setup() {
-        strategy = new GitLabStrategy();
+        gitLabRawContent = new GitLabRawContent();
     }
 
     @Test
     void getPattern_shouldReturnPattern() {
-        assertNotNull(strategy.getPattern());
+        assertNotNull(gitLabRawContent.getPattern());
     }
 
     @Test
     void matches_shouldReturnTrueForValidUrl() {
-        assertTrue(strategy.matches("https://gitlab.com/CodeKaio/gaia.git"));
+        assertTrue(gitLabRawContent.matches("https://gitlab.com/CodeKaio/gaia.git"));
     }
 
     @Test
     void matches_shouldReturnFalseForInvalidUrl() {
-        assertFalse(strategy.matches("https://github.com/CodeKaio/gaia.git"));
+        assertFalse(gitLabRawContent.matches("https://github.com/CodeKaio/gaia.git"));
     }
 
     @Test
@@ -36,7 +36,7 @@ class GitLabStrategyTest {
         var url = "https://gitlab.com/CodeKaio/gaia.git";
 
         // when
-        var result = strategy.getRawUrl(url, "branch", "directory");
+        var result = gitLabRawContent.getRawUrl(url, "branch", "directory");
 
         // then
         assertThat(result).isNotNull().isEqualTo("https://gitlab.com/CodeKaio/gaia/raw/branch/directory");
@@ -48,7 +48,7 @@ class GitLabStrategyTest {
         var url = "https://gitlab.com/CodeKaio/gaia.git";
 
         // when
-        var result = strategy.getRawUrl(url, null, null);
+        var result = gitLabRawContent.getRawUrl(url, null, null);
 
         // then
         assertThat(result).isNotNull().isEqualTo("https://gitlab.com/CodeKaio/gaia/raw/master");
@@ -60,7 +60,7 @@ class GitLabStrategyTest {
         var url = "https://github.com/CodeKaio/gaia.git";
 
         // when
-        var result = strategy.getRawUrl(url, null, null);
+        var result = gitLabRawContent.getRawUrl(url, null, null);
 
         // then
         assertThat(result).isEmpty();

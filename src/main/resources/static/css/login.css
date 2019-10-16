@@ -1,4 +1,4 @@
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
@@ -107,7 +107,7 @@ button {
     width: 100%;
     height: 100%;
     box-shadow: 0px 0px 0px 0px;
-    color: rgba(87,184,70, 0.8);
+    color: rgba(87, 184, 70, 0.8);
 }
 
 .symbol-input {
@@ -169,7 +169,6 @@ button {
 }
 
 
-
 /*------------------------------------------------------------------
 [ Responsive ]*/
 
@@ -208,10 +207,63 @@ button {
     }
 }
 
-
 /*------------------------------------------------------------------
 [ Alert validate ]*/
 
 .validate-input {
     position: relative;
+}
+
+/*------------------------------------------------------------------
+[ OAuth Signin options ]*/
+.sign-in {
+    display: flex;
+    align-items: center;
+    color: #333333;
+    font-size: smaller;
+    margin: .5em 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.sign-in:before, .sign-in:after {
+    content: "";
+    border-top: .1em solid;
+    flex: 1;
+    margin: 0 .5em;
+}
+
+.login-oauth {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.login-oauth .btn {
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+}
+
+.login-oauth .btn span {
+    margin-left: .5em;
+}
+
+.login-oauth .btn-gitlab {
+    color: #fca326;
+}
+
+.login-oauth .btn-gitlab:hover {
+    background-color: #fca326;
+    border-color: #fca326;
+    color: #fff;
+}
+
+.login-oauth .btn-github {
+    color: #333;
+}
+
+.login-oauth .btn-github:hover {
+    background-color: #333;
+    border-color: #333;
+    color: #fff;
 }
