@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         "gaia.envVars[0].name=test",
         "gaia.envVars[0].value=value"
 })
-class SettingsTest {
+class SettingsIT {
 
     @Autowired
     private Settings settings;
