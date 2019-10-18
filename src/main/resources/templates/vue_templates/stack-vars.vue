@@ -65,7 +65,7 @@ Vue.component('stack-vars', {
             return {result:true};
         },
         isListRegex: function(regex){
-            const listRegex = /^\((\w*)(\|(\w*))*\)$/;
+            const listRegex = /^\(([^|]*)(\|([^|]*))*\)$/;
             return listRegex.test(regex);
         },
         listOptions: function(regex){
