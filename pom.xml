@@ -145,6 +145,11 @@
 			<artifactId>momentjs</artifactId>
 			<version>2.24.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>moment-duration-format</artifactId>
+			<version>1.3.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
