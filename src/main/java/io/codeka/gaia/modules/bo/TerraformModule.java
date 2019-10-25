@@ -1,5 +1,6 @@
 package io.codeka.gaia.modules.bo;
 
+import io.codeka.gaia.registries.RegistryDetails;
 import io.codeka.gaia.teams.Team;
 import io.codeka.gaia.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -41,6 +42,8 @@ public class TerraformModule {
 
     @DBRef
     private User createdBy;
+
+    private RegistryDetails registryDetails;
 
     public String getId() {
         return id;
@@ -140,5 +143,13 @@ public class TerraformModule {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public RegistryDetails getRegistryDetails() {
+        return registryDetails;
+    }
+
+    public void setRegistryDetails(RegistryDetails registryDetails) {
+        this.registryDetails = registryDetails;
     }
 }

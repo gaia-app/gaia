@@ -9,10 +9,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,14 +38,13 @@ class TerraformModuleGitRepositoryTest {
         module.setDirectory("directory");
 
         // when
-        when(registryRawContent.matches(anyString())).thenReturn(true);
-        when(registryRawContent.getRawUrl(anyString(), anyString(), anyString())).thenReturn("raw_url");
+        when(registryRawContent.matches(any())).thenReturn(true);
+        when(registryRawContent.getReadme(any())).thenReturn(Optional.of("README CONTENT"));
         var result = repository.getReadme(module);
 
         // then
-        assertThat(result).isPresent().get().isEqualTo("raw_url/README.md");
+        assertThat(result).isPresent().get().isEqualTo("README CONTENT");
         verify(registryRawContent).matches("url");
-        verify(registryRawContent).getRawUrl("url", "branch", "directory");
     }
 
     @Test

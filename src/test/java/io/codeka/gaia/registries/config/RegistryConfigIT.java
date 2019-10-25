@@ -1,5 +1,6 @@
 package io.codeka.gaia.registries.config;
 
+import io.codeka.gaia.config.BeansConfig;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.registries.RegistryRawContent;
 import io.codeka.gaia.registries.github.GitHubOAuth2Provider;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = RegistryConfig.class)
+@SpringBootTest(classes = {RegistryConfig.class, BeansConfig.class})
 class RegistryConfigIT {
     @Test
     void registryRawContents_shouldBeInstantiated(@Autowired(required = false) List<RegistryRawContent> registryRawContents) {

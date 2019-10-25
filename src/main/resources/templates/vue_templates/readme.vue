@@ -17,7 +17,6 @@
         props: ['moduleId'],
         created: function () {
             $.get(`/modules/${this.moduleId}/readme`)
-                .then($.get)
                 .then(data => {
                     this.content = marked(data);
                     this.loaded = true;
