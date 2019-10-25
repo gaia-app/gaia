@@ -19,20 +19,21 @@ public class TerraformModuleGitRepository {
     }
 
     /**
-     * Returns the url of the README file
+     * Returns the content of the README file
      *
      * @param module module contains the README file
-     * @return the url of the README file
+     * @return the content of the README file
      */
-    public Optional<String> getReadme(TerraformModule module) {
+    public Optional<String> getReadme(TerraformModule module){
         var strategy = registryRawContents.stream()
                 .filter(s -> s.matches(module.getGitRepositoryUrl()))
                 .findFirst();
 
-        if (strategy.isEmpty()) {
+        if(strategy.isEmpty()){
             return Optional.empty();
         }
-        var url = strategy.get().getRawUrl(module.getGitRepositoryUrl(), module.getGitBranch(), module.getDirectory());
-        return Optional.of(url + "/README.md");
+
+        return strategy.get().getReadme(module);
     }
+
 }

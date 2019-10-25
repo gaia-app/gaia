@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Testcontainers
-class GaiaTest {
+class GaiaIT {
 
 	@Container
 	private static MongoContainer mongoContainer = new MongoContainer();

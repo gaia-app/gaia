@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataMongoTest
 @Testcontainers
 @DirtiesContext
-class UserRepositoryTest {
+class UserRepositoryIT {
 
     @Container
     private static MongoContainer mongoContainer = new MongoContainer();
