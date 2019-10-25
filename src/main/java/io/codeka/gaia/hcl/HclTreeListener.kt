@@ -20,7 +20,7 @@ class HclTreeListener : hclBaseListener() {
     }
 
     override fun enterType(ctx: hclParser.TypeContext) {
-        this.current.type = ctx.STRING().text
+        this.current.type = ctx.TYPE().text
     }
 
     override fun enterDescription(ctx: hclParser.DescriptionContext) {
@@ -28,6 +28,6 @@ class HclTreeListener : hclBaseListener() {
     }
 
     override fun enterR_default(ctx: hclParser.R_defaultContext) {
-        this.current.default = ctx.STRING().text
+        this.current.default = ctx.defaultValue().text
     }
 }

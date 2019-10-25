@@ -17,7 +17,7 @@ variableBlock
   ;
 
 type
-  : 'type' '=' STRING
+  : 'type' '=' TYPE
   ;
 
 description
@@ -25,11 +25,27 @@ description
   ;
 
 r_default
-  : 'default' '=' STRING
+  : 'default' '=' defaultValue
+  ;
+
+defaultValue
+  : STRING
+  | NUMBER
+  | 'true'
+  | 'false'
   ;
 
 identifier
   : STRING
+  ;
+
+TYPE
+  : 'string'
+  | '"string"'
+  | 'number'
+  | '"number"'
+  | 'bool'
+  | '"bool"'
   ;
 
 /**
@@ -51,6 +67,10 @@ fragment HEX
    ;
 fragment SAFECODEPOINT
    : ~ ["\\\u0000-\u001F]
+   ;
+
+NUMBER
+   : '0' | [1-9] [0-9]*
    ;
 
 WS

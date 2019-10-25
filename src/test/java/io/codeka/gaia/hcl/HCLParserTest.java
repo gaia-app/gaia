@@ -35,14 +35,13 @@ class HCLParserTest {
         walker.walk(hclTreeListener, parser.file());
 
         // then
-        assertThat(hclTreeListener.getVariables()).hasSize(1);
+        assertThat(hclTreeListener.getVariables()).hasSize(3);
 
-        Variable foo = new Variable();
-        foo.setName("\"foo\"");
-        foo.setDescription("\"bar\"");
-        foo.setDefault("\"baz\"");
+        Variable stringVar = new Variable("\"string_var\"", "\"string\"", "\"a test string var\"", "\"foo\"");
+        Variable numberVar = new Variable("\"number_var\"", "number", "\"a test number var\"", "42");
+        Variable boolVar = new Variable("\"bool_var\"", "", "", "false");
 
-        assertThat(hclTreeListener.getVariables()).contains(foo);
+        assertThat(hclTreeListener.getVariables()).contains(stringVar, numberVar, boolVar);
     }
 
 }
