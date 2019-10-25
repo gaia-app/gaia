@@ -40,6 +40,7 @@
 <script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
+<script src="/webjars/moment-duration-format/1.3.0/lib/moment-duration-format.js"></script>
 
 <script src="/webjars/vue/2.5.16/vue.js"></script>
 <script src="/webjars/bootstrap-vue/2.0.4/dist/bootstrap-vue.js"></script>
@@ -48,6 +49,7 @@
 <div th:replace="vue_templates/breadcrumb"></div>
 <div th:replace="vue_templates/user-badge"></div>
 <div th:replace="vue_templates/sidebar"></div>
+<div th:replace="vue_templates/job/job-timer"></div>
 
 <template id="stack-controls">
     <div class="page_controls">
@@ -153,13 +155,32 @@
             <li v-for="(job, index) in jobs" :class="job.status" class="job">
                 <div class="job_id"><a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{jobs.length - index}}</a></div>
                 <div class="job_detail">
-                    <div><span class="job_attr_id">Type</span><span class="job_attr_value" :class="job.type">{{job.type}}</span></div>
-                    <div><span class="job_attr_id">Status</span><span class="job_attr_value" :class="job.status">{{job.status}}</span></div>
                     <div>
-                        <span class="job_attr_id">Date</span><span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
-                        <span v-if="job.executionTime">({{job.executionTime}}&nbsp;ms)</span>
+                        <span class="job_attr_id">Type</span>
+                        <span class="job_attr_value" :class="job.type">{{job.type}}</span>
                     </div>
-                    <div><span class="job_attr_id">User</span><user-badge :user="job.user" :css-class="'job_attr_value'"></user-badge></div>
+                    <div>
+                        <span class="job_attr_id">Status</span>
+                        <span class="job_attr_value" :class="job.status">{{job.status}}</span>
+                    </div>
+                    <div>
+                        <span class="job_attr_id">User</span>
+                        <user-badge :user="job.user" :css-class="'job_attr_value'"></user-badge>
+                    </div>
+                </div>
+                <div class="job_detail">
+                    <div>
+                        <span class="job_attr_icon"><i class="far fa-calendar-alt"></i></span>
+                        <span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
+                    </div>
+                    <div>
+                        <span class="job_attr_icon"><i class="fas fa-stopwatch"></i></span>
+                        <job-timer
+                            :start-time="job.startDateTime"
+                            :end-time="job.endDateTime"
+                            :css-class="'job_attr_value'">
+                        </job-timer>
+                    </div>
                 </div>
             </li>
         </ul>
