@@ -12,7 +12,7 @@ public class PlanFinishedState implements JobState {
     @Override
     public void apply(JobWorkflow jobWorkflow) {
         var job = jobWorkflow.getJob();
-        job.setStatus(JobStatus.APPLY_STARTED);
+        job.proceed(JobStatus.APPLY_STARTED);
 
         var step = new Step(StepType.APPLY, job.getId());
         job.getSteps().add(step);

@@ -2,12 +2,11 @@ package io.codeka.gaia.stacks.bo;
 
 import io.codeka.gaia.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.util.CollectionUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -44,6 +43,11 @@ public class Job {
 
     public void end(JobStatus jobStatus) {
         this.endDateTime = LocalDateTime.now();
+        this.status = jobStatus;
+    }
+
+    public void proceed(JobStatus jobStatus) {
+        this.endDateTime = null;
         this.status = jobStatus;
     }
 
@@ -127,12 +131,9 @@ public class Job {
     }
 
     public Long getExecutionTime() {
-        if (CollectionUtils.isEmpty(this.steps)) {
+        if (this.startDateTime == null || this.endDateTime == null) {
             return null;
         }
-        return this.steps.stream()
-                .map(Step::getExecutionTime)
-                .filter(Objects::nonNull)
-                .reduce(null, (a, b) -> a == null ? b : a + b);
+        return Duration.between(this.startDateTime, this.endDateTime).toMillis();
     }
 }
