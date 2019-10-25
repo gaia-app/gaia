@@ -25,9 +25,15 @@
                 <i class="fas fa-stop"></i>
                 Ended&nbsp;<b>{{job.endDateTime | dateTime}}</b>
             </p>
-            <p v-if="job.executionTime">
+            <p>
                 <i class="fas fa-stopwatch"></i>
-                Duration&nbsp;<b>{{job.executionTime}}ms</b>
+                Duration&nbsp;
+                <b>
+                    <job-timer
+                            :start-time="job.startDateTime"
+                            :end-time="job.endDateTime">
+                    </job-timer>
+                </b>
             </p>
         </div>
         <div class="job-actions" v-if="isRetryAvailable">

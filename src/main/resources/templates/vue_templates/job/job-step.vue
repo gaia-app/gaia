@@ -27,9 +27,15 @@
                     <i class="fas fa-stop"></i>
                     Ended&nbsp;<b>{{step.endDateTime | dateTime}}</b>
                 </p>
-                <p v-if="step.executionTime">
+                <p>
                     <i class="fas fa-stopwatch"></i>
-                    Duration&nbsp;<b>{{step.executionTime}}ms</b>
+                    Duration&nbsp;
+                    <b>
+                        <job-timer
+                                :start-time="step.startDateTime"
+                                :end-time="step.endDateTime">
+                        </job-timer>
+                    </b>
                 </p>
             </div>
             <console :id="'logs-' + id" :css-style="'max-height: 300px'" :logs="step.logs"></console>

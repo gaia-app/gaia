@@ -1848,17 +1848,22 @@ button.main_bt {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex: 0 0 30%;
     border-left: 2px dashed cadetblue;
-    margin-left: 10px;
-    padding-left: 10px;
+    margin-left: 15px;
+    padding-left: 15px;
 }
 
 .job_list .job .job_attr_id {
     width: 50px;
 }
 
+.job_list .job .job_attr_icon {
+    width: 20px;
+}
+
 .job_list .job .job_attr_value {
-    font-weight: bold;
+    font-weight: bolder;
     margin-left: 5px;
 }
 
