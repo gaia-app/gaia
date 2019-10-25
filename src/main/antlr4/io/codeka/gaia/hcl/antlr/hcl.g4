@@ -14,7 +14,7 @@ variableDirective
   ;
 
 variableBlock
-  : '{' type? variableDescription? r_default? '}'
+  : '{' variableType? variableDescription? variableDefault? '}'
   ;
 
 outputDirective
@@ -22,7 +22,7 @@ outputDirective
   ;
 
 outputBlock
-  : '{' outputValue? outputDescription? sensitive? '}'
+  : '{' outputValue? outputDescription? outputSensitive? '}'
   ;
 
 outputValue
@@ -33,11 +33,11 @@ outputDescription
   : 'description' '=' STRING
   ;
 
-sensitive
+outputSensitive
   : 'sensitive' '=' BOOLEAN
   ;
 
-type
+variableType
   : 'type' '=' TYPE
   ;
 
@@ -45,7 +45,7 @@ variableDescription
   : 'description' '=' STRING
   ;
 
-r_default
+variableDefault
   : 'default' '=' expression
   ;
 

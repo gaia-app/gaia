@@ -21,7 +21,7 @@ class HclTreeListener : hclBaseListener() {
         this.variables.add(this.currentVariable)
     }
 
-    override fun enterType(ctx: hclParser.TypeContext) {
+    override fun enterVariableType(ctx: hclParser.VariableTypeContext) {
         this.currentVariable.type = ctx.TYPE().text
     }
 
@@ -29,7 +29,7 @@ class HclTreeListener : hclBaseListener() {
         this.currentVariable.description = ctx.STRING().text
     }
 
-    override fun enterR_default(ctx: hclParser.R_defaultContext) {
+    override fun enterVariableDefault(ctx: hclParser.VariableDefaultContext) {
         this.currentVariable.default = ctx.expression().text
     }
 
@@ -49,7 +49,7 @@ class HclTreeListener : hclBaseListener() {
         this.currentOutput.description = ctx.STRING().text
     }
 
-    override fun enterSensitive(ctx: hclParser.SensitiveContext) {
+    override fun enterOutputSensitive(ctx: hclParser.OutputSensitiveContext) {
         this.currentOutput.sensitive = ctx.BOOLEAN().text
     }
 
