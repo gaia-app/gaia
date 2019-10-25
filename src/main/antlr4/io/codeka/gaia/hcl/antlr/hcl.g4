@@ -6,6 +6,7 @@ file
 
 directive
   : variableDirective
+  | outputDirective
   ;
 
 variableDirective
@@ -13,30 +14,57 @@ variableDirective
   ;
 
 variableBlock
-  : '{' type? description? r_default? '}'
+  : '{' type? variableDescription? r_default? '}'
+  ;
+
+outputDirective
+  : 'output' identifier outputBlock
+  ;
+
+outputBlock
+  : '{' outputValue? outputDescription? sensitive? '}'
+  ;
+
+outputValue
+  : 'value' '=' expression
+  ;
+
+outputDescription
+  : 'description' '=' STRING
+  ;
+
+sensitive
+  : 'sensitive' '=' BOOLEAN
   ;
 
 type
   : 'type' '=' TYPE
   ;
 
-description
+variableDescription
   : 'description' '=' STRING
   ;
 
 r_default
-  : 'default' '=' defaultValue
+  : 'default' '=' expression
   ;
 
-defaultValue
+expression
   : STRING
   | NUMBER
-  | 'true'
-  | 'false'
+  | BOOLEAN
+  | UNQUOTED_STRING
   ;
 
 identifier
   : STRING
+  ;
+
+BOOLEAN
+  : 'true'
+  | '"true"'
+  | 'false'
+  | '"false"'
   ;
 
 TYPE
@@ -46,6 +74,10 @@ TYPE
   | '"number"'
   | 'bool'
   | '"bool"'
+  ;
+
+UNQUOTED_STRING
+  : [a-zA-Z0-9_.[\]-]+
   ;
 
 /**
