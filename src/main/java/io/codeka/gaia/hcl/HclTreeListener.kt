@@ -2,6 +2,7 @@ package io.codeka.gaia.hcl
 
 import io.codeka.gaia.hcl.antlr.hclBaseListener
 import io.codeka.gaia.hcl.antlr.hclParser
+import io.codeka.gaia.modules.bo.Variable
 import java.util.*
 
 class HclTreeListener : hclBaseListener() {
@@ -9,12 +10,11 @@ class HclTreeListener : hclBaseListener() {
     var variables: MutableList<Variable> = LinkedList()
     var outputs: MutableList<Output> = LinkedList()
 
-    private var currentVariable: Variable = Variable()
+    private var currentVariable: Variable = Variable("")
     private var currentOutput:Output = Output()
 
     override fun enterVariableDirective(ctx: hclParser.VariableDirectiveContext) {
-        this.currentVariable = Variable()
-        this.currentVariable.name = ctx.identifier().text
+        this.currentVariable = Variable(name = ctx.identifier().text)
     }
 
     override fun exitVariableDirective(ctx: hclParser.VariableDirectiveContext) {
@@ -30,7 +30,7 @@ class HclTreeListener : hclBaseListener() {
     }
 
     override fun enterVariableDefault(ctx: hclParser.VariableDefaultContext) {
-        this.currentVariable.default = ctx.expression().text
+        this.currentVariable.defaultValue = ctx.expression().text
     }
 
     override fun enterOutputDirective(ctx: hclParser.OutputDirectiveContext) {

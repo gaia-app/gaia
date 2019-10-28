@@ -2,7 +2,7 @@ package io.codeka.gaia.runner;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.modules.bo.TerraformVariable;
+import io.codeka.gaia.modules.bo.Variable;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Stack;
@@ -52,8 +52,7 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanCommand_shouldGenerateASingleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         module.setVariables(List.of(variable));
 
         var stack = new Stack();
@@ -67,10 +66,8 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanCommand_shouldGenerateAMultipleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
-        var variable2 = new TerraformVariable();
-        variable2.setName("test2");
+        var variable = new Variable("test");
+        var variable2 = new Variable("test2");
         module.setVariables(List.of(variable, variable2));
 
         var stack = new Stack();
@@ -84,8 +81,7 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanCommand_shouldUseDefaultVariableValues() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -165,8 +161,7 @@ class StackCommandBuilderTest {
     @Test
     void buildApplyCommand_shouldGenerateASingleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         module.setVariables(List.of(variable));
 
         var stack = new Stack();
@@ -180,10 +175,8 @@ class StackCommandBuilderTest {
     @Test
     void buildApplyCommand_shouldGenerateAMultipleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
-        var variable2 = new TerraformVariable();
-        variable2.setName("test2");
+        var variable = new Variable("test");
+        var variable2 = new Variable("test2");
         module.setVariables(List.of(variable, variable2));
 
         var stack = new Stack();
@@ -197,8 +190,7 @@ class StackCommandBuilderTest {
     @Test
     void buildApplyCommand_shouldUseDefaultVariableValues() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -278,8 +270,7 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanDestroyCommand_shouldGenerateASingleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         module.setVariables(List.of(variable));
 
         var stack = new Stack();
@@ -293,10 +284,8 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanDestroyCommand_shouldGenerateAMultipleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
-        var variable2 = new TerraformVariable();
-        variable2.setName("test2");
+        var variable = new Variable("test");
+        var variable2 = new Variable("test2");
         module.setVariables(List.of(variable, variable2));
 
         var stack = new Stack();
@@ -310,8 +299,7 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanDestroyCommand_shouldUseDefaultVariableValues() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -391,8 +379,7 @@ class StackCommandBuilderTest {
     @Test
     void buildDestroyCommand_shouldGenerateASingleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         module.setVariables(List.of(variable));
 
         var stack = new Stack();
@@ -406,10 +393,8 @@ class StackCommandBuilderTest {
     @Test
     void buildDestroyCommand_shouldGenerateAMultipleVariableApplyCommand() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
-        var variable2 = new TerraformVariable();
-        variable2.setName("test2");
+        var variable = new Variable("test");
+        var variable2 = new Variable("test2");
         module.setVariables(List.of(variable, variable2));
 
         var stack = new Stack();
@@ -423,8 +408,7 @@ class StackCommandBuilderTest {
     @Test
     void buildDestroyCommand_shouldUseDefaultVariableValues() {
         var module = new TerraformModule();
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -495,8 +479,7 @@ class StackCommandBuilderTest {
         module.setGitRepositoryUrl("git://test");
         module.setDirectory("directory");
 
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -510,8 +493,7 @@ class StackCommandBuilderTest {
         var module = new TerraformModule();
         module.setGitRepositoryUrl("git://test");
 
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
@@ -525,8 +507,7 @@ class StackCommandBuilderTest {
         var module = new TerraformModule();
         module.setGitRepositoryUrl("git://test");
 
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 

@@ -2,6 +2,7 @@ package io.codeka.gaia.hcl;
 
 import io.codeka.gaia.hcl.antlr.hclLexer;
 import io.codeka.gaia.hcl.antlr.hclParser;
+import io.codeka.gaia.modules.bo.Variable;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,9 +38,18 @@ class HCLParserTest {
         // then
         assertThat(hclTreeListener.getVariables()).hasSize(3);
 
-        Variable stringVar = new Variable("\"string_var\"", "\"string\"", "\"a test string var\"", "\"foo\"");
-        Variable numberVar = new Variable("\"number_var\"", "number", "\"a test number var\"", "42");
-        Variable boolVar = new Variable("\"bool_var\"", "", "", "false");
+        var stringVar = new Variable("\"string_var\"");
+        stringVar.setType("\"string\"");
+        stringVar.setDescription("\"a test string var\"");
+        stringVar.setDefaultValue("\"foo\"");
+
+        var numberVar = new Variable("\"number_var\"");
+        numberVar.setType("number");
+        numberVar.setDescription("\"a test number var\"");
+        numberVar.setDefaultValue("42");
+
+        var boolVar = new Variable("\"bool_var\"");
+        boolVar.setDefaultValue("false");
 
         assertThat(hclTreeListener.getVariables()).contains(stringVar, numberVar, boolVar);
     }
