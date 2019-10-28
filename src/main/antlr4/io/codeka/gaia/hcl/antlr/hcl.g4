@@ -14,7 +14,7 @@ variableDirective
   ;
 
 variableBlock
-  : '{' variableType? variableDescription? variableDefault? '}'
+  : '{' (variableType|variableDescription|variableDefault)+ '}'
   ;
 
 outputDirective
@@ -22,7 +22,7 @@ outputDirective
   ;
 
 outputBlock
-  : '{' outputValue? outputDescription? outputSensitive? '}'
+  : '{' (outputValue|outputDescription|outputSensitive)+ '}'
   ;
 
 outputValue

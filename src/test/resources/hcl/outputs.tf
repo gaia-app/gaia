@@ -4,7 +4,7 @@ output "instance_ip_addr" {
 }
 
 output "db_password" {
-  value       = aws_db_instance.db[1].password
   description = "The password for logging in to the database."
+  value       = aws_db_instance.db[1].password
   sensitive   = true
 }

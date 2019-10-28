@@ -5,8 +5,8 @@ variable "string_var" {
 }
 
 variable "number_var" {
-    type = number
     description = "a test number var"
+    type = number
     default = 42
 }
 
