@@ -105,6 +105,8 @@ NUMBER
    : '0' | [1-9] [0-9]*
    ;
 
-WS
-  : [ \t\r\n]+ -> skip
-  ; // skip spaces, tabs, newlines
+// comments and whitespaces
+COMMENT:      '/*' .*? '*/' -> skip;
+LINE_COMMENT: '//' ~[\r\n]* -> skip;
+HAS_COMMENT:  '#' ~ [\r\n]* -> skip;
+WS:           [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
