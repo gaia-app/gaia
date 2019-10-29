@@ -2,6 +2,7 @@ package io.codeka.gaia.hcl
 
 import io.codeka.gaia.hcl.antlr.hclBaseVisitor
 import io.codeka.gaia.hcl.antlr.hclParser
+import io.codeka.gaia.modules.bo.Output
 import io.codeka.gaia.modules.bo.Variable
 import java.util.*
 
