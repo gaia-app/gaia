@@ -273,6 +273,7 @@
 						</goals>
 						<configuration>
 							<visitor>true</visitor>
+							<listener>false</listener>
 						</configuration>
 					</execution>
 				</executions>
