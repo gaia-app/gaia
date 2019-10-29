@@ -10,7 +10,7 @@ directive
   ;
 
 variableDirective
-  : 'variable' identifier variableBlock
+  : 'variable' STRING variableBlock
   ;
 
 variableBlock
@@ -18,7 +18,7 @@ variableBlock
   ;
 
 outputDirective
-  : 'output' identifier outputBlock
+  : 'output' STRING outputBlock
   ;
 
 outputBlock
@@ -38,8 +38,22 @@ outputSensitive
   ;
 
 variableType
-  : 'type' '=' TYPE
+  : 'type' '=' type
   ;
+
+type
+  : TYPE
+  | 'list(' type ')'
+  | 'map(' type ')'
+  | 'object' '(' object ')'
+  ;
+
+object
+  : '{' '}'
+  | '{' field+ '}'
+  ;
+
+field: IDENTIFIER '=' type;
 
 variableDescription
   : 'description' '=' STRING
@@ -53,11 +67,31 @@ expression
   : STRING
   | NUMBER
   | BOOLEAN
-  | UNQUOTED_STRING
+  | array
+  | object
+  | complexExpression
   ;
 
-identifier
-  : STRING
+functionCall
+  : IDENTIFIER '(' expression ( ',' expression )* ','? ')'
+  ;
+
+complexExpression
+  : IDENTIFIER
+  | complexExpression '.' complexExpression // attribute access
+  | complexExpression '[' index ']' // indexed array access
+  | complexExpression '.' index // indexed attribute access
+  | functionCall
+  ;
+
+array
+  : '[' ']'
+  | '[' expression ( ',' expression )* ']'
+  ;
+
+index
+  : NUMBER
+  | '*'
   ;
 
 BOOLEAN
@@ -74,11 +108,20 @@ TYPE
   | '"number"'
   | 'bool'
   | '"bool"'
+  | 'any'
   ;
 
-UNQUOTED_STRING
-  : [a-zA-Z0-9_.[\]-]+
-  ;
+IDENTIFIER:         Letter LetterOrDigit*;
+
+fragment LetterOrDigit
+    : Letter
+    | [0-9]
+    ;
+fragment Letter
+    : [a-zA-Z$_] // these are the "java letters" below 0x7F
+    | ~[\u0000-\u007F\uD800-\uDBFF] // covers all characters above 0x7F which are not a surrogate
+    | [\uD800-\uDBFF] [\uDC00-\uDFFF] // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
+    ;
 
 /**
  * STRING Lexer Rule comes from the JSON grammar
@@ -106,7 +149,7 @@ NUMBER
    ;
 
 // comments and whitespaces
-COMMENT:      '/*' .*? '*/' -> skip;
-LINE_COMMENT: '//' ~[\r\n]* -> skip;
-HAS_COMMENT:  '#' ~ [\r\n]* -> skip;
-WS:           [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
+COMMENT:      '/*' .*? '*/' -> channel(HIDDEN);
+LINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN);
+HAS_COMMENT:  '#' ~ [\r\n]* -> channel(HIDDEN);
+WS:           [ \t\r\n]+    -> channel(HIDDEN); // skip spaces, tabs, newlines

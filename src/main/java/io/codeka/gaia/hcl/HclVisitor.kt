@@ -10,17 +10,17 @@ class HclVisitor : hclBaseVisitor<Unit>() {
     var variables: MutableList<Variable> = LinkedList()
     var outputs: MutableList<Output> = LinkedList()
 
-    private var currentVariable: Variable = Variable("")
-    private var currentOutput:Output = Output()
+    private var currentVariable: Variable = Variable(name = "")
+    private var currentOutput: Output = Output()
 
     override fun visitVariableDirective(ctx: hclParser.VariableDirectiveContext) {
-        currentVariable = Variable(ctx.identifier().text)
+        currentVariable = Variable(name = ctx.STRING().text)
         variables.add(currentVariable)
         visitChildren(ctx)
     }
 
     override fun visitVariableType(ctx: hclParser.VariableTypeContext) {
-        currentVariable.type = ctx.TYPE().text
+        currentVariable.type = ctx.type().text
     }
 
     override fun visitVariableDefault(ctx: hclParser.VariableDefaultContext) {
@@ -32,7 +32,7 @@ class HclVisitor : hclBaseVisitor<Unit>() {
     }
 
     override fun visitOutputDirective(ctx: hclParser.OutputDirectiveContext) {
-        currentOutput = Output(name = ctx.identifier().text)
+        currentOutput = Output(name = ctx.STRING().text)
         outputs.add(currentOutput)
         visitChildren(ctx)
     }
