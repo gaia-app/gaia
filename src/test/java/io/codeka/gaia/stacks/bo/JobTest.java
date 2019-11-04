@@ -3,6 +3,7 @@ package io.codeka.gaia.stacks.bo;
 import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,6 +118,31 @@ class JobTest {
     }
 
     @Test
+    void proceed_shouldSetStatus() {
+        // given
+        var job = new Job();
+
+        // when
+        job.proceed(JobStatus.APPLY_STARTED);
+
+        // then
+        assertEquals(JobStatus.APPLY_STARTED, job.getStatus());
+    }
+
+    @Test
+    void proceed_shouldResetEndDateTime() {
+        // given
+        var job = new Job();
+        job.setEndDateTime(LocalDateTime.now());
+
+        // when
+        job.proceed(null);
+
+        // then
+        assertNull(job.getEndDateTime());
+    }
+
+    @Test
     void job_shouldSetId() {
         var job = new Job(null, null, null);
 
@@ -154,28 +180,25 @@ class JobTest {
     }
 
     @Test
-    void getExecutionTime_shouldReturnSumOfStepExecutionTime() {
+    void getExecutionTime_shouldReturnDuration_betweenStartDateTime_andEndDateTime() {
         // given
         var job = new Job();
-        var step = new Step();
-        step.setExecutionTime(10L);
-        job.getSteps().add(step);
-        step = new Step();
-        step.setExecutionTime(20L);
-        job.getSteps().add(step);
-        job.getSteps().add(new Step());
+        job.setStartDateTime(LocalDateTime.now());
+        job.setEndDateTime(LocalDateTime.now());
+        var timer = Duration.between(job.getStartDateTime(), job.getEndDateTime()).toMillis();
 
         // when
         var result = job.getExecutionTime();
 
         // then
-        assertEquals(30L, result);
+        assertThat(result).isNotNull().isEqualTo(timer);
     }
 
     @Test
-    void getExecutionTime_shouldReturnNullIfNoSteps() {
+    void getExecutionTime_shouldReturnNull_whenStartDateTimeIsNull() {
         // given
         var job = new Job();
+        job.setEndDateTime(LocalDateTime.now());
 
         // when
         var result = job.getExecutionTime();
@@ -185,12 +208,10 @@ class JobTest {
     }
 
     @Test
-    void getExecutionTime_shouldReturnNullIfNoStepsWithExecutionTime() {
+    void getExecutionTime_shouldReturnNull_whenEndDateTimeIsNull() {
         // given
         var job = new Job();
-        job.getSteps().add(new Step());
-        job.getSteps().add(new Step());
-        job.getSteps().add(new Step());
+        job.setStartDateTime(LocalDateTime.now());
 
         // when
         var result = job.getExecutionTime();
