@@ -85,9 +85,6 @@ Vue.component('stack-vars', {
                 .map(validationResult => validationResult.result)
                 .every(result => result === null || result === true);
         }
-    },
-    created: function(){
-        this.recomputeState();
     }
 });
 </script>

@@ -267,13 +267,6 @@
                 stack: store.state.stack
             }),
             template: "#template",
-            methods: {
-                recomputeState: function(){
-                    if(this.stack.state === "RUNNING"){
-                        this.stack.state = "TO_UPDATE";
-                    }
-                }
-            },
             computed: {
                 editableVars: function() {
                     return this.stack.module.variables.filter(variable => variable.editable);
