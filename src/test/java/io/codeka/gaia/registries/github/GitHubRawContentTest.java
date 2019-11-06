@@ -62,7 +62,7 @@ class GitHubRawContentTest {
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
-        var githubFile = new RegistryFile(Base64.encode("# Module Readme".getBytes()));
+        var githubFile = new RegistryFile(Base64.encode("# Module Readme".getBytes()) + "\n");
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(

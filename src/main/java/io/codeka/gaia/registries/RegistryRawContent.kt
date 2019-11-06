@@ -41,7 +41,7 @@ abstract class RegistryRawContent(private val registryType: RegistryType, privat
                 RegistryFile::class.java)
 
         if(response.statusCode == HttpStatus.OK) {
-            return Optional.of(String(Base64.getDecoder().decode(response.body?.content)))
+            return Optional.of(String(Base64.getDecoder().decode(response.body?.content?.replace("\n",""))))
         }
         return Optional.empty()
     }
