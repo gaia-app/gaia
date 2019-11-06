@@ -54,7 +54,7 @@ class GitHubRawContentTest {
     void getReadmeContent_shouldCallTheApi_andServeDecodedContent(){
         // given
         var module = new TerraformModule();
-        module.setRegistryDetails(new RegistryDetails(RegistryType.GITLAB, "group/project"));
+        module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB, "Apophis/Chulak"));
 
         var jack = new User("Jack", null);
         jack.setOAuth2User(new OAuth2User("GITHUB","TOKENSTRING", null));
@@ -66,11 +66,10 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/{id}/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("group/project"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitHubRawContent.getReadme(module);
@@ -86,7 +85,7 @@ class GitHubRawContentTest {
     void getReadmeContent_shouldCallTheApiWithoutAuth_ifNoToken_andServeDecodedContent(){
         // given
         var module = new TerraformModule();
-        module.setRegistryDetails(new RegistryDetails(RegistryType.GITLAB,  "group/project"));
+        module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB,  "Apophis/Chulak"));
 
         var jack = new User("Jack", null);
         module.setCreatedBy(jack);
@@ -97,11 +96,10 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/{id}/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("group/project"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitHubRawContent.getReadme(module);
@@ -117,7 +115,7 @@ class GitHubRawContentTest {
     void getReadmeContent_shouldCallTheApiWithoutAuth_ifNoOwner_andServeDecodedContent(){
         // given
         var module = new TerraformModule();
-        module.setRegistryDetails(new RegistryDetails(RegistryType.GITLAB,  "group/project"));
+        module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB,  "Apophis/Chulak"));
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
@@ -125,11 +123,10 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq(RegistryType.GITHUB.getReadmeUrl()),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("group/project"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitHubRawContent.getReadme(module);
@@ -157,10 +154,10 @@ class GitHubRawContentTest {
     void getReadmeContent_shouldReturnEmpty_whenReadmeDoesntExists(){
         // given
         var module = new TerraformModule();
-        module.setRegistryDetails(new RegistryDetails(RegistryType.GITLAB, "123"));
+        module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB, "Apophis/Chulak"));
 
         var jack = new User("Jack", null);
-        jack.setOAuth2User(new OAuth2User("GITLAB","TOKENSTRING", null));
+        jack.setOAuth2User(new OAuth2User("GITHUB","TOKENSTRING", null));
         module.setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
@@ -168,11 +165,10 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<RegistryFile>(HttpStatus.NOT_FOUND);
 
         when(restTemplate.exchange(
-                eq(RegistryType.GITHUB.getReadmeUrl()),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("123"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitHubRawContent.getReadme(module);

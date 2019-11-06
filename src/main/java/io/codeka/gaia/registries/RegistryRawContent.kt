@@ -35,11 +35,10 @@ abstract class RegistryRawContent(private val registryType: RegistryType, privat
         val requestEntity = HttpEntity<Any>(headers)
 
         val response = restTemplate.exchange(
-                this.registryType.readmeUrl,
+                this.registryType.readmeUrl.replace("{id}", module.registryDetails.projectId),
                 HttpMethod.GET,
                 requestEntity,
-                RegistryFile::class.java,
-                module.registryDetails.projectId)
+                RegistryFile::class.java)
 
         if(response.statusCode == HttpStatus.OK) {
             return Optional.of(String(Base64.getDecoder().decode(response.body?.content)))
