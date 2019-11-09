@@ -100,7 +100,7 @@ class ModulesMVCControllerTest {
 
         // then
         verify(moduleRepository).findById("TEST");
-        verifyZeroInteractions(moduleGitRepository);
+        verifyNoInteractions(moduleGitRepository);
     }
 
     @Test
@@ -144,7 +144,7 @@ class ModulesMVCControllerTest {
 
         // then
         verify(moduleRepository).findById("12");
-        verifyZeroInteractions(model);
+        verifyNoInteractions(model);
     }
 
     @Test
@@ -158,7 +158,7 @@ class ModulesMVCControllerTest {
 
         // then
         verify(moduleRepository).findById("12");
-        verifyZeroInteractions(model);
+        verifyNoInteractions(model);
     }
 
 }
