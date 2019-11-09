@@ -327,6 +327,25 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.10</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.10</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<excludedTestClasses>*IT</excludedTestClasses>
+					<avoidCallsTo>
+						<avoidCallsTo>kotlin.jvm.internal</avoidCallsTo>
+					</avoidCallsTo>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
