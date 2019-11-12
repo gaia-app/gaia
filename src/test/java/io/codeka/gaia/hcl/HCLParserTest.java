@@ -26,17 +26,17 @@ class HCLParserTest {
         // then
         assertThat(variables).hasSize(3);
 
-        var stringVar = new Variable("\"string_var\"");
-        stringVar.setType("\"string\"");
-        stringVar.setDescription("\"a test string var\"");
-        stringVar.setDefaultValue("\"foo\"");
+        var stringVar = new Variable("string_var");
+        stringVar.setType("string");
+        stringVar.setDescription("a test string var");
+        stringVar.setDefaultValue("foo");
 
-        var numberVar = new Variable("\"number_var\"");
+        var numberVar = new Variable("number_var");
         numberVar.setType("number");
-        numberVar.setDescription("\"a test number var\"");
+        numberVar.setDescription("a test number var");
         numberVar.setDefaultValue("42");
 
-        var boolVar = new Variable("\"bool_var\"");
+        var boolVar = new Variable("bool_var");
         boolVar.setDefaultValue("false");
 
         assertThat(variables).contains(stringVar, numberVar, boolVar);
@@ -65,8 +65,8 @@ class HCLParserTest {
         // then
         assertThat(outputs).hasSize(2);
 
-        var output1 = new Output("\"instance_ip_addr\"", "\"${aws_instance.server.private_ip}\"", "\"The private IP address of the main server instance.\"", "false");
-        var output2 = new Output("\"db_password\"", "aws_db_instance.db[1].password", "\"The password for logging in to the database.\"", "true");
+        var output1 = new Output("instance_ip_addr", "${aws_instance.server.private_ip}", "The private IP address of the main server instance.", "false");
+        var output2 = new Output("db_password", "aws_db_instance.db[1].password", "The password for logging in to the database.", "true");
 
         assertThat(outputs).contains(output1, output2);
     }
