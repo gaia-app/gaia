@@ -1,7 +1,7 @@
 package io.codeka.gaia.stacks.service;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.modules.bo.TerraformVariable;
+import io.codeka.gaia.modules.bo.Variable;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.stacks.bo.Stack;
 import org.junit.jupiter.api.Test;
@@ -41,8 +41,7 @@ class MandatoryStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnFalse_whenMandatoryVariableIsEmpty(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setMandatory(true);
 
         var module = new TerraformModule();
@@ -58,8 +57,7 @@ class MandatoryStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnFalse_whenMandatoryVariableIsBlank(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setMandatory(true);
 
         var module = new TerraformModule();
@@ -76,8 +74,7 @@ class MandatoryStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnTrue_whenMandatoryVariableWithDefaultValueIsBlank(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setMandatory(true);
         variable.setDefaultValue("default");
 
@@ -94,8 +91,7 @@ class MandatoryStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnTrue_whenMandatoryVariableIsNotBlank(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setMandatory(true);
 
         var module = new TerraformModule();
@@ -112,8 +108,7 @@ class MandatoryStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnTrue_whenNonMandatoryVariableIsNull(){
-        var variable = new TerraformVariable();
-        variable.setName("testNonMandatory");
+        var variable = new Variable("test");
 
         var module = new TerraformModule();
         module.setVariables(List.of(variable));

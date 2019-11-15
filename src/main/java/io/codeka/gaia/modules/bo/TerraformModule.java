@@ -23,7 +23,7 @@ public class TerraformModule {
     private String directory;
 
     @Valid
-    private List<TerraformVariable> variables = new ArrayList<>();
+    private List<Variable> variables = new ArrayList<>();
 
     @NotBlank
     private String name;
@@ -93,11 +93,11 @@ public class TerraformModule {
         return description;
     }
 
-    public List<TerraformVariable> getVariables() {
+    public List<Variable> getVariables() {
         return variables;
     }
 
-    public void setVariables(List<TerraformVariable> variables) {
+    public void setVariables(List<Variable> variables) {
         this.variables = variables;
     }
 

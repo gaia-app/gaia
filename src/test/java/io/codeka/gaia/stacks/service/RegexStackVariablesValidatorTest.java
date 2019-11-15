@@ -1,7 +1,7 @@
 package io.codeka.gaia.stacks.service;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
-import io.codeka.gaia.modules.bo.TerraformVariable;
+import io.codeka.gaia.modules.bo.Variable;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.stacks.bo.Stack;
 import org.junit.jupiter.api.Test;
@@ -41,8 +41,7 @@ class RegexStackVariablesValidatorTest {
 
     @Test
     void validator_shouldNotCheckNullVariables(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
@@ -58,8 +57,7 @@ class RegexStackVariablesValidatorTest {
 
     @Test
     void validator_shouldNotCheckBlankVariables(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
@@ -76,8 +74,7 @@ class RegexStackVariablesValidatorTest {
 
     @Test
     void validator_shouldNotCheckNonRegexVariables(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
 
         var module = new TerraformModule();
         module.setVariables(List.of(variable));
@@ -93,8 +90,7 @@ class RegexStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnFalse_whenMandatoryVariableWithRegexDoesNotMatch(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
@@ -111,8 +107,7 @@ class RegexStackVariablesValidatorTest {
 
     @Test
     void validator_shouldReturnTrue_whenMandatoryVariableWithRegexMatches(){
-        var variable = new TerraformVariable();
-        variable.setName("test");
+        var variable = new Variable("test");
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();

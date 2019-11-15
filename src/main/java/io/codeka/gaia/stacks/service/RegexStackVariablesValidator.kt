@@ -1,6 +1,6 @@
 package io.codeka.gaia.stacks.service
 
-import io.codeka.gaia.modules.bo.TerraformVariable
+import io.codeka.gaia.modules.bo.Variable
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.stacks.bo.RegexStackVariablesValidation
 import io.codeka.gaia.stacks.bo.Stack
@@ -34,7 +34,7 @@ class RegexStackVariablesValidator(@Autowired val moduleRepository: TerraformMod
     }
 }
 
-private fun TerraformVariable.validateWithPattern(value: String): Boolean {
+private fun Variable.validateWithPattern(value: String): Boolean {
     val pattern = Pattern.compile(this.validationRegex)
     return pattern.matcher(value).matches()
 }
