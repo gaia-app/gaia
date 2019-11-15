@@ -1,57 +1,56 @@
 # gaia
 
-A terraform 🌍 ui
+<p align="center">
+  <img width="200" src="assets/gaia_logo_with_title.png">
+</p>
+
+Gaia is a Terraform UI for your Terraform modules, and self-service infrastructure.
 
 [![Build Status](https://travis-ci.org/CodeKaio/gaia.svg?branch=master)](https://travis-ci.org/CodeKaio/gaia)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=io.codeka%3Agaia&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.codeka%3Agaia)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=io.codeka%3Agaia&metric=coverage)](https://sonarcloud.io/dashboard?id=io.codeka%3Agaia)
+![Docker Pulls](https://img.shields.io/docker/pulls/codekaio/gaia)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=CodeKaio/gaia)](https://dependabot.com)
 
-## using state mgmt
+## What is it?
 
-gaia serves terraform state mgmt as an API, and can be used as a backend for `terraform`.
+Gaia is a web application to import and run your Terraform modules.
+It features : 
+* importing modules from source code (Github/Gitlab)
+* validation of Terraform variables values (mandatory variables, regex-based validation)
+* setting up default values or masking variables for your users
+* running modules (plan/apply/destroy) in one click and managing Terraform state
+* team management
 
-To use it, configure your terraform module using this snippet :
+## Screenshots
 
-```
-terraform {
-    backend "http" {
-		address="http://localhost:8080/api/state/12"
-	}
-}
-```
+The module edition view allows you to edit module details, such as variables and their validation.
 
-## configuring gaia
+![module edition view](./assets/screenshot-gaia-module.png)
 
-Gaia can be configured using :
+The stack view helps you to input your variable values, and shows job results and latest output values.
 
-* environment variables
-* java JVM options 
-* in app settings
+![stack edition view](./assets/screenshot-gaia-stack.png)
 
-### environment variables
+The job view shows you the Terraform workflow, and the logs of the `plan` and `apply` logs
 
-* `GAIA_DOCKER_DAEMON_URL` / `gaia.dockerDaemonUrl` (default `unix:///var/run/docker.sock`) : configure docker daemon url for Gaia runner
-* `GAIA_EXTERNAL_URL` / `gaia.externalUrl` (default `http://localhost:8080`) : configure Gaia url for embedded terraform backend support
-* `GAIA_MONGODB_URI`  / `gaia.mongodb.uri` (default `mongodb://localhost/gaia`) : configure Gaia database access
+![job view](./assets/screenshot-gaia-job.png)
 
-## building and running with docker
+## Requirements
 
-Building Gaia with docker is simple :
+Gaia needs :
+ * a docker daemon (used to run Terraform itself)
+ * and a MongoDb database (to store its data)
+   * we currently support MongoDb 4.0 only
 
-```bash
-docker build -t gaia .
-```
+## Quick start
 
-To build mongo database with initiated data :
+Start Gaia with `docker-compose` quickly !
 
-```bash
-docker build -f Dockerfile-db -t gaia-db .
-```
+Clone this repository, and just run `docker-compose up -d`. 
 
-Either, we provide a simple `docker-compose.yml` to allow you to start gaia with the mongo database.
+The docker-compose will start a Gaia server, listening on http://localhost:8080, and a MongoDb database.
 
-Just run `docker-compose up -d`
+## Contributors
 
-
-## healthcheck
-
-healthcheck is available at the `/admin/health` URI.
+Gaia is made with ❤️ in  🇫🇷 by [Cyril DUBUISSON](https://github.com/cdubuisson) and [Julien WITTOUCK](https://github.com/juwit)
