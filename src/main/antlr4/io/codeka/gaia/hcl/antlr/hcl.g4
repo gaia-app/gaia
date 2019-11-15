@@ -43,6 +43,7 @@ variableType
 
 type
   : TYPE
+  | 'list'
   | 'list(' type ')'
   | 'map(' type ')'
   | 'object' '(' object ')'
@@ -53,7 +54,7 @@ object
   | '{' field+ '}'
   ;
 
-field: IDENTIFIER '=' type;
+field: IDENTIFIER '=' expression;
 
 variableDescription
   : 'description' '=' STRING
@@ -86,7 +87,7 @@ complexExpression
 
 array
   : '[' ']'
-  | '[' expression ( ',' expression )* ']'
+  | '[' expression ( ',' expression )* ','? ']'
   ;
 
 index

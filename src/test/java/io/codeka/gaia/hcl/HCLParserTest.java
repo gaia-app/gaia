@@ -55,6 +55,18 @@ class HCLParserTest {
     }
 
     @Test
+    void parsing_variables_shouldWork_withAnotherComplexFile() throws IOException {
+        // given
+        var fileContent = IOUtils.toString(new ClassPathResource("hcl/variables_aws_vpc.tf").getURL(), Charset.defaultCharset());
+
+        // when
+        var variables = hclParser.parseVariables(fileContent);
+
+        // then
+        assertThat(variables).hasSize(282);
+    }
+
+    @Test
     void parsing_outputs_shouldWorkWithVisitor() throws IOException {
         // given
         var fileContent = IOUtils.toString(new ClassPathResource("hcl/outputs.tf").getURL(), Charset.defaultCharset());
