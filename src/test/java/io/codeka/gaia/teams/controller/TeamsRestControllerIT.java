@@ -43,8 +43,8 @@ class TeamsRestControllerIT {
 
     @Test
     @WithMockUser("Mary J")
-    void teams_shouldNotBeAccessible_forStandardUsers() {
-        assertThrows(AccessDeniedException.class, () -> teamsRestController.teams());
+    void teams_shouldBeAccessible_forStandardUsers() {
+        assertDoesNotThrow(() -> teamsRestController.teams());
     }
 
     @Test

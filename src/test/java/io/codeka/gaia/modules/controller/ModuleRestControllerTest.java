@@ -53,20 +53,20 @@ class ModuleRestControllerTest {
     @Test
     void findAll_shouldReturnAuthorizedModules_forUserTeam(){
         // given
-        when(moduleRepository.findAllByAuthorizedTeamsContaining(bobsTeam)).thenReturn(List.of(new TerraformModule()));
+        when(moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam)).thenReturn(List.of(new TerraformModule()));
 
         // when
         var modules = moduleRestController.findAllModules(bob);
 
         // then
         assertThat(modules).hasSize(1);
-        verify(moduleRepository).findAllByAuthorizedTeamsContaining(bobsTeam);
+        verify(moduleRepository).findAllByCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam);
     }
 
     @Test
     void findById_shouldReturnModule_forAdmin(){
         // given
-        when(moduleRepository.findById("12")).thenReturn(Optional.of(mock(TerraformModule.class)));
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(new TerraformModule()));
 
         // when
         moduleRestController.findModule("12", admin);
@@ -78,19 +78,20 @@ class ModuleRestControllerTest {
     @Test
     void findById_shouldReturnAuthorizedModule_forUserTeam(){
         // given
-        when(moduleRepository.findByIdAndAuthorizedTeamsContaining("12", bobsTeam)).thenReturn(Optional.of(mock(TerraformModule.class)));
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(bob)).thenReturn(true);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         // when
         moduleRestController.findModule("12", bob);
 
         // then
-        verify(moduleRepository).findByIdAndAuthorizedTeamsContaining("12", bobsTeam);
+        verify(moduleRepository).findById("12");
     }
 
     @Test
     void findById_shouldThrowModuleNotFound_forNonExistingModules(){
         // given
-        when(moduleRepository.findByIdAndAuthorizedTeamsContaining("12", bobsTeam)).thenReturn(Optional.empty());
         when(moduleRepository.findById("12")).thenReturn(Optional.empty());
 
         // when
@@ -99,15 +100,55 @@ class ModuleRestControllerTest {
     }
 
     @Test
-    void save_shouldSaveTheModule(){
+    void findById_shouldThrowForbiddenModule_forUnauthorizedUsers(){
+        // given
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(bob)).thenReturn(false);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // then
+        assertThrows(ModuleForbiddenException.class, () -> moduleRestController.findModule("12", bob));
+    }
+
+    @Test
+    void save_shouldSaveTheModule_whenTheUserIsAuthorized(){
+        // given
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(bob)).thenReturn(true);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        moduleRestController.saveModule("12", module, bob);
+
+        // then
+        verify(moduleRepository).findById("12");
+        verify(moduleRepository).save(module);
+    }
+
+    @Test
+    void save_shouldSaveTheModule_forTheAdminUser(){
+        // given
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(admin)).thenReturn(true);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        moduleRestController.saveModule("12", module, admin);
+
+        // then
+        verify(moduleRepository).findById("12");
+        verify(moduleRepository).save(module);
+    }
+
+    @Test
+    void save_shouldThrowAndExecption_whenTheUserIsUnauthorized(){
         // given
         var module = mock(TerraformModule.class);
 
         // when
-        moduleRestController.saveModule("12", module);
 
         // then
-        verify(moduleRepository).save(module);
+        assertThrows(ModuleNotFoundException.class, () -> moduleRestController.saveModule("12", module, bob));
     }
 
 }

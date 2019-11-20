@@ -15,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/modules")
+@Secured({"ROLE_USER","ROLE_ADMIN"})
 public class ModuleRestController {
 
     private TerraformModuleRepository moduleRepository;
@@ -29,20 +30,27 @@ public class ModuleRestController {
         if(user.isAdmin()){
             return moduleRepository.findAll();
         }
-        return moduleRepository.findAllByAuthorizedTeamsContaining(user.getTeam());
+        if(user.getTeam() != null){
+            return moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
+        }
+        return moduleRepository.findAllByCreatedBy(user);
     }
 
     @GetMapping("/{id}")
     public TerraformModule findModule(@PathVariable String id, User user){
-        if(user.isAdmin()){
-            return moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
+        var module = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
+        if(!module.isAuthorizedFor(user)){
+            throw new ModuleForbiddenException();
         }
-        return moduleRepository.findByIdAndAuthorizedTeamsContaining(id, user.getTeam()).orElseThrow(ModuleNotFoundException::new);
+        return module;
     }
 
-    @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")
-    public TerraformModule saveModule(@PathVariable String id, @RequestBody @Valid TerraformModule module){
+    public TerraformModule saveModule(@PathVariable String id, @RequestBody @Valid TerraformModule module, User user){
+        var existingModule = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
+        if(!existingModule.isAuthorizedFor(user)){
+            throw new ModuleForbiddenException();
+        }
         return moduleRepository.save(module);
     }
 
