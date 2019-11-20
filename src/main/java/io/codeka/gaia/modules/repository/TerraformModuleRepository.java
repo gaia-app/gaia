@@ -12,9 +12,13 @@ import java.util.Optional;
 @Repository
 public interface TerraformModuleRepository extends MongoRepository<TerraformModule, String> {
 
+    int countByCreatedBy(User user);
+
     int countByAuthorizedTeamsContaining(Team team);
 
-    List<TerraformModule> findAllByAuthorizedTeamsContaining(Team team);
+    int countByAuthorizedTeamsContainingOrCreatedBy(Team team, User user);
+
+    List<TerraformModule> findAllByAuthorizedTeamsContainingOrCreatedBy(Team team, User user);
 
     Optional<TerraformModule> findByIdAndAuthorizedTeamsContaining(String id, Team team);
 

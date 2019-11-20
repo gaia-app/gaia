@@ -31,11 +31,15 @@ class ModuleRestControllerTest {
 
     private User bob;
 
+    private User john;
+
     private Team bobsTeam;
 
     @BeforeEach
     void setUp() {
         admin = new User("admin", null);
+
+        john = new User("John Dorian", null);
 
         bobsTeam = new Team("bobsTeam");
         bob = new User("Bob Kelso", bobsTeam);
@@ -51,7 +55,7 @@ class ModuleRestControllerTest {
     }
 
     @Test
-    void findAll_shouldReturnAuthorizedModules_forUserTeam(){
+    void findAll_shouldReturnAuthorizedModules_forUserTeam_andOwnedModules(){
         // given
         when(moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam)).thenReturn(List.of(new TerraformModule()));
 
@@ -64,12 +68,35 @@ class ModuleRestControllerTest {
     }
 
     @Test
+    void findAll_shouldReturnOwnedModules_forUserWithNoTeam(){
+        // when
+        var modules = moduleRestController.findAllModules(john);
+
+        // then
+        verify(moduleRepository).findAllByCreatedBy(john);
+    }
+
+    @Test
     void findById_shouldReturnModule_forAdmin(){
         // given
         when(moduleRepository.findById("12")).thenReturn(Optional.of(new TerraformModule()));
 
         // when
         moduleRestController.findModule("12", admin);
+
+        // then
+        verify(moduleRepository).findById("12");
+    }
+
+    @Test
+    void findById_shouldReturnOwnedModule_forUserWithNoTeam(){
+        // given
+        var ownedModule = new TerraformModule();
+        ownedModule.setCreatedBy(john);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(ownedModule));
+
+        // when
+        moduleRestController.findModule("12", john);
 
         // then
         verify(moduleRepository).findById("12");
@@ -89,6 +116,7 @@ class ModuleRestControllerTest {
         verify(moduleRepository).findById("12");
     }
 
+
     @Test
     void findById_shouldThrowModuleNotFound_forNonExistingModules(){
         // given
@@ -96,6 +124,7 @@ class ModuleRestControllerTest {
 
         // when
         assertThrows(ModuleNotFoundException.class, () -> moduleRestController.findModule("12", admin));
+        assertThrows(ModuleNotFoundException.class, () -> moduleRestController.findModule("12", john));
         assertThrows(ModuleNotFoundException.class, () -> moduleRestController.findModule("12", bob));
     }
 
