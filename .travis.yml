@@ -8,6 +8,11 @@ addons:
     organization: "codekaio"
     token:
       secure: DfRu3t13mpjx1HuolkjOUds6raRtOEfQW/kozpDiTlKKa8gpImHnoZsSKDaLm3NoQQFM+10gZGlc9OusE+zparkgeLj3JUQm1A+lnmC6qo3w+HNYoOJs67c6Eht+b880H+6xCGeJ2Sog1cdqlOtKIymPe4yW3sbDZhPVDDBfkncp7Es/2ZTnjxNFADZM3YN8v7ROK0RU0rhqMqqJir3g4JqTPFpmvrC53NsFBSh436tdw6eX9MbrEsuGmglqPDcxTLG6Akgs980chkWPWB0KkpaJ0MuzmS41YtfyzDmQB+bcR7M0+37hww2o01/bhdrnV9e8BBAz4YVcHzy5psmC/ugyIH51ebPxuuSpkjRjoML98SYcYwM+hHONyYplblpwE2duIlVGt4/AdcAHFeg91TJ4vj57coHf3s+aGMGMxm1UtnewO5RjfSjikJh8K6gmqFYK3XQz9aFQ9oJTegnz+MSePjh7ufFEvdmni73dmmn7K6jUncD53/FLF0+ot7EtM7lUtA+tZG8oPxHfZGJTs2nVOKFoTo70DuiATXQtva/ElH5KqL/B60q9iXI/TSvVienszkblQ5F/zJbueTi+vv2PZKpVGXGqc9WUoUbA5bQxGq+XILBXLhs1+VNqmUXaB8gIMha6QdXVSGP8Lm/JCx7t33mKEUYK06xcE1sNicA=
+  firefox: latest
+
+env:
+  global:
+    - MOZ_HEADLESS=1
 
 cache:
   directories:
@@ -20,6 +25,11 @@ stages:
   - name: test
   - name: deploy
     if: branch = master AND tag IS present
+
+before_script:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
+  - tar -xzf geckodriver-v0.26.0-linux64.tar.gz
+  - sudo cp geckodriver /usr/bin
 
 jobs:
   include:
