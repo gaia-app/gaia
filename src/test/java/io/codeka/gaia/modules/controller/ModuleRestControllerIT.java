@@ -74,7 +74,7 @@ class ModuleRestControllerIT {
     @WithMockUser("Mary J")
     void findModule_shouldNotReturnModuleOfOtherTeams_forStandardUsers() throws Exception {
         mockMvc.perform(get("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -94,7 +94,7 @@ class ModuleRestControllerIT {
     @Test
     @WithMockUser("Mary J")
     void saveModule_shouldNotBeAccessible_forStandardUsers() throws Exception {
-        mockMvc.perform(put("/api/modules/test")
+        mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isForbidden());
@@ -102,7 +102,7 @@ class ModuleRestControllerIT {
 
     @Test
     void saveModule_shouldBeAccessible_forAdmin() throws Exception {
-        mockMvc.perform(put("/api/modules/test")
+        mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isOk())

@@ -118,7 +118,7 @@ public class TerraformModule {
     }
 
     public boolean isAuthorizedFor(User user) {
-        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam());
+        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.createdBy);
     }
 
     public BigDecimal getEstimatedMonthlyCost() {

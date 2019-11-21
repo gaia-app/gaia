@@ -161,18 +161,4 @@ class ModulesMVCControllerTest {
         verifyZeroInteractions(model);
     }
 
-
-    @Test
-    void saveModule_shouldSaveModule(){
-        // given
-        var module = mock(TerraformModule.class);
-        var model = mock(Model.class);
-
-        // when
-        controller.saveModule(module, model, admin);
-
-        // then
-        verify(moduleRepository).save(module);
-    }
-
 }

@@ -39,14 +39,14 @@ class IndexControllerTest {
     @Test
     void index_shouldShowModuleCount(){
         // given
-        when(terraformModuleRepository.countByAuthorizedTeamsContaining(team)).thenReturn(12);
+        when(terraformModuleRepository.countByAuthorizedTeamsContainingOrCreatedBy(team, user)).thenReturn(12);
 
         // when
         var result = indexController.index(model, user, team);
 
         // then
         assertEquals("index", result);
-        verify(terraformModuleRepository).countByAuthorizedTeamsContaining(team);
+        verify(terraformModuleRepository).countByAuthorizedTeamsContainingOrCreatedBy(team, user);
         verify(model).addAttribute("moduleCount", 12L);
     }
 
@@ -101,16 +101,20 @@ class IndexControllerTest {
     }
 
     @Test
-    void usersWIthNoTeam_shouldNotSeeAnyModuleOrStacks(){
+    void usersWIthNoTeam_shouldSeeTheirCreatedModuleOrStacks(){
+        // given
+        doReturn(3).when(terraformModuleRepository).countByCreatedBy(user);
+        doReturn(1).when(stackRepository).countStacksByStateAndCreatedBy(StackState.RUNNING, user);
+        doReturn(2).when(stackRepository).countStacksByStateAndCreatedBy(StackState.TO_UPDATE, user);
+
         // when
         var result = indexController.index(model, user, null);
 
         // then
         assertEquals("index", result);
-        verifyZeroInteractions(terraformModuleRepository, stackRepository);
-        verify(model).addAttribute("moduleCount", 0L);
-        verify(model).addAttribute("runningStackCount", 0L);
-        verify(model).addAttribute("toUpdateStackCount", 0L);
+        verify(model).addAttribute("moduleCount", 3L);
+        verify(model).addAttribute("runningStackCount", 1L);
+        verify(model).addAttribute("toUpdateStackCount", 2L);
     }
 
 }

@@ -2,6 +2,7 @@ package io.codeka.gaia.modules.repository;
 
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.teams.Team;
+import io.codeka.gaia.teams.User;
 import io.codeka.gaia.test.MongoContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ class TerraformModuleRepositoryIT {
 
     private Team team2;
 
+    private User bob;
+
     private TerraformModule module1;
 
     private TerraformModule module2;
@@ -40,14 +43,19 @@ class TerraformModuleRepositoryIT {
         team1 = new Team("team1");
         team2 = new Team("team2");
 
+        // sample owners
+        bob = new User("Bob", null);
+
         // saving sample modules
         module1 = new TerraformModule();
         module1.setId("Module 1");
         module1.setAuthorizedTeams(List.of(team1));
+        module1.setCreatedBy(bob);
 
         module2 = new TerraformModule();
         module2.setId("Module 2");
         module2.setAuthorizedTeams(List.of(team1, team2));
+        module2.setCreatedBy(bob);
 
         terraformModuleRepository.deleteAll();
         terraformModuleRepository.saveAll(List.of(module1, module2));
@@ -55,14 +63,14 @@ class TerraformModuleRepositoryIT {
 
     @Test
     void team1Users_shouldHaveAccessToModule1And2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContaining(team1);
+        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team1, null);
 
         assertThat(modules).hasSize(2);
     }
 
     @Test
     void team2Users_shouldHaveAccessToModule2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContaining(team2);
+        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team2, null);
 
         assertThat(modules).hasSize(1);
     }

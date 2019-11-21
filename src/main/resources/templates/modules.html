@@ -42,13 +42,13 @@
         <b-card v-for="module in modules"
                 :title="module.name">
             <b-card-text>
-                <img sec:authorize="hasRole('ADMIN')" :src="'https://img.shields.io/badge/terraform-'+module.cliVersion+'-blue.svg?style=flat-square,alt='+module.cliVersion+',title='+module.cliVersion" style="margin-bottom: .75rem" />
+                <img v-if="isAuthorized(module)" :src="'https://img.shields.io/badge/terraform-'+module.cliVersion+'-blue.svg?style=flat-square,alt='+module.cliVersion+',title='+module.cliVersion" style="margin-bottom: .75rem" />
                 <p>{{module.description}}</p>
 
                 <p v-if="module.estimatedMonthlyCost">Estimated monthly cost : <b-badge variant="info">{{module.estimatedMonthlyCost}} $</b-badge></p>
             </b-card-text>
 
-            <a href="#" sec:authorize="hasRole('ADMIN')" :href="'/modules/'+module.id" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
+            <a href="#" v-if="isAuthorized(module)" :href="'/modules/'+module.id" data-toggle="tooltip" title="Edit this module" class="btn btn-primary"><i class="far fa-edit"></i></a>
             <a href="#" :href="'/modules/'+module.id+'/description'" data-toggle="tooltip" title="Detail of this module" class="btn btn-primary"><i class="fas fa-info"></i></a>
             <a href="#" :href="'/modules/'+module.id+'/run'" data-toggle="tooltip" title="Run this module" class="btn btn-primary"><i class="fas fa-rocket"></i></a>
         </b-card>
@@ -66,18 +66,26 @@
 <div th:replace="vue_templates/breadcrumb"></div>
 <div th:replace="vue_templates/sidebar"></div>
 
-<script type="application/ecmascript">
+<script type="application/ecmascript" th:inline="javascript">
     $(document).ready(function () {
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         });
     });
 
+    Vue.prototype.$user = [[${user}]];
+
     $.get("/api/modules").then(modules => {
        new Vue({
            el: "#modules",
            data: () => ({modules}),
-           template: "#modules-template"
+           template: "#modules-template",
+           methods: {
+               isAuthorized(module){
+                   return module.createdBy.username === this.$user.username
+                       || this.$user.username === 'admin'
+               }
+           }
        });
     });
 

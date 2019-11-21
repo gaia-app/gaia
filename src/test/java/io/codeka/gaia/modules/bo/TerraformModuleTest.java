@@ -25,6 +25,23 @@ class TerraformModuleTest {
     }
 
     @Test
+    void module_shouldBeAuthorized_forTheModuleCreator(){
+        // given
+        var sg1 = new Team("SG-1");
+        var daniel = new User("Daniel Jackson", sg1);
+
+        var module = new TerraformModule();
+        module.setCreatedBy(daniel);
+
+        // when
+        var authorized = module.isAuthorizedFor(daniel);
+
+        // then
+        assertTrue(authorized);
+    }
+
+
+    @Test
     void module_shouldBeAuthorized_forAUserOfAnAuthorizedTeam(){
         // given
         var sg1 = new Team("SG-1");

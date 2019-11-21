@@ -32,9 +32,14 @@ public class IndexController {
             toUpdateStackCount = this.stackRepository.countStacksByState(StackState.TO_UPDATE);
         }
         else if(userTeam != null){
-            moduleCount = this.moduleRepository.countByAuthorizedTeamsContaining(userTeam);
+            moduleCount = this.moduleRepository.countByAuthorizedTeamsContainingOrCreatedBy(userTeam, user);
             runningStackCount = stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, userTeam);
             toUpdateStackCount = stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, userTeam);
+        }
+        else {
+            moduleCount = this.moduleRepository.countByCreatedBy(user);
+            runningStackCount = stackRepository.countStacksByStateAndCreatedBy(StackState.RUNNING, user);
+            toUpdateStackCount = stackRepository.countStacksByStateAndCreatedBy(StackState.TO_UPDATE, user);
         }
 
         model.addAttribute("moduleCount", moduleCount);
