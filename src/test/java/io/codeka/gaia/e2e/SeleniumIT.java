@@ -1,6 +1,7 @@
 package io.codeka.gaia.e2e;
 
 import io.codeka.gaia.test.MongoContainer;
+import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Dimension;
@@ -9,6 +10,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,6 +44,8 @@ public class SeleniumIT {
 
     private static WebDriver driver;
 
+    private static Percy percy;
+
     @BeforeAll
     public static void openServerAndBrowser() throws IOException {
         ChromeOptions options = new ChromeOptions();
@@ -50,6 +55,8 @@ public class SeleniumIT {
                 "--allow-running-insecure-content",
                 "--ignore-certificate-errors");
         driver = new ChromeDriver(options);
+
+        percy = new Percy(driver);
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -72,6 +79,8 @@ public class SeleniumIT {
 
         LoginPage page = PageFactory.initElements(driver, LoginPage.class);
 
+        percy.snapshot("Login Page");
+
         page.login("admin", "admin123");
     }
 
@@ -84,6 +93,8 @@ public class SeleniumIT {
         assertEquals(3, page.modulesCount());
         assertEquals(0, page.stacksCount());
         assertEquals(0, page.stacksToUpdateCount());
+
+        percy.snapshot("Dashboard");
     }
 
     @Test
@@ -92,6 +103,8 @@ public class SeleniumIT {
 
         var page = PageFactory.initElements(driver, ModulesPage.class);
         assertEquals(3, page.modulesCount());
+
+        percy.snapshot("Modules");
     }
 
     @Test
@@ -104,6 +117,8 @@ public class SeleniumIT {
         assertThat(page.moduleName()).isEqualTo("terraform-docker-mongo");
         assertThat(page.moduleDescription()).contains("A sample terraform");
         assertThat(page.cliVersion()).isEqualTo("0.11.14");
+
+        percy.snapshot("Module Details");
     }
 
     void takeScreenshot() throws IOException {

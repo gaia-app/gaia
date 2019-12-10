@@ -137,12 +137,6 @@
 			<groupId>com.spotify</groupId>
 			<artifactId>docker-client</artifactId>
 			<version>8.16.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
@@ -219,7 +213,25 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>io.percy</groupId>
+			<artifactId>percy-java-selenium</artifactId>
+			<version>0.1.3</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
+
+	<dependencyManagement>
+		<!-- we need this as selenium needs guava 25, and docker-client embeds guava 20 -->
+		<dependencies>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>25.0-jre</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
