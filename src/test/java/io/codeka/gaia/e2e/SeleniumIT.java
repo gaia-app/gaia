@@ -50,13 +50,15 @@ public class SeleniumIT {
 
     @BeforeAll
     public static void openServerAndBrowser() throws IOException {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--headless",
-                "--disable-web-security",
-                "--allow-running-insecure-content",
-                "--ignore-certificate-errors");
-        driver = new ChromeDriver(options);
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("-headless");
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments(
+//                "--headless",
+//                "--disable-web-security",
+//                "--allow-running-insecure-content",
+//                "--ignore-certificate-errors");
+        driver = new FirefoxDriver(options);
 
         percy = new Percy(driver);
 
