@@ -30,7 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 @Testcontainers
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Tag("e2e")
 public class SeleniumIT {
 
     @LocalServerPort
