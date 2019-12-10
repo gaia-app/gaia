@@ -34,9 +34,9 @@
 <template id="dashboard-template">
     <div>
         <div class="row column1">
-            <dashboard-widget text="Modules" :value="moduleCount" variant="blue2_bg" icon="fa-object-group" link="/modules"></dashboard-widget>
-            <dashboard-widget text="Running Stacks" :value="runningStacksCount" variant="blue2_bg" icon="fa-layer-group" link="/stacks"></dashboard-widget>
-            <dashboard-widget text="Stacks to update" :value="toUpdateStackCount" variant="yellow_bg" icon="fa-caret-square-up" link="/stacks"></dashboard-widget>
+            <dashboard-widget text="Modules" :value="moduleCount" variant="blue2_bg" type="modules_count" icon="fa-object-group" link="/modules"></dashboard-widget>
+            <dashboard-widget text="Running Stacks" :value="runningStacksCount" variant="blue2_bg" type="stacks_count" icon="fa-layer-group" link="/stacks"></dashboard-widget>
+            <dashboard-widget text="Stacks to update" :value="toUpdateStackCount" variant="yellow_bg" type="stacks_toUpdate_count" icon="fa-caret-square-up" link="/stacks"></dashboard-widget>
         </div>
 
         <div sec:authorize="authentication.name != 'admin'" v-if="! team" class="full_container">
