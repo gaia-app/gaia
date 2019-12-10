@@ -3,6 +3,7 @@ package io.codeka.gaia.e2e
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.FindBy
+import org.openqa.selenium.support.PageFactory
 
 class LoginPage(val webDriver: WebDriver) {
 
@@ -22,9 +23,12 @@ class LoginPage(val webDriver: WebDriver) {
     lateinit var submitButton: WebElement
 
     fun login(login: String, password: String){
-        loginInput.sendKeys(login)
-        passwordInput.sendKeys(password)
-        submitButton.click()
+        if(webDriver.currentUrl.contains("login")){
+            loginInput.sendKeys(login)
+            passwordInput.sendKeys(password)
+            submitButton.click()
+        }
+        return PageFactory.initElements(this.webDriver, DashboardPage::class)
     }
 
 }
