@@ -9,7 +9,7 @@
                 </div>
                 <div class="counter_no">
                     <div>
-                        <p class="total_no">{{value}}</p>
+                        <p class="total_no" :class="type">{{value}}</p>
                         <p class="head_couter">{{text}}</p>
                     </div>
                 </div>
@@ -21,6 +21,6 @@
 <script>
     Vue.component('dashboard-widget', {
         template: '#dashboard-widget',
-        props: ['text', 'value', 'variant', 'icon', 'link'],
+        props: ['text', 'value', 'variant', 'icon', 'link', 'type'],
     });
 </script>
