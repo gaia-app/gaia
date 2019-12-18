@@ -13,7 +13,6 @@
                         <div class="user_img"><img class="img-responsive" src="/images/gaia.png" alt="#"></div>
                         <div class="user_info">
                             <h6>Gaia</h6>
-                            <p><span class="online_animation"></span> Online</p>
                         </div>
                     </div>
                 </div>
