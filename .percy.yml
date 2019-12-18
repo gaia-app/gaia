@@ -1,0 +1,8 @@
+version: 1
+snapshot:
+  # percy specific CSS used when rendering snapshots
+  # ignoring build_commit block, as it changes everytime !
+  percy-css: |
+    .build_commit {
+      display: none;
+    }
