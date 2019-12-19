@@ -6,6 +6,9 @@
 
 </head>
 <body class="dashboard dashboard_2">
+
+<div th:replace="layout/include_scripts"></div>
+
 <div class="full_container">
     <div class="inner_container">
 
@@ -91,15 +94,6 @@
 <template id="template-navigation">
     <breadcrumb :page="page"></breadcrumb>
 </template>
-
-<script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-<script src="/webjars/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="/webjars/marked/0.6.2/marked.min.js"></script>
-<script src="/webjars/momentjs/2.24.0/min/moment.min.js"></script>
-
-<script src="/webjars/vue/2.5.16/vue.js"></script>
-<script src="/webjars/bootstrap-vue/2.0.4/dist/bootstrap-vue.js"></script>
 
 <div th:replace="vue_templates/cli-badge"></div>
 <div th:replace="vue_templates/readme"></div>

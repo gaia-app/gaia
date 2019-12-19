@@ -13,14 +13,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
-
-    <link rel="stylesheet" href="/webjars/font-awesome/5.8.2/css/all.css" />
-
-    <link rel="stylesheet" href="/webjars/bootstrap-vue/2.0.4/dist/bootstrap-vue.css" />
-
-    <link rel="stylesheet" href="/webjars/vue-multiselect/2.1.6/dist/vue-multiselect.min.css" />
+    <!-- external CSS dependencies -->
+    <th:block th:each="cssFile : ${cssExtensions}">
+    <link th:href="${cssFile.resourcePath}" rel="stylesheet">
+    </th:block>
 
     <!-- custom css -->
     <link rel="stylesheet" href="/css/style.css" />

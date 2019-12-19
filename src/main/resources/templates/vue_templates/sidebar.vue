@@ -13,7 +13,6 @@
                         <div class="user_img"><img class="img-responsive" src="/images/gaia.png" alt="#"></div>
                         <div class="user_info">
                             <h6>Gaia</h6>
-                            <p><span class="online_animation"></span> Online</p>
                         </div>
                     </div>
                 </div>
@@ -30,9 +29,9 @@
             </div>
         </div>
         <div class="sidebar-footer">
-            <span th:if="${info[build] != null}"><i class="fas fa-tag"></i> <span th:text="${info.build.version}"></span></span>
+            <span class="build_version" th:if="${info[build] != null}"><i class="fas fa-tag"></i> <span th:text="${info.build.version}"></span></span>
 
-            <span th:if="${info[git] != null}"><i class="fab fa-github"></i> <span th:text="${info.git.commit.id}"></span></span>
+            <span class="build_commit" th:if="${info[git] != null}"><i class="fab fa-github"></i> <span th:text="${info.git.commit.id}"></span></span>
         </div>
     </nav>
 </template>
