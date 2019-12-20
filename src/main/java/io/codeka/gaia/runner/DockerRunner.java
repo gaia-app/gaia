@@ -89,8 +89,10 @@ public class DockerRunner {
             return Math.toIntExact(containerExit.statusCode());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            LOG.error("Interrupted Exception", e);
             return 99;
         } catch (DockerException | IOException | StackRunnerException e) {
+            LOG.error("Exception when running job", e);
             return 99;
         }
     }
