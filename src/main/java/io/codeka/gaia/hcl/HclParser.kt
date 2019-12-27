@@ -6,7 +6,9 @@ import io.codeka.gaia.modules.bo.Output
 import io.codeka.gaia.modules.bo.Variable
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.springframework.stereotype.Service
 
+@Service
 class HclParser {
 
     private fun parseContent(content: String): HclVisitor {

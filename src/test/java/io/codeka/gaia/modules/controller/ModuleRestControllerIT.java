@@ -14,8 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -130,6 +129,16 @@ class ModuleRestControllerIT {
                 .content("{\"variables\":[{\"name\":\"  \"}]}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("variables[0].name must not be blank")));
+    }
+
+    @Test
+    void createModule_shouldSaveAModule() throws Exception {
+        mockMvc.perform(post("/api/modules")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty variable name
+                .content("{\"name\":\"new-module\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", is("new-module")));
     }
 
 }
