@@ -35,6 +35,11 @@ public class ModulesMVCController {
         return "modules";
     }
 
+    @GetMapping("/modules/import")
+    public String importModule() {
+        return "modules_import";
+    }
+
     @GetMapping("/modules/{id}")
     public String module(@PathVariable String id, Model model, User user){
         var module = terraformModuleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);

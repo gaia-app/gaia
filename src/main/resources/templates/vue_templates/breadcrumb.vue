@@ -12,6 +12,7 @@
             new_stack: [{text: 'Modules', href: '/modules'}, {text: 'Stack creation'}],
             module: [{text: 'Modules', href: '/modules'}, {text: 'Module edition'}],
             module_description: [{text: 'Modules', href: '/modules'}, {text: 'Module description'},],
+            module_import: [{text: 'Modules', href: '/modules'}, {text: 'Module import'},],
             stacks: [{text: 'Stacks'}],
             stack: [{text: 'Stacks', href: '/stacks'}, {text: 'Stack'}],
             users: [{text: 'Users'}],
