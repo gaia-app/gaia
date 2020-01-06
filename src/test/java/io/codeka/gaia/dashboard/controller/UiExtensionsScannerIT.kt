@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test
 import org.rnorth.visibleassertions.VisibleAssertions.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
-import java.util.NoSuchElementException
+import java.util.*
 
 @SpringBootTest(classes = [UIExtensionsConfig::class])
-class UiExtensionsScannerTest(val applicationContext: ApplicationContext) {
+class UiExtensionsScannerIT(private val applicationContext: ApplicationContext) {
 
     @Test
-    fun `scan should find all exsting extensions`() {
+    fun `scan should find all existing extensions`() {
         val scanner = UiExtensionsScanner(applicationContext)
 
         val locations = arrayOf(
@@ -35,7 +35,7 @@ class UiExtensionsScannerTest(val applicationContext: ApplicationContext) {
 
         val uiExtension = scanner.scan(*locations)
 
-        assertThat(uiExtension.size).isEqualTo(locations.size);
+        assertThat(uiExtension.size).isEqualTo(locations.size)
     }
 
     @Test
