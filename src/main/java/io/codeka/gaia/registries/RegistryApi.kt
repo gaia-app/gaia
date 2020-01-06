@@ -1,10 +1,15 @@
 package io.codeka.gaia.registries
 
+import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.teams.User
 import org.springframework.web.client.RestTemplate
 
-abstract class RegistryApi(private val registryType: RegistryType, val restTemplate: RestTemplate) {
+interface RegistryApi<T> {
 
-    abstract fun getRepositories(user: User) : List<String>
+    fun getRepositories(user: User) : List<String>
+
+    fun getRepository(user: User, owner: String, repo: String): T
+
+    fun getFileContent(user: User, projectId: String, filename: String): String
 
 }

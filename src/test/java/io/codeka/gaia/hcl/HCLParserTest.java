@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HCLParserTest {
 
-    private HclParser hclParser = new HclParser();
+    private HclParserImpl hclParser = new HclParserImpl();
 
     @Test
     void parsing_variables_shouldWorkWithVisitor() throws IOException {

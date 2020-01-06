@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate
 import java.util.*
 
 @Service
-class GithubRegistryApi(restTemplate: RestTemplate): RegistryApi(RegistryType.GITHUB, restTemplate){
+class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepository> {
 
     fun <T> callWithAuth(url: String, token: String, responseType: Class<T>): T{
         val headers = HttpHeaders()
@@ -51,7 +51,7 @@ class GithubRegistryApi(restTemplate: RestTemplate): RegistryApi(RegistryType.GI
         return repos.map { it.fullName }.toList()
     }
 
-    fun getRepository(user: User, owner: String, repo: String): GithubRepository {
+    override fun getRepository(user: User, owner: String, repo: String): GithubRepository {
         // fetching repositories
         val url = "https://api.github.com/repos/$owner/$repo"
 
@@ -60,7 +60,7 @@ class GithubRegistryApi(restTemplate: RestTemplate): RegistryApi(RegistryType.GI
         return callWithAuth(url, token, GithubRepository::class.java)
     }
 
-    fun getFileContent(user: User, projectId: String, filename: String): String {
+    override fun getFileContent(user: User, projectId: String, filename: String): String {
         val url = "https://api.github.com/repos/$projectId/contents/$filename?ref=master";
 
         val token = user.oAuth2User?.token!!;

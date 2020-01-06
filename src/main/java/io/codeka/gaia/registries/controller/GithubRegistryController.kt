@@ -4,13 +4,11 @@ import io.codeka.gaia.hcl.HclParser
 import io.codeka.gaia.modules.bo.TerraformModule
 import io.codeka.gaia.modules.repository.TerraformCLIRepository
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
+import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.github.GitHubRawContent
-import io.codeka.gaia.registries.github.GithubRegistryApi
 import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.teams.User
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
@@ -20,7 +18,7 @@ import java.util.*
 @RequestMapping("/api/registries/github")
 @Secured
 class GithubRegistryController(
-        val githubRegistryApi: GithubRegistryApi,
+        val githubRegistryApi: RegistryApi<GithubRepository>,
         val hclParser: HclParser,
         val cliRepository: TerraformCLIRepository,
         val moduleRepository: TerraformModuleRepository) {
