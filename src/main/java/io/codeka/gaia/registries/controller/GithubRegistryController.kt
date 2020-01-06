@@ -18,14 +18,14 @@ import java.util.*
 @RequestMapping("/api/registries/github")
 @Secured
 class GithubRegistryController(
-        val githubRegistryApi: RegistryApi<GithubRepository>,
-        val hclParser: HclParser,
-        val cliRepository: TerraformCLIRepository,
-        val moduleRepository: TerraformModuleRepository) {
+        private val githubRegistryApi: RegistryApi<GithubRepository>,
+        private val hclParser: HclParser,
+        private val cliRepository: TerraformCLIRepository,
+        private val moduleRepository: TerraformModuleRepository) {
 
     @GetMapping("/repositories")
     fun getRepositories(user: User): List<String> {
-        return this.githubRegistryApi.getRepositories(user);
+        return this.githubRegistryApi.getRepositories(user)
     }
 
     @GetMapping("/repositories/{owner}/{repo}/import")
