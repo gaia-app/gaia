@@ -6,9 +6,9 @@ import org.springframework.web.client.RestTemplate
 
 interface RegistryApi<T> {
 
-    fun getRepositories(user: User) : List<String>
+    fun getRepositories(user: User) : List<T>
 
-    fun getRepository(user: User, owner: String, repo: String): T
+    fun getRepository(user: User, projectId: String): T
 
     fun getFileContent(user: User, projectId: String, filename: String): String
 

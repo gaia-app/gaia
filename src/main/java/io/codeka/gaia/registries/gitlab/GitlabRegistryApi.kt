@@ -1,4 +1,4 @@
-package io.codeka.gaia.registries.github
+package io.codeka.gaia.registries.gitlab
 
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryFile
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.User
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -18,7 +17,7 @@ import org.springframework.web.client.RestTemplate
 import java.util.*
 
 @Service
-class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepository> {
+class GitlabRegistryApi(val restTemplate: RestTemplate): RegistryApi<GitlabRepository> {
 
     fun <T> callWithAuth(url: String, token: String, responseType: Class<T>): T{
         val headers = HttpHeaders()
@@ -41,28 +40,28 @@ class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepos
         }
     }
 
-    override fun getRepositories(user: User): List<GithubRepository> {
+    override fun getRepositories(user: User): List<GitlabRepository> {
         // fetching repositories
-        val url = "https://api.github.com/user/repos?visibility=public"
+        val url = "https://gitlab.com/api/v4/projects?visibility=public&owned=true"
 
         val token = user.oAuth2User?.token!!
 
-        val repos = callWithAuth(url, token, Array<GithubRepository>::class.java)
+        val repos = callWithAuth(url, token, Array<GitlabRepository>::class.java)
 
         return repos.toList()
     }
 
-    override fun getRepository(user: User, projectId: String): GithubRepository {
+    override fun getRepository(user: User, projectId: String): GitlabRepository {
         // fetching repositories
-        val url = "https://api.github.com/repos/$projectId"
+        val url = "https://gitlab.com/api/v4/projects/$projectId"
 
         val token = user.oAuth2User?.token!!
 
-        return callWithAuth(url, token, GithubRepository::class.java)
+        return callWithAuth(url, token, GitlabRepository::class.java)
     }
 
     override fun getFileContent(user: User, projectId: String, filename: String): String {
-        val url = "https://api.github.com/repos/$projectId/contents/$filename?ref=master";
+        val url = "https://gitlab.com/api/v4/projects/$projectId/repository/files/$filename?ref=master";
 
         val token = user.oAuth2User?.token!!;
 
@@ -75,6 +74,7 @@ class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepos
 
 }
 
-data class GithubRepository(
-        @JsonAlias("full_name") val fullName: String,
-        @JsonAlias("html_url") val htmlUrl: String)
+data class GitlabRepository(
+        @JsonAlias("id") val id: String,
+        @JsonAlias("path_with_namespace") val fullName: String,
+        @JsonAlias("web_url") val htmlUrl: String)

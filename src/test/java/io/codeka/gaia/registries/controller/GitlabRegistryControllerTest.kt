@@ -8,6 +8,7 @@ import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryType
 import io.codeka.gaia.registries.github.GithubRepository
+import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -15,18 +16,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.stubbing.OngoingStubbing
-import org.mockito.stubbing.Stubber
 
 @ExtendWith(MockitoExtension::class)
-class GithubRegistryControllerTest{
+class GitlabRegistryControllerTest{
 
     @Mock
-    lateinit var githubRegistryApi: RegistryApi<GithubRepository>
+    lateinit var gitlabRegistryApi: RegistryApi<GitlabRepository>
 
     @Mock
     lateinit var hclParser: HclParser
@@ -38,20 +36,20 @@ class GithubRegistryControllerTest{
     lateinit var moduleRepository: TerraformModuleRepository
 
     @InjectMocks
-    lateinit var githubRegistryController: GithubRegistryController
+    lateinit var gitlabRegistryController: GitlabRegistryController
 
     @Test
-    fun `getRepositories() should call the github registry api`() {
+    fun `getRepositories() should call the gitlab registry api`() {
         // given
         val john = User("john", null)
         // when
-        githubRegistryController.getRepositories(john)
+        gitlabRegistryController.getRepositories(john)
         // then
-        verify(githubRegistryApi).getRepositories(john)
+        verify(gitlabRegistryApi).getRepositories(john)
     }
 
     @Test
-    fun `importRepository() should call the github registry and create a module`() {
+    fun `importRepository() should call the gitlab registry and create a module`() {
         // returns saved module as first arg
         whenever(moduleRepository.save(any(TerraformModule::class.java))).then { it.arguments[0] }
 
@@ -59,28 +57,28 @@ class GithubRegistryControllerTest{
 
         val user = User("juwit", null)
 
-        val githubRepository = GithubRepository("juwit/terraform-docker-mongo", "https://github.com/juwit/terraform-docker-mongo")
-        whenever(githubRegistryApi.getRepository(user, "juwit/terraform-docker-mongo")).thenReturn(githubRepository)
+        val gitlabRepository = GitlabRepository("15689", "juwit/terraform-docker-mongo", "https://gitlab.com/juwit/terraform-docker-mongo")
+        whenever(gitlabRegistryApi.getRepository(user, "15689")).thenReturn(gitlabRepository)
 
         val variablesFileContent = "mock file content"
-        whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")).thenReturn(variablesFileContent)
+        whenever(gitlabRegistryApi.getFileContent(user, "15689", "variables.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
 
-        val module = githubRegistryController.importRepository("juwit", "terraform-docker-mongo", user)
+        val module = gitlabRegistryController.importRepository("15689", user)
 
-        verify(githubRegistryApi).getRepository(user, "juwit/terraform-docker-mongo")
-        verify(githubRegistryApi).getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")
+        verify(gitlabRegistryApi).getRepository(user, "15689")
+        verify(gitlabRegistryApi).getFileContent(user, "15689", "variables.tf")
 
-        verifyNoMoreInteractions(githubRegistryApi)
+        verifyNoMoreInteractions(gitlabRegistryApi)
 
         assertThat(module.id).isNotBlank()
 
         assertThat(module.name).isEqualTo("juwit/terraform-docker-mongo")
-        assertThat(module.gitRepositoryUrl).isEqualTo("https://github.com/juwit/terraform-docker-mongo")
+        assertThat(module.gitRepositoryUrl).isEqualTo("https://gitlab.com/juwit/terraform-docker-mongo")
         assertThat(module.gitBranch).isEqualTo("master")
 
-        assertThat(module.registryDetails.registryType).isEqualTo(RegistryType.GITHUB)
-        assertThat(module.registryDetails.projectId).isEqualTo("juwit/terraform-docker-mongo")
+        assertThat(module.registryDetails.registryType).isEqualTo(RegistryType.GITLAB)
+        assertThat(module.registryDetails.projectId).isEqualTo("15689")
 
         assertThat(module.cliVersion).isEqualTo("1.12.8")
         assertThat(module.createdBy).isEqualTo(user)
@@ -88,8 +86,4 @@ class GithubRegistryControllerTest{
         assertThat(module.variables).containsExactly(Variable("dummy"))
 
     }
-}
-
-inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
-    return Mockito.`when`(methodCall)!!
 }

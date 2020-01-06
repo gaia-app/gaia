@@ -76,19 +76,19 @@
                 </template>
             </b-card>
         </div>
-<!--        <div class="col-md-4">-->
-<!--            <b-card no-body>-->
-<!--                <b-button size="lg" variant="outline-secondary" class="btn-gitlab" squared @click="toggle('gitlab')">-->
-<!--                    <i class="fab fa-gitlab"></i> from Gitlab-->
-<!--                </b-button>-->
+        <div class="col-md-4">
+            <b-card no-body>
+                <b-button size="lg" variant="outline-secondary" class="btn-gitlab" squared @click="toggle('gitlab')">
+                    <i class="fab fa-gitlab"></i> from Gitlab
+                </b-button>
 
-<!--                <repository-import v-if="selected == 'gitlab'" :registry="'gitlab'"></repository-import>-->
+                <repository-import v-if="selected == 'gitlab'" :registry="'gitlab'"></repository-import>
 
-<!--                <template v-slot:footer>-->
-<!--                    <em>Import an existing module code from existing Gitlab repository</em>-->
-<!--                </template>-->
-<!--            </b-card>-->
-<!--        </div>-->
+                <template v-slot:footer>
+                    <em>Import an existing module code from existing Gitlab repository</em>
+                </template>
+            </b-card>
+        </div>
         <div class="col-md-4">
             <b-card no-body>
                 <b-button size="lg" variant="outline-danger" squared @click="toggle('manual')">
@@ -113,6 +113,7 @@
                     v-model="selectedRepository"
                     id="repoSelect"
                     placeholder="Type to search"
+                    label="fullName"
                     :options="repositories"
                     :loading="isLoading"
                     @open="search">
@@ -200,7 +201,8 @@
             },
             importRepository: function() {
                 this.isImporting = true;
-                $.get(`/api/registries/${this.registry}/repositories/${this.selectedRepository}/import`).then(module => {
+                const id = this.selectedRepository.id ? this.selectedRepository.id : this.selectedRepository.fullName;
+                $.get(`/api/registries/${this.registry}/repositories/${id}/import`).then(module => {
                     window.location = `/modules/${module.id}`
                 })
             }
