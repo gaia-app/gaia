@@ -63,7 +63,7 @@
 
 <template id="template">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" th:if="${user.oAuth2User.provider == 'github'}">
             <b-card no-body>
                 <b-button size="lg" variant="outline-secondary" class="btn-github" squared @click="toggle('github')">
                     <i class="fab fa-github"></i> from Github
@@ -76,7 +76,7 @@
                 </template>
             </b-card>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" th:if="${user.oAuth2User.provider == 'gitlab'}">
             <b-card no-body>
                 <b-button size="lg" variant="outline-secondary" class="btn-gitlab" squared @click="toggle('gitlab')">
                     <i class="fab fa-gitlab"></i> from Gitlab
