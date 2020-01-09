@@ -7,8 +7,4 @@ import org.springframework.web.client.RestTemplate
 import java.util.regex.Pattern
 
 @Component
-class GitHubRawContent(restTemplate: RestTemplate) : RegistryRawContent(RegistryType.GITHUB, restTemplate) {
-
-    override val pattern: Pattern = Pattern.compile("^https?:\\/\\/(w{3}\\.)?github\\.com(.*)(.git)?\$")
-
-}
+class GitHubRawContent(restTemplate: RestTemplate) : RegistryRawContent(RegistryType.GITHUB, restTemplate)

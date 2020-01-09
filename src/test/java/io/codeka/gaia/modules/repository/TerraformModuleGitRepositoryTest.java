@@ -38,22 +38,22 @@ class TerraformModuleGitRepositoryTest {
         module.setDirectory("directory");
 
         // when
-        when(registryRawContent.matches(any())).thenReturn(true);
+        when(registryRawContent.matches(module)).thenReturn(true);
         when(registryRawContent.getReadme(any())).thenReturn(Optional.of("README CONTENT"));
         var result = repository.getReadme(module);
 
         // then
         assertThat(result).isPresent().get().isEqualTo("README CONTENT");
-        verify(registryRawContent).matches("url");
+        verify(registryRawContent).matches(module);
     }
 
     @Test
     void getReadme_shouldReturnNothingIfNoStrategyFound() {
         // given
         var module = new TerraformModule();
+        when(registryRawContent.matches(module)).thenReturn(false);
 
         // when
-        when(registryRawContent.matches(any())).thenReturn(false);
         var result = repository.getReadme(module);
 
         // then

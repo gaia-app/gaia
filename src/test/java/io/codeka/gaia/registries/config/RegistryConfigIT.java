@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {RegistryConfig.class, BeansConfig.class})
+@SpringBootTest(classes = {RegistryConfig.class, BeansConfig.class, GitHubRawContent.class, GitLabRawContent.class})
 class RegistryConfigIT {
     @Test
     void registryRawContents_shouldBeInstantiated(@Autowired(required = false) List<RegistryRawContent> registryRawContents) {
