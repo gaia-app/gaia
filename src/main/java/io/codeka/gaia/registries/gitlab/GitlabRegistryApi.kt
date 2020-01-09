@@ -42,7 +42,7 @@ class GitlabRegistryApi(val restTemplate: RestTemplate): RegistryApi<GitlabRepos
 
     override fun getRepositories(user: User): List<GitlabRepository> {
         // fetching repositories
-        val url = "https://gitlab.com/api/v4/projects?visibility=public&owned=true"
+        val url = RegistryType.GITLAB.repositoriesUrl
 
         val token = user.oAuth2User?.token!!
 
@@ -53,7 +53,7 @@ class GitlabRegistryApi(val restTemplate: RestTemplate): RegistryApi<GitlabRepos
 
     override fun getRepository(user: User, projectId: String): GitlabRepository {
         // fetching repositories
-        val url = "https://gitlab.com/api/v4/projects/$projectId"
+        val url = RegistryType.GITLAB.repositoryUrl.format(projectId)
 
         val token = user.oAuth2User?.token!!
 
@@ -61,14 +61,13 @@ class GitlabRegistryApi(val restTemplate: RestTemplate): RegistryApi<GitlabRepos
     }
 
     override fun getFileContent(user: User, projectId: String, filename: String): String {
-        val url = "https://gitlab.com/api/v4/projects/$projectId/repository/files/$filename?ref=master";
+        val url = RegistryType.GITLAB.fileContentUrl.format(projectId, filename)
 
         val token = user.oAuth2User?.token!!;
 
         val file = callWithAuth(url, token, RegistryFile::class.java)
 
         // removing trailing \n
-        println(file.content.replace("\n", ""))
         return String(Base64.getDecoder().decode(file.content.replace("\n", "")))
     }
 

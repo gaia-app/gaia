@@ -43,7 +43,7 @@ class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepos
 
     override fun getRepositories(user: User): List<GithubRepository> {
         // fetching repositories
-        val url = "https://api.github.com/user/repos?visibility=public"
+        val url = RegistryType.GITHUB.repositoriesUrl
 
         val token = user.oAuth2User?.token!!
 
@@ -54,7 +54,7 @@ class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepos
 
     override fun getRepository(user: User, projectId: String): GithubRepository {
         // fetching repositories
-        val url = "https://api.github.com/repos/$projectId"
+        val url = RegistryType.GITHUB.repositoryUrl.format(projectId)
 
         val token = user.oAuth2User?.token!!
 
@@ -62,14 +62,13 @@ class GithubRegistryApi(val restTemplate: RestTemplate): RegistryApi<GithubRepos
     }
 
     override fun getFileContent(user: User, projectId: String, filename: String): String {
-        val url = "https://api.github.com/repos/$projectId/contents/$filename?ref=master";
+        val url = RegistryType.GITHUB.fileContentUrl.format(projectId, filename)
 
-        val token = user.oAuth2User?.token!!;
+        val token = user.oAuth2User?.token!!
 
         val file = callWithAuth(url, token, RegistryFile::class.java)
 
         // removing trailing \n
-        println(file.content.replace("\n", ""))
         return String(Base64.getDecoder().decode(file.content.replace("\n", "")))
     }
 
