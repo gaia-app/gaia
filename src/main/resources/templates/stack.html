@@ -43,6 +43,7 @@
 <div th:replace="vue_templates/components/breadcrumb"></div>
 <div th:replace="vue_templates/components/user-badge"></div>
 <div th:replace="vue_templates/components/sidebar"></div>
+<div th:replace="vue_templates/components/job/job-history"></div>
 <div th:replace="vue_templates/components/job/job-timer"></div>
 <div th:replace="vue_templates/filters/date-time"></div>
 
@@ -141,58 +142,12 @@
     </div>
 </template>
 
-<template id="job-history">
-    <div class="block">
-        <div class="block_head dark_bg">
-            <h2><span><i class="fas fa-history"></i> Job history</span></h2>
-        </div>
-        <ul class="job_list">
-            <li v-for="(job, index) in jobs" :class="job.status" class="job">
-                <div class="job_id"><a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{jobs.length - index}}</a></div>
-                <div class="job_detail">
-                    <div>
-                        <span class="job_attr_id">Type</span>
-                        <span class="job_attr_value" :class="job.type">{{job.type}}</span>
-                    </div>
-                    <div>
-                        <span class="job_attr_id">Status</span>
-                        <span class="job_attr_value" :class="job.status">{{job.status}}</span>
-                    </div>
-                    <div>
-                        <span class="job_attr_id">User</span>
-                        <user-badge :user="job.user" :css-class="'job_attr_value'"></user-badge>
-                    </div>
-                </div>
-                <div class="job_detail">
-                    <div>
-                        <span class="job_attr_icon"><i class="far fa-calendar-alt"></i></span>
-                        <span class="job_attr_value">{{job.startDateTime | dateTime}}</span>
-                    </div>
-                    <div>
-                        <span class="job_attr_icon"><i class="fas fa-stopwatch"></i></span>
-                        <job-timer
-                            :start-time="job.startDateTime"
-                            :end-time="job.endDateTime"
-                            :css-class="'job_attr_value'">
-                        </job-timer>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</template>
-
 <template id="template-navigation">
     <breadcrumb :page="page"></breadcrumb>
 </template>
 
 <script th:inline="javascript" type="application/ecmascript">
     const stackId = [[${stackId}]];
-
-    Vue.component('job-history', {
-        template: "#job-history",
-        props: ["jobs"]
-    });
 
     Vue.component('stack-outputs', {
         template: "#stack-outputs",
@@ -339,7 +294,6 @@
         data: () => ({ page: 'stack' }),
         template: "#template-navigation",
     });
-
 </script>
 
 </body>
