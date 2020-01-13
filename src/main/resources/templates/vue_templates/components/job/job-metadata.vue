@@ -36,8 +36,9 @@
                 </b>
             </p>
         </div>
-        <div class="job-actions" v-if="isRetryAvailable">
-            <b-button variant="info" size="lg" @click="$emit('retry')"><i class="fas fa-redo"></i> Retry</b-button>
+        <div class="job-actions">
+            <b-button variant="info" v-if="isRetryAvailable" @click="$emit('retry')"><i class="fas fa-redo"></i> Retry</b-button>
+            <b-button variant="danger" v-if="isDeleteAvailable" @click="$emit('delete')"><i class="far fa-trash-alt"></i> Delete</b-button>
         </div>
     </div>
 </template>
@@ -48,8 +49,10 @@
         props: ['job', 'stack'],
         computed: {
             isRetryAvailable: function () {
-                return this.job.status !== null &&
-                    this.job.status.indexOf('FAILED') > 0;
+                return this.job.status !== null && this.job.status.indexOf('FAILED') > 0;
+            },
+            isDeleteAvailable: function () {
+                return this.job.status !== null && this.job.status.indexOf('STARTED') < 0;
             },
         }
     });
@@ -73,16 +76,19 @@
 
     .job-metadata-container .job-actions {
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
+        flex-direction: column;
         flex: 1 1 auto;
+    }
+
+    .job-metadata-container .job-actions button + button {
+        margin-top: 0.25rem;
     }
 
     .job-metadata-container .metadata p {
         font-size: 14px;
     }
 
-    .job-metadata-container .fas {
+    .job-metadata-container .metadata .fas {
         width: 1rem;
         margin-right: 1rem;
         text-align: center;

@@ -46,7 +46,8 @@
 
                     <job-metadata
                             :job="job" :stack="stack"
-                            @retry="retryJob">
+                            @retry="retryJob"
+                            @delete="deleteJob">
                     </job-metadata>
 
                     <job-step
@@ -153,6 +154,32 @@
                 methods: {
                     applyJob: () => planOrApplyJob('APPLY'),
                     retryJob: () => planOrApplyJob('retry'),
+                    deleteJob: function () {
+                        this.$bvModal.msgBoxConfirm('This will delete the job. Continue?', {
+                            title: 'Delete request',
+                            centered: true,
+                            noCloseOnBackdrop: true,
+                            cancelTitle: 'No',
+                            okVariant: 'danger',
+                            okTitle: 'Yes',
+                            returnFocus: 'body',
+                        }).then(value => {
+                            if (value) {
+                                const message = Messenger().post({type: "info", message: "Deleting job."});
+                                return $.ajax({
+                                    url: `/api/jobs/${jobId}`,
+                                    type: 'DELETE',
+                                    success: () => {
+                                        message.update({type: "info", message: "Job deleted."});
+                                        window.location = `/stacks/${this.stack.id}`;
+                                    },
+                                    error: () => {
+                                        message.update({type: "error", message: "Unable to delete job,"});
+                                    }
+                                });
+                            }
+                        })
+                    },
                 }
             });
         });
