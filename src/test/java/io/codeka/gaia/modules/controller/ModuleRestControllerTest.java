@@ -180,4 +180,18 @@ class ModuleRestControllerTest {
         assertThrows(ModuleNotFoundException.class, () -> moduleRestController.saveModule("12", module, bob));
     }
 
+    @Test
+    void createModule_shouldSaveTheModule_forTheGivenUser(){
+        // given
+        var module = new TerraformModule();
+        module.setName("test-creation");
+        // when
+        moduleRestController.createModule(module, bob);
+
+        // then
+        verify(moduleRepository).save(module);
+        assertThat(module.getCreatedBy()).isEqualTo(bob);
+        assertThat(module.getId()).isNotBlank();
+    }
+
 }

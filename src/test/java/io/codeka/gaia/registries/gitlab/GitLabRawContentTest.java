@@ -66,11 +66,10 @@ class GitLabRawContentTest {
         var response = new ResponseEntity<>(gitlabFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq(RegistryType.GITLAB.getReadmeUrl()),
+                eq("https://gitlab.com/api/v4/projects/123/repository/files/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("123"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitLabRawContent.getReadme(module);
@@ -109,11 +108,10 @@ class GitLabRawContentTest {
         var response = new ResponseEntity<RegistryFile>(HttpStatus.NOT_FOUND);
 
         when(restTemplate.exchange(
-                eq(RegistryType.GITLAB.getReadmeUrl()),
+                eq("https://gitlab.com/api/v4/projects/123/repository/files/README.md?ref=master"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
-                eq(RegistryFile.class),
-                eq("123"))).thenReturn(response);
+                eq(RegistryFile.class))).thenReturn(response);
 
         // when
         var result = gitLabRawContent.getReadme(module);

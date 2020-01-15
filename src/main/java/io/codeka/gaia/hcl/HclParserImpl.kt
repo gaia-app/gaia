@@ -6,10 +6,18 @@ import io.codeka.gaia.modules.bo.Output
 import io.codeka.gaia.modules.bo.Variable
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.springframework.stereotype.Service
 
-class HclParser {
+interface HclParser {
+    fun parseContent(content: String): HclVisitor
+    fun parseVariables(content: String): List<Variable>
+    fun parseOutputs(content: String): List<Output>
+}
 
-    private fun parseContent(content: String): HclVisitor {
+@Service
+class HclParserImpl : HclParser {
+
+    override fun parseContent(content: String): HclVisitor {
         // loading test file
         val charStream = CharStreams.fromString(content)
 
@@ -28,12 +36,12 @@ class HclParser {
         return hclVisitor
     }
 
-    fun parseVariables(content:String): List<Variable> {
+    override fun parseVariables(content:String): List<Variable> {
         val hclVisitor = parseContent(content)
         return hclVisitor.variables
     }
 
-    fun parseOutputs(content:String): List<Output> {
+    override fun parseOutputs(content:String): List<Output> {
         val hclVisitor = parseContent(content)
         return hclVisitor.outputs
     }

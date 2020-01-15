@@ -4,11 +4,13 @@ import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Rest controller for the module API
@@ -43,6 +45,14 @@ public class ModuleRestController {
             throw new ModuleForbiddenException();
         }
         return module;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TerraformModule createModule(@RequestBody TerraformModule module, User user){
+        module.setId(UUID.randomUUID().toString());
+        module.setCreatedBy(user);
+        return moduleRepository.save(module);
     }
 
     @PutMapping("/{id}")

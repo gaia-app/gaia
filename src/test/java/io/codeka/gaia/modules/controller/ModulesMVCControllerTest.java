@@ -92,27 +92,31 @@ class ModulesMVCControllerTest {
 
     @Test
     void readme_shouldThrowExceptionIfModuleNotFound() {
-        // given
-
         // when
         when(moduleRepository.findById(anyString())).thenReturn(Optional.empty());
         assertThrows(NoSuchElementException.class, () -> controller.readme("TEST"));
 
         // then
         verify(moduleRepository).findById("TEST");
-        verifyZeroInteractions(moduleGitRepository);
+        verifyNoInteractions(moduleGitRepository);
     }
 
     @Test
     void modulesList_shouldShowModulesView(){
-        // given
-        var model = mock(Model.class);
-
         // when
         var res = controller.modulesList();
 
         // then
         assertEquals("modules", res);
+    }
+
+    @Test
+    void importModule_shouldShowImportModuleView(){
+        // when
+        var res = controller.importModule();
+
+        // then
+        assertEquals("modules_import", res);
     }
 
     @Test
@@ -144,7 +148,7 @@ class ModulesMVCControllerTest {
 
         // then
         verify(moduleRepository).findById("12");
-        verifyZeroInteractions(model);
+        verifyNoInteractions(model);
     }
 
     @Test
@@ -158,7 +162,7 @@ class ModulesMVCControllerTest {
 
         // then
         verify(moduleRepository).findById("12");
-        verifyZeroInteractions(model);
+        verifyNoInteractions(model);
     }
 
 }

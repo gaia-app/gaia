@@ -40,6 +40,7 @@
 	</ciManagement>
 
 	<properties>
+		<antlr4.version>4.7.2</antlr4.version>
 		<java.version>11</java.version>
 		<jersey.version>2.27</jersey.version>
 		<junit-jupiter.version>5.5.2</junit-jupiter.version>
@@ -215,7 +216,7 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
-			<version>4.7.2</version>
+			<version>${antlr4.version}</version>
 		</dependency>
 
 		<!-- selenium tests -->
@@ -313,7 +314,7 @@
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
-				<version>4.7.2</version>
+				<version>${antlr4.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -325,6 +326,25 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.4.10</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.10</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<excludedTestClasses>*IT</excludedTestClasses>
+					<avoidCallsTo>
+						<avoidCallsTo>kotlin.jvm.internal</avoidCallsTo>
+					</avoidCallsTo>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
