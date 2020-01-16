@@ -17,7 +17,7 @@
 
 	<name>gaia</name>
 	<description>gaia runs yours terraform modules</description>
-	<url>https://github.com/CodeKaio/gaia</url>
+	<url>https://github.com/gaia-app/gaia</url>
 	<inceptionYear>2019</inceptionYear>
 
 	<licenses>
@@ -28,15 +28,15 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/CodeKaio/gaia</url>
+		<url>https://github.com/gaia-app/gaia</url>
 	</scm>
 	<issueManagement>
 		<system>github</system>
-		<url>https://github.com/CodeKaio/gaia/issues</url>
+		<url>https://github.com/gaia-app/gaia/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>travis-ci</system>
-		<url>https://travis-ci.org/CodeKaio/gaia</url>
+		<url>https://travis-ci.com/gaia-app/gaia</url>
 	</ciManagement>
 
 	<properties>
