@@ -39,109 +39,20 @@
     </div>
 </div>
 
-<style>
-    .btn-gitlab {
-        color: #fca326;
-    }
-
-    .btn-gitlab:hover {
-        background-color: #fca326;
-        border-color: #fca326;
-        color: #fff;
-    }
-
-    .btn-github {
-        color: #333;
-    }
-
-    .btn-github:hover {
-        background-color: #333;
-        border-color: #333;
-        color: #fff;
-    }
-</style>
-
 <template id="template">
     <div class="row">
-        <div class="col-md-4" th:if="${user.oAuth2User.provider == 'github'}">
-            <b-card no-body>
-                <b-button size="lg" variant="outline-secondary" class="btn-github" squared @click="toggle('github')">
-                    <i class="fab fa-github"></i> from Github
-                </b-button>
-
-                <repository-import v-if="selected == 'github'" :registry="'github'"></repository-import>
-
-                <template v-slot:footer>
-                    <em>Import an existing module code from existing Github repository</em>
-                </template>
-            </b-card>
-        </div>
-        <div class="col-md-4" th:if="${user.oAuth2User.provider == 'gitlab'}">
-            <b-card no-body>
-                <b-button size="lg" variant="outline-secondary" class="btn-gitlab" squared @click="toggle('gitlab')">
-                    <i class="fab fa-gitlab"></i> from Gitlab
-                </b-button>
-
-                <repository-import v-if="selected == 'gitlab'" :registry="'gitlab'"></repository-import>
-
-                <template v-slot:footer>
-                    <em>Import an existing module code from existing Gitlab repository</em>
-                </template>
-            </b-card>
-        </div>
-        <div class="col-md-4">
-            <b-card no-body>
-                <b-button size="lg" variant="outline-danger" squared @click="toggle('manual')">
-                    <i class="fab fa-superpowers"></i> manually
-                </b-button>
-
-                <manual-import v-if="selected == 'manual'"></manual-import>
-
-                <template v-slot:footer>
-                    <em>Import a module manually (only for users with superpowers)</em>
-                </template>
-            </b-card>
-        </div>
+        <module-import :registry="'github'" :selected="selected" th:if="${user.oAuth2User.provider == 'github'}" @toggle="selected = 'github'"></module-import>
+        <module-import :registry="'gitlab'" :selected="selected" th:if="${user.oAuth2User.provider == 'gitlab'}" @toggle="selected = 'gitlab'"></module-import>
+        <manual-import :selected="selected" @toggle="selected = 'manual'"></manual-import>
     </div>
-</template>
-
-<template id="repository-import">
-    <b-card>
-        <b-card-text>
-            <label for="repoSelect">Select your {{registry}} repository</label>
-            <vue-multiselect
-                    v-model="selectedRepository"
-                    id="repoSelect"
-                    placeholder="Type to search"
-                    label="fullName"
-                    :options="repositories"
-                    :loading="isLoading"
-                    @open="search">
-                <span slot="noResult">Oops! No repository found. </span>
-            </vue-multiselect>
-        </b-card-text>
-
-        <b-button :disabled="! selectedRepository" href="#" variant="primary" @click="importRepository">Import this repository !</b-button>
-    </b-card>
-</template>
-
-<template id="manual-import">
-    <b-card>
-        <b-card-text>
-            <b-form-group
-                    label="Enter the module name"
-                    label-for="module-name">
-                <b-form-input id="module-name" v-model="moduleName" trim></b-form-input>
-            </b-form-group>
-        </b-card-text>
-
-        <b-button :disabled="! moduleName" href="#" variant="primary" @click="createModule">Import manually</b-button>
-    </b-card>
 </template>
 
 <template id="template-navigation">
     <breadcrumb :page="page"></breadcrumb>
 </template>
+
+<div th:replace="vue_templates/modules/module-import"></div>
+<div th:replace="vue_templates/modules/manual-import"></div>
 
 <div th:replace="vue_templates/sidebar"></div>
 
@@ -154,75 +65,13 @@
 <script th:inline="javascript" type="application/ecmascript">
     Vue.component('vue-multiselect', window.VueMultiselect.default);
 
-    Vue.component('manual-import', {
-        template: "#manual-import",
-        data: () => ({
-                moduleName: null,
-            }
-        ),
-        methods: {
-            createModule: function(){
-                let module = {
-                    name: this.moduleName
-                };
-                $.ajax({
-                    url: `/api/modules`,
-                    data: JSON.stringify(module),
-                    contentType: "application/json",
-                    method: "POST"
-                    }).then(module => {
-                    window.location = `/modules/${module.id}`
-                });
-            }
-        }
-    });
-
-    Vue.component('repository-import', {
-        template: "#repository-import",
-        props: ["registry"],
-        data: () => ({
-                selectedRepository: null,
-                repositories: [],
-                isLoading: false,
-                loaded: false,
-                isImporting: false
-            }
-        ),
-        methods: {
-            search(query) {
-                if(! this.loaded){
-                    this.isLoading = true;
-                    $.get(`/api/registries/${this.registry}/repositories`).then(response => {
-                        this.repositories = response;
-                        this.loaded = true;
-                        this.isLoading = false;
-                    })
-                }
-            },
-            importRepository: function() {
-                this.isImporting = true;
-                const id = this.selectedRepository.id ? this.selectedRepository.id : this.selectedRepository.fullName;
-                $.get(`/api/registries/${this.registry}/repositories/${id}/import`).then(module => {
-                    window.location = `/modules/${module.id}`
-                })
-            }
-        }
-    });
-
     new Vue({
         el: "#app",
         template: "#template",
         data: () => ({
             selected: "none"
-        }),
-        methods: {
-            toggle: function(type) {
-                this.selected = type
-            }
-        }
+        })
     });
-
-
 </script>
 
 <script th:inline="javascript" type="application/ecmascript">
