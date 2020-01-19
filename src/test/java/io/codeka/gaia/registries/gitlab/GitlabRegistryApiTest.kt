@@ -1,4 +1,4 @@
-package io.codeka.gaia.registries.github
+package io.codeka.gaia.registries.gitlab
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.codeka.gaia.registries.RegistryFile
@@ -6,7 +6,6 @@ import io.codeka.gaia.teams.OAuth2User
 import io.codeka.gaia.teams.User
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.internal.Base64
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -19,12 +18,12 @@ import org.springframework.test.web.client.response.MockRestResponseCreators.wit
 import java.nio.charset.Charset
 
 
-@RestClientTest(GithubRegistryApi::class)
+@RestClientTest(GitlabRegistryApi::class)
 @AutoConfigureWebClient(registerRestTemplate = true)
-class GithubRegistryApiTest{
+class GitlabRegistryApiTest{
 
     @Autowired
-    lateinit var githubRegistryApi: GithubRegistryApi
+    lateinit var gitlabRegistryApi: GitlabRegistryApi
 
     @Autowired
     lateinit var server: MockRestServiceServer
@@ -33,62 +32,62 @@ class GithubRegistryApiTest{
     lateinit var objectMapper: ObjectMapper
 
     @Test
-    fun `getRepositories() should call the user repos github api`() {
+    fun `getRepositories() should call the user repos gitlab api`() {
         // given
-        val sampleResult = GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds")
+        val sampleResult = GitlabRepository("15689","Group / repository","https://gitlab.com/group/repository")
         val sampleListResult = listOf(sampleResult)
         val listDetailsString = objectMapper.writeValueAsString(sampleListResult)
 
-        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+        server.expect(requestTo("https://gitlab.com/api/v4/projects?visibility=public&owned=true"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
                 .andRespond(withSuccess(listDetailsString, MediaType.APPLICATION_JSON))
 
         val john = User("john", null)
-        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+        john.oAuth2User = OAuth2User("gitlab", "johnstoken", null)
 
         // when
-        val repositories = githubRegistryApi.getRepositories(john)
+        val repositories = gitlabRegistryApi.getRepositories(john)
 
         // then
         assertThat(repositories).containsExactly(sampleResult)
     }
 
     @Test
-    fun `getRepository() should call the repos github api`() {
+    fun `getRepository() should call the repos gitlab api`() {
         // given
-        val sampleResult = GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds")
+        val sampleResult = GitlabRepository("15689","Group / repository","https://gitlab.com/group/repository")
         val detailsString = objectMapper.writeValueAsString(sampleResult)
-        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds"))
+        server.expect(requestTo("https://gitlab.com/api/v4/projects/15689"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
                 .andRespond(withSuccess(detailsString, MediaType.APPLICATION_JSON))
 
         val john = User("john", null)
-        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+        john.oAuth2User = OAuth2User("gitlab", "johnstoken", null)
 
         // when
-        val repositories = githubRegistryApi.getRepository(john, "terraform-aws-modules/terraform-aws-rds")
+        val repositories = gitlabRegistryApi.getRepository(john, "15689")
 
         // then
-        assertThat(repositories).isEqualTo(GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds"))
+        assertThat(repositories).isEqualTo(sampleResult)
     }
 
     @Test
-    fun `getFileContent() should call the contents github api`() {
+    fun `getFileContent() should call the contents gitlab api`() {
         // given
         val readmeContent = """
             # Sample README.md
         """
         val sampleResult = RegistryFile(content = Base64.encode(readmeContent.toByteArray(Charset.defaultCharset())))
         val detailsString = objectMapper.writeValueAsString(sampleResult)
-        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/README.md?ref=master"))
+        server.expect(requestTo("https://gitlab.com/api/v4/projects/15689/repository/files/README.md?ref=master"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
                 .andRespond(withSuccess(detailsString, MediaType.APPLICATION_JSON))
 
         val john = User("john", null)
-        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+        john.oAuth2User = OAuth2User("gitlab", "johnstoken", null)
 
         // when
-        val content = githubRegistryApi.getFileContent(john, "terraform-aws-modules/terraform-aws-rds", "README.md")
+        val content = gitlabRegistryApi.getFileContent(john, "15689", "README.md")
 
         // then
         assertThat(content).isEqualTo(readmeContent)

@@ -14,6 +14,6 @@ data class Variable @JvmOverloads constructor(@field:NotBlank val name: String,
                     var type: String? = null,
                     var description: String? = null,
                     var defaultValue: String? = null,
-                    var editable: Boolean = false,
+                    var editable: Boolean = true,
                     var mandatory: Boolean = false,
                     var validationRegex: String? = null)

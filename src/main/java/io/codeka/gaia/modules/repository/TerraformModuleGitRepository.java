@@ -26,7 +26,7 @@ public class TerraformModuleGitRepository {
      */
     public Optional<String> getReadme(TerraformModule module){
         var strategy = registryRawContents.stream()
-                .filter(s -> s.matches(module.getGitRepositoryUrl()))
+                .filter(s -> s.matches(module))
                 .findFirst();
 
         if(strategy.isEmpty()){

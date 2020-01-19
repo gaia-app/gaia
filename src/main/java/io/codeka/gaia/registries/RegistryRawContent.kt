@@ -11,15 +11,7 @@ import java.util.regex.Pattern
 
 abstract class RegistryRawContent(private val registryType: RegistryType, private val restTemplate: RestTemplate) {
 
-    /**
-     * Returns the pattern to match the repository url.
-     * The pattern should contains at least one group to extract the part of the repository to keep
-     */
-    protected abstract val pattern: Pattern
-
-    open fun matches(url: String): Boolean {
-        return pattern.matcher(url).matches()
-    }
+    open fun matches(module: TerraformModule) = registryType == module.registryDetails?.registryType
 
     open fun getReadme(module: TerraformModule): Optional<String> {
         // no project details, impossible to load a readme, so returning empty

@@ -36,18 +36,17 @@ class GitLabRawContentTest {
     private RestTemplate restTemplate;
 
     @Test
-    void getPattern_shouldReturnPattern() {
-        assertNotNull(gitLabRawContent.getPattern());
+    void matches_shouldReturnTrueForGitlabModules() {
+        TerraformModule gitlabModule = new TerraformModule();
+        gitlabModule.setRegistryDetails(new RegistryDetails(RegistryType.GITLAB, "123456"));
+        assertTrue(gitLabRawContent.matches(gitlabModule));
     }
 
     @Test
-    void matches_shouldReturnTrueForValidUrl() {
-        assertTrue(gitLabRawContent.matches("https://gitlab.com/CodeKaio/gaia.git"));
-    }
-
-    @Test
-    void matches_shouldReturnFalseForInvalidUrl() {
-        assertFalse(gitLabRawContent.matches("https://github.com/CodeKaio/gaia.git"));
+    void matches_shouldReturnFalseForGithubModules() {
+        TerraformModule githubModule = new TerraformModule();
+        githubModule.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB, "some/project"));
+        assertFalse(gitLabRawContent.matches(githubModule));
     }
 
     @Test
