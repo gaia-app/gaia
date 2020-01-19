@@ -53,11 +53,11 @@
                             <span>{{name}}</span>
                             <cli-badge :cli-version="cliVersion" :badge-style="'for-the-badge'"></cli-badge>
                         </h1>
-                        <div th:text="${module.id}" class="provider"></div>
+                        <div class="provider">{{id}}</div>
                         <div class="desc">{{description}}</div>
                         <hr>
                         <div class="metadata">
-                            <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy}}</a></p>
+                            <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy.username}}</a></p>
                             <p>Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy}}</a></p>
                             <p>Module managed by <a href="#">{{owner}}</a></p>
                             <p>Total stacks: <a href="#">{{nbStacks}}</a></p>
@@ -108,11 +108,9 @@
 
     $.get(`/api/modules/${moduleId}`)
         .then(data => {
-            data.id = moduleId;
             // START FIXME: link with real data once implemented in the model
             data.mainProvider = 'aws';
             data.createdAt = moment().subtract(10, 'days');
-            data.createdBy = 'Richard Bullit';
             data.updatedAt = moment();
             data.updatedBy = 'Douglas Riper';
             data.owner = 'Ze Team';
