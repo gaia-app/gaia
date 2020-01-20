@@ -1,0 +1,18 @@
+{
+  "name": "variables.tf",
+  "path": "variables.tf",
+  "sha": "533f859b7c038f7d3003ca3f693abc34370bcf67",
+  "size": 242,
+  "url": "https://api.github.com/repos/juwit/terraform-docker-mongo/contents/variables.tf?ref=master",
+  "html_url": "https://github.com/juwit/terraform-docker-mongo/blob/master/variables.tf",
+  "git_url": "https://api.github.com/repos/juwit/terraform-docker-mongo/git/blobs/533f859b7c038f7d3003ca3f693abc34370bcf67",
+  "download_url": "https://raw.githubusercontent.com/juwit/terraform-docker-mongo/master/variables.tf",
+  "type": "file",
+  "content": "dmFyaWFibGUgIm1vbmdvX2NvbnRhaW5lcl9uYW1lIiB7CiAgICB0eXBlID0g\nInN0cmluZyIKICAgIGRlc2NyaXB0aW9uID0gIm5hbWUgb2YgdGhlIGNvbnRh\naW5lciIKfQoKdmFyaWFibGUgIm1vbmdvX2V4cG9zZWRfcG9ydCIgewogICAg\ndHlwZSAgICAgICAgPSAic3RyaW5nIgogICAgZGVzY3JpcHRpb24gPSAiZXhw\nb3NlZCBwb3J0IG9mIHRoZSBtb25nbyBjb250YWluZXIiCiAgICBkZWZhdWx0\nICAgICA9ICIyNzAxNyIKfQo=\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/juwit/terraform-docker-mongo/contents/variables.tf?ref=master",
+    "git": "https://api.github.com/repos/juwit/terraform-docker-mongo/git/blobs/533f859b7c038f7d3003ca3f693abc34370bcf67",
+    "html": "https://github.com/juwit/terraform-docker-mongo/blob/master/variables.tf"
+  }
+}
