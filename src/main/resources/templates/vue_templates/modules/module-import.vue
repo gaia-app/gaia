@@ -60,7 +60,7 @@ Vue.component('module-import', {
             this.isImporting = true;
             const id = this.selectedRepository.id ? this.selectedRepository.id : this.selectedRepository.fullName;
             $.get(`/api/registries/${this.registry}/repositories/${id}/import`).then(module => {
-                window.location = `/modules/${module.id}`
+                window.location = `/modules/${module.id}/description`
             })
         }
     }

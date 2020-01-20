@@ -46,7 +46,7 @@ Vue.component('manual-import', {
                 contentType: "application/json",
                 method: "POST"
             }).then(module => {
-                window.location = `/modules/${module.id}`
+                window.location = `/modules/${module.id}/description`
             });
         }
     }

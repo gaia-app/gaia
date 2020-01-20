@@ -1,0 +1,12 @@
+{
+  "file_name": "variables.tf",
+  "file_path": "variables.tf",
+  "size": 242,
+  "encoding": "base64",
+  "content_sha256": "b9dce2bfab4eb869c23c0623f86c35c475af6a0a14084135b2a6e33011638fd9",
+  "ref": "master",
+  "blob_id": "533f859b7c038f7d3003ca3f693abc34370bcf67",
+  "commit_id": "91ee4feddf2d3c489f8ea1b2489027bb05839ac1",
+  "last_commit_id": "a788711d2f5fd598d6d3404b8135d935d7bd78a9",
+  "content": "dmFyaWFibGUgIm1vbmdvX2NvbnRhaW5lcl9uYW1lIiB7CiAgICB0eXBlID0gInN0cmluZyIKICAgIGRlc2NyaXB0aW9uID0gIm5hbWUgb2YgdGhlIGNvbnRhaW5lciIKfQoKdmFyaWFibGUgIm1vbmdvX2V4cG9zZWRfcG9ydCIgewogICAgdHlwZSAgICAgICAgPSAic3RyaW5nIgogICAgZGVzY3JpcHRpb24gPSAiZXhwb3NlZCBwb3J0IG9mIHRoZSBtb25nbyBjb250YWluZXIiCiAgICBkZWZhdWx0ICAgICA9ICIyNzAxNyIKfQo="
+}
