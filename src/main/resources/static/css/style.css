@@ -47,12 +47,7 @@
     1. import fonts
 -------------------------------------------------------------------*/
 
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700,900');
-@import url('https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700,700i');
-@import url('https://fonts.googleapis.com/css?family=Arvo:400,400i,700,700i');
-@import url('https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700');
 
 /*------------------------------------------------------------------
     2. import files
@@ -1253,22 +1248,6 @@ a[data-toggle="collapse"] {
     float: left;
     padding: 0;
     width: auto;
-}
-
-.heading2 {
-    background: #fff;
-    padding: 15px 25px;
-    margin: 20px 0 0 0;
-    border-bottom: solid #ff5722 2px;
-}
-
-.heading2 h3 {
-    font-size: 20px;
-    text-transform: none;
-    font-weight: 600;
-    position: relative;
-    color: #15283c;
-    font-family: 'Raleway', sans-serif;
 }
 
 .time_form {
