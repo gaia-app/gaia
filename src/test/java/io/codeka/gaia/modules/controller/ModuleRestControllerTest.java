@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -192,6 +193,21 @@ class ModuleRestControllerTest {
         verify(moduleRepository).save(module);
         assertThat(module.getCreatedBy()).isEqualTo(bob);
         assertThat(module.getId()).isNotBlank();
+    }
+
+    @Test
+    void updateModule_shouldSetUpdatedMetadata(){
+        // given
+        var module = mock(TerraformModule.class);
+        when(module.isAuthorizedFor(bob)).thenReturn(true);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        moduleRestController.saveModule("12", module, bob);
+
+        // then
+        verify(module).setUpdatedAt(any(LocalDateTime.class));
+        verify(module).setUpdatedBy(bob);
     }
 
 }

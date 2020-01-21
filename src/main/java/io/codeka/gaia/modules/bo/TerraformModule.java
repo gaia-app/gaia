@@ -46,6 +46,11 @@ public class TerraformModule {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @DBRef
+    private User updatedBy;
+
+    private LocalDateTime updatedAt;
+
     private RegistryDetails registryDetails;
 
     public String getId() {
@@ -163,4 +168,21 @@ public class TerraformModule {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +62,10 @@ public class ModuleRestController {
         if(!existingModule.isAuthorizedFor(user)){
             throw new ModuleForbiddenException();
         }
+
+        module.setUpdatedBy(user);
+        module.setUpdatedAt(LocalDateTime.now());
+
         return moduleRepository.save(module);
     }
 

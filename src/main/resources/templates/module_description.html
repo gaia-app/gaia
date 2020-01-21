@@ -58,7 +58,7 @@
                         <hr>
                         <div class="metadata">
                             <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy.username}}</a></p>
-                            <p>Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy}}</a></p>
+                            <p v-if="updatedAt">Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy.username}}</a></p>
                             <p>Module managed by <a href="#">{{owner}}</a></p>
                             <p>Total stacks: <a href="#">{{nbStacks}}</a></p>
                             <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
@@ -110,8 +110,6 @@
         .then(data => {
             // START FIXME: link with real data once implemented in the model
             data.mainProvider = 'aws';
-            data.updatedAt = moment();
-            data.updatedBy = 'Douglas Riper';
             data.owner = 'Ze Team';
             data.nbStacks = 10;
             // END FIXME
