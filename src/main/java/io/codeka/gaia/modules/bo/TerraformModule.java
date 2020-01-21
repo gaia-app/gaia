@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class TerraformModule {
 
     @DBRef
     private User createdBy;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private RegistryDetails registryDetails;
 
@@ -151,5 +154,13 @@ public class TerraformModule {
 
     public void setRegistryDetails(RegistryDetails registryDetails) {
         this.registryDetails = registryDetails;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

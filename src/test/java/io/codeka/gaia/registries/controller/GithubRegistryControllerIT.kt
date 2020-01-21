@@ -13,7 +13,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
@@ -22,11 +21,10 @@ import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.web.client.RestTemplate
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.util.*
+import java.time.LocalDateTime
 
 @SpringBootTest
 @DirtiesContext
@@ -110,7 +108,9 @@ class GithubRegistryControllerIT{
 
         assertThat(importedModule.id).isNotBlank()
         assertThat(importedModule.name).isEqualTo("selmak/terraform-docker-mongo")
+
         assertThat(importedModule.createdBy).isEqualTo(selmak)
+        assertThat(importedModule.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://github.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITHUB, "selmak/terraform-docker-mongo"))
