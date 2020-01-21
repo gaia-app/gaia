@@ -31,12 +31,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest
 @DirtiesContext
 @Testcontainers
-@AutoConfigureMockMvc
 @AutoConfigureWebClient
 class GitlabRegistryControllerIT{
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -57,7 +53,6 @@ class GitlabRegistryControllerIT{
 
     @Test
     fun validateTestConfiguration(){
-        assertThat(mockMvc).isNotNull
         assertThat(objectMapper).isNotNull
         assertThat(gitlabRegistryController).isNotNull
         assertThat(restTemplate).isNotNull

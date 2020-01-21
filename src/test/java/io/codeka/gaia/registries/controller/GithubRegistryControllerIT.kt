@@ -31,12 +31,8 @@ import java.util.*
 @SpringBootTest
 @DirtiesContext
 @Testcontainers
-@AutoConfigureMockMvc
 @AutoConfigureWebClient
 class GithubRegistryControllerIT{
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -57,7 +53,6 @@ class GithubRegistryControllerIT{
 
     @Test
     fun validateTestConfiguration(){
-        assertThat(mockMvc).isNotNull
         assertThat(objectMapper).isNotNull
         assertThat(githubRegistryController).isNotNull
         assertThat(restTemplate).isNotNull
