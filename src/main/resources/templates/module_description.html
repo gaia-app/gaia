@@ -59,10 +59,8 @@
                         <div class="metadata">
                             <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy.username}}</a></p>
                             <p v-if="updatedAt">Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy.username}}</a></p>
-                            <p>Module managed by <a href="#">{{owner}}</a></p>
-                            <p>Total stacks: <a href="#">{{nbStacks}}</a></p>
                             <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
-                            <p>Estimated monthly cost: {{estimatedMonthlyCost}} US $</p>
+                            <p v-if="estimatedMonthlyCost">Estimated monthly cost: ${{estimatedMonthlyCost}}</p>
                         </div>
                     </div>
                 </div>
@@ -76,7 +74,7 @@
                     </template>
                     <readme :module-id="id"></readme>
                 </b-tab>
-                <b-tab>
+                <b-tab v-if="estimatedMonthlyCostDescription">
                     <template slot="title">
                         <i class="fab fa-markdown"></i> Cost Of Ownership
                     </template>
@@ -110,8 +108,6 @@
         .then(data => {
             // START FIXME: link with real data once implemented in the model
             data.mainProvider = 'aws';
-            data.owner = 'Ze Team';
-            data.nbStacks = 10;
             // END FIXME
             new Vue({
                 el: "#app",
