@@ -1,6 +1,7 @@
 package io.codeka.gaia.registries.controller
 
 import io.codeka.gaia.hcl.HclParser
+import io.codeka.gaia.modules.bo.ModuleMetadata
 import io.codeka.gaia.modules.bo.TerraformModule
 import io.codeka.gaia.modules.repository.TerraformCLIRepository
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
@@ -42,7 +43,7 @@ class GithubRegistryController(
         module.cliVersion = cliRepository.listCLIVersion().first()
 
         module.registryDetails = RegistryDetails(RegistryType.GITHUB, githubRepository.fullName)
-        module.createdBy = user
+        module.moduleMetadata = ModuleMetadata(createdBy = user)
 
         // get variables
         val variablesFile = githubRegistryApi.getFileContent(user, "$owner/$repo", "variables.tf")

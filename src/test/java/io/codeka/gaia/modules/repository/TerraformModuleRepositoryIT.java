@@ -50,12 +50,12 @@ class TerraformModuleRepositoryIT {
         module1 = new TerraformModule();
         module1.setId("Module 1");
         module1.setAuthorizedTeams(List.of(team1));
-        module1.setCreatedBy(bob);
+        module1.getModuleMetadata().setCreatedBy(bob);
 
         module2 = new TerraformModule();
         module2.setId("Module 2");
         module2.setAuthorizedTeams(List.of(team1, team2));
-        module2.setCreatedBy(bob);
+        module2.getModuleMetadata().setCreatedBy(bob);
 
         terraformModuleRepository.deleteAll();
         terraformModuleRepository.saveAll(List.of(module1, module2));
@@ -63,16 +63,23 @@ class TerraformModuleRepositoryIT {
 
     @Test
     void team1Users_shouldHaveAccessToModule1And2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team1, null);
+        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrModuleMetadata_CreatedBy(team1, null);
 
         assertThat(modules).hasSize(2);
     }
 
     @Test
     void team2Users_shouldHaveAccessToModule2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team2, null);
+        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrModuleMetadata_CreatedBy(team2, null);
 
         assertThat(modules).hasSize(1);
+    }
+
+    @Test
+    void bob_shouldSeeItsModules(){
+        var modules = terraformModuleRepository.findAllByModuleMetadataCreatedBy(bob);
+
+        assertThat(modules).hasSize(2);
     }
 
 }

@@ -31,7 +31,7 @@ class TerraformModuleTest {
         var daniel = new User("Daniel Jackson", sg1);
 
         var module = new TerraformModule();
-        module.setCreatedBy(daniel);
+        module.getModuleMetadata().setCreatedBy(daniel);
 
         // when
         var authorized = module.isAuthorizedFor(daniel);

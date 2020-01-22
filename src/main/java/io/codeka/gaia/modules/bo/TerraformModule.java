@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,15 +40,7 @@ public class TerraformModule {
 
     private String estimatedMonthlyCostDescription;
 
-    @DBRef
-    private User createdBy;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @DBRef
-    private User updatedBy;
-
-    private LocalDateTime updatedAt;
+    private ModuleMetadata moduleMetadata = new ModuleMetadata();
 
     private RegistryDetails registryDetails;
 
@@ -126,7 +117,7 @@ public class TerraformModule {
     }
 
     public boolean isAuthorizedFor(User user) {
-        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.createdBy);
+        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.moduleMetadata.getCreatedBy());
     }
 
     public BigDecimal getEstimatedMonthlyCost() {
@@ -145,14 +136,6 @@ public class TerraformModule {
         this.estimatedMonthlyCostDescription = estimatedMonthlyCostDescription;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public RegistryDetails getRegistryDetails() {
         return registryDetails;
     }
@@ -161,28 +144,12 @@ public class TerraformModule {
         this.registryDetails = registryDetails;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public ModuleMetadata getModuleMetadata() {
+        return moduleMetadata;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public User getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setModuleMetadata(ModuleMetadata moduleMetadata) {
+        this.moduleMetadata = moduleMetadata;
     }
 
 }

@@ -109,8 +109,8 @@ class GithubRegistryControllerIT{
         assertThat(importedModule.id).isNotBlank()
         assertThat(importedModule.name).isEqualTo("selmak/terraform-docker-mongo")
 
-        assertThat(importedModule.createdBy).isEqualTo(selmak)
-        assertThat(importedModule.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
+        assertThat(importedModule.moduleMetadata.createdBy).isEqualTo(selmak)
+        assertThat(importedModule.moduleMetadata.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://github.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITHUB, "selmak/terraform-docker-mongo"))

@@ -57,8 +57,8 @@
                         <div class="desc">{{description}}</div>
                         <hr>
                         <div class="metadata">
-                            <p>Published <b>{{createdAt | dateTime}}</b> by <a href="#">{{createdBy.username}}</a></p>
-                            <p v-if="updatedAt">Last modified <b>{{updatedAt | dateTime}}</b> by <a href="#">{{updatedBy.username}}</a></p>
+                            <p>Published <b>{{moduleMetadata.createdAt | dateTime}}</b> by <a href="#">{{moduleMetadata.createdBy.username}}</a></p>
+                            <p v-if="moduleMetadata.updatedAt">Last modified <b>{{moduleMetadata.updatedAt | dateTime}}</b> by <a href="#">{{moduleMetadata.updatedBy.username}}</a></p>
                             <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
                             <p v-if="estimatedMonthlyCost">Estimated monthly cost: ${{estimatedMonthlyCost}}</p>
                         </div>

@@ -34,9 +34,9 @@ public class ModuleRestController {
             return moduleRepository.findAll();
         }
         if(user.getTeam() != null){
-            return moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
+            return moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
         }
-        return moduleRepository.findAllByCreatedBy(user);
+        return moduleRepository.findAllByModuleMetadataCreatedBy(user);
     }
 
     @GetMapping("/{id}")
@@ -52,7 +52,7 @@ public class ModuleRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public TerraformModule createModule(@RequestBody TerraformModule module, User user){
         module.setId(UUID.randomUUID().toString());
-        module.setCreatedBy(user);
+        module.getModuleMetadata().setCreatedBy(user);
         return moduleRepository.save(module);
     }
 
@@ -63,8 +63,8 @@ public class ModuleRestController {
             throw new ModuleForbiddenException();
         }
 
-        module.setUpdatedBy(user);
-        module.setUpdatedAt(LocalDateTime.now());
+        module.getModuleMetadata().setUpdatedBy(user);
+        module.getModuleMetadata().setUpdatedAt(LocalDateTime.now());
 
         return moduleRepository.save(module);
     }

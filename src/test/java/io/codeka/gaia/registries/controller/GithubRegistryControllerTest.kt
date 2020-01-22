@@ -83,7 +83,7 @@ class GithubRegistryControllerTest{
         assertThat(module.registryDetails.projectId).isEqualTo("juwit/terraform-docker-mongo")
 
         assertThat(module.cliVersion).isEqualTo("1.12.8")
-        assertThat(module.createdBy).isEqualTo(user)
+        assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
 
         assertThat(module.variables).containsExactly(Variable("dummy"))
 

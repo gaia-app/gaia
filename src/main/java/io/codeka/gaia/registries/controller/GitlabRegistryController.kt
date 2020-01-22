@@ -42,7 +42,7 @@ class GitlabRegistryController(
         module.cliVersion = cliRepository.listCLIVersion().first()
 
         module.registryDetails = RegistryDetails(RegistryType.GITLAB, gitlabRepository.id)
-        module.createdBy = user
+        module.moduleMetadata.createdBy = user
 
         // get variables
         val variablesFile = gitlabRegistryApi.getFileContent(user, projectId, "variables.tf")

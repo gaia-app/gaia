@@ -483,7 +483,7 @@ class StackCommandBuilderTest {
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
-        module.setCreatedBy(new User("test_user", null));
+        module.getModuleMetadata().setCreatedBy(new User("test_user", null));
 
         return module;
     }
@@ -497,7 +497,7 @@ class StackCommandBuilderTest {
         variable.setDefaultValue("defaultValue");
         module.setVariables(List.of(variable));
 
-        module.setCreatedBy(new User("test_user", null));
+        module.getModuleMetadata().setCreatedBy(new User("test_user", null));
 
         return module;
     }
@@ -514,7 +514,7 @@ class StackCommandBuilderTest {
         var user = new User("test_user", null);
         var oAuth2User = new OAuth2User("test_provider", "test_token", null);
         user.setOAuth2User(oAuth2User);
-        module.setCreatedBy(user);
+        module.getModuleMetadata().setCreatedBy(user);
 
         return module;
     }

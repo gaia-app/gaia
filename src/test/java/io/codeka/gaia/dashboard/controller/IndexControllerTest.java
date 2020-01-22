@@ -39,14 +39,14 @@ class IndexControllerTest {
     @Test
     void index_shouldShowModuleCount(){
         // given
-        when(terraformModuleRepository.countByAuthorizedTeamsContainingOrCreatedBy(team, user)).thenReturn(12);
+        when(terraformModuleRepository.countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(team, user)).thenReturn(12);
 
         // when
         var result = indexController.index(model, user, team);
 
         // then
         assertEquals("index", result);
-        verify(terraformModuleRepository).countByAuthorizedTeamsContainingOrCreatedBy(team, user);
+        verify(terraformModuleRepository).countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(team, user);
         verify(model).addAttribute("moduleCount", 12L);
     }
 
@@ -103,7 +103,7 @@ class IndexControllerTest {
     @Test
     void usersWIthNoTeam_shouldSeeTheirCreatedModuleOrStacks(){
         // given
-        doReturn(3).when(terraformModuleRepository).countByCreatedBy(user);
+        doReturn(3).when(terraformModuleRepository).countByModuleMetadataCreatedBy(user);
         doReturn(1).when(stackRepository).countStacksByStateAndCreatedBy(StackState.RUNNING, user);
         doReturn(2).when(stackRepository).countStacksByStateAndCreatedBy(StackState.TO_UPDATE, user);
 

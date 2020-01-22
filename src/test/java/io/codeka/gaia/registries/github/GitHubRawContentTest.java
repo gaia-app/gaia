@@ -57,7 +57,7 @@ class GitHubRawContentTest {
 
         var jack = new User("Jack", null);
         jack.setOAuth2User(new OAuth2User("GITHUB","TOKENSTRING", null));
-        module.setCreatedBy(jack);
+        module.getModuleMetadata().setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
@@ -87,7 +87,7 @@ class GitHubRawContentTest {
         module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB,  "Apophis/Chulak"));
 
         var jack = new User("Jack", null);
-        module.setCreatedBy(jack);
+        module.getModuleMetadata().setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
@@ -157,7 +157,7 @@ class GitHubRawContentTest {
 
         var jack = new User("Jack", null);
         jack.setOAuth2User(new OAuth2User("GITHUB","TOKENSTRING", null));
-        module.setCreatedBy(jack);
+        module.getModuleMetadata().setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 

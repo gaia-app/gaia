@@ -81,7 +81,7 @@ class GitlabRegistryControllerTest{
         assertThat(module.registryDetails.projectId).isEqualTo("15689")
 
         assertThat(module.cliVersion).isEqualTo("1.12.8")
-        assertThat(module.createdBy).isEqualTo(user)
+        assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
 
         assertThat(module.variables).containsExactly(Variable("dummy"))
 

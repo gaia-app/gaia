@@ -57,7 +57,7 @@ class GitLabRawContentTest {
 
         var jack = new User("Jack", null);
         jack.setOAuth2User(new OAuth2User("GITLAB","TOKENSTRING", null));
-        module.setCreatedBy(jack);
+        module.getModuleMetadata().setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
@@ -100,7 +100,7 @@ class GitLabRawContentTest {
 
         var jack = new User("Jack", null);
         jack.setOAuth2User(new OAuth2User("GITLAB","TOKENSTRING", null));
-        module.setCreatedBy(jack);
+        module.getModuleMetadata().setCreatedBy(jack);
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
