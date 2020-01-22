@@ -59,7 +59,7 @@ class GithubRegistryControllerTest{
 
         val user = User("juwit", null)
 
-        val githubRepository = GithubRepository("juwit/terraform-docker-mongo", "https://github.com/juwit/terraform-docker-mongo")
+        val githubRepository = GithubRepository(fullName="juwit/terraform-docker-mongo", htmlUrl = "https://github.com/juwit/terraform-docker-mongo")
         whenever(githubRegistryApi.getRepository(user, "juwit/terraform-docker-mongo")).thenReturn(githubRepository)
 
         val variablesFileContent = "mock file content"

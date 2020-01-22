@@ -13,14 +13,22 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.context.support.WithUserDetails
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.client.RestTemplate
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -30,6 +38,7 @@ import java.time.LocalDateTime
 @DirtiesContext
 @Testcontainers
 @AutoConfigureWebClient
+@AutoConfigureMockMvc
 class GithubRegistryControllerIT{
 
     @Autowired
@@ -41,9 +50,12 @@ class GithubRegistryControllerIT{
     @Autowired
     private lateinit var terraformModuleRepository: TerraformModuleRepository
 
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
     companion object {
         @Container
-        private val mongoContainer = MongoContainer()
+        private val mongoContainer = MongoContainer().withScript("src/test/resources/db/10_user.js")
     }
 
     @Autowired
@@ -51,6 +63,7 @@ class GithubRegistryControllerIT{
 
     @Test
     fun validateTestConfiguration(){
+        assertThat(mockMvc).isNotNull
         assertThat(objectMapper).isNotNull
         assertThat(githubRegistryController).isNotNull
         assertThat(restTemplate).isNotNull
@@ -68,15 +81,14 @@ class GithubRegistryControllerIT{
         selmak.oAuth2User = OAuth2User("GITHUB", "Tok'ra", null)
 
         // when
-        val repoList = githubRegistryController.getRepositories(selmak)
-
-        // then
-        assertThat(repoList).hasSize(3)
-        assertThat(repoList).containsExactly(
-                GithubRepository("selmak/terraform-aws-eks", "https://github.com/selmak/terraform-aws-eks"),
-                GithubRepository("selmak/terraform-docker-mongo", "https://github.com/selmak/terraform-docker-mongo"),
-                GithubRepository("selmak/terraform-provider-aws-examples", "https://github.com/selmak/terraform-provider-aws-examples")
-        )
+        mockMvc.perform(get("/api/registries/github/repositories").with(user("selmak")))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""[
+                    {"fullName":"selmak/terraform-aws-eks","htmlUrl":"https://github.com/selmak/terraform-aws-eks","id":"selmak/terraform-aws-eks"},
+                    {"fullName":"selmak/terraform-docker-mongo","htmlUrl":"https://github.com/selmak/terraform-docker-mongo","id":"selmak/terraform-docker-mongo"},
+                    {"fullName":"selmak/terraform-provider-aws-examples","htmlUrl":"https://github.com/selmak/terraform-provider-aws-examples","id":"selmak/terraform-provider-aws-examples"}
+                    ]""".trimIndent())
+                )
 
         server.verify()
     }

@@ -35,7 +35,7 @@ class GithubRegistryApiTest{
     @Test
     fun `getRepositories() should call the user repos github api`() {
         // given
-        val sampleResult = GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds")
+        val sampleResult = GithubRepository(fullName = "terraform-aws-modules/terraform-aws-rds", htmlUrl = "https://github.com/terraform-aws-modules/terraform-aws-rds")
         val sampleListResult = listOf(sampleResult)
         val listDetailsString = objectMapper.writeValueAsString(sampleListResult)
 
@@ -56,7 +56,7 @@ class GithubRegistryApiTest{
     @Test
     fun `getRepository() should call the repos github api`() {
         // given
-        val sampleResult = GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds")
+        val sampleResult = GithubRepository(fullName = "terraform-aws-modules/terraform-aws-rds", htmlUrl = "https://github.com/terraform-aws-modules/terraform-aws-rds")
         val detailsString = objectMapper.writeValueAsString(sampleResult)
         server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
@@ -69,7 +69,7 @@ class GithubRegistryApiTest{
         val repositories = githubRegistryApi.getRepository(john, "terraform-aws-modules/terraform-aws-rds")
 
         // then
-        assertThat(repositories).isEqualTo(GithubRepository("terraform-aws-modules/terraform-aws-rds","https://github.com/terraform-aws-modules/terraform-aws-rds"))
+        assertThat(repositories).isEqualTo(GithubRepository(fullName = "terraform-aws-modules/terraform-aws-rds", htmlUrl = "https://github.com/terraform-aws-modules/terraform-aws-rds"))
     }
 
     @Test

@@ -20,3 +20,15 @@ enum class RegistryType(val repositoriesUrl: String,
 data class RegistryDetails(val registryType: RegistryType, val projectId: String)
 
 data class RegistryFile(val content: String)
+
+/**
+ * Common class for source code repositories
+ */
+interface SourceRepository {
+    // The id of the repository (used for API calls)
+    val id: String
+    // The fullName of the repository is used for display
+    val fullName: String
+    // The fullName of the repository is used for navigation and cloning
+    val htmlUrl: String
+}
