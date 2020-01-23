@@ -8,6 +8,7 @@ import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
 import io.codeka.gaia.registries.gitlab.GitlabRepository
+import io.codeka.gaia.registries.service.RegistryService
 import io.codeka.gaia.teams.User
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.annotation.Secured
@@ -19,9 +20,7 @@ import java.util.*
 @Secured
 class GitlabRegistryController(
         private val gitlabRegistryApi: RegistryApi<GitlabRepository>,
-        private val hclParser: HclParser,
-        private val cliRepository: TerraformCLIRepository,
-        private val moduleRepository: TerraformModuleRepository) {
+        private val registryService: RegistryService) {
 
     @GetMapping("/repositories")
     fun getRepositories(user: User): List<GitlabRepository> {
@@ -31,24 +30,6 @@ class GitlabRegistryController(
     @GetMapping("/repositories/{projectId}/import")
     @ResponseStatus(HttpStatus.CREATED)
     fun importRepository(@PathVariable projectId: String, user: User): TerraformModule {
-        val module = TerraformModule()
-        module.id = UUID.randomUUID().toString()
-
-        val gitlabRepository = gitlabRegistryApi.getRepository(user, projectId)
-
-        module.gitRepositoryUrl = gitlabRepository.htmlUrl
-        module.gitBranch = "master"
-        module.name = gitlabRepository.fullName
-        module.cliVersion = cliRepository.listCLIVersion().first()
-
-        module.registryDetails = RegistryDetails(RegistryType.GITLAB, gitlabRepository.id)
-        module.moduleMetadata.createdBy = user
-
-        // get variables
-        val variablesFile = gitlabRegistryApi.getFileContent(user, projectId, "variables.tf")
-        module.variables = hclParser.parseVariables(variablesFile)
-
-        // saving module !
-        return moduleRepository.save(module)
+        return registryService.importRepository(projectId, RegistryType.GITLAB, user)
     }
 }

@@ -5,8 +5,10 @@ import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.registries.RegistryRawContent;
 import io.codeka.gaia.registries.github.GitHubOAuth2Provider;
 import io.codeka.gaia.registries.github.GitHubRawContent;
+import io.codeka.gaia.registries.github.GithubRegistryApi;
 import io.codeka.gaia.registries.gitlab.GitLabOAuth2Provider;
 import io.codeka.gaia.registries.gitlab.GitLabRawContent;
+import io.codeka.gaia.registries.gitlab.GitlabRegistryApi;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {RegistryConfig.class, BeansConfig.class, GitHubRawContent.class, GitLabRawContent.class})
+@SpringBootTest(classes = {RegistryConfig.class, BeansConfig.class, GitHubRawContent.class, GitLabRawContent.class, GithubRegistryApi.class, GitlabRegistryApi.class})
 class RegistryConfigIT {
     @Test
     void registryRawContents_shouldBeInstantiated(@Autowired(required = false) List<RegistryRawContent> registryRawContents) {
