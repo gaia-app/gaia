@@ -29,8 +29,7 @@ class UiExtensionsScannerIT(private val applicationContext: ApplicationContext) 
                 "classpath*:/**/bootstrap-vue/**/bootstrap-vue.min.js",
                 "classpath*:/**/marked/**/marked.min.js",
                 "classpath*:/**/vue-multiselect/**/vue-multiselect.min.js",
-                "classpath*:/**/momentjs/**/moment.min.js",
-                "classpath*:/**/moment-duration-format/**/moment-duration-format.js"
+                "classpath*:/**/momentjs/**/moment.min.js"
         )
 
         val uiExtension = scanner.scan(*locations)
