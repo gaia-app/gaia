@@ -1,13 +1,16 @@
 package io.codeka.gaia.registries.controller
 
 import io.codeka.gaia.hcl.HclParser
+import io.codeka.gaia.modules.bo.ModuleMetadata
 import io.codeka.gaia.modules.bo.TerraformModule
 import io.codeka.gaia.modules.repository.TerraformCLIRepository
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
+import io.codeka.gaia.registries.github.GithubRegistryApi
 import io.codeka.gaia.registries.github.GithubRepository
+import io.codeka.gaia.registries.service.RegistryService
 import io.codeka.gaia.teams.User
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.annotation.Secured
@@ -19,9 +22,7 @@ import java.util.*
 @Secured
 class GithubRegistryController(
         private val githubRegistryApi: RegistryApi<GithubRepository>,
-        private val hclParser: HclParser,
-        private val cliRepository: TerraformCLIRepository,
-        private val moduleRepository: TerraformModuleRepository) {
+        private val registryService: RegistryService) {
 
     @GetMapping("/repositories")
     fun getRepositories(user: User): List<GithubRepository> {
@@ -31,24 +32,6 @@ class GithubRegistryController(
     @GetMapping("/repositories/{owner}/{repo}/import")
     @ResponseStatus(HttpStatus.CREATED)
     fun importRepository(@PathVariable owner: String, @PathVariable repo: String, user: User): TerraformModule {
-        val module = TerraformModule()
-        module.id = UUID.randomUUID().toString()
-
-        val githubRepository = githubRegistryApi.getRepository(user, "$owner/$repo")
-
-        module.gitRepositoryUrl = githubRepository.htmlUrl
-        module.gitBranch = "master"
-        module.name = githubRepository.fullName
-        module.cliVersion = cliRepository.listCLIVersion().first()
-
-        module.registryDetails = RegistryDetails(RegistryType.GITHUB, githubRepository.fullName)
-        module.createdBy = user
-
-        // get variables
-        val variablesFile = githubRegistryApi.getFileContent(user, "$owner/$repo", "variables.tf")
-        module.variables = hclParser.parseVariables(variablesFile)
-
-        // saving module !
-        return moduleRepository.save(module)
+        return registryService.importRepository("$owner/$repo", RegistryType.GITHUB, user)
     }
 }

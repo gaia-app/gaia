@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
-abstract class AbstractRegistryApi<K>(val restTemplate: RestTemplate,
-                                           private val registryType: RegistryType,
-                                           private val registryFileClass: Class<K>,
-                                           private val registryListFileClass: Class<Array<K>>): RegistryApi<K> {
+abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTemplate,
+                                                        private val registryType: RegistryType,
+                                                        private val registryFileClass: Class<K>,
+                                                        private val registryListFileClass: Class<Array<K>>): RegistryApi<K> {
 
     private fun <T> callWithAuth(url: String, token: String, responseType: Class<T>): T {
         val headers = HttpHeaders()
@@ -25,7 +25,7 @@ abstract class AbstractRegistryApi<K>(val restTemplate: RestTemplate,
                 requestEntity,
                 responseType)
         if(response.statusCode == HttpStatus.OK) {
-            return response.body
+            return response.body!!
         }
         else {
             TODO("error code mgmt")

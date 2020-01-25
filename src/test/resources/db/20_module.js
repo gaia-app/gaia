@@ -10,7 +10,9 @@ gaia.terraformModule.insert([
         "gitBranch": "master",
         "cliVersion": "0.11.14",
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
-        "createdBy": {"$ref": "user", "$id": "admin"},
+        "moduleMetadata": {
+            "createdBy": {"$ref": "user", "$id": "admin"}
+        },
         "estimatedMonthlyCost": 0.99,
         "estimatedMonthlyCostDescription": "Kamoulox",
         "variables": [
@@ -37,7 +39,9 @@ gaia.terraformModule.insert([
         "gitBranch": "master",
         "cliVersion": "0.11.14",
         "authorizedTeams": [{"$ref": "team", "$id": "Not Ze Team"}],
-        "createdBy": {"$ref": "user", "$id": "admin"},
+        "moduleMetadata": {
+            "createdBy": {"$ref": "user", "$id": "admin"}
+        },
         "estimatedMonthlyCost": 9.99,
         "estimatedMonthlyCostDescription": "Not Ze Team! Not Ze Team!",
         "variables": []
@@ -51,7 +55,9 @@ gaia.terraformModule.insert([
         "gitBranch": "master",
         "cliVersion": "0.11.14",
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
-        "createdBy": {"$ref": "user", "$id": "admin"},
+        "moduleMetadata": {
+            "createdBy": {"$ref": "user", "$id": "admin"}
+        },
         "estimatedMonthlyCost": 0.99,
         "estimatedMonthlyCostDescription": "Kamoulox",
         "variables": [

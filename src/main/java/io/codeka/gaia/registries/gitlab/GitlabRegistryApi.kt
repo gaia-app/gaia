@@ -1,8 +1,9 @@
 package io.codeka.gaia.registries.gitlab
 
-import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.*
 import io.codeka.gaia.registries.AbstractRegistryApi
 import io.codeka.gaia.registries.RegistryType
+import io.codeka.gaia.registries.SourceRepository
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
@@ -13,7 +14,10 @@ class GitlabRegistryApi(restTemplate: RestTemplate): AbstractRegistryApi<GitlabR
         GitlabRepository::class.java,
         Array<GitlabRepository>::class.java)
 
-data class GitlabRepository(
-        @JsonAlias("id") val id: String,
-        @JsonAlias("path_with_namespace") val fullName: String,
-        @JsonAlias("web_url") val htmlUrl: String)
+/**
+ * Gitlab source repository implementation
+ */
+data class GitlabRepository constructor(
+        @JsonAlias("id") override val id: String,
+        @JsonAlias("path_with_namespace") override val fullName: String,
+        @JsonAlias("web_url") override val htmlUrl: String): SourceRepository

@@ -17,26 +17,29 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.context.support.WithUserDetails
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.client.RestTemplate
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.util.*
+import java.time.LocalDateTime
 
 @SpringBootTest
 @DirtiesContext
 @Testcontainers
-@AutoConfigureMockMvc
 @AutoConfigureWebClient
+@AutoConfigureMockMvc
 class GithubRegistryControllerIT{
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -47,9 +50,12 @@ class GithubRegistryControllerIT{
     @Autowired
     private lateinit var terraformModuleRepository: TerraformModuleRepository
 
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
     companion object {
         @Container
-        private val mongoContainer = MongoContainer()
+        private val mongoContainer = MongoContainer().withScript("src/test/resources/db/10_user.js")
     }
 
     @Autowired
@@ -75,15 +81,14 @@ class GithubRegistryControllerIT{
         selmak.oAuth2User = OAuth2User("GITHUB", "Tok'ra", null)
 
         // when
-        val repoList = githubRegistryController.getRepositories(selmak)
-
-        // then
-        assertThat(repoList).hasSize(3)
-        assertThat(repoList).containsExactly(
-                GithubRepository("selmak/terraform-aws-eks", "https://github.com/selmak/terraform-aws-eks"),
-                GithubRepository("selmak/terraform-docker-mongo", "https://github.com/selmak/terraform-docker-mongo"),
-                GithubRepository("selmak/terraform-provider-aws-examples", "https://github.com/selmak/terraform-provider-aws-examples")
-        )
+        mockMvc.perform(get("/api/registries/github/repositories").with(user("selmak")))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""[
+                    {"fullName":"selmak/terraform-aws-eks","htmlUrl":"https://github.com/selmak/terraform-aws-eks","id":"selmak/terraform-aws-eks"},
+                    {"fullName":"selmak/terraform-docker-mongo","htmlUrl":"https://github.com/selmak/terraform-docker-mongo","id":"selmak/terraform-docker-mongo"},
+                    {"fullName":"selmak/terraform-provider-aws-examples","htmlUrl":"https://github.com/selmak/terraform-provider-aws-examples","id":"selmak/terraform-provider-aws-examples"}
+                    ]""".trimIndent())
+                )
 
         server.verify()
     }
@@ -115,7 +120,9 @@ class GithubRegistryControllerIT{
 
         assertThat(importedModule.id).isNotBlank()
         assertThat(importedModule.name).isEqualTo("selmak/terraform-docker-mongo")
-        assertThat(importedModule.createdBy).isEqualTo(selmak)
+
+        assertThat(importedModule.moduleMetadata.createdBy).isEqualTo(selmak)
+        assertThat(importedModule.moduleMetadata.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://github.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITHUB, "selmak/terraform-docker-mongo"))

@@ -84,7 +84,7 @@
            template: "#modules-template",
            methods: {
                isAuthorized(module){
-                   return module.createdBy.username === this.$user.username
+                   return module.moduleMetadata.createdBy.username === this.$user.username
                        || this.$user.username === 'admin'
                }
            }

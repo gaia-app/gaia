@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,14 +58,14 @@ class ModuleRestControllerTest {
     @Test
     void findAll_shouldReturnAuthorizedModules_forUserTeam_andOwnedModules(){
         // given
-        when(moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam)).thenReturn(List.of(new TerraformModule()));
+        when(moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam)).thenReturn(List.of(new TerraformModule()));
 
         // when
         var modules = moduleRestController.findAllModules(bob);
 
         // then
         assertThat(modules).hasSize(1);
-        verify(moduleRepository).findAllByCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam);
+        verify(moduleRepository).findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam);
     }
 
     @Test
@@ -73,7 +74,7 @@ class ModuleRestControllerTest {
         var modules = moduleRestController.findAllModules(john);
 
         // then
-        verify(moduleRepository).findAllByCreatedBy(john);
+        verify(moduleRepository).findAllByModuleMetadataCreatedBy(john);
     }
 
     @Test
@@ -92,7 +93,7 @@ class ModuleRestControllerTest {
     void findById_shouldReturnOwnedModule_forUserWithNoTeam(){
         // given
         var ownedModule = new TerraformModule();
-        ownedModule.setCreatedBy(john);
+        ownedModule.getModuleMetadata().setCreatedBy(john);
         when(moduleRepository.findById("12")).thenReturn(Optional.of(ownedModule));
 
         // when
@@ -142,8 +143,8 @@ class ModuleRestControllerTest {
     @Test
     void save_shouldSaveTheModule_whenTheUserIsAuthorized(){
         // given
-        var module = mock(TerraformModule.class);
-        when(module.isAuthorizedFor(bob)).thenReturn(true);
+        var module = new TerraformModule();
+        module.getModuleMetadata().setCreatedBy(bob);
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         // when
@@ -157,8 +158,8 @@ class ModuleRestControllerTest {
     @Test
     void save_shouldSaveTheModule_forTheAdminUser(){
         // given
-        var module = mock(TerraformModule.class);
-        when(module.isAuthorizedFor(admin)).thenReturn(true);
+        var module = new TerraformModule();
+        module.getModuleMetadata().setCreatedBy(admin);
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         // when
@@ -190,8 +191,23 @@ class ModuleRestControllerTest {
 
         // then
         verify(moduleRepository).save(module);
-        assertThat(module.getCreatedBy()).isEqualTo(bob);
+        assertThat(module.getModuleMetadata().getCreatedBy()).isEqualTo(bob);
         assertThat(module.getId()).isNotBlank();
+    }
+
+    @Test
+    void updateModule_shouldSetUpdatedMetadata(){
+        // given
+        var module = new TerraformModule();
+        module.getModuleMetadata().setCreatedBy(bob);
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        moduleRestController.saveModule("12", module, bob);
+
+        // then
+        assertThat(module.getModuleMetadata().getUpdatedAt()).isEqualToIgnoringMinutes(LocalDateTime.now());
+        assertThat(module.getModuleMetadata().getUpdatedBy()).isEqualTo(bob);
     }
 
 }

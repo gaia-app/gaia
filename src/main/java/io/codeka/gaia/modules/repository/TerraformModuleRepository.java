@@ -7,22 +7,15 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TerraformModuleRepository extends MongoRepository<TerraformModule, String> {
 
-    int countByCreatedBy(User user);
+    int countByModuleMetadataCreatedBy(User user);
 
-    int countByAuthorizedTeamsContaining(Team team);
+    int countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(Team team, User user);
 
-    int countByAuthorizedTeamsContainingOrCreatedBy(Team team, User user);
+    List<TerraformModule> findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(User user, Team team);
 
-    List<TerraformModule> findAllByAuthorizedTeamsContainingOrCreatedBy(Team team, User user);
-
-    Optional<TerraformModule> findByIdAndAuthorizedTeamsContaining(String id, Team team);
-
-    List<TerraformModule> findAllByCreatedByOrAuthorizedTeamsContaining(User user, Team team);
-
-    List<TerraformModule> findAllByCreatedBy(User user);
+    List<TerraformModule> findAllByModuleMetadataCreatedBy(User user);
 }

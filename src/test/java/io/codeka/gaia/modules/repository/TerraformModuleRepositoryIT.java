@@ -27,52 +27,37 @@ class TerraformModuleRepositoryIT {
     @Autowired
     private TerraformModuleRepository terraformModuleRepository;
 
-    private Team team1;
-
-    private Team team2;
-
     private User bob;
-
-    private TerraformModule module1;
-
-    private TerraformModule module2;
 
     @BeforeEach
     void setUp() {
         // sample teams
-        team1 = new Team("team1");
-        team2 = new Team("team2");
+        Team team1 = new Team("team1");
+        Team team2 = new Team("team2");
 
         // sample owners
         bob = new User("Bob", null);
 
         // saving sample modules
-        module1 = new TerraformModule();
+        TerraformModule module1 = new TerraformModule();
         module1.setId("Module 1");
         module1.setAuthorizedTeams(List.of(team1));
-        module1.setCreatedBy(bob);
+        module1.getModuleMetadata().setCreatedBy(bob);
 
-        module2 = new TerraformModule();
+        TerraformModule module2 = new TerraformModule();
         module2.setId("Module 2");
         module2.setAuthorizedTeams(List.of(team1, team2));
-        module2.setCreatedBy(bob);
+        module2.getModuleMetadata().setCreatedBy(bob);
 
         terraformModuleRepository.deleteAll();
         terraformModuleRepository.saveAll(List.of(module1, module2));
     }
 
     @Test
-    void team1Users_shouldHaveAccessToModule1And2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team1, null);
+    void bob_shouldSeeItsModules(){
+        var modules = terraformModuleRepository.findAllByModuleMetadataCreatedBy(bob);
 
         assertThat(modules).hasSize(2);
-    }
-
-    @Test
-    void team2Users_shouldHaveAccessToModule2(){
-        var modules = terraformModuleRepository.findAllByAuthorizedTeamsContainingOrCreatedBy(team2, null);
-
-        assertThat(modules).hasSize(1);
     }
 
 }

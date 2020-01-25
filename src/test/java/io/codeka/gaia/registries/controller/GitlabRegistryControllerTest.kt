@@ -9,6 +9,7 @@ import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryType
 import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.registries.gitlab.GitlabRepository
+import io.codeka.gaia.registries.service.RegistryService
 import io.codeka.gaia.teams.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -27,13 +28,7 @@ class GitlabRegistryControllerTest{
     lateinit var gitlabRegistryApi: RegistryApi<GitlabRepository>
 
     @Mock
-    lateinit var hclParser: HclParser
-
-    @Mock
-    lateinit var terraformCLIRepository: TerraformCLIRepository
-
-    @Mock
-    lateinit var moduleRepository: TerraformModuleRepository
+    lateinit var registryService: RegistryService
 
     @InjectMocks
     lateinit var gitlabRegistryController: GitlabRegistryController
@@ -49,41 +44,16 @@ class GitlabRegistryControllerTest{
     }
 
     @Test
-    fun `importRepository() should call the gitlab registry and create a module`() {
-        // returns saved module as first arg
-        whenever(moduleRepository.save(any(TerraformModule::class.java))).then { it.arguments[0] }
-
-        whenever(terraformCLIRepository.listCLIVersion()).thenReturn(listOf("1.12.8", "1.12.7"))
-
+    fun `importRepository() should call the registryService`() {
+        // given
         val user = User("juwit", null)
 
-        val gitlabRepository = GitlabRepository("15689", "juwit/terraform-docker-mongo", "https://gitlab.com/juwit/terraform-docker-mongo")
-        whenever(gitlabRegistryApi.getRepository(user, "15689")).thenReturn(gitlabRepository)
+        // when
+        gitlabRegistryController.importRepository("15689", user)
 
-        val variablesFileContent = "mock file content"
-        whenever(gitlabRegistryApi.getFileContent(user, "15689", "variables.tf")).thenReturn(variablesFileContent)
-        whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
+        // then
+        verify(registryService).importRepository("15689", RegistryType.GITLAB, user)
 
-        val module = gitlabRegistryController.importRepository("15689", user)
-
-        verify(gitlabRegistryApi).getRepository(user, "15689")
-        verify(gitlabRegistryApi).getFileContent(user, "15689", "variables.tf")
-
-        verifyNoMoreInteractions(gitlabRegistryApi)
-
-        assertThat(module.id).isNotBlank()
-
-        assertThat(module.name).isEqualTo("juwit/terraform-docker-mongo")
-        assertThat(module.gitRepositoryUrl).isEqualTo("https://gitlab.com/juwit/terraform-docker-mongo")
-        assertThat(module.gitBranch).isEqualTo("master")
-
-        assertThat(module.registryDetails.registryType).isEqualTo(RegistryType.GITLAB)
-        assertThat(module.registryDetails.projectId).isEqualTo("15689")
-
-        assertThat(module.cliVersion).isEqualTo("1.12.8")
-        assertThat(module.createdBy).isEqualTo(user)
-
-        assertThat(module.variables).containsExactly(Variable("dummy"))
-
+        verifyNoMoreInteractions(registryService)
     }
 }

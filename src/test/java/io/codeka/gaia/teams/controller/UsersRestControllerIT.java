@@ -65,9 +65,9 @@ class UsersRestControllerIT {
     void users_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader")))
-                .andExpect(jsonPath("$..admin", contains(true, false, false)))
+                .andExpect(jsonPath("$", hasSize(4)))
+                .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "selmak")))
+                .andExpect(jsonPath("$..admin", contains(true, false, false, false)))
                 .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
     }
 

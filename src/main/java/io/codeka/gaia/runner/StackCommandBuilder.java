@@ -37,7 +37,7 @@ public class StackCommandBuilder {
      */
     private String evalGitRepositoryUrl(TerraformModule module) {
         var url = module.getGitRepositoryUrl();
-        var data = module.getCreatedBy().getOAuth2User();
+        var data = module.getModuleMetadata().getCreatedBy().getOAuth2User();
         if (data == null) {
             return url;
         }

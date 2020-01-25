@@ -5,7 +5,6 @@ import io.codeka.gaia.modules.bo.Variable
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.OAuth2User
 import io.codeka.gaia.teams.User
@@ -18,25 +17,26 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.web.client.RestTemplate
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.time.LocalDateTime
 
 @SpringBootTest
 @DirtiesContext
 @Testcontainers
-@AutoConfigureMockMvc
 @AutoConfigureWebClient
+@AutoConfigureMockMvc
 class GitlabRegistryControllerIT{
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -47,9 +47,12 @@ class GitlabRegistryControllerIT{
     @Autowired
     private lateinit var terraformModuleRepository: TerraformModuleRepository
 
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
     companion object {
         @Container
-        private val mongoContainer = MongoContainer()
+        private val mongoContainer = MongoContainer().withScript("src/test/resources/db/10_user.js")
     }
 
     @Autowired
@@ -57,7 +60,6 @@ class GitlabRegistryControllerIT{
 
     @Test
     fun validateTestConfiguration(){
-        assertThat(mockMvc).isNotNull
         assertThat(objectMapper).isNotNull
         assertThat(gitlabRegistryController).isNotNull
         assertThat(restTemplate).isNotNull
@@ -75,10 +77,12 @@ class GitlabRegistryControllerIT{
         selmak.oAuth2User = OAuth2User("GITLAB", "Tok'ra", null)
 
         // when
-        val repoList = gitlabRegistryController.getRepositories(selmak)
-
-        // then
-        assertThat(repoList).containsExactly(GitlabRepository("16181047", "selmak/terraform-docker-mongo", "https://gitlab.com/selmak/terraform-docker-mongo"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/registries/gitlab/repositories").with(SecurityMockMvcRequestPostProcessors.user("selmak")))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("""[
+                    {"fullName":"selmak/terraform-docker-mongo","htmlUrl":"https://gitlab.com/selmak/terraform-docker-mongo","id":"16181047"}
+                    ]""".trimIndent())
+                )
 
         server.verify()
     }
@@ -110,7 +114,9 @@ class GitlabRegistryControllerIT{
 
         assertThat(importedModule.id).isNotBlank()
         assertThat(importedModule.name).isEqualTo("selmak/terraform-docker-mongo")
-        assertThat(importedModule.createdBy).isEqualTo(selmak)
+
+        assertThat(importedModule.moduleMetadata.createdBy).isEqualTo(selmak)
+        assertThat(importedModule.moduleMetadata.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://gitlab.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITLAB, "16181047"))

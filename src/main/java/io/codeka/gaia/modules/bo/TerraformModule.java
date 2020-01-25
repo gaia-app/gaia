@@ -40,8 +40,7 @@ public class TerraformModule {
 
     private String estimatedMonthlyCostDescription;
 
-    @DBRef
-    private User createdBy;
+    private ModuleMetadata moduleMetadata = new ModuleMetadata();
 
     private RegistryDetails registryDetails;
 
@@ -118,7 +117,7 @@ public class TerraformModule {
     }
 
     public boolean isAuthorizedFor(User user) {
-        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.createdBy);
+        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.moduleMetadata.getCreatedBy());
     }
 
     public BigDecimal getEstimatedMonthlyCost() {
@@ -137,14 +136,6 @@ public class TerraformModule {
         this.estimatedMonthlyCostDescription = estimatedMonthlyCostDescription;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public RegistryDetails getRegistryDetails() {
         return registryDetails;
     }
@@ -152,4 +143,13 @@ public class TerraformModule {
     public void setRegistryDetails(RegistryDetails registryDetails) {
         this.registryDetails = registryDetails;
     }
+
+    public ModuleMetadata getModuleMetadata() {
+        return moduleMetadata;
+    }
+
+    public void setModuleMetadata(ModuleMetadata moduleMetadata) {
+        this.moduleMetadata = moduleMetadata;
+    }
+
 }

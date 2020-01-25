@@ -12,5 +12,11 @@ gaia.user.insert([
     ,
     {
         "_id": "Darth Vader"
+    },
+    {
+        "_id": "selmak",
+        "oAuth2User": {
+            "token": "Tok'ra"
+        }
     }
 ]);

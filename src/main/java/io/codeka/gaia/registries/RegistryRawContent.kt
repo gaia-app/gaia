@@ -17,7 +17,7 @@ abstract class RegistryRawContent(private val registryType: RegistryType, privat
         // no project details, impossible to load a readme, so returning empty
         module.registryDetails ?: return Optional.empty()
 
-        val token = module.createdBy?.oAuth2User?.token;
+        val token = module.moduleMetadata.createdBy?.oAuth2User?.token;
 
         val headers = HttpHeaders()
         if(token != null) {

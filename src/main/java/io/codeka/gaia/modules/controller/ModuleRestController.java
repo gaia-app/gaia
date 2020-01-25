@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,9 +34,9 @@ public class ModuleRestController {
             return moduleRepository.findAll();
         }
         if(user.getTeam() != null){
-            return moduleRepository.findAllByCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
+            return moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
         }
-        return moduleRepository.findAllByCreatedBy(user);
+        return moduleRepository.findAllByModuleMetadataCreatedBy(user);
     }
 
     @GetMapping("/{id}")
@@ -51,7 +52,7 @@ public class ModuleRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public TerraformModule createModule(@RequestBody TerraformModule module, User user){
         module.setId(UUID.randomUUID().toString());
-        module.setCreatedBy(user);
+        module.getModuleMetadata().setCreatedBy(user);
         return moduleRepository.save(module);
     }
 
@@ -61,6 +62,10 @@ public class ModuleRestController {
         if(!existingModule.isAuthorizedFor(user)){
             throw new ModuleForbiddenException();
         }
+
+        module.getModuleMetadata().setUpdatedBy(user);
+        module.getModuleMetadata().setUpdatedAt(LocalDateTime.now());
+
         return moduleRepository.save(module);
     }
 
