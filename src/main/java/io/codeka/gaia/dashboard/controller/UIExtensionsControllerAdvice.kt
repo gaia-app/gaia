@@ -46,9 +46,7 @@ open class UIExtensionsConfig(){
                 "classpath*:/**/vue/**/vue.min.js",
                 "classpath*:/**/bootstrap-vue/**/bootstrap-vue.min.js",
                 "classpath*:/**/marked/**/marked.min.js",
-                "classpath*:/**/vue-multiselect/**/vue-multiselect.min.js",
-                "classpath*:/**/momentjs/**/moment.min.js",
-                "classpath*:/**/moment-duration-format/**/moment-duration-format.js"
+                "classpath*:/**/vue-multiselect/**/vue-multiselect.min.js"
         )
     }
 }

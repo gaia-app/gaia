@@ -19,11 +19,11 @@
             <span class="job-detail-title">Status&nbsp;{{job.status}}</span>
             <p>
                 <i class="fas fa-play"></i>
-                Started&nbsp;<b>{{job.startDateTime | dateTime}}</b>
+                Started&nbsp;<b>{{job.startDateTime | dateTimeLong}}</b>
             </p>
             <p v-if="job.endDateTime">
                 <i class="fas fa-stop"></i>
-                Ended&nbsp;<b>{{job.endDateTime | dateTime}}</b>
+                Ended&nbsp;<b>{{job.endDateTime | dateTimeLong}}</b>
             </p>
             <p>
                 <i class="fas fa-stopwatch"></i>
@@ -51,12 +51,6 @@
                 return this.job.status !== null &&
                     this.job.status.indexOf('FAILED') > 0;
             },
-        },
-        filters: {
-            dateTime: function (value) {
-                if (!value || !moment(value).isValid()) return '';
-                return moment(value).format('LL LTS');
-            }
         }
     });
 </script>

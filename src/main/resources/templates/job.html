@@ -77,18 +77,19 @@
     <breadcrumb :page="page" :stack-id="stackId"></breadcrumb>
 </template>
 
-<div th:replace="vue_templates/sidebar"></div>
+<div th:replace="vue_templates/components/sidebar"></div>
 
 <div th:replace="helpers/messenger"></div>
 
-<div th:replace="vue_templates/cli-badge"></div>
-<div th:replace="vue_templates/breadcrumb"></div>
-<div th:replace="vue_templates/console"></div>
-<div th:replace="vue_templates/user-badge"></div>
-<div th:replace="vue_templates/job/job-metadata"></div>
-<div th:replace="vue_templates/job/job-step"></div>
-<div th:replace="vue_templates/job/job-apply-confirm"></div>
-<div th:replace="vue_templates/job/job-timer"></div>
+<div th:replace="vue_templates/components/cli-badge"></div>
+<div th:replace="vue_templates/components/breadcrumb"></div>
+<div th:replace="vue_templates/components/console"></div>
+<div th:replace="vue_templates/components/user-badge"></div>
+<div th:replace="vue_templates/components/job/job-metadata"></div>
+<div th:replace="vue_templates/components/job/job-step"></div>
+<div th:replace="vue_templates/components/job/job-apply-confirm"></div>
+<div th:replace="vue_templates/components/job/job-timer"></div>
+<div th:replace="vue_templates/filters/date-time"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 

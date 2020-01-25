@@ -51,14 +51,14 @@
     <breadcrumb :page="page"></breadcrumb>
 </template>
 
-<div th:replace="vue_templates/modules/module-import"></div>
-<div th:replace="vue_templates/modules/manual-import"></div>
+<div th:replace="vue_templates/components/modules/module-import"></div>
+<div th:replace="vue_templates/components/modules/manual-import"></div>
 
-<div th:replace="vue_templates/sidebar"></div>
+<div th:replace="vue_templates/components/sidebar"></div>
 
 <div th:replace="helpers/messenger"></div>
 
-<div th:replace="vue_templates/breadcrumb"></div>
+<div th:replace="vue_templates/components/breadcrumb"></div>
 
 <script src="/js/ansi_to_html.js"></script>
 

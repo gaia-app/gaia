@@ -39,11 +39,12 @@
     </div>
 </div>
 
-<div th:replace="vue_templates/stack-vars"></div>
-<div th:replace="vue_templates/breadcrumb"></div>
-<div th:replace="vue_templates/user-badge"></div>
-<div th:replace="vue_templates/sidebar"></div>
-<div th:replace="vue_templates/job/job-timer"></div>
+<div th:replace="vue_templates/components/stack-vars"></div>
+<div th:replace="vue_templates/components/breadcrumb"></div>
+<div th:replace="vue_templates/components/user-badge"></div>
+<div th:replace="vue_templates/components/sidebar"></div>
+<div th:replace="vue_templates/components/job/job-timer"></div>
+<div th:replace="vue_templates/filters/date-time"></div>
 
 <template id="stack-controls">
     <div class="page_controls">
@@ -197,17 +198,6 @@
         template: "#stack-outputs",
         props: ["outputs"]
     });
-
-    Vue.filter('dateTime', function (value) {
-        if (!value || !moment(value).isValid()) return '';
-        return moment(value).format('L LTS');
-    });
-
-    Vue.filter('dateTimeLong', function (value) {
-        if (!value || !moment(value).isValid()) return '';
-        return moment(value).format('LLL');
-    });
-
 </script>
 
 <div th:replace="helpers/messenger"></div>

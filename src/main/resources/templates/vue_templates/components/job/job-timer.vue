@@ -9,16 +9,14 @@
         template: '#job-timer-template',
         data: () => ({
             timer: 0,
-            intervalId: null
+            intervalId: null,
         }),
         props: {
             startTime: {
-                type: Date | moment | String,
-                default: () => moment()
+                type: Date | String,
             },
             endTime: {
-                type: Date | moment | String,
-                default: () => null
+                type: Date | String,
             },
             cssClass: {
                 type: String,
@@ -27,7 +25,7 @@
         },
         created: function () {
             if (!!this.endTime) {
-                this.interval(moment(this.endTime));
+                this.interval(this.endTime);
                 return;
             }
             this.start();
@@ -38,25 +36,29 @@
                     this.start();
                     return;
                 }
-                this.interval(moment(newValue));
+                this.interval(newValue);
                 this.end();
             },
         },
         methods: {
             start: function () {
-                this.intervalId = setInterval(() => this.interval(moment()), 1000);
+                this.intervalId = setInterval(() => this.interval(new Date()), 1000);
             },
             end: function () {
                 clearInterval(this.intervalId);
             },
             interval: function (endTime) {
-                this.timer = moment.duration(endTime.diff(this.startTime));
+                this.timer = Math.floor((Date.parse(endTime) - Date.parse(this.startTime)) / 1000);
             }
         },
         filters: {
             format: function (value) {
-                if (!moment.isDuration(value)) return '';
-                return value.format("h [hr] m [min] s [sec]");
+                const hours = Math.floor(value / 3600) % 24;
+                const minutes = Math.floor(value / 60) % 60;
+                const seconds = ('0' + value % 60).slice(-2);
+                return `${hours > 0 ? `${hours} hr` : ''}
+                    ${minutes > 0 ? `${minutes} min` : ''}
+                    ${seconds} sec`;
             }
         }
     });

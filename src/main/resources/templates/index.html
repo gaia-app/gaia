@@ -62,10 +62,10 @@
     <breadcrumb :page="page"></breadcrumb>
 </template>
 
-<div th:replace="vue_templates/sidebar"></div>
+<div th:replace="vue_templates/components/sidebar"></div>
 
-<div th:replace="vue_templates/breadcrumb"></div>
-<div th:replace="vue_templates/dashboard-widget"></div>
+<div th:replace="vue_templates/components/breadcrumb"></div>
+<div th:replace="vue_templates/components/dashboard-widget"></div>
 
 <script th:inline="javascript" type="application/ecmascript">
     new Vue({
