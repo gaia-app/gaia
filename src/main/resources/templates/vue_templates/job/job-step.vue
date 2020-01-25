@@ -21,11 +21,11 @@
                 <span class="job-step-status">Status&nbsp;{{step.status}}</span>
                 <p>
                     <i class="fas fa-play"></i>
-                    Started&nbsp;<b>{{step.startDateTime | dateTime}}</b>
+                    Started&nbsp;<b>{{step.startDateTime | dateTimeLong}}</b>
                 </p>
                 <p v-if="step.endDateTime">
                     <i class="fas fa-stop"></i>
-                    Ended&nbsp;<b>{{step.endDateTime | dateTime}}</b>
+                    Ended&nbsp;<b>{{step.endDateTime | dateTimeLong}}</b>
                 </p>
                 <p>
                     <i class="fas fa-stopwatch"></i>
@@ -61,12 +61,6 @@
         watch: {
             step: function (newValue) {
                 this.bodyVisible = newValue.status !== 'FINISHED';
-            }
-        },
-        filters: {
-            dateTime: function (value) {
-                if (!value || !moment(value).isValid()) return '';
-                return moment(value).format('LL LTS');
             }
         }
     });

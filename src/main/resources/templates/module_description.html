@@ -57,8 +57,8 @@
                         <div class="desc">{{description}}</div>
                         <hr>
                         <div class="metadata">
-                            <p>Published <b>{{moduleMetadata.createdAt | dateTime}}</b> by <a href="#">{{moduleMetadata.createdBy.username}}</a></p>
-                            <p v-if="moduleMetadata.updatedAt">Last modified <b>{{moduleMetadata.updatedAt | dateTime}}</b> by <a href="#">{{moduleMetadata.updatedBy.username}}</a></p>
+                            <p>Published <b>{{moduleMetadata.createdAt | dateTimeLong}}</b> by <a href="#">{{moduleMetadata.createdBy.username}}</a></p>
+                            <p v-if="moduleMetadata.updatedAt">Last modified <b>{{moduleMetadata.updatedAt | dateTimeLong}}</b> by <a href="#">{{moduleMetadata.updatedBy.username}}</a></p>
                             <p>Source: <a :href="gitRepositoryUrl">{{gitRepositoryUrl}}</a></p>
                             <p v-if="estimatedMonthlyCost">Estimated monthly cost: ${{estimatedMonthlyCost}}</p>
                         </div>
@@ -98,6 +98,7 @@
 <div th:replace="vue_templates/markdown"></div>
 <div th:replace="vue_templates/breadcrumb"></div>
 <div th:replace="vue_templates/sidebar"></div>
+<div th:replace="vue_templates/filters/date-time"></div>
 
 <div th:replace="helpers/messenger"></div>
 
@@ -121,11 +122,6 @@
         data: () => ({ page: 'module_description' }),
         template: "#template-navigation",
     });
-
-    Vue.filter('dateTime', function (value) {
-        if (!value || !moment(value).isValid()) return '';
-        return moment(value).format('LLL');
-    })
 </script>
 
 </body>
