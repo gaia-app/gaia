@@ -43,6 +43,10 @@ class RegistryServiceImpl(
         val variablesFile = registryApis[registryType]?.getFileContent(user, projectId, "variables.tf")!!
         module.variables = hclParser.parseVariables(variablesFile)
 
+        // find main provider
+        val mainFile = registryApis[registryType]?.getFileContent(user, projectId, "main.tf")!!
+        module.mainProvider = hclParser.parseProvider(mainFile)
+
         // saving module !
         return moduleRepository.save(module)
     }

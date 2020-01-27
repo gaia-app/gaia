@@ -69,6 +69,9 @@ class RegistryServiceImplTest {
         whenever(gitlabRegistryApi.getFileContent(user, "15689", "variables.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
 
+        whenever(gitlabRegistryApi.getFileContent(user, "15689", "main.tf")).thenReturn(variablesFileContent)
+        whenever(hclParser.parseProvider(variablesFileContent)).thenReturn("docker")
+
         val module = registryService.importRepository("15689", RegistryType.GITLAB, user)
 
         verify(gitlabRegistryApi).getRepository(user, "15689")
@@ -87,6 +90,8 @@ class RegistryServiceImplTest {
 
         assertThat(module.cliVersion).isEqualTo("1.12.8")
         assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
+
+        assertThat(module.mainProvider).isEqualTo("docker")
 
         assertThat(module.variables).containsExactly(Variable("dummy"))
     }
@@ -107,6 +112,9 @@ class RegistryServiceImplTest {
         whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
 
+        whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "main.tf")).thenReturn(variablesFileContent)
+        whenever(hclParser.parseProvider(variablesFileContent)).thenReturn("docker")
+
         val module = registryService.importRepository("juwit/terraform-docker-mongo", RegistryType.GITHUB, user)
 
         verify(githubRegistryApi).getRepository(user, "juwit/terraform-docker-mongo")
@@ -125,6 +133,8 @@ class RegistryServiceImplTest {
 
         assertThat(module.cliVersion).isEqualTo("1.12.8")
         assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
+
+        assertThat(module.mainProvider).isEqualTo("docker")
 
         assertThat(module.variables).containsExactly(Variable("dummy"))
     }

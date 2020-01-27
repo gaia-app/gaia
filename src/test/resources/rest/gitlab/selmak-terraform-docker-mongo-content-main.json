@@ -1,0 +1,12 @@
+{
+  "file_name": "main.tf",
+  "file_path": "main.tf",
+  "size": 360,
+  "encoding": "base64",
+  "content_sha256": "179816b847fa491f6a9b4d7eff54d6be640b397d8f0ec02a62ad6ed6220057b6",
+  "ref": "master",
+  "blob_id": "0a5cc012309c07f639bf522dec2dab19783608c9",
+  "commit_id": "91ee4feddf2d3c489f8ea1b2489027bb05839ac1",
+  "last_commit_id": "e01d6f909cd078253d6ef557769fc27c5df5d1e7",
+  "content": "IyBnZXQgdGhlIG1vbmdvIGRvY2tlciBpbWFnZQpyZXNvdXJjZSAiZG9ja2VyX2ltYWdlIiAibW9uZ28iIHsKICBuYW1lICAgICAgICAgPSAibW9uZ28iCiAga2VlcF9sb2NhbGx5ID0gdHJ1ZQp9CgojIHN0YXJ0IGEgY29udGFpbmVyIGFuZCBleHBvc2UgdGhlIDI3MDE3IHBvcnQKcmVzb3VyY2UgImRvY2tlcl9jb250YWluZXIiICJtb25nbyIgewogIG5hbWUgID0gIiR7dmFyLm1vbmdvX2NvbnRhaW5lcl9uYW1lfSIKICBpbWFnZSA9ICIke2RvY2tlcl9pbWFnZS5tb25nby5sYXRlc3R9IgogIHBvcnRzID0gewogICAgaW50ZXJuYWwgPSAyNzAxNwogICAgZXh0ZXJuYWwgPSAiJHt2YXIubW9uZ29fZXhwb3NlZF9wb3J0fSIKICB9Cn0K"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "main.tf",
+  "path": "main.tf",
+  "sha": "0a5cc012309c07f639bf522dec2dab19783608c9",
+  "size": 360,
+  "url": "https://api.github.com/repos/selmak/terraform-docker-mongo/contents/main.tf?ref=master",
+  "html_url": "https://github.com/selmak/terraform-docker-mongo/blob/master/main.tf",
+  "git_url": "https://api.github.com/repos/selmak/terraform-docker-mongo/git/blobs/0a5cc012309c07f639bf522dec2dab19783608c9",
+  "download_url": "https://raw.githubusercontent.com/selmak/terraform-docker-mongo/master/main.tf",
+  "type": "file",
+  "content": "IyBnZXQgdGhlIG1vbmdvIGRvY2tlciBpbWFnZQpyZXNvdXJjZSAiZG9ja2Vy\nX2ltYWdlIiAibW9uZ28iIHsKICBuYW1lICAgICAgICAgPSAibW9uZ28iCiAg\na2VlcF9sb2NhbGx5ID0gdHJ1ZQp9CgojIHN0YXJ0IGEgY29udGFpbmVyIGFu\nZCBleHBvc2UgdGhlIDI3MDE3IHBvcnQKcmVzb3VyY2UgImRvY2tlcl9jb250\nYWluZXIiICJtb25nbyIgewogIG5hbWUgID0gIiR7dmFyLm1vbmdvX2NvbnRh\naW5lcl9uYW1lfSIKICBpbWFnZSA9ICIke2RvY2tlcl9pbWFnZS5tb25nby5s\nYXRlc3R9IgogIHBvcnRzID0gewogICAgaW50ZXJuYWwgPSAyNzAxNwogICAg\nZXh0ZXJuYWwgPSAiJHt2YXIubW9uZ29fZXhwb3NlZF9wb3J0fSIKICB9Cn0K\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/selmak/terraform-docker-mongo/contents/main.tf?ref=master",
+    "git": "https://api.github.com/repos/selmak/terraform-docker-mongo/git/blobs/0a5cc012309c07f639bf522dec2dab19783608c9",
+    "html": "https://github.com/selmak/terraform-docker-mongo/blob/master/main.tf"
+  }
+}

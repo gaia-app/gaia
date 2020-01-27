@@ -103,6 +103,10 @@ class GitlabRegistryControllerIT{
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo-content-variables.json"), MediaType.APPLICATION_JSON))
 
+        server.expect(requestTo("https://gitlab.com/api/v4/projects/16181047/repository/files/main.tf?ref=master"))
+                .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
+                .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo-content-main.json"), MediaType.APPLICATION_JSON))
+
         val selmak = User("Selmak", null)
         selmak.oAuth2User = OAuth2User("GITLAB", "Tok'ra", null)
 
