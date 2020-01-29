@@ -109,6 +109,10 @@ class GithubRegistryControllerIT{
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo-content-variables.json"), MediaType.APPLICATION_JSON))
 
+        server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/main.tf?ref=master"))
+                .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
+                .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo-content-main.json"), MediaType.APPLICATION_JSON))
+
         val selmak = User("Selmak", null)
         selmak.oAuth2User = OAuth2User("GITHUB", "Tok'ra", null)
 

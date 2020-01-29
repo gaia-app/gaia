@@ -44,6 +44,8 @@ public class TerraformModule {
 
     private RegistryDetails registryDetails;
 
+    private String mainProvider;
+
     public String getId() {
         return id;
     }
@@ -152,4 +154,11 @@ public class TerraformModule {
         this.moduleMetadata = moduleMetadata;
     }
 
+    public String getMainProvider() {
+        return mainProvider;
+    }
+
+    public void setMainProvider(String mainProvider) {
+        this.mainProvider = mainProvider;
+    }
 }

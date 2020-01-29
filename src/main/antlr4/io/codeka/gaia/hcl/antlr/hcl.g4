@@ -5,8 +5,18 @@ file
   ;
 
 directive
-  : variableDirective
+  : providerDirective
+  | resourceDirective
+  | variableDirective
   | outputDirective
+  ;
+
+providerDirective
+  : 'provider' STRING object
+  ;
+
+resourceDirective
+  : 'resource' STRING STRING object
   ;
 
 variableDirective

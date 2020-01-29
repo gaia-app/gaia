@@ -12,6 +12,7 @@ interface HclParser {
     fun parseContent(content: String): HclVisitor
     fun parseVariables(content: String): List<Variable>
     fun parseOutputs(content: String): List<Output>
+    fun parseProvider(fileContent: String): String
 }
 
 @Service
@@ -44,5 +45,10 @@ class HclParserImpl : HclParser {
     override fun parseOutputs(content:String): List<Output> {
         val hclVisitor = parseContent(content)
         return hclVisitor.outputs
+    }
+
+    override fun parseProvider(content: String): String {
+        val hclVisitor = parseContent(content)
+        return hclVisitor.provider
     }
 }
