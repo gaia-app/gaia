@@ -118,11 +118,11 @@
 
                 <h2>Variables <b-button variant="success" @click="addVar()"><i class="fas fa-plus"></i></b-button></h2>
 
-                <b-form-row class="align-items-center" v-for="(modVar,modVarIdx) in module.variables">
+                <b-form-row v-for="(modVar,modVarIdx) in module.variables" class="mb-3">
                     <b-col cols="3">
                         <b-form-group label="Name">
                             <b-input v-model="modVar.name" :state="notEmpty(modVar.name)"></b-input>
-                            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+                            <b-form-invalid-feedback class="position-absolute">This field is mandatory</b-form-invalid-feedback>
                         </b-form-group>
                     </b-col>
                     <b-col cols="3">
@@ -135,7 +135,7 @@
                             <b-input v-model="modVar.defaultValue"></b-input>
                         </b-form-group>
                     </b-col>
-                    <b-col cols="1">
+                    <b-col cols="1" class="d-flex flex-column justify-content-center">
                         <b-form-checkbox v-model="modVar.editable" switch inline>Editable</b-form-checkbox>
                         <b-form-checkbox v-model="modVar.mandatory" switch inline>Mandatory</b-form-checkbox>
                     </b-col>
@@ -144,7 +144,7 @@
                             <b-input v-model="modVar.validationRegex"></b-input>
                         </b-form-group>
                     </b-col>
-                    <b-col cols="1">
+                    <b-col cols="1" class="d-flex flex-column justify-content-center">
                         <b-form-group>
                             <b-button variant="danger" @click="removeVar(modVarIdx)"><i class="fas fa-minus"></i></b-button>
                         </b-form-group>
