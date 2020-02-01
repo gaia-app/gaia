@@ -1,5 +1,6 @@
 package io.codeka.gaia.stacks.bo;
 
+import io.codeka.gaia.modules.bo.TerraformImage;
 import io.codeka.gaia.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -20,7 +21,7 @@ public class Job {
     private LocalDateTime endDateTime;
     private JobType type;
     private JobStatus status;
-    private String cliVersion;
+    private TerraformImage terraformImage;
     @DBRef
     private List<Step> steps = new ArrayList<>(2);
     @DBRef
@@ -106,12 +107,12 @@ public class Job {
         this.status = status;
     }
 
-    public String getCliVersion() {
-        return cliVersion;
+    public TerraformImage getTerraformImage() {
+        return terraformImage;
     }
 
-    public void setCliVersion(String cliVersion) {
-        this.cliVersion = cliVersion;
+    public void setTerraformImage(TerraformImage terraformImage) {
+        this.terraformImage = terraformImage;
     }
 
     public List<Step> getSteps() {

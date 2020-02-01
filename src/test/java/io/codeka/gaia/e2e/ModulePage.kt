@@ -1,10 +1,8 @@
 package io.codeka.gaia.e2e
 
-import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.FindBy
-import org.openqa.selenium.support.PageFactory
 
 class ModulePage(webDriver: WebDriver) {
 
@@ -17,8 +15,8 @@ class ModulePage(webDriver: WebDriver) {
     @FindBy(id="module.name")
     private lateinit var nameInput: WebElement
 
-    @FindBy(id="module.cliVersion")
-    private lateinit var cliVersionInput: WebElement
+    @FindBy(id="image_tag")
+    private lateinit var terraformImageTag: WebElement
 
     @FindBy(id="module.description")
     private lateinit var descriptionInput: WebElement
@@ -27,6 +25,6 @@ class ModulePage(webDriver: WebDriver) {
 
     fun moduleDescription() : String = descriptionInput.getAttribute("value")
 
-    fun cliVersion() : String = cliVersionInput.getAttribute("value")
+    fun terraformImageTag() : String = terraformImageTag.getAttribute("value")
 
 }

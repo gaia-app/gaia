@@ -2,8 +2,8 @@ package io.codeka.gaia.registries.service
 
 import io.codeka.gaia.hcl.HclParser
 import io.codeka.gaia.modules.bo.ModuleMetadata
+import io.codeka.gaia.modules.bo.TerraformImage
 import io.codeka.gaia.modules.bo.TerraformModule
-import io.codeka.gaia.modules.repository.TerraformCLIRepository
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryDetails
@@ -19,13 +19,12 @@ interface RegistryService {
 
 @Service
 class RegistryServiceImpl(
-        private val cliRepository: TerraformCLIRepository,
         private val hclParser: HclParser,
         private val moduleRepository: TerraformModuleRepository,
         private val registryApis: Map<RegistryType, RegistryApi<out SourceRepository>>
 ) : RegistryService {
 
-    override fun importRepository(projectId: String, registryType: RegistryType, user: User) : TerraformModule {
+    override fun importRepository(projectId: String, registryType: RegistryType, user: User): TerraformModule {
         val module = TerraformModule()
         module.id = UUID.randomUUID().toString()
 
@@ -34,7 +33,7 @@ class RegistryServiceImpl(
         module.gitRepositoryUrl = codeRepository.htmlUrl
         module.gitBranch = "master"
         module.name = codeRepository.fullName
-        module.cliVersion = cliRepository.listCLIVersion().first()
+        module.terraformImage = TerraformImage.defaultInstance()
 
         module.registryDetails = RegistryDetails(registryType, codeRepository.id)
         module.moduleMetadata = ModuleMetadata(createdBy = user)

@@ -1,19 +1,12 @@
 package io.codeka.gaia.registries.controller
 
-import io.codeka.gaia.hcl.HclParser
-import io.codeka.gaia.modules.bo.TerraformModule
-import io.codeka.gaia.modules.bo.Variable
-import io.codeka.gaia.modules.repository.TerraformCLIRepository
-import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryType
 import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.registries.service.RegistryService
 import io.codeka.gaia.teams.User
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -21,7 +14,6 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.stubbing.OngoingStubbing
-import org.mockito.stubbing.Stubber
 
 @ExtendWith(MockitoExtension::class)
 class GithubRegistryControllerTest{

@@ -1,5 +1,6 @@
 package io.codeka.gaia.stacks.controller;
 
+import io.codeka.gaia.modules.bo.TerraformImage;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.runner.StackRunner;
@@ -107,7 +108,7 @@ class StackControllerTest {
     void launchJob_shouldConfigureAndSaveTheJob() {
         var stack = new Stack();
         var module = new TerraformModule();
-        module.setCliVersion("test_cli_version");
+        module.setTerraformImage(TerraformImage.Companion.defaultInstance());
 
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
         when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
@@ -122,7 +123,7 @@ class StackControllerTest {
         assertEquals(JobType.RUN, job.getType());
         assertEquals("test_stack", job.getStackId());
         assertEquals(user, job.getUser());
-        assertEquals("test_cli_version", job.getCliVersion());
+        assertEquals(module.getTerraformImage(), job.getTerraformImage());
     }
 
     @Test

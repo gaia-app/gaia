@@ -1,5 +1,6 @@
 package io.codeka.gaia.runner
 
+import io.codeka.gaia.modules.bo.TerraformImage
 import io.codeka.gaia.runner.config.DockerConfig
 import io.codeka.gaia.settings.bo.Settings
 import io.codeka.gaia.stacks.bo.Job
@@ -24,7 +25,7 @@ class DockerRunnerIT {
         val script = "echo 'Hello World'"
 
         val job = Job()
-        job.cliVersion = "0.12.18"
+        job.terraformImage = TerraformImage.defaultInstance()
         val jobWorkflow = JobWorkflow(job)
 
         Assert.assertEquals(0, dockerRunner.runContainerForJob(jobWorkflow, script).toLong())
@@ -35,7 +36,7 @@ class DockerRunnerIT {
         val script = "exit 5"
 
         val job = Job()
-        job.cliVersion = "0.12.18"
+        job.terraformImage = TerraformImage.defaultInstance()
         val jobWorkflow = JobWorkflow(job)
 
         Assert.assertEquals(5, dockerRunner.runContainerForJob(jobWorkflow, script).toLong())

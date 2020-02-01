@@ -120,7 +120,7 @@ public class SeleniumIT {
 
         assertThat(page.moduleName()).isEqualTo("terraform-docker-mongo");
         assertThat(page.moduleDescription()).contains("A sample terraform");
-        assertThat(page.cliVersion()).isEqualTo("0.11.14");
+        assertThat(page.terraformImageTag()).isEqualTo("0.11.14");
 
         percy.snapshot("Module Details");
     }
