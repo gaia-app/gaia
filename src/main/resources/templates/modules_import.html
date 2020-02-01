@@ -41,8 +41,8 @@
 
 <template id="template">
     <div class="row">
-        <module-import :registry="'github'" :selected="selected" th:if="${user.oAuth2User.provider == 'github'}" @toggle="selected = 'github'"></module-import>
-        <module-import :registry="'gitlab'" :selected="selected" th:if="${user.oAuth2User.provider == 'gitlab'}" @toggle="selected = 'gitlab'"></module-import>
+        <module-import :registry="'github'" :selected="selected" th:if="${user.oAuth2User?.provider == 'github'}" @toggle="selected = 'github'"></module-import>
+        <module-import :registry="'gitlab'" :selected="selected" th:if="${user.oAuth2User?.provider == 'gitlab'}" @toggle="selected = 'gitlab'"></module-import>
         <manual-import :selected="selected" @toggle="selected = 'manual'"></manual-import>
     </div>
 </template>
