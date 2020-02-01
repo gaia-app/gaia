@@ -1,0 +1,79 @@
+{
+  "count": 90,
+  "next": "https://registry.hub.docker.com/v2/repositories/hashicorp/terraform/tags?page=2&page_size=10",
+  "previous": null,
+  "results": [
+    {
+      "name": "latest",
+      "full_size": 30241765,
+      "images": [
+        {
+          "size": 30241765,
+          "digest": "sha256:5e19b9bab0b6d079cae8822be22cd7010f65177356600154b77fc4fc81bdde31",
+          "architecture": "amd64",
+          "os": "linux",
+          "os_version": null,
+          "os_features": "",
+          "variant": null,
+          "features": ""
+        }
+      ],
+      "id": 2733924,
+      "repository": 646700,
+      "creator": 1522,
+      "last_updater": 1022548,
+      "last_updater_username": "hashicorpterraform",
+      "image_id": null,
+      "v2": true,
+      "last_updated": "2020-01-22T22:28:07.008561Z"
+    },
+    {
+      "name": "light",
+      "full_size": 30241765,
+      "images": [
+        {
+          "size": 30241765,
+          "digest": "sha256:5e19b9bab0b6d079cae8822be22cd7010f65177356600154b77fc4fc81bdde31",
+          "architecture": "amd64",
+          "os": "linux",
+          "os_version": null,
+          "os_features": "",
+          "variant": null,
+          "features": ""
+        }
+      ],
+      "id": 2733971,
+      "repository": 646700,
+      "creator": 1522,
+      "last_updater": 1022548,
+      "last_updater_username": "hashicorpterraform",
+      "image_id": null,
+      "v2": true,
+      "last_updated": "2020-01-22T22:28:05.128751Z"
+    },
+    {
+      "name": "full",
+      "full_size": 678199689,
+      "images": [
+        {
+          "size": 678199689,
+          "digest": "sha256:bb99fa8c34f8700b765f99aa5308f24f13b5d413aa039269e80cb8ae5939293e",
+          "architecture": "amd64",
+          "os": "linux",
+          "os_version": null,
+          "os_features": "",
+          "variant": null,
+          "features": ""
+        }
+      ],
+      "id": 2747995,
+      "repository": 646700,
+      "creator": 15379,
+      "last_updater": 1022548,
+      "last_updater_username": "hashicorpterraform",
+      "image_id": null,
+      "v2": true,
+      "last_updated": "2020-01-22T22:28:03.228375Z"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "count": 2476,
+  "next": "https://registry.hub.docker.com/v2/search/repositories?page=2&page_size=10&query=terraform",
+  "previous": "",
+  "results": [
+    {
+      "repo_name": "hashicorp/terraform",
+      "short_description": "official one",
+      "star_count": 220,
+      "pull_count": 206954884,
+      "repo_owner": "",
+      "is_automated": true,
+      "is_official": false
+    },
+    {
+      "repo_name": "rogue/terraform",
+      "short_description": "rebels one",
+      "star_count": 1,
+      "pull_count": 794935057,
+      "repo_owner": "",
+      "is_automated": false,
+      "is_official": false
+    },
+    {
+      "repo_name": "empire/terraform",
+      "short_description": "empire one",
+      "star_count": 0,
+      "pull_count": 21755910,
+      "repo_owner": "",
+      "is_automated": false,
+      "is_official": false
+    }
+  ]
+}
