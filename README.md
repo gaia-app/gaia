@@ -1,7 +1,5 @@
-# gaia
-
 <p align="center">
-  <img width="200" src="assets/gaia_logo_with_title.png">
+  <img width="500" src="assets/gaia_logo_with_title.png">
 </p>
 
 Gaia is a Terraform UI for your Terraform modules, and self-service infrastructure.
