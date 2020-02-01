@@ -9,14 +9,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.stubbing.OngoingStubbing
 
 @ExtendWith(MockitoExtension::class)
-class GithubRegistryControllerTest{
+class GithubRegistryControllerTest {
 
     @Mock
     lateinit var githubRegistryApi: RegistryApi<GithubRepository>
@@ -50,8 +48,4 @@ class GithubRegistryControllerTest{
 
         verifyNoMoreInteractions(registryService)
     }
-}
-
-inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
-    return Mockito.`when`(methodCall)!!
 }

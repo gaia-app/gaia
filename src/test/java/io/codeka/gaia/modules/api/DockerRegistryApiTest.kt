@@ -1,6 +1,6 @@
 package io.codeka.gaia.modules.api
 
-import io.codeka.gaia.registries.controller.whenever
+import io.codeka.gaia.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

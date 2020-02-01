@@ -6,10 +6,10 @@ import io.codeka.gaia.modules.bo.Variable
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.controller.whenever
 import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.User
+import io.codeka.gaia.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
