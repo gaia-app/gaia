@@ -118,7 +118,7 @@
 
     let interval;
     function planOrApplyJob(type) {
-        if (editionMode) return;
+        if (editionMode && 'retry' !== type) return;
         return $.post(`/api/jobs/${jobId}/${type}`)
             .then(_ => interval = setInterval(refreshJob, 1000));
     }
