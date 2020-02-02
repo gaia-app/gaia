@@ -43,11 +43,11 @@ public class StackRunner {
         this.stepRepository = stepRepository;
     }
 
-    private String managePlanScript(JobType jobType, Stack stack, TerraformModule module) {
-        if (jobType == JobType.RUN) {
-            return stackCommandBuilder.buildPlanScript(stack, module);
+    private String managePlanScript(Job job, Stack stack, TerraformModule module) {
+        if (JobType.RUN == job.getType()) {
+            return stackCommandBuilder.buildPlanScript(job, stack, module);
         }
-        return stackCommandBuilder.buildPlanDestroyScript(stack, module);
+        return stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
     }
 
     private void managePlanResult(Integer result, JobWorkflow jobWorkflow, Stack stack) {
@@ -67,11 +67,11 @@ public class StackRunner {
         }
     }
 
-    private String manageApplyScript(JobType jobType, Stack stack, TerraformModule module) {
-        if (jobType == JobType.RUN) {
-            return stackCommandBuilder.buildApplyScript(stack, module);
+    private String manageApplyScript(Job job, Stack stack, TerraformModule module) {
+        if (JobType.RUN == job.getType()) {
+            return stackCommandBuilder.buildApplyScript(job, stack, module);
         }
-        return stackCommandBuilder.buildDestroyScript(stack, module);
+        return stackCommandBuilder.buildDestroyScript(job, stack, module);
     }
 
     private void manageApplyResult(Integer result, JobWorkflow jobWorkflow, Stack stack) {
@@ -121,7 +121,7 @@ public class StackRunner {
         treatJob(
                 jobWorkflow,
                 JobWorkflow::plan,
-                () -> managePlanScript(jobWorkflow.getJob().getType(), stack, module),
+                () -> managePlanScript(jobWorkflow.getJob(), stack, module),
                 result -> managePlanResult(result, jobWorkflow, stack)
         );
     }
@@ -131,7 +131,7 @@ public class StackRunner {
         treatJob(
                 jobWorkflow,
                 JobWorkflow::apply,
-                () -> manageApplyScript(jobWorkflow.getJob().getType(), stack, module),
+                () -> manageApplyScript(jobWorkflow.getJob(), stack, module),
                 result -> manageApplyResult(result, jobWorkflow, stack)
         );
     }
@@ -142,7 +142,7 @@ public class StackRunner {
         treatJob(
                 jobWorkflow,
                 JobWorkflow::retry,
-                () -> managePlanScript(jobWorkflow.getJob().getType(), stack, module),
+                () -> managePlanScript(jobWorkflow.getJob(), stack, module),
                 result -> managePlanResult(result, jobWorkflow, stack)
         );
     }

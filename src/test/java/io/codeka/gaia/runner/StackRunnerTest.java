@@ -76,7 +76,7 @@ class StackRunnerTest {
         stackRunner.plan(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildPlanScript(stack, module);
+        verify(stackCommandBuilder).buildPlanScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test
@@ -89,7 +89,7 @@ class StackRunnerTest {
         stackRunner.plan(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildPlanDestroyScript(stack, module);
+        verify(stackCommandBuilder).buildPlanDestroyScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test
@@ -192,7 +192,7 @@ class StackRunnerTest {
         stackRunner.apply(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildApplyScript(stack, module);
+        verify(stackCommandBuilder).buildApplyScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test
@@ -205,7 +205,7 @@ class StackRunnerTest {
         stackRunner.apply(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildDestroyScript(stack, module);
+        verify(stackCommandBuilder).buildDestroyScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test
@@ -294,7 +294,7 @@ class StackRunnerTest {
         stackRunner.retry(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildPlanScript(stack, module);
+        verify(stackCommandBuilder).buildPlanScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test
@@ -307,7 +307,7 @@ class StackRunnerTest {
         stackRunner.retry(jobWorkflow, module, stack);
 
         // then
-        verify(stackCommandBuilder).buildPlanDestroyScript(stack, module);
+        verify(stackCommandBuilder).buildPlanDestroyScript(jobWorkflow.getJob(), stack, module);
     }
 
     @Test

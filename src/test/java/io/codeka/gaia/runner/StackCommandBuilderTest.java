@@ -5,6 +5,7 @@ import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.bo.Variable;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.settings.bo.Settings;
+import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.teams.OAuth2User;
 import io.codeka.gaia.teams.User;
@@ -96,9 +97,10 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanScript_shouldGenerateAFullScript() {
         var module = moduleWithDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -114,9 +116,10 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
         var module = moduleWithoutDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -133,10 +136,11 @@ class StackCommandBuilderTest {
     void buildPlanScript_shouldGenerateAFullScript_forAModuleWithAccessToken() {
         var module = moduleWithAccessToken();
         var stack = new Stack();
+        var job = new Job();
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildPlanScript(stack, module);
+        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -208,9 +212,10 @@ class StackCommandBuilderTest {
     @Test
     void buildApplyScript_shouldGenerateAFullScript() {
         var module = moduleWithDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildApplyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -226,9 +231,10 @@ class StackCommandBuilderTest {
     @Test
     void buildApplyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
         var module = moduleWithoutDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildApplyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -245,10 +251,11 @@ class StackCommandBuilderTest {
     void buildApplyScript_shouldGenerateAFullScript_forAModuleWithAccessToken() {
         var module = moduleWithAccessToken();
         var stack = new Stack();
+        var job = new Job();
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildApplyScript(stack, module);
+        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -320,9 +327,10 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanDestroyScript_shouldGenerateAFullScript() {
         var module = moduleWithDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -338,9 +346,10 @@ class StackCommandBuilderTest {
     @Test
     void buildPlanDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
         var module = moduleWithoutDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -357,10 +366,11 @@ class StackCommandBuilderTest {
     void buildPlanDestroyScript_shouldGenerateAFullScript_forAModuleWithAccessToken() {
         var module = moduleWithAccessToken();
         var stack = new Stack();
+        var job = new Job();
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
+        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -432,9 +442,10 @@ class StackCommandBuilderTest {
     @Test
     void buildDestroyScript_shouldGenerateAFullScript() {
         var module = moduleWithDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildDestroyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -450,9 +461,10 @@ class StackCommandBuilderTest {
     @Test
     void buildDestroyScript_shouldGenerateAFullScript_forAModuleWithoutDirectory() {
         var module = moduleWithoutDirectory();
-
         var stack = new Stack();
-        var script = stackCommandBuilder.buildDestroyScript(stack, module);
+        var job = new Job();
+
+        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -469,10 +481,11 @@ class StackCommandBuilderTest {
     void buildDestroyScript_shouldGenerateAFullScript_forAModuleWithAccessToken() {
         var module = moduleWithAccessToken();
         var stack = new Stack();
+        var job = new Job();
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildDestroyScript(stack, module);
+        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
