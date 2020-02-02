@@ -53,7 +53,8 @@ public class StackCommandBuilder {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
                 .setStackId(stack.getId())
-                .setGitRepositoryUrl(evalGitRepositoryUrl(module));
+                .setGitRepositoryUrl(evalGitRepositoryUrl(module))
+                .setTerraformImage(module.getTerraformImage().image());
 
         if (StringUtils.isNotBlank(module.getDirectory())) {
             script.setGitDirectory(module.getDirectory());
