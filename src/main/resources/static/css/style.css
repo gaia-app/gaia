@@ -1810,6 +1810,7 @@ button.main_bt {
 
 .job_list .job {
     display: flex;
+    justify-content: space-between;
 }
 
 .job_list .job .job_id {
@@ -1823,14 +1824,37 @@ button.main_bt {
     font-size: larger;
 }
 
+.job_list .job .filler {
+    display: flex;
+    flex: auto;
+    border-left: 2px dashed cadetblue;
+}
+
 .job_list .job .job_detail {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex: 0 0 30%;
-    border-left: 2px dashed cadetblue;
-    margin-left: 15px;
-    padding-left: 15px;
+    flex: 0 0 35%;
+}
+
+.job_list .job .job_detail.job_actions {
+    flex: 0 0 5%;
+}
+
+.job_list .job .job_detail.job_actions i {
+    cursor: pointer;
+}
+
+.job_list .job .job_detail.job_actions i + i {
+    margin-top: 0.5rem
+}
+
+.job_list .job .job_detail.job_actions i.retry {
+    color: #2196f3;
+}
+
+.job_list .job .job_detail.job_actions i.delete {
+    color: #dc3545;
 }
 
 .job_list .job .job_attr_id {

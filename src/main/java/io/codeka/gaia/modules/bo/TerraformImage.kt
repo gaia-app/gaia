@@ -1,9 +1,10 @@
 package io.codeka.gaia.modules.bo
 
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Pattern
 
 data class TerraformImage @JvmOverloads constructor(
-        @field:NotBlank val repository: String,
+        @field:NotBlank @field:Pattern(regexp = """^[\w][\w.\-\/]{0,127}$""") val repository: String,
         @field:NotBlank val tag: String) {
 
     fun image() = "$repository:$tag"

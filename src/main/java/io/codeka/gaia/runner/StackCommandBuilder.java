@@ -4,6 +4,7 @@ import com.github.mustachejava.Mustache;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.settings.bo.Settings;
+import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.bo.mustache.TerraformScript;
 import org.apache.commons.lang.StringUtils;
@@ -48,13 +49,13 @@ public class StackCommandBuilder {
                 .orElse(url);
     }
 
-    private String buildScript(Stack stack, TerraformModule module,
+    private String buildScript(Job job, Stack stack, TerraformModule module,
                                BiFunction<Stack, TerraformModule, String> command) {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
                 .setStackId(stack.getId())
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
-                .setTerraformImage(module.getTerraformImage().image());
+                .setTerraformImage(job.getTerraformImage().image());
 
         if (StringUtils.isNotBlank(module.getDirectory())) {
             script.setGitDirectory(module.getDirectory());
@@ -95,8 +96,8 @@ public class StackCommandBuilder {
      *
      * @return
      */
-    String buildPlanScript(Stack stack, TerraformModule module) {
-        return buildScript(stack, module, this::buildPlanCommand);
+    String buildPlanScript(Job job, Stack stack, TerraformModule module) {
+        return buildScript(job, stack, module, this::buildPlanCommand);
     }
 
     /**
@@ -104,8 +105,8 @@ public class StackCommandBuilder {
      *
      * @return
      */
-    String buildApplyScript(Stack stack, TerraformModule module) {
-        return buildScript(stack, module, this::buildApplyCommand);
+    String buildApplyScript(Job job, Stack stack, TerraformModule module) {
+        return buildScript(job, stack, module, this::buildApplyCommand);
     }
 
     /**
@@ -113,8 +114,8 @@ public class StackCommandBuilder {
      *
      * @return
      */
-    String buildPlanDestroyScript(Stack stack, TerraformModule module) {
-        return buildScript(stack, module, this::buildPlanDestroyCommand);
+    String buildPlanDestroyScript(Job job, Stack stack, TerraformModule module) {
+        return buildScript(job, stack, module, this::buildPlanDestroyCommand);
     }
 
     /**
@@ -122,8 +123,8 @@ public class StackCommandBuilder {
      *
      * @return
      */
-    String buildDestroyScript(Stack stack, TerraformModule module) {
-        return buildScript(stack, module, this::buildDestroyCommand);
+    String buildDestroyScript(Job job, Stack stack, TerraformModule module) {
+        return buildScript(job, stack, module, this::buildDestroyCommand);
     }
 
     /**

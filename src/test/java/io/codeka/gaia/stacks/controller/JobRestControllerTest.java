@@ -8,6 +8,7 @@ import io.codeka.gaia.stacks.bo.Stack;
 import io.codeka.gaia.stacks.bo.StepType;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
+import io.codeka.gaia.stacks.repository.StepRepository;
 import io.codeka.gaia.stacks.workflow.JobWorkflow;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,9 @@ class JobRestControllerTest {
 
     @Mock
     private JobRepository jobRepository;
+
+    @Mock
+    private StepRepository stepRepository;
 
     @Mock
     private StackRepository stackRepository;
@@ -194,4 +198,16 @@ class JobRestControllerTest {
         assertThat(captor.getValue()).isNotNull();
         assertThat(captor.getValue().getJob()).isNotNull().isEqualTo(job);
     }
+
+    @Test
+    void deleteJob_shouldDeleteJobAndSteps() {
+        // when
+        controller.deleteJob("test_jobId");
+
+        // then
+        verify(stepRepository, times(1)).deleteByJobId("test_jobId");
+        verify(jobRepository, times(1)).deleteById("test_jobId");
+        verifyNoMoreInteractions(stepRepository, jobRepository);
+    }
+
 }

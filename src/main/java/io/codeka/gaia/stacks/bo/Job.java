@@ -21,7 +21,7 @@ public class Job {
     private LocalDateTime endDateTime;
     private JobType type;
     private JobStatus status;
-    private TerraformImage terraformImage;
+    private TerraformImage terraformImage = TerraformImage.Companion.defaultInstance();
     @DBRef
     private List<Step> steps = new ArrayList<>(2);
     @DBRef

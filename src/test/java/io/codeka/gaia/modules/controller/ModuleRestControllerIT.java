@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -143,6 +144,17 @@ class ModuleRestControllerIT {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("terraformImage.repository must not be blank")))
                 .andExpect(jsonPath("$.message", containsString("terraformImage.tag must not be blank")));
+    }
+
+    @Test
+    void saveModule_shouldValidateTerraformImage_forWrongRepositoryName() throws Exception {
+        mockMvc.perform(put("/api/modules/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty terraform image
+                .content("{\"terraformImage\":{\"repository\":\"wrong+pattern+image\",\"tag\":\"shame\"}}"))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(jsonPath("$.message", containsString("terraformImage.repository must match \"^[\\w][\\w.\\-\\/]{0,127}$")));
     }
 
     @Test

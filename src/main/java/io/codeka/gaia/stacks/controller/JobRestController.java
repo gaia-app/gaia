@@ -6,6 +6,7 @@ import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.StepType;
 import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
+import io.codeka.gaia.stacks.repository.StepRepository;
 import io.codeka.gaia.stacks.workflow.JobWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,17 @@ public class JobRestController {
     private StackRepository stackRepository;
     private TerraformModuleRepository moduleRepository;
     private StackRunner stackRunner;
+    private StepRepository stepRepository;
 
     @Autowired
     public JobRestController(JobRepository jobRepository, StackRepository stackRepository,
-                             TerraformModuleRepository moduleRepository, StackRunner stackRunner) {
+                             TerraformModuleRepository moduleRepository, StackRunner stackRunner,
+                             StepRepository stepRepository) {
         this.jobRepository = jobRepository;
         this.stackRepository = stackRepository;
         this.moduleRepository = moduleRepository;
         this.stackRunner = stackRunner;
+        this.stepRepository = stepRepository;
     }
 
     @GetMapping(params = "stackId")
@@ -63,6 +67,11 @@ public class JobRestController {
         this.stackRunner.retry(new JobWorkflow(job), module, stack);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteJob(@PathVariable String id) {
+        this.stepRepository.deleteByJobId(id);
+        this.jobRepository.deleteById(id);
+    }
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
