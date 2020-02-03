@@ -8,7 +8,10 @@ gaia.terraformModule.insert([
         "gitRepositoryUrl": "https://github.com/juwit/terraform-docker-mongo.git",
         "directory": null,
         "gitBranch": "master",
-        "cliVersion": "0.11.14",
+        "terraformImage": {
+            "repository": "hashicorp/terraform",
+            "tag": "0.11.14"
+        },
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
@@ -37,7 +40,10 @@ gaia.terraformModule.insert([
         "gitRepositoryUrl": "https://github.com/juwit/terraform-docker-mongo.git",
         "directory": null,
         "gitBranch": "master",
-        "cliVersion": "0.11.14",
+        "terraformImage": {
+            "repository": "hashicorp/terraform",
+            "tag": "0.11.14"
+        },
         "authorizedTeams": [{"$ref": "team", "$id": "Not Ze Team"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
@@ -53,7 +59,10 @@ gaia.terraformModule.insert([
         "gitRepositoryUrl": "https://github.com/juwit/terraform-docker-mongo.git",
         "directory": null,
         "gitBranch": "master",
-        "cliVersion": "0.11.14",
+        "terraformImage": {
+            "repository": "hashicorp/terraform",
+            "tag": "0.11.14"
+        },
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}

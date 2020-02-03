@@ -1,5 +1,7 @@
 set -e
 
+echo 'using image {{terraformImage}}'
+
 echo 'cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
 git clone {{gitRepositoryUrl}} module
 

@@ -57,7 +57,7 @@ class ModuleRestControllerIT {
         mockMvc.perform(get("/api/modules"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited","terraform-docker-mongo-with-validation")))
+                .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited", "terraform-docker-mongo-with-validation")))
                 .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team", "Ze Team")));
     }
 
@@ -95,7 +95,9 @@ class ModuleRestControllerIT {
     void saveModule_shouldNotBeAccessible_forStandardUsers() throws Exception {
         mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
+                .content("{\"name\":\"module-test\"," +
+                        "\"terraformImage\":{\"repository\":\"hashicorp/terraform\",\"tag\":\"latest\"}," +
+                        "\"gitRepositoryUrl\":\"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isForbidden());
     }
 
@@ -103,7 +105,9 @@ class ModuleRestControllerIT {
     void saveModule_shouldBeAccessible_forAdmin() throws Exception {
         mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"module-test\", \"cliVersion\": \"0.12.0\", \"gitRepositoryUrl\": \"https://github.com/juwit/terraform-docker-mongo.git\"}"))
+                .content("{\"name\":\"module-test\"," +
+                        "\"terraformImage\":{\"repository\":\"hashicorp/terraform\",\"tag\":\"latest\"}," +
+                        "\"gitRepositoryUrl\":\"https://github.com/juwit/terraform-docker-mongo.git\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.name", is("module-test")));
@@ -117,7 +121,6 @@ class ModuleRestControllerIT {
                 .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("name must not be blank")))
-                .andExpect(jsonPath("$.message", containsString("cliVersion must not be blank")))
                 .andExpect(jsonPath("$.message", containsString("gitRepositoryUrl must not be blank")));
     }
 
@@ -129,6 +132,17 @@ class ModuleRestControllerIT {
                 .content("{\"variables\":[{\"name\":\"  \"}]}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("variables[0].name must not be blank")));
+    }
+
+    @Test
+    void saveModule_shouldValidateTerraformImage_forBlankFields() throws Exception {
+        mockMvc.perform(put("/api/modules/stacks")
+                .contentType(MediaType.APPLICATION_JSON)
+                // empty terraform image
+                .content("{\"terraformImage\":{\"repository\":\"  \",\"tag\":\"  \"}}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", containsString("terraformImage.repository must not be blank")))
+                .andExpect(jsonPath("$.message", containsString("terraformImage.tag must not be blank")));
     }
 
     @Test

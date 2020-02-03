@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.RestTemplate
 import java.util.*
-import java.util.regex.Pattern
 
 abstract class RegistryRawContent(private val registryType: RegistryType, private val restTemplate: RestTemplate) {
 

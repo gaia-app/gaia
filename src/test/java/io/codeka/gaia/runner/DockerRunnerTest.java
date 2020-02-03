@@ -5,6 +5,7 @@ import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
 import com.spotify.docker.client.messages.ContainerExit;
+import io.codeka.gaia.modules.bo.TerraformImage;
 import io.codeka.gaia.settings.bo.Settings;
 import io.codeka.gaia.stacks.bo.Job;
 import io.codeka.gaia.stacks.bo.JobType;
@@ -59,7 +60,12 @@ class DockerRunnerTest {
         when(dockerClient.waitContainer(anyString())).thenReturn(containerExit);
 
         var job = new Job(JobType.RUN, null, null);
+        job.setTerraformImage(new TerraformImage("hashicorp/terraform", "0.12.0"));
         when(jobWorkflow.getJob()).thenReturn(job);
+
+        var containerConfig = mock(ContainerConfig.class);
+        when(builder.build()).thenReturn(containerConfig);
+        when(containerConfig.image()).thenReturn(job.getTerraformImage().image());
     }
 
     @Test
@@ -73,10 +79,7 @@ class DockerRunnerTest {
     }
 
     @Test
-    void runContainerForJob_shouldConsiderJobCLIVersion() throws Exception {
-        // given
-        jobWorkflow.getJob().setCliVersion("0.12.0");
-
+    void runContainerForJob_shouldConsiderJobModuleImageExecutor() throws Exception {
         // when
         dockerRunner.runContainerForJob(jobWorkflow, "test_script");
 

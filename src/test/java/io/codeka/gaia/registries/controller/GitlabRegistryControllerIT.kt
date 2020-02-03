@@ -5,7 +5,6 @@ import io.codeka.gaia.modules.bo.Variable
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.OAuth2User
 import io.codeka.gaia.teams.User
 import io.codeka.gaia.test.MongoContainer
@@ -36,7 +35,7 @@ import java.time.LocalDateTime
 @Testcontainers
 @AutoConfigureWebClient
 @AutoConfigureMockMvc
-class GitlabRegistryControllerIT{
+class GitlabRegistryControllerIT {
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -59,14 +58,14 @@ class GitlabRegistryControllerIT{
     private lateinit var gitlabRegistryController: GitlabRegistryController
 
     @Test
-    fun validateTestConfiguration(){
+    fun validateTestConfiguration() {
         assertThat(objectMapper).isNotNull
         assertThat(gitlabRegistryController).isNotNull
         assertThat(restTemplate).isNotNull
     }
 
     @Test
-    fun testGetRepositories(){
+    fun testGetRepositories() {
         // given
         val server = MockRestServiceServer.bindTo(restTemplate).build()
         server.expect(requestTo("https://gitlab.com/api/v4/projects?visibility=public&owned=true"))
@@ -88,16 +87,13 @@ class GitlabRegistryControllerIT{
     }
 
     @Test
-    fun testImportRepository(){
+    fun testImportRepository() {
         // given
         val server = MockRestServiceServer.bindTo(restTemplate).build()
 
         server.expect(requestTo("https://gitlab.com/api/v4/projects/16181047"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo.json"), MediaType.APPLICATION_JSON))
-
-        server.expect(requestTo("https://releases.hashicorp.com/terraform/"))
-                .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/hashicorp/releases.html"), MediaType.TEXT_HTML))
 
         server.expect(requestTo("https://gitlab.com/api/v4/projects/16181047/repository/files/variables.tf?ref=master"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
@@ -124,7 +120,7 @@ class GitlabRegistryControllerIT{
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://gitlab.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITLAB, "16181047"))
-        assertThat(importedModule.cliVersion).isEqualTo("0.12.19")
+        assertThat(importedModule.terraformImage.tag).isEqualTo("latest")
 
         assertThat(importedModule.variables).containsExactly(
                 Variable("mongo_container_name", "string", "name of the container"),

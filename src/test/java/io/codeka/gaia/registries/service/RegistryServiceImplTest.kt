@@ -3,22 +3,19 @@ package io.codeka.gaia.registries.service
 import io.codeka.gaia.hcl.HclParser
 import io.codeka.gaia.modules.bo.TerraformModule
 import io.codeka.gaia.modules.bo.Variable
-import io.codeka.gaia.modules.repository.TerraformCLIRepository
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryApi
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.controller.whenever
 import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.registries.gitlab.GitlabRepository
 import io.codeka.gaia.teams.User
-import org.assertj.core.api.Assertions
+import io.codeka.gaia.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.jupiter.MockitoExtension
@@ -36,9 +33,6 @@ class RegistryServiceImplTest {
     lateinit var hclParser: HclParser
 
     @Mock
-    lateinit var terraformCLIRepository: TerraformCLIRepository
-
-    @Mock
     lateinit var moduleRepository: TerraformModuleRepository
 
     lateinit var registryService: RegistryServiceImpl
@@ -46,7 +40,6 @@ class RegistryServiceImplTest {
     @BeforeEach
     internal fun setUp() {
         registryService = RegistryServiceImpl(
-                terraformCLIRepository,
                 hclParser,
                 moduleRepository,
                 mapOf(Pair(RegistryType.GITHUB, githubRegistryApi),
@@ -57,8 +50,6 @@ class RegistryServiceImplTest {
     fun `importRepository() should call the gitlab registry and create a module`() {
         // returns saved module as first arg
         whenever(moduleRepository.save(ArgumentMatchers.any(TerraformModule::class.java))).then { it.arguments[0] }
-
-        whenever(terraformCLIRepository.listCLIVersion()).thenReturn(listOf("1.12.8", "1.12.7"))
 
         val user = User("juwit", null)
 
@@ -88,7 +79,7 @@ class RegistryServiceImplTest {
         assertThat(module.registryDetails.registryType).isEqualTo(RegistryType.GITLAB)
         assertThat(module.registryDetails.projectId).isEqualTo("15689")
 
-        assertThat(module.cliVersion).isEqualTo("1.12.8")
+        assertThat(module.terraformImage.tag).isEqualTo("latest")
         assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
 
         assertThat(module.mainProvider).isEqualTo("docker")
@@ -100,8 +91,6 @@ class RegistryServiceImplTest {
     fun `importRepository() should call the github registry and create a module`() {
         // returns saved module as first arg
         whenever(moduleRepository.save(ArgumentMatchers.any(TerraformModule::class.java))).then { it.arguments[0] }
-
-        whenever(terraformCLIRepository.listCLIVersion()).thenReturn(listOf("1.12.8", "1.12.7"))
 
         val user = User("juwit", null)
 
@@ -131,7 +120,7 @@ class RegistryServiceImplTest {
         assertThat(module.registryDetails.registryType).isEqualTo(RegistryType.GITHUB)
         assertThat(module.registryDetails.projectId).isEqualTo("juwit/terraform-docker-mongo")
 
-        assertThat(module.cliVersion).isEqualTo("1.12.8")
+        assertThat(module.terraformImage.tag).isEqualTo("latest")
         assertThat(module.moduleMetadata.createdBy).isEqualTo(user)
 
         assertThat(module.mainProvider).isEqualTo("docker")

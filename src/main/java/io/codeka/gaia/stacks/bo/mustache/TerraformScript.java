@@ -5,11 +5,21 @@ package io.codeka.gaia.stacks.bo.mustache;
  */
 public class TerraformScript {
 
+    private String terraformImage;
     private String gitRepositoryUrl;
     private String gitDirectory;
     private String externalUrl;
     private String stackId;
     private String command;
+
+    public String getTerraformImage() {
+        return terraformImage;
+    }
+
+    public TerraformScript setTerraformImage(String terraformImage) {
+        this.terraformImage = terraformImage;
+        return this;
+    }
 
     public String getGitRepositoryUrl() {
         return gitRepositoryUrl;

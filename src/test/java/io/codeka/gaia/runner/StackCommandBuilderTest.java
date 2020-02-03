@@ -100,6 +100,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -117,6 +118,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -136,6 +138,7 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildPlanScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
@@ -209,6 +212,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildApplyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -226,6 +230,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildApplyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -245,6 +250,7 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildApplyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
@@ -318,6 +324,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -335,6 +342,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -354,6 +362,7 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildPlanDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
@@ -427,6 +436,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -444,6 +454,7 @@ class StackCommandBuilderTest {
         var stack = new Stack();
         var script = stackCommandBuilder.buildDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
@@ -463,6 +474,7 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildDestroyScript(stack, module);
 
+        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));

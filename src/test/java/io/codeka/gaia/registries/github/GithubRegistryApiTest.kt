@@ -6,7 +6,6 @@ import io.codeka.gaia.teams.OAuth2User
 import io.codeka.gaia.teams.User
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.internal.Base64
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -17,7 +16,6 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.header
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 import java.nio.charset.Charset
-
 
 @RestClientTest(GithubRegistryApi::class)
 @AutoConfigureWebClient(registerRestTemplate = true)

@@ -1,6 +1,6 @@
 package io.codeka.gaia.registries.gitlab
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonAlias
 import io.codeka.gaia.registries.AbstractRegistryApi
 import io.codeka.gaia.registries.RegistryType
 import io.codeka.gaia.registries.SourceRepository

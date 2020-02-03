@@ -5,7 +5,6 @@ import io.codeka.gaia.modules.bo.Variable
 import io.codeka.gaia.modules.repository.TerraformModuleRepository
 import io.codeka.gaia.registries.RegistryDetails
 import io.codeka.gaia.registries.RegistryType
-import io.codeka.gaia.registries.github.GithubRepository
 import io.codeka.gaia.teams.OAuth2User
 import io.codeka.gaia.teams.User
 import io.codeka.gaia.test.MongoContainer
@@ -17,8 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer
@@ -39,7 +36,7 @@ import java.time.LocalDateTime
 @Testcontainers
 @AutoConfigureWebClient
 @AutoConfigureMockMvc
-class GithubRegistryControllerIT{
+class GithubRegistryControllerIT {
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -62,7 +59,7 @@ class GithubRegistryControllerIT{
     private lateinit var githubRegistryController: GithubRegistryController
 
     @Test
-    fun validateTestConfiguration(){
+    fun validateTestConfiguration() {
         assertThat(mockMvc).isNotNull
         assertThat(objectMapper).isNotNull
         assertThat(githubRegistryController).isNotNull
@@ -70,7 +67,7 @@ class GithubRegistryControllerIT{
     }
 
     @Test
-    fun testGetRepositories(){
+    fun testGetRepositories() {
         // given
         val server = MockRestServiceServer.bindTo(restTemplate).build()
         server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
@@ -94,16 +91,13 @@ class GithubRegistryControllerIT{
     }
 
     @Test
-    fun testImportRepository(){
+    fun testImportRepository() {
         // given
         val server = MockRestServiceServer.bindTo(restTemplate).build()
 
         server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo.json"), MediaType.APPLICATION_JSON))
-
-        server.expect(requestTo("https://releases.hashicorp.com/terraform/"))
-                .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/hashicorp/releases.html"), MediaType.TEXT_HTML))
 
         server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/variables.tf?ref=master"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
@@ -130,7 +124,7 @@ class GithubRegistryControllerIT{
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://github.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITHUB, "selmak/terraform-docker-mongo"))
-        assertThat(importedModule.cliVersion).isEqualTo("0.12.19")
+        assertThat(importedModule.terraformImage.tag).isEqualTo("latest")
 
         assertThat(importedModule.variables).containsExactly(
                 Variable("mongo_container_name", "string", "name of the container"),

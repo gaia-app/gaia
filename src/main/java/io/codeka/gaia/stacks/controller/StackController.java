@@ -65,7 +65,7 @@ public class StackController {
 
         // create a new job
         var job = new Job(jobType, stackId, user);
-        job.setCliVersion(module.getCliVersion());
+        job.setTerraformImage(module.getTerraformImage());
         jobRepository.save(job);
         model.addAttribute("jobId", job.getId());
 

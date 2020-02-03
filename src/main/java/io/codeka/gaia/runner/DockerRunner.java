@@ -52,11 +52,11 @@ public class DockerRunner {
             // FIXME This is certainly no thread safe !
             var containerConfig = containerConfigBuilder
                     .env(env)
-                    .image("hashicorp/terraform:" + job.getCliVersion())
+                    .image(job.getTerraformImage().image())
                     .build();
 
             // pull the image
-            dockerClient.pull("hashicorp/terraform:" + job.getCliVersion());
+            dockerClient.pull(containerConfig.image());
 
             var containerCreation = dockerClient.createContainer(containerConfig);
             var containerId = containerCreation.id();

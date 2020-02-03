@@ -30,8 +30,8 @@ public class TerraformModule {
 
     private String description;
 
-    @NotBlank
-    private String cliVersion;
+    @Valid
+    private TerraformImage terraformImage = TerraformImage.Companion.defaultInstance();
 
     @DBRef
     private List<Team> authorizedTeams = new ArrayList<>();
@@ -102,12 +102,12 @@ public class TerraformModule {
         this.variables = variables;
     }
 
-    public String getCliVersion() {
-        return cliVersion;
+    public TerraformImage getTerraformImage() {
+        return terraformImage;
     }
 
-    public void setCliVersion(String cliVersion) {
-        this.cliVersion = cliVersion;
+    public void setTerraformImage(TerraformImage terraformImage) {
+        this.terraformImage = terraformImage;
     }
 
     public List<Team> getAuthorizedTeams() {

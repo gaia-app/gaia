@@ -1,9 +1,9 @@
 package io.codeka.gaia.registries.github;
 
+import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.registries.RegistryDetails;
 import io.codeka.gaia.registries.RegistryFile;
 import io.codeka.gaia.registries.RegistryType;
-import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.teams.OAuth2User;
 import io.codeka.gaia.teams.User;
 import org.bson.internal.Base64;
@@ -22,7 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
