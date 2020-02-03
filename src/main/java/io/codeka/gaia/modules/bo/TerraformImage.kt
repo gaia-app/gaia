@@ -3,7 +3,7 @@ package io.codeka.gaia.modules.bo
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
-data class TerraformImage @JvmOverloads constructor(
+data class TerraformImage constructor(
         @field:NotBlank @field:Pattern(regexp = """^[\w][\w.\-\/]{0,127}$""") val repository: String,
         @field:NotBlank val tag: String) {
 
