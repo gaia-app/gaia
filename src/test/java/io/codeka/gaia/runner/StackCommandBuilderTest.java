@@ -1,6 +1,7 @@
 package io.codeka.gaia.runner;
 
 import com.github.mustachejava.DefaultMustacheFactory;
+import io.codeka.gaia.config.security.StateApiSecurityConfig;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.modules.bo.Variable;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
@@ -35,7 +36,10 @@ class StackCommandBuilderTest {
     @BeforeEach
     void setup() {
         var mustache = new DefaultMustacheFactory().compile("mustache/terraform.mustache");
-        stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache, List.of(registryOAuth2Provider));
+
+        var stateApiSecurityProperties = new StateApiSecurityConfig.StateApiSecurityProperties("gaia-backend", "password");
+
+        stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache, List.of(registryOAuth2Provider), stateApiSecurityProperties);
     }
 
     @Test
