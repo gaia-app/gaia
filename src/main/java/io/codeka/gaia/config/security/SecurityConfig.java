@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // configure default admin user
         auth
             .inMemoryAuthentication()
-                .withUser("admin").password(bcrypt().encode(adminPassword)).authorities("ROLE_ADMIN")
+                .withUser("admin").password(bcrypt().encode(adminPassword)).authorities("ROLE_ADMIN", "ROLE_USER")
                 .and()
                 .withUser("user").password(bcrypt().encode("user123")).authorities("ROLE_USER");
     }

@@ -32,7 +32,7 @@ public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/api/state/**")
                 .authorizeRequests()
-                    .anyRequest().hasRole("STATE")
+                    .anyRequest().hasAnyRole("STATE", "USER")
                 .and()
                 .httpBasic();
     }
