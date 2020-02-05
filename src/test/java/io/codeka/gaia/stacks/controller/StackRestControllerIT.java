@@ -57,8 +57,8 @@ class StackRestControllerIT {
     void listStacks_shouldReturnAllStacks_forAdmin() throws Exception {
         mockMvc.perform(get("/api/stacks"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$..name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited")))
+                .andExpect(jsonPath("$", hasSize(4)))
+                .andExpect(jsonPath("$..name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo")))
                 .andExpect(jsonPath("$..ownerTeam.id", contains("Ze Team", "Ze Team", "Not Ze Team")));
     }
 

@@ -48,5 +48,28 @@ gaia.stack.insert([
         "createdAt": new Date(),
         "updatedBy": null,
         "updatedAt": null
+    },
+    {
+        "_id" : "de28a01f-257a-448d-8e1b-00e4e3a41db2",
+        "moduleId" : "e01f9925-a559-45a2-8a55-f93dc434c676",
+        "variableValues" : {
+            "mongo_container_name" : "local-mongo",
+            "mongo_exposed_port" : "28017"
+        },
+        "name" : "local-mongo",
+        "description" : "local docker mongo container",
+        "state" : "RUNNING",
+        "estimatedRunningCost" : "0",
+        "createdBy" : {
+            "$ref" : "user",
+            "$id" : "admin"
+        },
+        "createdAt" : ISODate("2020-02-03T17:57:07.341Z"),
+        "updatedBy" : {
+            "$ref" : "user",
+            "$id" : "admin"
+        },
+        "updatedAt" : ISODate("2020-02-05T07:01:29.935Z"),
+        "_class" : "io.codeka.gaia.stacks.bo.Stack"
     }
 ]);
