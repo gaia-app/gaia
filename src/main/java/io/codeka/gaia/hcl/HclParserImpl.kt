@@ -12,7 +12,7 @@ interface HclParser {
     fun parseContent(content: String): HclVisitor
     fun parseVariables(content: String): List<Variable>
     fun parseOutputs(content: String): List<Output>
-    fun parseProvider(fileContent: String): String
+    fun parseProvider(content: String): String
 }
 
 @Service

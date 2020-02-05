@@ -1,6 +1,7 @@
 package io.codeka.gaia.runner;
 
 import com.github.mustachejava.Mustache;
+import io.codeka.gaia.config.security.StateApiSecurityConfig;
 import io.codeka.gaia.modules.bo.TerraformModule;
 import io.codeka.gaia.registries.RegistryOAuth2Provider;
 import io.codeka.gaia.settings.bo.Settings;
@@ -23,14 +24,16 @@ import java.util.function.BiFunction;
 public class StackCommandBuilder {
 
     private Settings settings;
+    private StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties;
     private Mustache terraformMustache;
     private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers) {
+    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
         this.registryOAuth2Providers = registryOAuth2Providers;
+        this.stateApiSecurityProperties = stateApiSecurityProperties;
     }
 
     /**
@@ -53,6 +56,8 @@ public class StackCommandBuilder {
                                BiFunction<Stack, TerraformModule, String> command) {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
+                .setStateApiUser(stateApiSecurityProperties.getUsername())
+                .setStateApiPassword(stateApiSecurityProperties.getPassword())
                 .setStackId(stack.getId())
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
                 .setTerraformImage(job.getTerraformImage().image());

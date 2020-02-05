@@ -24,6 +24,9 @@ public class UserControllerAdvice {
         if (authentication == null) {
             return null;
         }
+        if ("gaia-backend".equals(authentication.getName())) {
+            return null;
+        }
         return userRepository.findById(authentication.getName()).orElseThrow();
     }
 
@@ -31,6 +34,10 @@ public class UserControllerAdvice {
     public Team userTeam(Authentication authentication, @ModelAttribute User user) {
         // in case of anonymous access (like healthcheck)
         if (authentication == null) {
+            return null;
+        }
+        // in case of state access only
+        if ("gaia-backend".equals(authentication.getName())) {
             return null;
         }
         return user.getTeam();

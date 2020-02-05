@@ -11,6 +11,8 @@ public class TerraformScript {
     private String externalUrl;
     private String stackId;
     private String command;
+    private String stateApiUser;
+    private String stateApiPassword;
 
     public String getTerraformImage() {
         return terraformImage;
@@ -63,6 +65,24 @@ public class TerraformScript {
 
     public TerraformScript setCommand(String command) {
         this.command = command;
+        return this;
+    }
+
+    public String getStateApiUser() {
+        return stateApiUser;
+    }
+
+    public TerraformScript setStateApiUser(String stateApiUser) {
+        this.stateApiUser = stateApiUser;
+        return this;
+    }
+
+    public String getStateApiPassword() {
+        return stateApiPassword;
+    }
+
+    public TerraformScript setStateApiPassword(String stateApiPassword) {
+        this.stateApiPassword = stateApiPassword;
         return this;
     }
 }

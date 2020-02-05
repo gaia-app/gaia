@@ -40,7 +40,11 @@ public class SeleniumIT {
     private static MongoContainer mongoContainer = new MongoContainer()
             .withScript("src/test/resources/db/00_team.js")
             .withScript("src/test/resources/db/10_user.js")
-            .withScript("src/test/resources/db/20_module.js");
+            .withScript("src/test/resources/db/20_module.js")
+            .withScript("src/test/resources/db/30_stack.js")
+            .withScript("src/test/resources/db/40_job.js")
+            .withScript("src/test/resources/db/50_step.js")
+            .withScript("src/test/resources/db/60_terraformState.js");
 
     private static WebDriver driver;
 
@@ -75,7 +79,7 @@ public class SeleniumIT {
 
     @Test
     @Order(1) // this test runs first as it logs the user in !
-    void loginPage() throws IOException {
+    void loginPage() {
         driver.get(testUrl());
         driver.manage().window().setSize(new Dimension(1280,800));
 
@@ -93,7 +97,7 @@ public class SeleniumIT {
         var page = PageFactory.initElements(driver, DashboardPage.class);
 
         assertEquals(3, page.modulesCount());
-        assertEquals(0, page.stacksCount());
+        assertEquals(1, page.stacksCount());
         assertEquals(0, page.stacksToUpdateCount());
 
         percy.snapshot("Dashboard");
@@ -121,6 +125,28 @@ public class SeleniumIT {
         assertThat(page.terraformImageTag()).isEqualTo("0.11.14");
 
         percy.snapshot("Module Details");
+    }
+
+    @Test
+    void stackPage_showsStackDetails() throws IOException {
+        driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2");
+
+        var page = new StackPage(driver);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
+
+        assertThat(page.stackName()).isEqualTo("local-mongo");
+
+        percy.snapshot("Stack Details");
+    }
+
+    @Test
+    void jobPage_showsJobDetails() throws IOException {
+        driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2/jobs/5e856dc7-6bed-465f-abf1-02980206ab2a");
+
+        var page = new JobPage(driver);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
+
+        percy.snapshot("Job Details");
     }
 
     void takeScreenshot() throws IOException {
