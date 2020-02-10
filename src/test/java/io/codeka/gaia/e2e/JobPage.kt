@@ -12,4 +12,9 @@ class JobPage(webDriver: WebDriver) {
         }
     }
 
+    @FindBy(className="job-detail-title")
+    private lateinit var jobDetailTitle: WebElement
+
+    fun jobDetailTitle() : String = jobDetailTitle.text
+
 }
