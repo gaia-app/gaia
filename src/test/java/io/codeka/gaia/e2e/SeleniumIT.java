@@ -91,7 +91,7 @@ public class SeleniumIT {
     }
 
     @Test
-    void dashboardPage_showsModuleCount() throws IOException {
+    void dashboardPage_showsModuleCount() {
         driver.get(testUrl()+"/");
 
         var page = PageFactory.initElements(driver, DashboardPage.class);
@@ -104,7 +104,7 @@ public class SeleniumIT {
     }
 
     @Test
-    void modulesPage_showsModules() throws IOException {
+    void modulesPage_showsModules() {
         driver.get(testUrl()+"/modules");
 
         var page = PageFactory.initElements(driver, ModulesPage.class);
@@ -114,7 +114,7 @@ public class SeleniumIT {
     }
 
     @Test
-    void modulePage_showsModuleDetails() throws IOException {
+    void modulePage_showsModuleDetails() {
         driver.get(testUrl()+"/modules/e01f9925-a559-45a2-8a55-f93dc434c676");
 
         var page = new ModulePage(driver);
@@ -128,7 +128,7 @@ public class SeleniumIT {
     }
 
     @Test
-    void stackPage_showsStackDetails() throws IOException {
+    void stackPage_showsStackDetails() {
         driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2");
 
         var page = new StackPage(driver);
@@ -140,11 +140,13 @@ public class SeleniumIT {
     }
 
     @Test
-    void jobPage_showsJobDetails() throws IOException {
+    void jobPage_showsJobDetails() {
         driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2/jobs/5e856dc7-6bed-465f-abf1-02980206ab2a");
 
         var page = new JobPage(driver);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
+
+        assertThat(page.jobDetailTitle()).isEqualTo("Job 5e856dc7-6bed-465f-abf1-02980206ab2a");
 
         percy.snapshot("Job Details");
     }
