@@ -4,8 +4,8 @@ import { Multiselect } from 'vue-multiselect';
 import fontawesomeConfig from '@/shared/config/fontawesome-config';
 import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
 
-import App from './app.vue';
-import router from './app-routes';
+import App from '@/app.vue';
+import router from '@/app-routes';
 
 fontawesomeConfig.init();
 bootstrapVueConfig.init();
