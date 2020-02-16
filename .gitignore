@@ -23,3 +23,6 @@ yarn-error.log*
 *.sln
 *.sw?
 *.iml
+
+# where frontend is build
+src/main/resources/public
