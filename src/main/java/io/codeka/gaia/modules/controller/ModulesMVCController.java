@@ -30,17 +30,17 @@ public class ModulesMVCController {
         this.terraformModuleGitRepository = terraformModuleGitRepository;
     }
 
-    @GetMapping("/modules")
+//    @GetMapping("/modules")
     public String modulesList(){
         return "modules";
     }
 
-    @GetMapping("/modules/import")
+//    @GetMapping("/modules/import")
     public String importModule() {
         return "modules_import";
     }
 
-    @GetMapping("/modules/{id}")
+//    @GetMapping("/modules/{id}")
     public String module(@PathVariable String id, Model model, User user){
         var module = terraformModuleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
         if(!module.isAuthorizedFor(user)){
@@ -50,7 +50,7 @@ public class ModulesMVCController {
         return "module";
     }
 
-    @GetMapping("/modules/{id}/description")
+//    @GetMapping("/modules/{id}/description")
     public String description(@PathVariable String id, Model model) {
         model.addAttribute("module", terraformModuleRepository.findById(id).orElseThrow());
         return "module_description";

@@ -33,18 +33,18 @@ public class StackController {
         this.jobRepository = jobRepository;
     }
 
-    @GetMapping("/modules/{moduleId}/run")
+//    @GetMapping("/modules/{moduleId}/run")
     public String newStack(@PathVariable String moduleId, Model model) {
         model.addAttribute("moduleId", moduleId);
         return "new_stack";
     }
 
-    @GetMapping("/stacks")
+//    @GetMapping("/stacks")
     public String listStacks() {
         return "stacks";
     }
 
-    @GetMapping("/stacks/{stackId}")
+//    @GetMapping("/stacks/{stackId}")
     public String editStack(@PathVariable String stackId, Model model) {
         // checking if the stack exists
         // TODO throw an exception (404) if not
@@ -54,7 +54,7 @@ public class StackController {
         return "stack";
     }
 
-    @GetMapping("/stacks/{stackId}/{jobType}")
+//    @GetMapping("/stacks/{stackId}/{jobType}")
     public String launchJob(@PathVariable String stackId, @PathVariable JobType jobType, Model model, User user) {
         // get the stack
         var stack = this.stackRepository.findById(stackId).orElseThrow(StackNotFoundException::new);
@@ -72,7 +72,7 @@ public class StackController {
         return "job";
     }
 
-    @GetMapping("/stacks/{stackId}/jobs/{jobId}")
+//    @GetMapping("/stacks/{stackId}/jobs/{jobId}")
     public String viewJob(@PathVariable String stackId, @PathVariable String jobId, Model model) {
         // checking if the stack exists
         // TODO throw an exception (404) if not

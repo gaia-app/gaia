@@ -27,7 +27,7 @@ public class SettingsController {
         this.settingsRepository = settingsRepository;
     }
 
-    @GetMapping("/settings")
+//    @GetMapping("/settings")
     public String settings(Model model){
         model.addAttribute("settings", settings);
 

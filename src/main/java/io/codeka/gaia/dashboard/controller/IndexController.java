@@ -21,7 +21,7 @@ public class IndexController {
         this.stackRepository = stackRepository;
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String index(Model model, User user, Team userTeam){
         long moduleCount = 0;
         long runningStackCount = 0;
