@@ -16,7 +16,7 @@ public class LoginController {
         this.oAuth2ClientProperties = oAuth2ClientProperties;
     }
 
-    @GetMapping("/login")
+//    @GetMapping("/login")
     public String login(Model model) {
         if (oAuth2ClientProperties != null) {
             model.addAttribute("clients", oAuth2ClientProperties.getRegistration().keySet());
