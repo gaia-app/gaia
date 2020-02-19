@@ -41,4 +41,18 @@ module.exports = {
         ],
       }]]);
   },
+  devServer: {
+    port: 3200,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:8080',
+        ws: true,
+        changeOrigin: false,
+      },
+    },
+  },
 };
