@@ -1,17 +1,15 @@
-import { isUserAuthenticated } from '../../shared/services';
-
 const stacksRoutes = [
   {
     path: '/stacks',
     name: 'stacks',
     component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stacks.vue'),
-    beforeEnter: isUserAuthenticated,
+    meta: { authorities: ['ROLE_USER'] },
   },
   {
     path: '/stacks/:id',
     name: 'stack',
     component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack.vue'),
-    beforeEnter: isUserAuthenticated,
+    meta: { authorities: ['ROLE_USER'] },
     children: [
       {
         path: 'add',

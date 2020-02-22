@@ -5,7 +5,7 @@ import fontawesomeConfig from '@/shared/config/fontawesome-config';
 import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
 
 import App from '@/app.vue';
-import router from '@/app-routes';
+import router from '@/router';
 import store from '@/shared/store';
 
 fontawesomeConfig.init();
