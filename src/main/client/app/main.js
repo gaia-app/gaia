@@ -6,6 +6,7 @@ import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
 
 import App from '@/app.vue';
 import router from '@/app-routes';
+import store from '@/shared/store';
 
 fontawesomeConfig.init();
 bootstrapVueConfig.init();
@@ -15,5 +16,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount('#app');
