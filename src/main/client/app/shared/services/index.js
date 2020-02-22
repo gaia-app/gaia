@@ -1,4 +1,4 @@
-export * from './authentication/authentication.js';
+export { authenticationGuard } from './authentication-guard';
 export {
   getRequestedUrl,
   setRequestedUrl,

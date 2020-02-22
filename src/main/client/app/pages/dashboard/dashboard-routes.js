@@ -1,5 +1,3 @@
-import { isUserAuthenticated } from '@/shared/services';
-
 import AppDashboard from '@/pages/dashboard/dashboard.vue';
 
 const dashboardRoutes = [
@@ -7,7 +5,7 @@ const dashboardRoutes = [
     path: '/dashboard',
     name: 'dashboard',
     component: AppDashboard,
-    beforeEnter: isUserAuthenticated,
+    meta: { authorities: ['ROLE_USER'] },
   },
 ];
 
