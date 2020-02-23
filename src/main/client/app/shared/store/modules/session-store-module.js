@@ -1,7 +1,7 @@
 import {
   doLogin,
   doLogout,
-  getRoles,
+  getAuthorities,
   getUser,
 } from '@/shared/api';
 
@@ -9,26 +9,36 @@ const sessionState = {
   login: false,
   authenticated: false,
   user: null,
-  roles: null,
+  authorities: null,
 };
 
-const sessionGetters = {};
+const sessionGetters = {
+  hasAuthorities: (state) => (authorities) => {
+    if (!state.authenticated || !state.authorities) return false;
+
+    let authoritiesToCheck = authorities;
+    if (typeof authorities === 'string') {
+      authoritiesToCheck = [authorities];
+    }
+    return authoritiesToCheck.some((role) => state.authorities.includes(role));
+  },
+};
 
 const sessionMutations = {
   login: (state) => {
     state.login = true;
   },
-  authenticated: (state, { user, roles }) => {
+  authenticated: (state, { user, authorities }) => {
     state.login = false;
     state.authenticated = true;
     state.user = user;
-    state.roles = roles;
+    state.authorities = authorities;
   },
   logout: (state) => {
     state.login = false;
     state.authenticated = false;
     state.user = null;
-    state.roles = null;
+    state.authorities = null;
   },
 };
 
@@ -40,8 +50,8 @@ const sessionActions = {
   },
   authenticated: async ({ commit }) => {
     const user = await getUser();
-    const roles = await getRoles();
-    commit('authenticated', { user, roles });
+    const authorities = await getAuthorities();
+    commit('authenticated', { user, authorities });
   },
   logout: async ({ commit }) => {
     await doLogout();
