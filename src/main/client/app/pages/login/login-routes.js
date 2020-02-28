@@ -5,6 +5,7 @@ const loginRoutes = [
     path: '/login',
     name: 'login',
     component: AppLoginForm,
+    meta: { layout: 'none' },
   },
 ];
 

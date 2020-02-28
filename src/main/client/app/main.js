@@ -4,6 +4,7 @@ import { Multiselect } from 'vue-multiselect';
 import fontawesomeConfig from '@/shared/config/fontawesome-config';
 import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
 
+import { AppNoneLayout } from '@/layouts';
 import App from '@/app.vue';
 import router from '@/router';
 import store from '@/shared/store';
@@ -11,6 +12,9 @@ import store from '@/shared/store';
 fontawesomeConfig.init();
 bootstrapVueConfig.init();
 Vue.use(Multiselect);
+
+// layout definitions
+Vue.component('app-none-layout', AppNoneLayout);
 
 Vue.config.productionTip = false;
 
