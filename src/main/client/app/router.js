@@ -27,11 +27,13 @@ const appRoutes = [
     path: '/not-found',
     name: 'page-not-found',
     component: AppPageNotFound,
+    meta: { layout: 'error' },
   },
   {
     path: '/forbidden',
     name: 'page-forbidden',
     component: AppPageForbidden,
+    meta: { layout: 'error' },
   },
 ];
 
