@@ -8,14 +8,14 @@ import {
 const sessionState = {
   login: false,
   authenticated: false,
-  user: null,
-  authorities: null,
+  user: {},
+  authorities: [],
 };
 
 const sessionGetters = {
   hasAuthorities: (state) => (authorities) => {
     if (!state.authenticated || !state.authorities) return false;
-
+    if (!authorities) return true;
     let authoritiesToCheck = authorities;
     if (typeof authorities === 'string') {
       authoritiesToCheck = [authorities];
@@ -37,8 +37,8 @@ const sessionMutations = {
   logout: (state) => {
     state.login = false;
     state.authenticated = false;
-    state.user = null;
-    state.authorities = null;
+    state.user = {};
+    state.authorities = [];
   },
 };
 
