@@ -5,3 +5,8 @@ export {
   hasRequestedUrl,
   removeRequestedUrl,
 } from './session-storage-service';
+export {
+  getCookie,
+  setCookie,
+  isCookieExisting,
+} from './cookie-service';
