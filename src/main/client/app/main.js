@@ -5,6 +5,7 @@ import fontawesomeConfig from '@/shared/config/fontawesome-config';
 import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
 
 import {
+  AppDefaultLayout,
   AppErrorLayout,
   AppNoneLayout,
 } from '@/layouts';
@@ -17,6 +18,7 @@ bootstrapVueConfig.init();
 Vue.use(Multiselect);
 
 // layout definitions
+Vue.component('app-default-layout', AppDefaultLayout);
 Vue.component('app-error-layout', AppErrorLayout);
 Vue.component('app-none-layout', AppNoneLayout);
 

@@ -1,79 +1,12 @@
 /*------------------------------------------------------------------
     File Name: color_2.css
 -------------------------------------------------------------------*/
-
-.topbar .navbar {
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.sidebar_user_info {
-  background: #fff;
-}
-
-.sidebar_toggle {
-  background: #0971b8;
-}
-
-.icon_info ul.user_profile_dd > li {
-  background: #0971b8;
-}
-
-.icon_info span.badge {
-  background: #0971b8;
-}
-
-.icon_info ul li a {
-  color: #333;
-}
-
-.user_info h6 {
-  color: #222;
-}
-
 .counter_section .counter_no p.total_no {
   color: #fff;
 }
 
 .counter_section .counter_no p.head_couter {
   color: rgba(255, 255, 255, .7);
-}
-
-#sidebar h4 {
-  background: #f3f3f3;
-  color: #222;
-  border-bottom: none;
-}
-
-#sidebar {
-  background-color: #fff;
-}
-
-#sidebar ul.components ul {
-  background: #fff;
-  padding: 0;
-}
-
-#sidebar ul.components li ul li a {
-  border-top: solid #ddd 1px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-#sidebar ul li a {
-  color: #222;
-}
-
-#sidebar ul.components ul li a {
-  color: #333;
-}
-
-#sidebar ul.components ul li a:hover {
-  color: #0971b8;
-}
-
-#sidebar ul li a:hover, #sidebar ul li a:focus {
-  color: #222;
 }
 
 .dark_bg {
