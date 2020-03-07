@@ -70,6 +70,7 @@ class SecurityConfig constructor(
             .antMatchers("/auth/user").authenticated()
             .antMatchers("/auth/authorities").authenticated()
             .antMatchers("/auth/providers").permitAll()
+            .antMatchers("/build-info").permitAll()
         // @formatter:on
     }
 

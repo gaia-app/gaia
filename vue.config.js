@@ -48,7 +48,7 @@ module.exports = {
       errors: true,
     },
     proxy: {
-      '^/(api|auth)': {
+      '^/(api|auth|build-info)': {
         target: 'http://localhost:8080',
         ws: true,
         changeOrigin: false,
