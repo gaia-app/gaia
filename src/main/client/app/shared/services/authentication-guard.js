@@ -5,12 +5,13 @@ import {
   removeRequestedUrl,
   setRequestedUrl,
 } from '@/shared/services/session-storage-service';
+import { isCookieExisting } from '@/shared/services/cookie-service';
 
 const isPageAuthenticated = (to) => to.meta && to.meta.authorities && to.meta.authorities.length > 0;
 
 const isUserAuthenticated = () => store.state.session.authenticated;
 
-const hasCookieSession = () => document.cookie.includes('XSRF-TOKEN') || document.cookie.includes('remember-me');
+const hasCookieSession = () => isCookieExisting('XSRF-TOKEN') || isCookieExisting('remember-me');
 
 const redirectToLogin = (to, next) => {
   setRequestedUrl(to.fullPath);
