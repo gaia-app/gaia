@@ -13,7 +13,7 @@
     <div class="center">
       <router-link
         class="btn btn-success"
-        to="/"
+        :to="{ name: 'home'}"
       >
         Go To Home Page
       </router-link>
