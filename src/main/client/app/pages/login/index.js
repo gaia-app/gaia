@@ -1,1 +1,1 @@
-export { default as loginRoutes } from './login-routes';
+export { default as loginRoutes } from '@/pages/login/login-routes';

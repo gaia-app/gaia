@@ -1,1 +1,1 @@
-export { default as modulesRoutes } from './modules-routes';
+export { default as modulesRoutes } from '@/pages/modules/modules-routes';

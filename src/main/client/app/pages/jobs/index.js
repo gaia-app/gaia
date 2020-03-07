@@ -1,1 +1,1 @@
-export { default as jobsRoutes } from './jobs-routes';
+export { default as jobsRoutes } from '@/pages/jobs/jobs-routes';

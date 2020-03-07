@@ -4,5 +4,5 @@ export {
   getUser,
   getAuthorities,
   doLogout,
-} from './authentication-api';
-export { getBuildInfo } from './build-infos-api';
+} from '@/shared/api/authentication-api';
+export { getBuildInfo } from '@/shared/api/build-infos-api';
