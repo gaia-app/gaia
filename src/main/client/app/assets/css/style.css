@@ -271,10 +271,6 @@ a.btn {
   color: #000;
 }
 
-#sidebarCollapse i {
-  color: #FFF;
-}
-
 .lead {
   font-size: 18px;
   line-height: 30px;
@@ -595,318 +591,6 @@ a:focus {
   margin: 0;
 }
 
-.inner_container {
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-
-/*==============
-    - topbar
-==============*/
-
-.topbar {
-  position: fixed;
-  width: 100%;
-  padding-left: 280px;
-  z-index: 2;
-  background: #15283c;
-  top: 0;
-  transition: ease all 0.3s;
-  left: 0;
-}
-
-#sidebar.active + #content .topbar {
-  padding-left: 90px;
-}
-
-.topbar .navbar {
-  margin: 0;
-}
-
-.right_topbar {
-  float: right;
-  padding: 0;
-}
-
-.icon_info {
-  float: left;
-  width: 100%;
-}
-
-.icon_info ul {
-  float: left;
-  width: auto;
-  list-style: none;
-  margin: 0;
-}
-
-.icon_info ul li {
-  float: left;
-  width: 35px;
-  height: 35px;
-  border-radius: 100%;
-  text-align: center;
-  line-height: 35px;
-  position: relative;
-  margin: 15px 0 0 5px;
-}
-
-.icon_info ul li .fa-question-circle {
-  font-size: 21px;
-  position: relative;
-  top: 1px;
-}
-
-.icon_info ul li a {
-  color: #fff;
-  font-size: 18px;
-  font-weight: normal;
-}
-
-.icon_info ul li a img {
-  width: 35px;
-}
-
-.icon_info ul.user_profile_dd li {
-  width: auto;
-}
-
-.icon_info ul.user_profile_dd > li span {
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  padding: 0 35px 0 10px;
-}
-
-.icon_info ul.user_profile_dd li > a::after {
-  color: #fff;
-}
-
-.icon_info ul.user_profile_dd {
-  float: left;
-  margin: 0 0 0 25px;
-}
-
-.icon_info ul.user_profile_dd li a {
-  cursor: pointer;
-}
-
-.icon_info ul.user_profile_dd > li {
-  width: auto;
-  border-radius: 0;
-  background: #ff5722;
-  margin: 0;
-  padding: 4px 0 4px 20px;
-  height: auto;
-}
-
-.sidebar_toggle {
-  border: none;
-  padding: 14px 26px 14px;
-  font-size: 21px;
-  background: #ff5722;
-  margin-right: 0;
-  cursor: pointer;
-  float: left;
-}
-
-.icon_info span.badge {
-  font-size: 10px;
-  line-height: 16px;
-  padding: 2px 6px;
-  position: absolute;
-  right: -2px;
-  top: -7px;
-  background: #ff5722;
-  border-radius: 100%;
-  color: #fff;
-  font-weight: 600;
-  width: 19px;
-  height: 19px;
-}
-
-.icon_info ul.user_profile_dd li div a {
-  font-size: 15px;
-  color: #15283c;
-  padding: 4px 15px;
-  border-bottom: none;
-  line-height: normal;
-}
-
-.icon_info ul.user_profile_dd li div a span {
-  font-size: 13px;
-  color: #15283c;
-  font-weight: normal;
-  padding: 0;
-  transition: all .3s ease-in-out;
-  line-height: normal;
-}
-
-.icon_info ul.user_profile_dd li div a:hover,
-.icon_info ul.user_profile_dd li div a:focus {
-  background: #243147;
-  color: #fff;
-}
-
-.icon_info ul.user_profile_dd li div a:hover span,
-.icon_info ul.user_profile_dd li div a:focus span {
-  color: #fff;
-}
-
-.user_profile_dd .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  z-index: 1000;
-  float: left;
-  padding: 10px 6px;
-  margin: 0;
-  font-size: 15px;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border-radius: 0;
-  width: 100%;
-  box-shadow: -1px 1px 4px -2px rgba(0, 0, 0, 0.2);
-  border: none;
-}
-
-
-/**-- sidebar --**/
-
-.navbar-btn {
-  box-shadow: none;
-  outline: none !important;
-  border: none;
-}
-
-.line {
-  width: 100%;
-  height: 1px;
-  border-bottom: 1px dashed #ddd;
-  margin: 40px 0;
-}
-
-i,
-span {
-  display: inline-block;
-}
-
-#sidebar {
-  min-width: 280px;
-  max-width: 280px;
-  background-color: #15283c;
-  color: #fff;
-  transition: all 0.3s;
-  position: relative;
-  z-index: 11;
-  box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.4);
-  float: left;
-  width: 100%;
-  position: fixed;
-  height: 100%;
-  overflow: auto;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.sidebar-part {
-  float: left;
-  width: 100%;
-}
-
-.sidebar-footer {
-  background: #f3f3f3;
-  color: #222;
-  padding: 21px 25px 19px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#sidebar ul li a {
-  text-align: left;
-}
-
-#sidebar .sidebar-header strong {
-  display: none;
-  font-size: 1.8em;
-}
-
-#sidebar ul.components {
-  padding: 15px 0;
-  margin: 0;
-  float: left;
-  width: 100%;
-}
-
-#sidebar ul li a {
-  padding: 15px 25px;
-  display: block;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 300;
-}
-
-#sidebar ul li a:hover,
-#sidebar ul li a:focus {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-#sidebar ul.components li {
-  position: relative;
-}
-
-#sidebar ul.components ul {
-  background: #214162;
-  padding: 20px 0;
-}
-
-#sidebar ul.components ul li a {
-  font-size: 13px;
-  color: rgba(255, 255, 255, .7);
-  padding: 7px 35px;
-}
-
-#sidebar ul.components ul li a:hover {
-  color: #fff;
-  background: transparent;
-  padding-left: 45px;
-}
-
-#sidebar ul li a i {
-  margin-right: 20px;
-  width: 15px;
-  font-size: 20px;
-  float: left;
-}
-
-.bottom_sidebar ul li {
-  float: left;
-  width: 50%;
-  list-style: none;
-}
-
-a[data-toggle="collapse"] {
-  position: relative;
-}
-
-#content {
-  width: 100%;
-  min-height: 100vh;
-  transition: ease all 0.3s;
-  position: relative;
-  padding: 60px 25px 25px 305px;
-  background: #f8f8f8;
-}
-
 .page_title, .page_controls {
   background: #fff;
   margin-top: 0;
@@ -929,10 +613,6 @@ a[data-toggle="collapse"] {
   color: #15283c;
 }
 
-#sidebar.active + #content {
-  padding-left: 115px;
-}
-
 .topbar .navbar {
   padding: 0;
   background: #15283c;
@@ -940,13 +620,8 @@ a[data-toggle="collapse"] {
   border-radius: 0;
 }
 
-.user_profle_side {
+.user_profile_side {
   display: flex;
-}
-
-.sidebar_user_info {
-  padding: 15px 25px;
-  background: #214162;
 }
 
 .user_img img {
@@ -970,7 +645,6 @@ a[data-toggle="collapse"] {
   /* Safari 4.0 - 8.0 */
   animation: online 2s infinite
 }
-
 
 /* Safari 4.0 - 8.0 */
 
@@ -1026,29 +700,12 @@ a[data-toggle="collapse"] {
   margin: 8px 15px 0;
 }
 
-#sidebar.active .logo_section a {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .logo_section img.logo_icon {
   margin: 0;
   text-align: center;
   padding: 8px 8px;
   height: 60px;
 }
-
-#sidebar h4 {
-  background: #15283c;
-  margin: 0;
-  padding: 21px 25px 19px;
-  font-weight: 500;
-  font-size: 18px;
-  color: #fff;
-  border-bottom: solid #ff5722 1px;
-}
-
 
 /*------------------------------------------------------------------
     5. content section
