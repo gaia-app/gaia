@@ -1,12 +1,12 @@
-export { authenticationGuard } from './authentication-guard';
+export { authenticationGuard } from '@/shared/services/authentication-guard';
 export {
   getRequestedUrl,
   setRequestedUrl,
   hasRequestedUrl,
   removeRequestedUrl,
-} from './session-storage-service';
+} from '@/shared/services/session-storage-service';
 export {
   getCookie,
   setCookie,
   isCookieExisting,
-} from './cookie-service';
+} from '@/shared/services/cookie-service';

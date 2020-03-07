@@ -1,1 +1,1 @@
-export { default as stacksRoutes } from './stacks-routes';
+export { default as stacksRoutes } from '@/pages/stacks/stacks-routes';

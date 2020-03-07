@@ -22,7 +22,7 @@
   @import '~bootstrap-vue/dist/bootstrap-vue.min.css';
   @import '~vue-multiselect/dist/vue-multiselect.min.css';
   /* application css */
-  @import "./assets/css/style.css";
-  @import "./assets/css/color_2.css";
-  @import "./assets/css/responsive.css";
+  @import "~@/assets/css/style.css";
+  @import "~@/assets/css/color_2.css";
+  @import "~@/assets/css/responsive.css";
 </style>
