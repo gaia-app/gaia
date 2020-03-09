@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate
 inline fun <reified T : Any> typeRef(): ParameterizedTypeReference<T> = object : ParameterizedTypeReference<T>() {}
 
 @Repository
-class DockerRegistryApi constructor(
+class DockerRegistryApi(
         @Value("\${docker.registry.api.url}") private val dockerRegistryApiUrl: String,
         private val restTemplate: RestTemplate) {
 

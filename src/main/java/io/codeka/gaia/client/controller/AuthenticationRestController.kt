@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
-class AuthenticationRestController constructor(
+class AuthenticationRestController(
     @Autowired(required = false) var oAuth2ClientProperties: OAuth2ClientProperties? = null) {
 
     @GetMapping("/user")

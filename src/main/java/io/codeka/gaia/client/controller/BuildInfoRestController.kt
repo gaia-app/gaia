@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/build-info")
-class BuildInfoRestController constructor(
+class BuildInfoRestController(
     @Autowired(required = false) var buildProperties: BuildProperties? = null,
     @Autowired(required = false) var gitProperties: GitProperties? = null) {
 
