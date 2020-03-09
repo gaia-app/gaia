@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("e2e")
+@Disabled("Disabled until complete migration of client")
 public class SeleniumIT {
 
     @LocalServerPort
