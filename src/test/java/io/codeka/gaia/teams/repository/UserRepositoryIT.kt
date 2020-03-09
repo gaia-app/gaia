@@ -37,7 +37,7 @@ class UserRepositoryIT {
         assertThat(result)
             .isNotNull
             .isPresent
-            .hasValueSatisfying { assertThat(it).isEqualTo("Samantha Carter") }
+            .hasValueSatisfying { assertThat(it.username).isEqualTo("Samantha Carter") }
     }
 
 }
