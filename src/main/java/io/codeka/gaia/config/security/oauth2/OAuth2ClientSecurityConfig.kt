@@ -12,7 +12,7 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher
 @Configuration
 @Order(70)
 @Conditional(ClientsConfiguredCondition::class)
-class OAuth2ClientSecurityConfig constructor(
+class OAuth2ClientSecurityConfig(
     val oAuth2SuccessHandler: OAuth2SuccessHandler) : WebSecurityConfigurerAdapter() {
 
     private final val oauth2Endpoint = "/auth/oauth2"

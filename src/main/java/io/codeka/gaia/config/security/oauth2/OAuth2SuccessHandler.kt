@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 @Conditional(ClientsConfiguredCondition::class)
-class OAuth2SuccessHandler constructor(
+class OAuth2SuccessHandler(
     userRepository: UserRepository,
     val registryOAuth2Providers: List<RegistryOAuth2Provider>,
     val oAuth2AuthorizedClientService: OAuth2AuthorizedClientService) : SuccessHandler(userRepository) {

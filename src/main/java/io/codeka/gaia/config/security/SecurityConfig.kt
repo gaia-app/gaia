@@ -14,7 +14,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig constructor(
+class SecurityConfig(
     val successHandler: SuccessHandler,
     val failureHandler: FailureHandler,
     val logoutSuccessHandler: LogoutSuccessHandler,

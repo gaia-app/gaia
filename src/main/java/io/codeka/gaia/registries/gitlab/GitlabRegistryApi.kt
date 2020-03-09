@@ -17,7 +17,7 @@ class GitlabRegistryApi(restTemplate: RestTemplate): AbstractRegistryApi<GitlabR
 /**
  * Gitlab source repository implementation
  */
-data class GitlabRepository constructor(
+data class GitlabRepository(
         @JsonAlias("id") override val id: String,
         @JsonAlias("path_with_namespace") override val fullName: String,
         @JsonAlias("web_url") override val htmlUrl: String): SourceRepository

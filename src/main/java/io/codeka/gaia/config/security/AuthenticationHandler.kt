@@ -33,7 +33,7 @@ data class ApiErrorResponse(
 }
 
 @Component
-class SuccessHandler constructor(val userRepository: UserRepository) : AuthenticationSuccessHandler {
+class SuccessHandler(val userRepository: UserRepository) : AuthenticationSuccessHandler {
 
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         if (!userRepository.existsById(authentication.name)) {
