@@ -49,6 +49,22 @@ Clone this repository, and just run `docker-compose up -d`.
 
 The docker-compose will start a Gaia server, listening on http://localhost:8080, and a MongoDb database.
 
+Default credentials for entering:
+
+- Admin account `ROLE_ADMIN`:
+
+  ```
+  Username: admin
+  Password: admin123
+  ```
+
+- User account `ROLE_USER`:
+
+  ```
+  Username: user
+  Password: user123
+  ```
+
 ## Contributors
 
 Gaia is made with ❤️ in  🇫🇷 by [Cyril DUBUISSON](https://github.com/cdubuisson) and [Julien WITTOUCK](https://github.com/juwit)
