@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,6 +93,7 @@ class StackRestControllerIT {
     @WithMockUser("Mary J")
     void saveStack_shouldBeAccessible_forStandardUser() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
                 .andExpect(status().isOk())
@@ -105,6 +107,7 @@ class StackRestControllerIT {
     @WithMockUser("Mary J")
     void updateStack_shouldBeAccessible_forStandardUser() throws Exception {
         mockMvc.perform(put("/api/stacks/test")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
                 .andExpect(status().isOk())
@@ -115,6 +118,7 @@ class StackRestControllerIT {
     @Test
     void saveStack_shouldValidateStackContent() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty name and module id
                 .content("{}"))
@@ -126,6 +130,7 @@ class StackRestControllerIT {
     @Test
     void saveStack_shouldValidateStackContent_forBlankFields() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty name and module id
                 .content("{\"name\":\"      \",\"moduleId\":\"   \"}"))
@@ -137,6 +142,7 @@ class StackRestControllerIT {
     @Test
     void updateStack_shouldValidateStackContent() throws Exception {
         mockMvc.perform(put("/api/stacks/test")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty name and module id
                 .content("{\"name\":\"\", \"moduleId\": \"\"}"))
@@ -148,6 +154,7 @@ class StackRestControllerIT {
     @Test
     void saveStack_shouldValidateStackVariables() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // null variable
                 .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{}}"))
@@ -158,6 +165,7 @@ class StackRestControllerIT {
     @Test
     void saveStack_shouldWork_stackIsValid() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty name
                 .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
@@ -167,6 +175,7 @@ class StackRestControllerIT {
     @Test
     void saveStack_shouldValidateStackVariablesRegex() throws Exception {
         mockMvc.perform(post("/api/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // null variable
                 .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\",\"mongo_exposed_port\":\"toto\"}}"))
