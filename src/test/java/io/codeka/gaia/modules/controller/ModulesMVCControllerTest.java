@@ -102,15 +102,6 @@ class ModulesMVCControllerTest {
     }
 
     @Test
-    void modulesList_shouldShowModulesView(){
-        // when
-        var res = controller.modulesList();
-
-        // then
-        assertEquals("modules", res);
-    }
-
-    @Test
     void importModule_shouldShowImportModuleView(){
         // when
         var res = controller.importModule();

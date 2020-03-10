@@ -4,6 +4,7 @@ import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faCog,
+  faEdit,
   faLayerGroup,
   faLock,
   faObjectGroup,
@@ -12,6 +13,8 @@ import {
   faTag,
   faUser,
   faUserFriends,
+  faInfo,
+  faRocket,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -23,6 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 export default {
   init: () => {
     library.add(
+      faEdit,
       faUser,
       faLock,
       faGithub,
@@ -37,6 +41,8 @@ export default {
       farUser,
       faAngleDoubleLeft,
       faAngleDoubleRight,
+      faInfo,
+      faRocket,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },

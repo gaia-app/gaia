@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import {
   BreadcrumbPlugin,
+  ButtonPlugin,
+  CardPlugin,
   DropdownPlugin,
   FormCheckboxPlugin,
   FormInputPlugin,
@@ -12,6 +14,8 @@ import {
 
 export default {
   init: () => {
+    Vue.use(ButtonPlugin);
+    Vue.use(CardPlugin);
     Vue.use(FormPlugin);
     Vue.use(FormInputPlugin);
     Vue.use(FormCheckboxPlugin);

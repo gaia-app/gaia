@@ -30,11 +30,6 @@ public class ModulesMVCController {
         this.terraformModuleGitRepository = terraformModuleGitRepository;
     }
 
-//    @GetMapping("/modules")
-    public String modulesList(){
-        return "modules";
-    }
-
 //    @GetMapping("/modules/import")
     public String importModule() {
         return "modules_import";
