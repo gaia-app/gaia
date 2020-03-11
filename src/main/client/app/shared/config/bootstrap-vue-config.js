@@ -13,6 +13,8 @@ import {
   LayoutPlugin,
   NavbarPlugin,
   NavPlugin,
+  SpinnerPlugin,
+  TabsPlugin,
   ToastPlugin,
 } from 'bootstrap-vue';
 import { Multiselect } from 'vue-multiselect';
@@ -31,6 +33,8 @@ export default {
     Vue.use(ToastPlugin);
     Vue.use(NavbarPlugin);
     Vue.use(DropdownPlugin);
+    Vue.use(SpinnerPlugin);
+    Vue.use(TabsPlugin);
     Vue.use(NavPlugin);
     Vue.use(BreadcrumbPlugin);
 

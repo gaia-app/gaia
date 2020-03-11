@@ -41,13 +41,6 @@ public class ModulesMVCController {
         return "module_description";
     }
 
-    @GetMapping("/modules/{id}/readme")
-    @Produces(MediaType.TEXT_PLAIN)
-    @ResponseBody
-    public Optional<String> readme(@PathVariable String id) {
-        var module = terraformModuleRepository.findById(id).orElseThrow();
-        return terraformModuleGitRepository.getReadme(module);
-    }
 
 }
 
