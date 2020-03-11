@@ -8,6 +8,9 @@ import {
   faLayerGroup,
   faLock,
   faObjectGroup,
+  faMinus,
+  faPlus,
+  faSave,
   faSignOutAlt,
   faTachometerAlt,
   faTag,
@@ -19,6 +22,7 @@ import {
 import {
   faGithub,
   faGitlab,
+  faMarkdown,
 } from '@fortawesome/free-brands-svg-icons';
 import { faUser as farUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -31,6 +35,10 @@ export default {
       faLock,
       faGithub,
       faGitlab,
+      faMarkdown,
+      faMinus,
+      faPlus,
+      faSave,
       faTachometerAlt,
       faObjectGroup,
       faLayerGroup,
