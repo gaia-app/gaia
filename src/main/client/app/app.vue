@@ -25,4 +25,5 @@
   @import "~@/assets/css/style.css";
   @import "~@/assets/css/color_2.css";
   @import "~@/assets/css/responsive.css";
+  @import "~@/assets/css/github-markdown.css";
 </style>

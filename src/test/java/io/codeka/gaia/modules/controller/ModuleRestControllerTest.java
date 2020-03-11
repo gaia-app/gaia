@@ -1,6 +1,8 @@
 package io.codeka.gaia.modules.controller;
 
+import io.codeka.gaia.modules.bo.ModuleMetadata;
 import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.modules.repository.TerraformModuleGitRepository;
 import io.codeka.gaia.modules.repository.TerraformModuleRepository;
 import io.codeka.gaia.teams.Team;
 import io.codeka.gaia.teams.User;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +30,9 @@ class ModuleRestControllerTest {
 
     @Mock
     private TerraformModuleRepository moduleRepository;
+
+    @Mock
+    private TerraformModuleGitRepository moduleGitRepository;
 
     private User admin;
 
@@ -208,6 +214,34 @@ class ModuleRestControllerTest {
         // then
         assertThat(module.getModuleMetadata().getUpdatedAt()).isEqualToIgnoringMinutes(LocalDateTime.now());
         assertThat(module.getModuleMetadata().getUpdatedBy()).isEqualTo(bob);
+    }
+
+    @Test
+    void readme_shouldReturnReadmeContent() {
+        // given
+        var module = new TerraformModule();
+        var readme = "README...";
+
+        // when
+        when(moduleRepository.findById(anyString())).thenReturn(Optional.of(module));
+        when(moduleGitRepository.getReadme(module)).thenReturn(Optional.of(readme));
+        var result = moduleRestController.readme("TEST");
+
+        // then
+        assertThat(result).isPresent().get().isEqualTo(readme);
+        verify(moduleRepository).findById("TEST");
+        verify(moduleGitRepository).getReadme(module);
+    }
+
+    @Test
+    void readme_shouldThrowExceptionIfModuleNotFound() {
+        // when
+        when(moduleRepository.findById(anyString())).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> moduleRestController.readme("TEST"));
+
+        // then
+        verify(moduleRepository).findById("TEST");
+        verifyNoInteractions(moduleGitRepository);
     }
 
 }
