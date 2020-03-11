@@ -35,16 +35,6 @@ public class ModulesMVCController {
         return "modules_import";
     }
 
-//    @GetMapping("/modules/{id}")
-    public String module(@PathVariable String id, Model model, User user){
-        var module = terraformModuleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
-        if(!module.isAuthorizedFor(user)){
-            throw new ModuleForbiddenException();
-        }
-        model.addAttribute("module", module);
-        return "module";
-    }
-
 //    @GetMapping("/modules/{id}/description")
     public String description(@PathVariable String id, Model model) {
         model.addAttribute("module", terraformModuleRepository.findById(id).orElseThrow());
