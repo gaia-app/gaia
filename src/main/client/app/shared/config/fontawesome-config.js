@@ -23,6 +23,7 @@ import {
   faGithub,
   faGitlab,
   faMarkdown,
+  faSuperpowers,
 } from '@fortawesome/free-brands-svg-icons';
 import { faUser as farUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -46,6 +47,7 @@ export default {
       faUserFriends,
       faTag,
       faSignOutAlt,
+      faSuperpowers,
       farUser,
       faAngleDoubleLeft,
       faAngleDoubleRight,
