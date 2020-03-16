@@ -5,7 +5,9 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import java.net.http.HttpClient
 import java.util.*
 
 abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTemplate,
@@ -13,23 +15,25 @@ abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTe
                                                         private val registryFileClass: Class<K>,
                                                         private val registryListFileClass: Class<Array<K>>): RegistryApi<K> {
 
-    private fun <T> callWithAuth(url: String, token: String, responseType: Class<T>): T {
+    private fun <T> callWithAuth(url: String, token: String, responseType: Class<T>): T? {
         val headers = HttpHeaders()
         headers.add("Authorization", "Bearer $token")
 
         val requestEntity = HttpEntity<Any>(headers)
 
-        val response = restTemplate.exchange(
+        try{
+            val response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 requestEntity,
                 responseType)
-        if(response.statusCode == HttpStatus.OK) {
-            return response.body!!
+            return response.body
         }
-        else {
-            TODO("error code mgmt")
+        catch (e:HttpClientErrorException){
+            // in case of 404, returns null as an empty body
+            return null
         }
+
     }
 
     override fun getRepositories(user: User): List<K> {
@@ -38,7 +42,7 @@ abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTe
 
         val token = user.oAuth2User?.token!!
 
-        return callWithAuth(url, token, registryListFileClass).toList()
+        return callWithAuth(url, token, registryListFileClass)!!.toList()
     }
 
     override fun getRepository(user: User, projectId: String): K {
@@ -47,7 +51,7 @@ abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTe
 
         val token = user.oAuth2User?.token!!
 
-        return callWithAuth(url, token, registryFileClass)
+        return callWithAuth(url, token, registryFileClass)!!
     }
 
     override fun getFileContent(user: User, projectId: String, filename: String): String {
@@ -58,6 +62,6 @@ abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTe
         val file = callWithAuth(url, token, RegistryFile::class.java)
 
         // removing trailing \n
-        return String(Base64.getDecoder().decode(file.content.replace("\n", "")))
+        return String(Base64.getDecoder().decode(file?.content?.replace("\n", "") ?: ""))
     }
 }
