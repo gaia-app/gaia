@@ -27,13 +27,13 @@
     data: () => ({
       entries: [
         {
-          route: 'dashboard', icon: 'tachometer-alt', class: 'yellow_color', title: 'Dashboard',
+          route: 'dashboard', icon: 'tachometer-alt', class: 'yellow_color', title: 'Dashboard', roles: ['ROLE_USER'],
         },
         {
-          route: 'modules', icon: 'object-group', class: 'blue1_color', title: 'Modules',
+          route: 'modules', icon: 'object-group', class: 'blue1_color', title: 'Modules', roles: ['ROLE_USER'],
         },
         {
-          route: 'stacks', icon: 'layer-group', class: 'blue2_color', title: 'Stacks',
+          route: 'stacks', icon: 'layer-group', class: 'blue2_color', title: 'Stacks', roles: ['ROLE_USER'],
         },
         {
           route: 'settings', icon: 'cog', class: 'yellow_color', title: 'Settings', roles: ['ROLE_ADMIN'],
