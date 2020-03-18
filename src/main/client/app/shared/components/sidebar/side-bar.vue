@@ -57,7 +57,7 @@
         if (window.innerWidth <= WINDOW_MIN_SIZE) {
           this.collapsed = true;
         } else {
-          this.collapsed = JSON.parse(getCookie(SIDEBAR_COOKIE));
+          this.collapsed = getCookie(SIDEBAR_COOKIE) === 'true';
         }
         this.$emit('collapse', this.collapsed);
       },
