@@ -44,17 +44,19 @@ export const authenticationGuard = async (to, from, next) => {
     return;
   }
 
+  // reload authentication if cookie
+  if (hasCookieSession() && !isUserAuthenticated()) {
+    try {
+      await store.dispatch('session/authenticated');
+    } catch (e) {
+      // in case of expired or invalid cookie
+    }
+  }
+
+  // check page
   if (isPageAuthenticated(to)) {
     if (isUserAuthenticated()) {
       redirectIfAuthorized(to, next);
-    } else if (hasCookieSession()) {
-      try {
-        await store.dispatch('session/authenticated');
-        redirectIfAuthorized(to, next);
-      } catch (e) {
-        // in case of expired or invalid cookie
-        redirectToLogin(to, next);
-      }
     } else {
       redirectToLogin(to, next);
     }
@@ -62,5 +64,4 @@ export const authenticationGuard = async (to, from, next) => {
     // page public
     next();
   }
-
 };

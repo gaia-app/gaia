@@ -14,8 +14,8 @@ const sessionState = {
 
 const sessionGetters = {
   hasAuthorities: (state) => (authorities) => {
-    if (!state.authenticated || !state.authorities) return false;
     if (!authorities) return true;
+    if (!state.authenticated || !state.authorities) return false;
     let authoritiesToCheck = authorities;
     if (typeof authorities === 'string') {
       authoritiesToCheck = [authorities];
