@@ -1,5 +1,5 @@
 <template>
-  <div>This is not the final module {{ $route.params.id }} page xD</div>
+  <div>This is not the final module {{ $route.params.moduleId }} page xD</div>
 </template>
 
 <script>

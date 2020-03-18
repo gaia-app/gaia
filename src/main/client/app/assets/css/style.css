@@ -593,12 +593,9 @@ a:focus {
 
 .page_title, .page_controls {
   background: #fff;
-  margin-top: 0;
-  margin-bottom: 30px;
-  padding: 25px 35px;
   box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
-  margin-left: -40px;
-  margin-right: -40px;
+  margin: 0 -40px 30px -40px;
+  padding: 15px 25px;
   position: relative;
 }
 

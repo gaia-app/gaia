@@ -1,5 +1,5 @@
 <template>
-  <div>This is not the final stack edition {{ $route.params.id }} page xD</div>
+  <div>This is not the final stack edition {{ $route.params.stackId }} page xD</div>
 </template>
 
 <script>

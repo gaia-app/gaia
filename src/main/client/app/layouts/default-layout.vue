@@ -8,7 +8,7 @@
           <div class="row column_title">
             <div class="col-md-12">
               <div class="page_title">
-                <!--<div id="navigation"></div>-->
+                <app-breadcrumb />
               </div>
             </div>
           </div>
@@ -21,6 +21,7 @@
 
 <script>
   import {
+    AppBreadcrumb,
     AppSideBar,
     AppTopBar,
   } from '@/shared/components';
@@ -28,6 +29,7 @@
   export default {
     name: 'AppDefaultLayout',
     components: {
+      AppBreadcrumb,
       AppTopBar,
       AppSideBar,
     },

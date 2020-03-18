@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  BreadcrumbPlugin,
   DropdownPlugin,
   FormCheckboxPlugin,
   FormInputPlugin,
@@ -18,5 +19,6 @@ export default {
     Vue.use(NavbarPlugin);
     Vue.use(DropdownPlugin);
     Vue.use(NavPlugin);
+    Vue.use(BreadcrumbPlugin);
   },
 };
