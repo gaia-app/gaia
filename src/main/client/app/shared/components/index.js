@@ -2,3 +2,4 @@ export { default as AppPageNotFound } from '@/shared/components/error-pages/page
 export { default as AppPageForbidden } from '@/shared/components/error-pages/page-forbidden.vue';
 export { default as AppTopBar } from '@/shared/components/topbar/top-bar.vue';
 export { default as AppSideBar } from '@/shared/components/sidebar/side-bar.vue';
+export { default as AppBreadcrumb } from '@/shared/components/breadcrumb/breadcrumb.vue';
