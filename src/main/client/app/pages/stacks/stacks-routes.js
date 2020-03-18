@@ -21,6 +21,11 @@ const stacksRoutes = [
         name: 'stack-edition',
         component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-edition.vue'),
       },
+      {
+        path: 'jobs/:jobId',
+        name: 'stack_job',
+        component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-job.vue'),
+      },
     ],
   },
 ];
