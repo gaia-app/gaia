@@ -82,10 +82,16 @@
       AppMarkdown,
     },
 
+    props: {
+      moduleId: {
+        type: String,
+        required: true,
+      },
+    },
+
     data: function data() {
       return {
         module: null,
-        moduleId: this.$route.params.moduleId,
       };
     },
 
