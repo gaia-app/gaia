@@ -101,6 +101,17 @@
       AppStackVariable,
     },
 
+    props: {
+      moduleId: {
+        type: String,
+        required: true,
+      },
+      stackId: {
+        type: String,
+        required: true,
+      },
+    },
+
     data() {
       return {
         module: null,
@@ -116,10 +127,11 @@
     },
 
     async created() {
-      const result = await axios.get(`/api/modules/${this.$route.params.moduleId}`);
+      const result = await axios.get(`/api/modules/${this.moduleId}`);
       this.module = result.data;
 
       this.stack = {};
+      this.stack.id = this.stackId;
       this.stack.moduleId = this.module.id;
       this.stack.variableValues = {};
       this.stack.variables = this.module.variables.map((variable) => ({
