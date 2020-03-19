@@ -7,58 +7,6 @@
     Version: 1.0
 -------------------------------------------------------------------*/
 
-@media (min-width: 1200px) and (max-width: 1600px) {
-  .counter_section {
-    display: block;
-  }
-
-  .couter_icon {
-    display: block;
-    width: 100%;
-  }
-
-  .couter_icon > div {
-    padding-right: 0;
-  }
-
-  .counter_no p.total_no {
-    text-align: center;
-  }
-
-  .counter_no .head_couter {
-    text-align: center;
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .counter_section {
-    display: block;
-  }
-
-  .couter_icon {
-    display: block;
-    width: 100%;
-  }
-
-  .couter_icon > div {
-    padding-right: 0;
-  }
-
-  .counter_no p.total_no {
-    text-align: center;
-  }
-
-  .counter_no .head_couter {
-    text-align: center;
-    font-size: 16px;
-  }
-
-  .dashboard_2 .social_cont ul li {
-    padding: 0;
-  }
-}
-
 @media (min-width: 768px) and (max-width: 991px) {
   body {
     overflow-x: hidden;
@@ -134,18 +82,6 @@
 }
 
 @media (max-width: 767px) {
-  .counter_section {
-    padding: 30px 25px;
-  }
-
-  .counter_no {
-    padding: 0;
-  }
-
-  .counter_no .head_couter {
-    font-size: 16px;
-  }
-
   #testimonial_slider.carousel .carousel-control {
     top: -35px;
   }
