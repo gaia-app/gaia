@@ -83,5 +83,13 @@ public class ModuleRestController {
         return moduleGitRepository.getReadme(module);
     }
 
-
 }
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class ModuleNotFoundException extends RuntimeException{
+}
+
+@ResponseStatus(HttpStatus.FORBIDDEN)
+class ModuleForbiddenException extends RuntimeException{
+}
+
