@@ -35,6 +35,15 @@ const modulesRoutes = [
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module description' }],
     },
   },
+  {
+    path: '/modules/:moduleId/run',
+    name: 'module-run',
+    component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/stacks/stack-creation.vue'),
+    meta: {
+      authorities: ['ROLE_USER'],
+      breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Stack creation' }],
+    },
+  },
 ];
 
 export default modulesRoutes;
