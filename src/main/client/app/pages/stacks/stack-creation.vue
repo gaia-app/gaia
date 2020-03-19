@@ -1,10 +1,162 @@
 <template>
-  <div>This is not the final stack creation {{ $route.params.stackId }} page xD</div>
+  <div
+    v-if="module"
+    class="block"
+  >
+    <form-wizard
+      title="Run a new stack"
+      subtitle="Follow the steps to start a new stack"
+      color="#00ab94"
+      error-color="#dc3545"
+    >
+      <tab-content
+        title="Stack"
+        :before-change="checkStackNameValidation"
+      >
+        <h4>{{ module.name }}</h4>
+        <p>{{ module.description }}</p>
+
+        <hr>
+
+        <div class="form-group">
+          <b-form-group
+            label="Name"
+            description="The name of your stack"
+          >
+            <b-input
+              v-model="stack.name"
+              :state="stackNameValid"
+              autofocus
+            />
+            <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+          </b-form-group>
+          <b-form-group
+            label="Description"
+            description="The description of your stack"
+          >
+            <b-input v-model="stack.description" />
+          </b-form-group>
+        </div>
+      </tab-content>
+      <tab-content
+        title="Variables"
+        :before-change="checkStackVariablesValidation"
+      >
+        <h2>Input variables</h2>
+        <app-stack-variable
+          v-for="variable in stack.variables"
+          :key="variable.name"
+          v-model="variable.value"
+          v-bind="variable"
+          @valid="(isValid) => variable.isValid = isValid"
+        />
+      </tab-content>
+      <tab-content title="Start">
+        <h2>Run</h2>
+        <p>Save your stack or run it !</p>
+      </tab-content>
+
+      <!-- customizing save button -->
+      <template
+        slot="finish"
+        slot-scope="props"
+      >
+        <wizard-button
+          v-if="props.isLastStep"
+          :style="props.fillButtonStyle"
+          class="wizard-footer-right finish-button"
+          @click.native="save"
+        >
+          <font-awesome-icon icon="save" /> Save
+        </wizard-button>
+      </template>
+
+      <!-- add run button -->
+      <template
+        slot="custom-buttons-right"
+        slot-scope="props"
+      >
+        <wizard-button
+          v-if="props.isLastStep"
+          :style="props.fillButtonStyle"
+          class="wizard-footer-right finish-button ml-3"
+          @click.native="run"
+        >
+          <font-awesome-icon icon="rocket" /> Save and run
+        </wizard-button>
+      </template>
+    </form-wizard>
+  </div>
 </template>
 
 <script>
+  import axios from 'axios';
+
+  import AppStackVariable from './stack-variable.vue';
+
   export default {
     name: 'AppStackCreation',
+
+    components: {
+      AppStackVariable,
+    },
+
+    data() {
+      return {
+        module: null,
+        stack: null,
+        stacksVariablesValidated: false,
+      };
+    },
+
+    computed: {
+      stackNameValid() {
+        return typeof this.stack.name !== 'undefined' && this.stack.name !== '';
+      },
+    },
+
+    async created() {
+      const result = await axios.get(`/api/modules/${this.$route.params.moduleId}`);
+      this.module = result.data;
+
+      this.stack = {};
+      this.stack.moduleId = this.module.id;
+      this.stack.variableValues = {};
+      this.stack.variables = this.module.variables.map((variable) => ({
+        ...variable,
+        value: variable.defaultValue || '',
+        isValid: true,
+      }));
+    },
+
+    methods: {
+      async checkStackNameValidation() {
+        return this.stackNameValid;
+      },
+      async checkStackVariablesValidation() {
+        return this.stack.variables.every((variable) => variable.isValid);
+      },
+      stackVariablesMgmt() {
+        this.stack.variableValues = {};
+        this.stack.variables.forEach((variable) => {
+          this.stack.variableValues[variable.name] = variable.value;
+        });
+      },
+      async saveStack() {
+        const response = await axios.post('/api/stacks', this.stack);
+        return response.data;
+      },
+      async save() {
+        this.stackVariablesMgmt();
+        const stack = await this.saveStack();
+        await this.$router.push({ path: `/stacks/${stack.id}` });
+      },
+      async run() {
+        this.stackVariablesMgmt();
+        const stack = await this.saveStack();
+        await this.$router.push({ path: `/stacks/${stack.id}/RUN` });
+      },
+    },
   };
 </script>
 
