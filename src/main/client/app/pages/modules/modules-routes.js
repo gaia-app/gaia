@@ -21,6 +21,7 @@ const modulesRoutes = [
     path: '/modules/:moduleId',
     name: 'module',
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/module.vue'),
+    props: true,
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module edition' }],
@@ -30,6 +31,7 @@ const modulesRoutes = [
     path: '/modules/:moduleId/description',
     name: 'module_description',
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/module-description.vue'),
+    props: true,
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module description' }],
