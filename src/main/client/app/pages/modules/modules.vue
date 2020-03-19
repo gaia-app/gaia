@@ -50,10 +50,10 @@
         </b-button>
 
         <b-button
-          :to="'/modules/'+module.id+'/run'"
           title="Run this module"
           variant="primary"
           class="mr-1"
+          @click="createStack(module.id)"
         >
           <font-awesome-icon icon="rocket" />
         </b-button>
@@ -65,6 +65,8 @@
 <script>
   import axios from 'axios';
   import { AppCliBadge } from '@/shared/components';
+
+  import { v4 as uuidv4 } from 'uuid';
 
   export default {
     name: 'AppModules',
@@ -82,6 +84,18 @@
     async created() {
       const response = await axios.get('/api/modules');
       this.modules = response.data;
+    },
+
+    methods: {
+      async createStack(moduleId) {
+        await this.$router.push({
+          name: 'stack_creation',
+          params: {
+            stackId: uuidv4(),
+            moduleId,
+          },
+        });
+      },
     },
 
   };

@@ -18,6 +18,16 @@ const stacksRoutes = [
     },
     children: [
       {
+        path: 'add',
+        name: 'stack_creation',
+        component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-creation.vue'),
+        props: true,
+        meta: {
+          authorities: ['ROLE_USER'],
+          breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack creation' }],
+        },
+      },
+      {
         path: 'edit',
         name: 'stack_edition',
         component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-edition.vue'),
