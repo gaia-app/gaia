@@ -3,6 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
+  faCaretSquareUp,
   faCog,
   faEdit,
   faLayerGroup,
@@ -53,6 +54,7 @@ export default {
       faAngleDoubleRight,
       faInfo,
       faRocket,
+      faCaretSquareUp,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },

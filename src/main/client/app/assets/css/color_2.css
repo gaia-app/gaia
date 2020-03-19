@@ -1,14 +1,6 @@
 /*------------------------------------------------------------------
     File Name: color_2.css
 -------------------------------------------------------------------*/
-.counter_section .counter_no p.total_no {
-  color: #fff;
-}
-
-.counter_section .counter_no p.head_couter {
-  color: rgba(255, 255, 255, .7);
-}
-
 .dark_bg {
   background: #0971b8;
 }
