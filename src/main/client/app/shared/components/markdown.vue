@@ -28,3 +28,7 @@
     },
   };
 </script>
+
+<style>
+  @import "~@/assets/css/github-markdown.css";
+</style>
