@@ -42,7 +42,7 @@ abstract class AbstractRegistryApi<K: SourceRepository>(val restTemplate: RestTe
 
         val token = user.oAuth2User?.token!!
 
-        return callWithAuth(url, token, registryListFileClass)!!.toList()
+        return callWithAuth(url, token, registryListFileClass)?.toList() ?: emptyList()
     }
 
     override fun getRepository(user: User, projectId: String): K {

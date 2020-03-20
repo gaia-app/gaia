@@ -54,6 +54,23 @@ class GithubRegistryApiTest{
     }
 
     @Test
+    fun `getRepositories() should return empty list in case of 404`() {
+        // given
+        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+            .andExpect(header("Authorization", "Bearer johnstoken"))
+            .andRespond(withStatus(HttpStatus.NOT_FOUND))
+
+        val john = User("john", null)
+        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+
+        // when
+        val repositories = githubRegistryApi.getRepositories(john)
+
+        // then
+        assertThat(repositories).isEmpty()
+    }
+
+    @Test
     fun `getRepository() should call the repos github api`() {
         // given
         val sampleResult = GithubRepository(fullName = "terraform-aws-modules/terraform-aws-rds", htmlUrl = "https://github.com/terraform-aws-modules/terraform-aws-rds")
