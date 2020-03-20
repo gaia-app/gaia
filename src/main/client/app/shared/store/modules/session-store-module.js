@@ -3,7 +3,7 @@ import {
   doLogout,
   getAuthorities,
   getUser,
-} from '@/shared/api';
+} from '@/shared/api/authentication-api';
 
 const sessionState = {
   login: false,

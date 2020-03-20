@@ -25,8 +25,8 @@
   import {
     getCookie,
     setCookie,
-  } from '@/shared/services';
-  import { getBuildInfo } from '@/shared/api';
+  } from '@/shared/services/cookie-service';
+  import { getBuildInfo } from '@/shared/api/build-infos-api';
 
   const SIDEBAR_COOKIE = 'sidebar_collapsed';
   const SIDEBAR_MAX_AGE = 60 * 60 * 24 * 365 * 10;
