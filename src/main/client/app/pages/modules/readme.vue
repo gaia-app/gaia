@@ -6,23 +6,24 @@
       class="m-5"
       style="height: 2.5rem; width: 2.5rem"
     />
-    <div
+    <app-markdown
       v-if="loaded"
-      class="markdown-body"
-    >
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div v-html="content" />
-    </div>
+      :content="content"
+    />
   </b-container>
 </template>
 
 <script>
-  import marked from 'marked';
+  import { AppMarkdown } from '@/shared/components';
 
   import { getModuleReadme } from '@/shared/api/modules-api';
 
   export default {
     name: 'AppReadme',
+
+    components: {
+      AppMarkdown,
+    },
 
     props: {
       moduleId: {
@@ -38,7 +39,7 @@
 
     async created() {
       const readme = await getModuleReadme(this.moduleId);
-      this.content = marked(readme);
+      this.content = readme;
       this.loaded = true;
     },
   };
