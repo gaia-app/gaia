@@ -17,9 +17,9 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   import marked from 'marked';
+
+  import { getModuleReadme } from '@/shared/api/modules-api';
 
   export default {
     name: 'AppReadme',
@@ -37,8 +37,8 @@
     }),
 
     async created() {
-      const result = await axios.get(`/api/modules/${this.moduleId}/readme`);
-      this.content = marked(result.data);
+      const readme = await getModuleReadme(this.moduleId);
+      this.content = marked(readme);
       this.loaded = true;
     },
   };

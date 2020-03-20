@@ -92,6 +92,8 @@
 <script>
   import axios from 'axios';
 
+  import { getModule } from '@/shared/api/modules-api';
+
   import AppStackVariable from './stack-variable.vue';
 
   export default {
@@ -127,8 +129,7 @@
     },
 
     async created() {
-      const result = await axios.get(`/api/modules/${this.moduleId}`);
-      this.module = result.data;
+      this.module = await getModule(this.moduleId);
 
       this.stack = {};
       this.stack.id = this.stackId;
@@ -161,12 +162,12 @@
       async save() {
         this.stackVariablesMgmt();
         const stack = await this.saveStack();
-        await this.$router.push({ path: `/stacks/${stack.id}` });
+        this.$router.push({ path: `/stacks/${stack.id}` });
       },
       async run() {
         this.stackVariablesMgmt();
         const stack = await this.saveStack();
-        await this.$router.push({ path: `/stacks/${stack.id}/RUN` });
+        this.$router.push({ path: `/stacks/${stack.id}/RUN` });
       },
     },
   };
