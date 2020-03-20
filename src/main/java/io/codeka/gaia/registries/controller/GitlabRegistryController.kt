@@ -22,7 +22,7 @@ class GitlabRegistryController(
         return this.gitlabRegistryApi.getRepositories(user)
     }
 
-    @GetMapping("/repositories/{projectId}/import")
+    @PostMapping("/repositories/{projectId}/import")
     @ResponseStatus(HttpStatus.CREATED)
     fun importRepository(@PathVariable projectId: String, user: User): TerraformModule {
         return registryService.importRepository(projectId, RegistryType.GITLAB, user)
