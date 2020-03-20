@@ -22,7 +22,7 @@ class GithubRegistryController(
         return this.githubRegistryApi.getRepositories(user)
     }
 
-    @GetMapping("/repositories/{owner}/{repo}/import")
+    @PostMapping("/repositories/{owner}/{repo}/import")
     @ResponseStatus(HttpStatus.CREATED)
     fun importRepository(@PathVariable owner: String, @PathVariable repo: String, user: User): TerraformModule {
         return registryService.importRepository("$owner/$repo", RegistryType.GITHUB, user)

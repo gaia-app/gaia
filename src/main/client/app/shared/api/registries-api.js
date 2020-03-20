@@ -6,6 +6,6 @@ export const getRegistriesRepositories = async (registry) => {
 };
 
 export const importRegistryRepository = async (registry, id) => {
-  const resp = await axios.get(`/api/registries/${registry}/repositories/${id}/import`);
+  const resp = await axios.post(`/api/registries/${registry}/repositories/${id}/import`);
   return resp.data;
 };
