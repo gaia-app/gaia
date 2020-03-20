@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button
-      :to="'/modules/import'"
+      :to="{ name: 'module_import' }"
       title="Import Module"
       variant="success"
       class="mb-4"
@@ -32,7 +32,7 @@
         </b-card-text>
 
         <b-button
-          :to="'/modules/'+module.id"
+          :to="{ name: 'module', params: { moduleId: module.id }}"
           title="Edit this module"
           variant="primary"
           class="mr-1"
@@ -41,7 +41,7 @@
         </b-button>
 
         <b-button
-          :to="'/modules/'+module.id+'/description'"
+          :to="{ name: 'module_description', params: { moduleId: module.id }}"
           title="Detail of this module"
           variant="primary"
           class="mr-1"
