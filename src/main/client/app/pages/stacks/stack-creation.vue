@@ -90,9 +90,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   import { getModule } from '@/shared/api/modules-api';
+  import { createStack } from '@/shared/api/stack-api';
 
   import AppStackVariable from './stack-variable.vue';
 
@@ -156,8 +155,7 @@
         });
       },
       async saveStack() {
-        const response = await axios.post('/api/stacks', this.stack);
-        return response.data;
+        return createStack(this.stack);
       },
       async save() {
         this.stackVariablesMgmt();
