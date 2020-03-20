@@ -38,8 +38,7 @@
     }),
 
     async created() {
-      const readme = await getModuleReadme(this.moduleId);
-      this.content = readme;
+      this.content = await getModuleReadme(this.moduleId);
       this.loaded = true;
     },
   };

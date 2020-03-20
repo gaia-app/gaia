@@ -143,10 +143,10 @@
     },
 
     methods: {
-      async checkStackNameValidation() {
+      checkStackNameValidation() {
         return this.stackNameValid;
       },
-      async checkStackVariablesValidation() {
+      checkStackVariablesValidation() {
         return this.stack.variables.every((variable) => variable.isValid);
       },
       stackVariablesMgmt() {

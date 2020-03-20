@@ -62,7 +62,7 @@
         let module = {
           name: this.moduleName,
         };
-        module = createModule(module);
+        module = await createModule(module);
         this.$router.push({ name: 'module', params: { id: module.id } });
       },
     },
