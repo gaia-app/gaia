@@ -12,7 +12,7 @@ import {
   AppPageForbidden,
   AppPageNotFound,
 } from '@/shared/components';
-import { authenticationGuard } from '@/shared/services';
+import { authenticationGuard } from '@/shared/services/authentication-guard';
 
 Vue.use(VueRouter);
 

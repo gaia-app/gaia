@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import { listProviders } from '@/shared/api';
+  import { listProviders } from '@/shared/api/authentication-api';
 
   export default {
     name: 'AppLoginOauthSignin',
