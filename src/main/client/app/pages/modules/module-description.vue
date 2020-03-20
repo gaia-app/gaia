@@ -49,13 +49,13 @@
       <b-tabs>
         <b-tab active>
           <template slot="title">
-            <i class="fab fa-markdown" /> Readme
+            <font-awesome-icon :icon="['fab','markdown']" />  Readme
           </template>
           <app-readme :module-id="module.id" />
         </b-tab>
         <b-tab v-if="module.estimatedMonthlyCostDescription">
           <template slot="title">
-            <i class="fab fa-markdown" /> Cost Of Ownership
+            <font-awesome-icon :icon="['fab','markdown']" /> Cost Of Ownership
           </template>
           <b-container fluid>
             <app-markdown :content="module.estimatedMonthlyCostDescription" />
