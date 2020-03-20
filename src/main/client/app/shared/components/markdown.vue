@@ -9,7 +9,7 @@
   import marked from 'marked';
 
   export default {
-    name: 'Markdown',
+    name: 'AppMarkdown',
 
     props: {
       content: {
