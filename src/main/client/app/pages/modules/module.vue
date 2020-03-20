@@ -239,7 +239,7 @@
         return typeof field !== 'undefined' && field !== null && field.trim() !== '';
       },
       async save() {
-        updateModule(this.module)
+        await updateModule(this.module)
           .then(() => {
             this.$bvToast.toast('Module saved', {
               noCloseButton: true,
