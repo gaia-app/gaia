@@ -80,7 +80,6 @@
         const result = this.isRepositoryNotEmpty && this.isRepositoryValid && this.isTagNotEmpty;
         // emit form status to parent
         this.$emit('form-status', result);
-        this.$emit('input', this.image);
         return result;
       },
       isRepositoryNotEmpty() {
