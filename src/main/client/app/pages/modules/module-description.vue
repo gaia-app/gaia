@@ -67,9 +67,9 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   import { AppCliBadge, AppMarkdown } from '@/shared/components';
+
+  import { getModule } from '@/shared/api/modules-api';
 
   import AppReadme from './readme.vue';
 
@@ -103,9 +103,7 @@
     },
 
     async created() {
-      const url = `/api/modules/${this.moduleId}`;
-      const response = await axios.get(url);
-      this.module = response.data;
+      this.module = await getModule(this.moduleId);
     },
   };
 </script>

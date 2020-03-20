@@ -193,7 +193,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { getModule, updateModule } from '@/shared/api/modules-api';
+  import { getTeams } from '@/shared/api/teams-api';
 
   import TerraformImageInput from './terraform-image-input.vue';
 
@@ -229,12 +230,8 @@
     },
 
     async created() {
-      const url = `/api/modules/${this.moduleId}`;
-      const response = await axios.get(url);
-      this.module = response.data;
-
-      const responseTeams = await axios.get('/api/teams');
-      this.teams = responseTeams.data;
+      this.module = await getModule(this.moduleId);
+      this.teams = await getTeams();
     },
 
     methods: {
@@ -242,17 +239,15 @@
         return typeof field !== 'undefined' && field !== null && field.trim() !== '';
       },
       async save() {
-        axios.put(
-          `/api/modules/${this.moduleId}`,
-          this.module,
-        ).then(() => {
-          this.$bvToast.toast('Module saved', {
-            noCloseButton: true,
-            solid: true,
-            variant: 'success',
-            toaster: 'b-toaster-top-center',
-          });
-        })
+        updateModule(this.module)
+          .then(() => {
+            this.$bvToast.toast('Module saved', {
+              noCloseButton: true,
+              solid: true,
+              variant: 'success',
+              toaster: 'b-toaster-top-center',
+            });
+          })
           .catch((error) => {
             this.$bvToast.toast(error.message, {
               title: 'Error when saving module',

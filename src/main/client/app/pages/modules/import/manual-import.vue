@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { createModule } from '@/shared/api/modules-api';
 
   export default {
     name: 'ManualImport',
@@ -62,9 +62,8 @@
         let module = {
           name: this.moduleName,
         };
-        const response = await axios.post('/api/modules', module);
-        module = response.data;
-        await this.$router.push({ name: 'module', params: { id: module.id } });
+        module = createModule(module);
+        this.$router.push({ name: 'module', params: { id: module.id } });
       },
     },
   };

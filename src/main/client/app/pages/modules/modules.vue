@@ -63,7 +63,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { getModules } from '@/shared/api/modules-api';
+
   import { AppCliBadge } from '@/shared/components';
 
   import { v4 as uuidv4 } from 'uuid';
@@ -82,13 +83,12 @@
     },
 
     async created() {
-      const response = await axios.get('/api/modules');
-      this.modules = response.data;
+      this.modules = await getModules();
     },
 
     methods: {
-      async createStack(moduleId) {
-        await this.$router.push({
+      createStack(moduleId) {
+        this.$router.push({
           name: 'stack_creation',
           params: {
             stackId: uuidv4(),

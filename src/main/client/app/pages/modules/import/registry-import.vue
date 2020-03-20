@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { getRegistriesRepositories, importRegistryRepository } from '@/shared/api/registries-api';
 
   export default {
     name: 'RegistryImport',
@@ -74,8 +74,7 @@
       async search() {
         if (!this.loaded) {
           this.isLoading = true;
-          const response = await axios.get(`/api/registries/${this.registry}/repositories`);
-          this.repositories = response.data;
+          this.repositories = await getRegistriesRepositories(this.registry);
           this.loaded = true;
           this.isLoading = false;
         }
@@ -91,9 +90,8 @@
         });
 
         const id = this.selectedRepository.id ? this.selectedRepository.id : this.selectedRepository.fullName;
-        const response = await axios.get(`/api/registries/${this.registry}/repositories/${id}/import`);
-        const module = response.data;
-        await this.$router.push({ name: 'module', params: { id: module.id } });
+        const module = await importRegistryRepository(this.registry, id);
+        this.$router.push({ name: 'module', params: { moduleId: module.id } });
       },
     },
   };
