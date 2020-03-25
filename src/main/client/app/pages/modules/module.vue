@@ -112,73 +112,12 @@
           </b-button>
         </h2>
 
-        <b-form-row
-          v-for="(modVar,modVarIdx) in module.variables"
-          :key="modVar.name"
-          class="mb-3"
-        >
-          <b-col cols="3">
-            <b-form-group label="Name">
-              <b-input
-                v-model="modVar.name"
-                :state="notEmpty(modVar.name)"
-              />
-              <b-form-invalid-feedback class="position-absolute">
-                This field is mandatory
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-          <b-col cols="3">
-            <b-form-group label="Description">
-              <b-input v-model="modVar.description" />
-            </b-form-group>
-          </b-col>
-          <b-col cols="2">
-            <b-form-group label="Default value">
-              <b-input v-model="modVar.defaultValue" />
-            </b-form-group>
-          </b-col>
-          <b-col
-            cols="1"
-            align-self="end"
-            class="d-flex flex-column"
-          >
-            <b-form-group>
-              <b-form-checkbox
-                v-model="modVar.editable"
-                switch
-                inline
-              >
-                Editable
-              </b-form-checkbox>
-              <b-form-checkbox
-                v-model="modVar.mandatory"
-                switch
-                inline
-              >
-                Mandatory
-              </b-form-checkbox>
-            </b-form-group>
-          </b-col>
-          <b-col>
-            <b-form-group label="Validation Regex">
-              <b-input v-model="modVar.validationRegex" />
-            </b-form-group>
-          </b-col>
-          <b-col
-            align-self="end"
-            class="d-flex flex-column"
-          >
-            <b-form-group>
-              <b-button
-                variant="danger"
-                @click="removeVar(modVarIdx)"
-              >
-                <font-awesome-icon icon="minus" />
-              </b-button>
-            </b-form-group>
-          </b-col>
-        </b-form-row>
+        <module-variable
+          v-for="(modVar, idx) in module.variables"
+          :key="idx"
+          :variable="modVar"
+          @removeVar="removeVar"
+        />
 
         <b-button
           variant="primary"
@@ -196,12 +135,14 @@
   import { getModule, updateModule } from '@/shared/api/modules-api';
   import { getTeams } from '@/shared/api/teams-api';
 
-  import TerraformImageInput from './terraform-image-input.vue';
+  import ModuleVariable from '@/pages/modules/module-variable.vue';
+  import TerraformImageInput from '@/pages/modules/terraform-image-input.vue';
 
   export default {
     name: 'AppModule',
 
     components: {
+      ModuleVariable,
       TerraformImageInput,
     },
 
@@ -257,8 +198,8 @@
             });
           });
       },
-      removeVar(varIdx) {
-        this.module.variables.splice(varIdx, 1);
+      removeVar(variable) {
+        this.module.variables.splice(this.module.variables.findIndex((v) => v.name === variable.name), 1);
       },
       addVar() {
         this.module.variables.push({});
