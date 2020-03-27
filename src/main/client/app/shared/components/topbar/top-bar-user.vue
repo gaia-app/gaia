@@ -2,7 +2,7 @@
   <b-nav-item-dropdown>
     <template v-slot:button-content>
       <font-awesome-icon :icon="['far', 'user']" />
-      <span>{{ user.username }}</span>
+      <span id="user.name">{{ user.username }}</span>
     </template>
     <b-dropdown-item @click="doLogout">
       <span>Log Out</span>
