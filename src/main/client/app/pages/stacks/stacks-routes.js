@@ -6,6 +6,7 @@ const stacksRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Stacks' }],
+      title: 'Gaia - Stacks',
     },
   },
   {
@@ -15,6 +16,7 @@ const stacksRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack' }],
+      title: 'Gaia - Stack edition',
     },
     children: [
       {
@@ -26,6 +28,7 @@ const stacksRoutes = [
           authorities: ['ROLE_USER'],
           breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack creation' }],
         },
+        title: 'Gaia - Stack creation',
       },
       {
         path: 'edit',
@@ -35,6 +38,8 @@ const stacksRoutes = [
           authorities: ['ROLE_USER'],
           breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack edition' }],
         },
+        title: 'Gaia - Stack edition',
+
       },
       {
         path: 'jobs/:jobId',
@@ -47,6 +52,7 @@ const stacksRoutes = [
             { text: 'Stack', to: { name: 'stack' } },
             { text: 'Job' },
           ],
+          title: 'Gaia - Stack job',
         },
       },
     ],

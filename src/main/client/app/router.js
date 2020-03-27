@@ -13,6 +13,7 @@ import {
   AppPageNotFound,
 } from '@/shared/components';
 import { authenticationGuard } from '@/shared/services/authentication-guard';
+import { updatePageTitleGuard } from '@/shared/services/update-page-title-guard';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,7 @@ const appRoutes = [
     path: '/',
     name: 'home',
     redirect: '/dashboard',
+    meta: { title: 'Gaia - A terraform UI' },
   },
   {
     path: '/not-found',
@@ -49,5 +51,6 @@ const router = new VueRouter({
   ],
 });
 router.beforeEach(authenticationGuard);
+router.beforeEach(updatePageTitleGuard);
 
 export default router;

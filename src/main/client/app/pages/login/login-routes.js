@@ -5,7 +5,10 @@ const loginRoutes = [
     path: '/login',
     name: 'login',
     component: AppLoginForm,
-    meta: { layout: 'none' },
+    meta: {
+      layout: 'none',
+      title: 'Gaia - A terraform UI - Login',
+    },
   },
 ];
 

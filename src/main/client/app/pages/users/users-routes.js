@@ -6,6 +6,7 @@ const usersRoutes = [
     meta: {
       authorities: ['ROLE_ADMIN'],
       breadcrumb: [{ text: 'Users' }],
+      title: 'Gaia - Users',
     },
   },
 ];
