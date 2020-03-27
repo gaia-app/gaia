@@ -6,6 +6,7 @@ const modulesRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules' }],
+      title: 'Gaia - Modules',
     },
   },
   {
@@ -15,6 +16,7 @@ const modulesRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module import' }],
+      title: 'Gaia - Modules import',
     },
   },
   {
@@ -25,6 +27,7 @@ const modulesRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module edition' }],
+      title: 'Gaia - Module edition',
     },
   },
   {
@@ -35,6 +38,7 @@ const modulesRoutes = [
     meta: {
       authorities: ['ROLE_USER'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module description' }],
+      title: 'Gaia - Module description',
     },
   },
 ];

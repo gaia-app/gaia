@@ -6,6 +6,7 @@ const settingsRoutes = [
     meta: {
       authorities: ['ROLE_ADMIN'],
       breadcrumb: [{ text: 'Settings' }],
+      title: 'Gaia - Settings',
     },
   },
 ];
