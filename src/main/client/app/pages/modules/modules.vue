@@ -14,6 +14,7 @@
         v-for="module in modules"
         :key="module.id"
         :title="module.name"
+        class="moduleCard"
       >
         <b-card-text>
           <app-cli-badge
