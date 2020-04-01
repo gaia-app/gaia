@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  BadgePlugin,
   BreadcrumbPlugin,
   ButtonPlugin,
   CardPlugin,
@@ -7,34 +8,37 @@ import {
   FormCheckboxPlugin,
   FormGroupPlugin,
   FormInputPlugin,
-  FormTextareaPlugin,
   FormPlugin,
+  FormTextareaPlugin,
   InputGroupPlugin,
   LayoutPlugin,
   NavbarPlugin,
   NavPlugin,
   SpinnerPlugin,
+  TablePlugin,
   TabsPlugin,
   ToastPlugin,
 } from 'bootstrap-vue';
 
 export default {
   init: () => {
+    Vue.use(BadgePlugin);
+    Vue.use(BreadcrumbPlugin);
     Vue.use(ButtonPlugin);
     Vue.use(CardPlugin);
-    Vue.use(FormPlugin);
+    Vue.use(DropdownPlugin);
+    Vue.use(FormCheckboxPlugin);
     Vue.use(FormGroupPlugin);
     Vue.use(FormInputPlugin);
-    Vue.use(FormCheckboxPlugin);
+    Vue.use(FormPlugin);
     Vue.use(FormTextareaPlugin);
     Vue.use(InputGroupPlugin);
     Vue.use(LayoutPlugin);
-    Vue.use(ToastPlugin);
     Vue.use(NavbarPlugin);
-    Vue.use(DropdownPlugin);
-    Vue.use(SpinnerPlugin);
-    Vue.use(TabsPlugin);
     Vue.use(NavPlugin);
-    Vue.use(BreadcrumbPlugin);
+    Vue.use(SpinnerPlugin);
+    Vue.use(TablePlugin);
+    Vue.use(TabsPlugin);
+    Vue.use(ToastPlugin);
   },
 };
