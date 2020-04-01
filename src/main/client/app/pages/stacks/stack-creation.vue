@@ -91,7 +91,7 @@
 
 <script>
   import { getModule } from '@/shared/api/modules-api';
-  import { createStack } from '@/shared/api/stack-api';
+  import { createStack } from '@/shared/api/stacks-api';
 
   import AppStackVariable from './stack-variable.vue';
 
