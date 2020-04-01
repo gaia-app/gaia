@@ -4,6 +4,7 @@ import VueFormWizard from 'vue-form-wizard';
 
 import fontawesomeConfig from '@/shared/config/fontawesome-config';
 import bootstrapVueConfig from '@/shared/config/bootstrap-vue-config';
+import axiosConfig from '@/shared/config/axios-config';
 
 import initFilters from '@/shared/filters';
 
@@ -28,6 +29,9 @@ initFilters();
 Vue.component('app-default-layout', AppDefaultLayout);
 Vue.component('app-error-layout', AppErrorLayout);
 Vue.component('app-none-layout', AppNoneLayout);
+
+// axios
+axiosConfig.init();
 
 Vue.config.productionTip = false;
 

@@ -1,11 +1,7 @@
 import axios from 'axios';
 
-export const getRegistriesRepositories = async (registry) => {
-  const resp = await axios.get(`/api/registries/${registry}/repositories`);
-  return resp.data;
-};
+export const getRegistriesRepositories = async (registry) => axios.get(`/api/registries/${registry}/repositories`);
 
-export const importRegistryRepository = async (registry, id) => {
-  const resp = await axios.post(`/api/registries/${registry}/repositories/${id}/import`);
-  return resp.data;
-};
+export const importRegistryRepository = async (registry, id) => axios.post(
+  `/api/registries/${registry}/repositories/${id}/import`,
+);
