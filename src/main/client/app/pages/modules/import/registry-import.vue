@@ -44,7 +44,11 @@
 </template>
 
 <script>
-  import { getRegistriesRepositories, importRegistryRepository } from '@/shared/api/registries-api';
+  import {
+    getRegistriesRepositories,
+    importRegistryRepository,
+  } from '@/shared/api/registries-api';
+  import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'RegistryImport',
@@ -81,14 +85,7 @@
       },
       async importRepository() {
         this.isImporting = true;
-
-        this.$bvToast.toast('Importing module from repository', {
-          noCloseButton: true,
-          solid: true,
-          variant: 'info',
-          toaster: 'b-toaster-top-center',
-        });
-
+        displayNotification(this, { message: 'Importing module from repository', variant: 'info' });
         const id = this.selectedRepository.id ? this.selectedRepository.id : this.selectedRepository.fullName;
         const module = await importRegistryRepository(this.registry, id);
         this.$router.push({ name: 'module', params: { moduleId: module.id } });

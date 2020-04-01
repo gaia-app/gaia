@@ -71,6 +71,7 @@
 
 <script>
   import AppLoginOauthSignin from '@/pages/login/login-oauth-signin.vue';
+  import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppLoginForm',
@@ -92,15 +93,7 @@
         this.$store.dispatch('session/login', formData)
           .then(() => this.$router.push({ name: 'home' }, null, () => {
           }))
-          .catch((error) => this.displayErrorMessage(error.response.data));
-      },
-      displayErrorMessage(error) {
-        this.$bvToast.toast(error.error, {
-          solid: true,
-          toaster: 'b-toaster-top-center',
-          title: error.message,
-          variant: 'warning',
-        });
+          .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'warning' }));
       },
     },
   };
