@@ -132,11 +132,14 @@
 </template>
 
 <script>
-  import { getModule, updateModule } from '@/shared/api/modules-api';
-  import { getTeams } from '@/shared/api/teams-api';
-
   import ModuleVariable from '@/pages/modules/module-variable.vue';
   import TerraformImageInput from '@/pages/modules/terraform-image-input.vue';
+  import {
+    getModule,
+    updateModule,
+  } from '@/shared/api/modules-api';
+  import { getTeams } from '@/shared/api/teams-api';
+  import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppModule',
@@ -181,22 +184,8 @@
       },
       async save() {
         await updateModule(this.module)
-          .then(() => {
-            this.$bvToast.toast('Module saved', {
-              noCloseButton: true,
-              solid: true,
-              variant: 'success',
-              toaster: 'b-toaster-top-center',
-            });
-          })
-          .catch((error) => {
-            this.$bvToast.toast(error.message, {
-              title: 'Error when saving module',
-              solid: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center',
-            });
-          });
+          .then(() => displayNotification(this, { message: 'Module saved', variant: 'success' }))
+          .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'danger' }));
       },
       removeVar(variable) {
         this.module.variables.splice(this.module.variables.findIndex((v) => v.name === variable.name), 1);

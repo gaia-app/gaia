@@ -31,6 +31,7 @@
     updateUser,
   } from '@/shared/api/users-api';
   import { getTeams } from '@/shared/api/teams-api';
+  import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppUsers',
@@ -49,15 +50,8 @@
     methods: {
       saveUser(user) {
         updateUser(user)
-          .then(() => this.displayMessage('Success', 'User saved', 'success'))
-          .catch(() => this.displayMessage('Error', 'Error saving user', 'danger'));
-      },
-      displayMessage(title, message, variant) {
-        this.$bvToast.toast(message, {
-          solid: true,
-          title,
-          variant,
-        });
+          .then(() => displayNotification(this, { message: 'User saved', variant: 'success' }))
+          .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'danger' }));
       },
     },
   };

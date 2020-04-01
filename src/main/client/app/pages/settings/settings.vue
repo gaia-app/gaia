@@ -49,6 +49,7 @@
     getSettings,
     saveSettings,
   } from '@/shared/api/settings-api';
+  import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppSettings',
@@ -68,15 +69,8 @@
       },
       save() {
         saveSettings(this.settings)
-          .then(() => this.displayMessage('Success', 'Settings saved', 'success'))
-          .catch(() => this.displayMessage('Error', 'Error saving settings', 'danger'));
-      },
-      displayMessage(title, message, variant) {
-        this.$bvToast.toast(message, {
-          solid: true,
-          title,
-          variant,
-        });
+          .then(() => displayNotification(this, { message: 'Settings saved', variant: 'success' }))
+          .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'danger' }));
       },
     },
   };
