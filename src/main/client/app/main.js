@@ -17,7 +17,7 @@ import store from '@/shared/store';
 
 fontawesomeConfig.init();
 bootstrapVueConfig.init();
-Vue.use(Multiselect);
+Vue.component('vue-multiselect', Multiselect);
 
 // filters
 initFilters();
