@@ -18,9 +18,6 @@ import {
   ToastPlugin,
 } from 'bootstrap-vue';
 
-import VueFormWizard from 'vue-form-wizard';
-import 'vue-form-wizard/dist/vue-form-wizard.min.css';
-
 export default {
   init: () => {
     Vue.use(ButtonPlugin);
@@ -39,8 +36,5 @@ export default {
     Vue.use(TabsPlugin);
     Vue.use(NavPlugin);
     Vue.use(BreadcrumbPlugin);
-
-    Vue.use(VueFormWizard);
-
   },
 };
