@@ -55,6 +55,7 @@ export default {
       faInfo,
       faRocket,
       faCaretSquareUp,
+      faSave,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },
