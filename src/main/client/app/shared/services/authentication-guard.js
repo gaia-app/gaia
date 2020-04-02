@@ -43,25 +43,28 @@ export const authenticationGuard = async (to, from, next) => {
     next({ name: 'page-not-found' });
     return;
   }
-
+  // public page ?
+  if (!isPageAuthenticated(to)) {
+    next();
+    return;
+  }
+  // if no cookie, no need to go further
+  if (!hasCookieSession()) {
+    redirectToLogin(to, next);
+    return;
+  }
   // reload authentication if cookie
-  if (hasCookieSession() && !isUserAuthenticated()) {
+  if (!isUserAuthenticated()) {
     try {
       await store.dispatch('session/authenticated');
     } catch (e) {
       // in case of expired or invalid cookie
     }
   }
-
   // check page
-  if (isPageAuthenticated(to)) {
-    if (isUserAuthenticated()) {
-      redirectIfAuthorized(to, next);
-    } else {
-      redirectToLogin(to, next);
-    }
+  if (isUserAuthenticated()) {
+    redirectIfAuthorized(to, next);
   } else {
-    // page public
-    next();
+    redirectToLogin(to, next);
   }
 };
