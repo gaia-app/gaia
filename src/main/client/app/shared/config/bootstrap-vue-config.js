@@ -19,6 +19,7 @@ import {
   TablePlugin,
   TabsPlugin,
   ToastPlugin,
+  TooltipPlugin,
 } from 'bootstrap-vue';
 
 export default {
@@ -42,5 +43,6 @@ export default {
     Vue.use(TablePlugin);
     Vue.use(TabsPlugin);
     Vue.use(ToastPlugin);
+    Vue.use(TooltipPlugin);
   },
 };

@@ -11,12 +11,13 @@ import {
   faInfo,
   faLayerGroup,
   faLock,
-  faObjectGroup,
   faMinus,
+  faObjectGroup,
   faPlus,
   faRocket,
   faSave,
   faSignOutAlt,
+  faStarOfLife,
   faStopCircle,
   faStopwatch,
   faTachometerAlt,
@@ -33,7 +34,10 @@ import {
   faMarkdown,
   faSuperpowers,
 } from '@fortawesome/free-brands-svg-icons';
-import { faUser as farUser } from '@fortawesome/free-regular-svg-icons';
+import {
+  faCheckSquare as farCheckSquare,
+  faUser as farUser,
+} from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export default {
@@ -70,6 +74,8 @@ export default {
       faStopCircle,
       faUpload,
       faUserShield,
+      faStarOfLife,
+      farCheckSquare,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },
