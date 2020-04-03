@@ -30,6 +30,7 @@ public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .antMatcher("/api/state/**")
                 .authorizeRequests()
                     .anyRequest().hasAnyRole("STATE", "USER")
@@ -41,7 +42,7 @@ public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         logger.info(String.format("%n%nUsing generated security password for state API: %s%n", properties().getPassword()));
 
-        // configure default admin user
+        // configure default backend user
         auth
                 .inMemoryAuthentication()
                 .withUser(properties().getUsername()).password(bCrypt.encode(properties().getPassword())).authorities("ROLE_STATE");
