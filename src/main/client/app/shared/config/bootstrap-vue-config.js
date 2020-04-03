@@ -15,6 +15,7 @@ import {
   ModalPlugin,
   NavbarPlugin,
   NavPlugin,
+  OverlayPlugin,
   SpinnerPlugin,
   TablePlugin,
   TabsPlugin,
@@ -39,6 +40,7 @@ export default {
     Vue.use(ModalPlugin);
     Vue.use(NavbarPlugin);
     Vue.use(NavPlugin);
+    Vue.use(OverlayPlugin);
     Vue.use(SpinnerPlugin);
     Vue.use(TablePlugin);
     Vue.use(TabsPlugin);
