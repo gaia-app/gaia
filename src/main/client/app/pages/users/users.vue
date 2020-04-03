@@ -44,8 +44,7 @@
       ],
     }),
     async created() {
-      this.users = await getUsers();
-      this.teams = await getTeams();
+      [this.users, this.teams] = await Promise.all([getUsers(), getTeams()]);
     },
     methods: {
       saveUser(user) {
