@@ -33,25 +33,9 @@ public class StackController {
         this.jobRepository = jobRepository;
     }
 
-//    @GetMapping("/modules/{moduleId}/run")
-    public String newStack(@PathVariable String moduleId, Model model) {
-        model.addAttribute("moduleId", moduleId);
-        return "new_stack";
-    }
-
 //    @GetMapping("/stacks")
     public String listStacks() {
         return "stacks";
-    }
-
-//    @GetMapping("/stacks/{stackId}")
-    public String editStack(@PathVariable String stackId, Model model) {
-        // checking if the stack exists
-        // TODO throw an exception (404) if not
-        if (stackRepository.existsById(stackId)) {
-            model.addAttribute("stackId", stackId);
-        }
-        return "stack";
     }
 
 //    @GetMapping("/stacks/{stackId}/{jobType}")

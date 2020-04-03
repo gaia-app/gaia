@@ -160,7 +160,7 @@
       async save() {
         this.stackVariablesMgmt();
         const stack = await this.saveStack();
-        this.$router.push({ path: `/stacks/${stack.id}` });
+        this.$router.push({ name: 'stack_edition', params: { stackId: stack.id } });
       },
       async run() {
         this.stackVariablesMgmt();

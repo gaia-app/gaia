@@ -12,6 +12,7 @@ import {
   FormTextareaPlugin,
   InputGroupPlugin,
   LayoutPlugin,
+  ModalPlugin,
   NavbarPlugin,
   NavPlugin,
   SpinnerPlugin,
@@ -34,6 +35,7 @@ export default {
     Vue.use(FormTextareaPlugin);
     Vue.use(InputGroupPlugin);
     Vue.use(LayoutPlugin);
+    Vue.use(ModalPlugin);
     Vue.use(NavbarPlugin);
     Vue.use(NavPlugin);
     Vue.use(SpinnerPlugin);

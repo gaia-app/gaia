@@ -55,34 +55,10 @@ class StackControllerTest {
     }
 
     @Test
-    void newStack_shouldReturnToTheView() {
-        var result = controller.newStack("test_stack", model);
-
-        assertEquals("new_stack", result);
-        verify(model).addAttribute("moduleId", "test_stack");
-    }
-
-    @Test
     void listStack_shouldReturnToTheView() {
         var result = controller.listStacks();
 
         assertEquals("stacks", result);
-    }
-
-    @Test
-    void editStack_shouldReturnTheView() {
-        var result = controller.editStack("test_stack", model);
-
-        assertEquals("stack", result);
-    }
-
-    @Test
-    void editStack_shouldSetModelIfStackExists() {
-        when(stackRepository.existsById(anyString())).thenReturn(true);
-        var result = controller.editStack("test_stack", model);
-
-        assertEquals("stack", result);
-        verify(model).addAttribute("stackId", "test_stack");
     }
 
     @Test

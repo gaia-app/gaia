@@ -16,6 +16,7 @@ interface StackRepository : MongoRepository<Stack, String> {
     fun countStacksByStateAndOwnerTeam(state: StackState, team: Team): Long
     fun countStacksByStateAndCreatedBy(state: StackState, user: User): Long
     fun countStacksByState(state: StackState): Long
+    fun findByCreatedBy(userWithNoTeam: User): List<Stack>
     fun findByOwnerTeam(team: Team): List<Stack>
     fun findByIdAndOwnerTeam(id: String, team: Team): Optional<Stack>
 }
