@@ -1,9 +1,10 @@
 <template>
   <span class="user_badge">
-    <a href="#">{{ user.username }}</a>
+    <a href="#">{{ user.username }}</a>&nbsp;
     <font-awesome-icon
       v-if="user.admin"
       icon="user-shield"
+      class="icon"
     />
   </span>
 </template>
@@ -27,7 +28,7 @@
     text-decoration: none !important;
   }
 
-  .user_badge .fa-user-shield {
+  .user_badge .icon {
     color: #ff9900;
   }
 </style>
