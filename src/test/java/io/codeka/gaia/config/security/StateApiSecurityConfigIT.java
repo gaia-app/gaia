@@ -14,6 +14,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,6 +35,15 @@ public class StateApiSecurityConfigIT {
     void gaiaBackend_shouldHaveAccessToStateApi() throws Exception {
         mockMvc.perform(get("/api/state/test").with(httpBasic(props.getUsername(), props.getPassword())))
                 .andExpect(authenticated().withUsername("gaia-backend").withRoles("STATE"));
+    }
+
+    @Test
+    void gaiaBackend_shouldHaveAccessToStateApiWithPost() throws Exception {
+        mockMvc.perform(post("/api/state/test")
+            .content("{}")
+            .contentType("application/json")
+            .with(httpBasic(props.getUsername(), props.getPassword())))
+            .andExpect(authenticated().withUsername("gaia-backend").withRoles("STATE"));
     }
 
     @Test
