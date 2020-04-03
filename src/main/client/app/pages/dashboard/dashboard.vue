@@ -2,31 +2,37 @@
   <div>
     <div class="row">
       <div class="col-md-6 col-lg-4 margin_bottom_30">
-        <app-dashboard-widget
-          class="blue2_bg"
-          text="Modules"
-          :value="summary.modulesCount"
-          icon="object-group"
-          :to="{ name: 'modules' }"
-        />
+        <b-overlay :show="loading">
+          <app-dashboard-widget
+            class="blue2_bg"
+            text="Modules"
+            :value="summary.modulesCount"
+            icon="object-group"
+            :to="{ name: 'modules' }"
+          />
+        </b-overlay>
       </div>
       <div class="col-md-6 col-lg-4 margin_bottom_30">
-        <app-dashboard-widget
-          class="blue2_bg"
-          text="Running Stacks"
-          :value="summary.runningStacksCount"
-          icon="layer-group"
-          :to="{ name : 'stacks' }"
-        />
+        <b-overlay :show="loading">
+          <app-dashboard-widget
+            class="blue2_bg"
+            text="Running Stacks"
+            :value="summary.runningStacksCount"
+            icon="layer-group"
+            :to="{ name : 'stacks' }"
+          />
+        </b-overlay>
       </div>
       <div class="col-md-6 col-lg-4 margin_bottom_30">
-        <app-dashboard-widget
-          class="yellow_bg"
-          text="Stacks to update"
-          :value="summary.toUpdateStacksCount"
-          icon="caret-square-up"
-          :to="{ name : 'stacks' }"
-        />
+        <b-overlay :show="loading">
+          <app-dashboard-widget
+            class="yellow_bg"
+            text="Stacks to update"
+            :value="summary.toUpdateStacksCount"
+            icon="caret-square-up"
+            :to="{ name : 'stacks' }"
+          />
+        </b-overlay>
       </div>
     </div>
     <div
@@ -61,6 +67,7 @@
       AppDashboardWidget,
     },
     data: () => ({
+      loading: true,
       summary: { modulesCount: 0, runningStacksCount: 0, toUpdateStacksCount: 0 },
     }),
     computed: {
@@ -71,6 +78,7 @@
     },
     async created() {
       this.summary = await getSummary();
+      this.loading = false;
     },
   };
 </script>
