@@ -14,7 +14,11 @@
         class="job"
       >
         <div class="job_id">
-          <a :href="'/stacks/' + job.stackId + '/jobs/' + job.id">Job #{{ jobs.length - index }}</a>
+          <router-link
+            :to="{ name: 'stack_job', params: { jobId: job.id }}"
+          >
+            Job #{{ jobs.length - index }}
+          </router-link>
         </div>
         <div class="filler" />
         <div class="job_detail">
@@ -93,7 +97,10 @@
 
 <script>
   import { displayNotification } from '@/shared/services/modal-service';
-  import { deleteJob, retryJob } from '@/shared/api/jobs-api';
+  import {
+    deleteJob,
+    retryJob,
+  } from '@/shared/api/jobs-api';
 
   import AppJobTimer from '@/pages/stacks/job/job-timer.vue';
   import AppUserBadge from '@/pages/users/user-badge.vue';
