@@ -33,7 +33,10 @@ public class StackRestController {
         if(user.isAdmin()){
             return stackRepository.findAll();
         }
-        return stackRepository.findByOwnerTeam(user.getTeam());
+        else if(user.getTeam() != null){
+            return stackRepository.findByOwnerTeam(user.getTeam());
+        }
+        return stackRepository.findByCreatedBy(user);
     }
 
     @GetMapping("/{id}")
@@ -42,8 +45,11 @@ public class StackRestController {
         if(user.isAdmin()){
             stack = stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
         }
-        else{
+        else if(user.getTeam() != null){
             stack = stackRepository.findByIdAndOwnerTeam(id, user.getTeam()).orElseThrow(StackNotFoundException::new);
+        }
+        else {
+            stack = stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
         }
         stack.setEstimatedRunningCost(stackCostCalculator.calculateRunningCostEstimation(stack));
         return stack;

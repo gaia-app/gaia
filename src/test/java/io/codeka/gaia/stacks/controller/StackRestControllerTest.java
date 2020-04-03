@@ -28,6 +28,8 @@ class StackRestControllerTest {
 
     private User standardUser = new User("Serge Karamazov", userTeam);
 
+    private User userWithNoTeam = new User("Émile Gravier", null);
+
     private Stack stack = new Stack();
 
     @InjectMocks
@@ -58,6 +60,15 @@ class StackRestControllerTest {
     }
 
     @Test
+    void listStack_shouldFindOwnedStacks_forUserWithNoTeam(){
+        // when
+        stackRestController.listStacks(userWithNoTeam);
+
+        // then
+        verify(stackRepository).findByCreatedBy(userWithNoTeam);
+    }
+
+    @Test
     void getStack_shouldFindStack_forAdminUser(){
         // given
         when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
@@ -79,6 +90,18 @@ class StackRestControllerTest {
 
         // then
         verify(stackRepository).findByIdAndOwnerTeam("42", userTeam);
+    }
+
+    @Test
+    void getStack_shouldFindStack_forUserWithNoTeam(){
+        // given
+        when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
+
+        // when
+        stackRestController.getStack("42", userWithNoTeam);
+
+        // then
+        verify(stackRepository).findById("42");
     }
 
     @Test
