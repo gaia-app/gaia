@@ -24,7 +24,7 @@
             </b-form-group>
           </b-col>
           <b-col :md="isTerraformImageOverride ? '5' : '3'">
-            <terraform-image-input
+            <app-terraform-image-input
               :image="module.terraformImage"
               @form-status="isTerraformImageValid = $event"
               @override-status="isTerraformImageOverride = $event"
@@ -112,7 +112,7 @@
           </b-button>
         </h2>
 
-        <module-variable
+        <app-module-variable
           v-for="(modVar, idx) in module.variables"
           :key="idx"
           :variable="modVar"
@@ -132,8 +132,8 @@
 </template>
 
 <script>
-  import ModuleVariable from '@/pages/modules/module-variable.vue';
-  import TerraformImageInput from '@/pages/modules/terraform-image-input.vue';
+  import AppModuleVariable from '@/pages/modules/module-variable.vue';
+  import AppTerraformImageInput from '@/pages/modules/terraform-image-input.vue';
   import {
     getModule,
     updateModule,
@@ -145,8 +145,8 @@
     name: 'AppModule',
 
     components: {
-      ModuleVariable,
-      TerraformImageInput,
+      AppModuleVariable,
+      AppTerraformImageInput,
     },
 
     props: {

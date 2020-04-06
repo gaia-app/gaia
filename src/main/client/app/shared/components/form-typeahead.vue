@@ -2,7 +2,7 @@
   <div class="form-typeahead">
     <b-form-input
       :id="id"
-      v-model="value"
+      v-model.trim="inputValue"
       :placeholder="placeholder"
       :state="state"
       :formatter="formatter"
@@ -18,21 +18,17 @@
 
 <script>
   import $ from 'jquery';
-  import Bloodhound from 'corejs-typeahead/dist/bloodhound';
-  import 'corejs-typeahead/dist/typeahead.jquery';
+  import Bloodhound from 'corejs-typeahead';
 
   export default {
     name: 'AppFormTypeahead',
     props: {
       // properties for input
       id: { type: String, required: true }, // id of the input
-      placeholder: { type: String, required: true }, // placeholder of the input
-      value: { type: String, required: true }, // for v-model binding
+      placeholder: { type: String, default: null }, // placeholder of the input
+      value: { type: String, default: null }, // for v-model binding
       state: { type: Boolean }, // for form validation
-      formatter: {
-        type: String,
-        default: null,
-      }, // for input format
+      formatter: { type: Function, default: null }, // for input format
       groupPosition: { type: String, required: true }, // position in an input group
       disabled: { type: Boolean }, // input is disabled or not
       readonly: { type: Boolean }, // input is readonly or not
@@ -43,8 +39,18 @@
       minLength: { type: Number, default: 3 }, // minimum character length before rendering suggestions
       limit: { type: Number, default: 10 }, // max number of suggestions to be displayed
     },
+    data: () => ({
+      inputValue: null,
+    }),
     watch: {
-      value(newValue) {
+      value: {
+        immediate: true,
+        handler(newValue) {
+          this.inputValue = newValue;
+          $(`#${this.id}`).typeahead('val', newValue);
+        },
+      },
+      inputValue(newValue) {
         // emit to update model outside the component
         this.$emit('input', newValue);
       },
@@ -55,7 +61,16 @@
     mounted() {
       this.resetTypeahead();
     },
+    beforeDestroy() {
+      this.destroyTypeahead();
+    },
     methods: {
+      typeaheadEl() {
+        return $(`#${this.id}`);
+      },
+      destroyTypeahead() {
+        this.typeaheadEl().typeahead('close').typeahead('destroy');
+      },
       resetTypeahead() {
         const engine = this.initSearchEngine();
         this.bindTypeahead(engine);
@@ -80,9 +95,8 @@
         });
       },
       bindTypeahead(engine) {
-        const input = $(`#${this.id}`);
-        input.typeahead('destroy');
-        input.typeahead(
+        this.destroyTypeahead();
+        this.typeaheadEl().typeahead(
           {
             minLength: this.minLength,
             highlight: true,
@@ -95,8 +109,8 @@
             display: (item) => item[this.filterProperty],
           },
         );
-        input.on('typeahead:select', (e, item) => {
-          this.$emit('change', item.name);
+        this.typeaheadEl().on('typeahead:select', (e, item) => {
+          this.inputValue = item.name;
         });
       },
       propagateChangeEvent(...args) {
