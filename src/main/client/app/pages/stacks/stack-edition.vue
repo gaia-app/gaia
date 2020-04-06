@@ -164,7 +164,12 @@
 </template>
 
 <script>
-  import { getStack, saveStack } from '@/shared/api/stacks-api';
+  import {
+    destroyStack,
+    getStack,
+    runStack,
+    saveStack,
+  } from '@/shared/api/stacks-api';
   import { getModule } from '@/shared/api/modules-api';
   import { getState } from '@/shared/api/state-api';
 
@@ -237,16 +242,15 @@
       moduleVar(name) {
         return this.module.variables.find((variable) => variable.name === name);
       },
-
       saveStack() {
         this.stack.variableValues = {};
         this.stack.variables.forEach((variable) => {
           this.stack.variableValues[variable.name] = variable.value;
         });
         saveStack(this.stack)
-          .then(() => { displayNotification(this, { variant: 'success', message: 'Stack saved.' }); })
-          .catch((error) => {
-            displayNotification(this, { variant: 'info', message: `Error saving stack : ${error.message}` });
+          .then(() => displayNotification(this, { variant: 'success', message: 'Stack saved.' }))
+          .catch(({ message }) => {
+            displayNotification(this, { variant: 'info', message: `Error saving stack: ${message}` });
           });
       },
       async runStack() {
@@ -254,14 +258,16 @@
         const message = 'Modifications must be saved before. Continue?';
         if (await displayConfirmDialog(this, { title: 'Run request', message })) {
           await this.saveStack();
-          this.$router.push({ path: `/stacks/${this.stack.id}/RUN` });
+          const { jobId } = await runStack(this.stack.id);
+          this.$router.push({ name: 'job', params: { jobId } });
         }
       },
       async stopStack() {
         // ask for confirmation
         const message = 'This will completely stop the stack, and destroy all created resources. Continue?';
         if (await displayConfirmDialog(this, { title: 'Stop request', message })) {
-          this.$router.push({ path: `/stacks/${this.stack.id}/DESTROY` });
+          const { jobId } = await destroyStack(this.stack.id);
+          this.$router.push({ name: 'job', params: { jobId } });
         }
       },
       async refreshJobs() {

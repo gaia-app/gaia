@@ -1,31 +1,40 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faAngleDoubleDown,
   faAngleDoubleLeft,
   faAngleDoubleRight,
+  faAngleDoubleUp,
   faCalendarAlt,
   faCaretSquareUp,
+  faChevronDown,
+  faChevronUp,
+  faCircleNotch,
   faCog,
   faEdit,
+  faFile,
+  faFolder,
   faHistory,
   faInfo,
   faLayerGroup,
   faLock,
   faMinus,
   faObjectGroup,
+  faPlay,
   faPlus,
+  faRedo,
   faRocket,
   faSave,
   faSignOutAlt,
   faStarOfLife,
+  faStop,
   faStopCircle,
   faStopwatch,
   faTachometerAlt,
   faTag,
-  faTrashAlt,
+  faUpload,
   faUser,
   faUserFriends,
-  faUpload,
   faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -36,7 +45,9 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import {
   faCheckSquare as farCheckSquare,
+  faCopy as farCopy,
   faUser as farUser,
+  faTrashAlt as farTrashAlt,
 } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -55,7 +66,7 @@ export default {
       faPlus,
       faSave,
       faTachometerAlt,
-      faTrashAlt,
+      farTrashAlt,
       faObjectGroup,
       faLayerGroup,
       faCog,
@@ -76,6 +87,17 @@ export default {
       faUserShield,
       faStarOfLife,
       farCheckSquare,
+      faFolder,
+      faFile,
+      faPlay,
+      faStop,
+      faRedo,
+      farCopy,
+      faAngleDoubleUp,
+      faAngleDoubleDown,
+      faChevronDown,
+      faChevronUp,
+      faCircleNotch,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },

@@ -15,7 +15,7 @@
       >
         <div class="job_id">
           <router-link
-            :to="{ name: 'stack_job', params: { jobId: job.id }}"
+            :to="{ name: 'job', params: { jobId: job.id }}"
           >
             Job #{{ jobs.length - index }}
           </router-link>
@@ -70,13 +70,13 @@
           <font-awesome-icon
             v-if="isRetryAvailable(job.status)"
             icon="redo"
-            class="retry"
+            class="icon retry"
             @click="retryJob(job.id)"
           />
           <font-awesome-icon
             v-if="isDeleteAvailable(job.status)"
-            icon="trash-alt"
-            class="delete"
+            :icon="['far', 'trash-alt']"
+            class="icon delete"
             @click="deleteJob(job.id)"
           />
         </div>
@@ -89,6 +89,7 @@
       <img
         src="@/assets/images/ghost.png"
         width="32"
+        alt="ghost"
       >
       No jobs found !
     </div>
@@ -149,10 +150,10 @@
         }
       },
       isRetryAvailable(status) {
-        return status !== null && status.indexOf('FAILED') > 0;
+        return status !== null && status.includes('FAILED');
       },
       isDeleteAvailable(status) {
-        return status !== null && status.indexOf('STARTED') < 0;
+        return status !== null && !status.includes('STARTED');
       },
     },
   };
@@ -218,11 +219,11 @@
     flex: 0 0 5%;
   }
 
-  .job_list .job .job_detail.job_actions i {
+  .job_list .job .job_detail.job_actions .icon {
     cursor: pointer;
   }
 
-  .job_list .job .job_detail.job_actions i + i {
+  .job_list .job .job_detail.job_actions .icon + .icon {
     margin-top: 0.5rem
   }
 

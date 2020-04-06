@@ -1,4 +1,4 @@
-<template id="job-timer-template">
+<template>
   <span :class="cssClass">
     {{ timer | format }}
   </span>
@@ -18,24 +18,18 @@
       },
     },
     props: {
-      startTime: {
-        type: String,
-        required: true,
-      },
-      endTime: {
-        type: String,
-        required: true,
-      },
-      cssClass: {
-        type: String,
-        default: '',
-      },
+      startTime: { type: [Date, String], default: null },
+      endTime: { type: [Date, String], default: null },
+      cssClass: { type: String, default: null },
     },
     data: () => ({
       timer: 0,
       intervalId: null,
     }),
     watch: {
+      startTime(newValue) {
+        if (newValue != null) this.reset();
+      },
       endTime(newValue) {
         if (newValue == null) {
           this.start();
@@ -46,11 +40,15 @@
       },
     },
     created() {
+      if (!this.startTime) return;
       if (this.endTime) {
         this.interval(this.endTime);
         return;
       }
       this.start();
+    },
+    destroyed() {
+      this.end();
     },
     methods: {
       start() {
@@ -61,6 +59,11 @@
       },
       interval(endTime) {
         this.timer = Math.floor((Date.parse(endTime) - Date.parse(this.startTime)) / 1000);
+      },
+      reset() {
+        this.timer = 0;
+        this.end();
+        this.start();
       },
     },
   };
