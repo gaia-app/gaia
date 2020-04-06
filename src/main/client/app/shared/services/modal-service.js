@@ -6,3 +6,13 @@ export const displayNotification = (vueContext, options) => {
     variant: options.variant,
   });
 };
+
+export const displayConfirmDialog = async (vueContext, options) => vueContext.$bvModal.msgBoxConfirm(options.message, {
+  title: options.title,
+  centered: true,
+  noCloseOnBackdrop: true,
+  cancelTitle: 'No',
+  okVariant: 'danger',
+  okTitle: 'Yes',
+  returnFocus: 'body',
+});

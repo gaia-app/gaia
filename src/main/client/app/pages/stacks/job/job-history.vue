@@ -96,7 +96,10 @@
 </template>
 
 <script>
-  import { displayNotification } from '@/shared/services/modal-service';
+  import {
+    displayConfirmDialog,
+    displayNotification,
+  } from '@/shared/services/modal-service';
   import {
     deleteJob,
     retryJob,
@@ -122,20 +125,10 @@
         this.callRetry(jobId);
       },
       async deleteJob(jobId) {
-        if (await this.confirmDeleteDialog()) {
+        const message = 'This will delete the job. Continue?';
+        if (await displayConfirmDialog(this, { title: 'Delete request', message })) {
           this.callDelete(jobId);
         }
-      },
-      async confirmDeleteDialog() {
-        return this.$bvModal.msgBoxConfirm('This will delete the job. Continue?', {
-          title: 'Delete request',
-          centered: true,
-          noCloseOnBackdrop: true,
-          cancelTitle: 'No',
-          okVariant: 'danger',
-          okTitle: 'Yes',
-          returnFocus: 'body',
-        });
       },
       async callRetry(jobId) {
         try {
