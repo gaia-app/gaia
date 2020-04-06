@@ -1,4 +1,4 @@
-<template id="readme">
+<template>
   <b-container fluid>
     <b-spinner
       v-if="!loaded"
