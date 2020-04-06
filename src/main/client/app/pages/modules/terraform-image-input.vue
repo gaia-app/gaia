@@ -15,7 +15,7 @@
         </b-form-checkbox>
       </b-input-group-prepend>
 
-      <form-typeahead
+      <app-form-typeahead
         v-if="isCustomImage"
         id="image_repository"
         v-model="image.repository"
@@ -26,17 +26,16 @@
         source="/api/docker/repositories?name=%REPO"
         wildcard="%REPO"
         filter-property="name"
-        @input="resetTag"
       />
 
-      <form-typeahead
+      <app-form-typeahead
         id="image_tag"
         v-model="image.tag"
         placeholder="Tag"
         :state="isTagNotEmpty"
         :disabled="!isRepositoryNotEmpty || !isRepositoryValid"
-        :source="'/api/docker/repositories/' + image.repository + '/tags?name=%TAG'"
         group-position="right"
+        :source="'/api/docker/repositories/' + image.repository + '/tags?name=%TAG'"
         wildcard="%TAG"
         filter-property="name"
         :min-length="1"
@@ -54,27 +53,21 @@
 </template>
 
 <script>
-  import $ from 'jquery';
+  import { AppFormTypeahead } from '@/shared/components';
 
-  import { AppFormTypeahead as FormTypeahead } from '@/shared/components';
+  const OFFICIAL_REPOSITORY = 'hashicorp/terraform';
 
   export default {
     name: 'AppTerraformImageInput',
-
-    components: { FormTypeahead },
-
-    props: {
-      image: {
-        type: Object,
-        required: true,
-      },
+    components: {
+      AppFormTypeahead,
     },
-
+    props: {
+      image: { type: Object, required: true },
+    },
     data: () => ({
       isCustomImage: null,
-      officialRepository: 'hashicorp/terraform',
     }),
-
     computed: {
       isFormValid() {
         const result = this.isRepositoryNotEmpty && this.isRepositoryValid && this.isTagNotEmpty;
@@ -99,35 +92,29 @@
         return error;
       },
     },
-
     watch: {
       isCustomImage(newValue) {
         // emit to override status to parent
         this.$emit('override-status', newValue);
       },
     },
-
     created() {
-      this.isCustomImage = this.image.repository !== this.officialRepository;
+      this.isCustomImage = this.image.repository !== OFFICIAL_REPOSITORY;
     },
-
     methods: {
       overrideImage() {
-        if (this.isCustomImage && this.image.repository !== this.officialRepository) {
+        if (this.isCustomImage && this.image.repository !== OFFICIAL_REPOSITORY) {
           // force the repository and reset the version
-          this.image.repository = this.officialRepository;
-          this.resetTag();
+          this.image.repository = OFFICIAL_REPOSITORY;
+          this.image.tag = null;
         }
       },
       formatRepository(value) {
         if (!value) return '';
         if (!value.includes(':')) return value;
         [this.image.repository, this.image.tag] = value.split(':');
-        $('#image_tag').focus();
+        document.getElementById('image_tag').focus();
         return this.image.repository;
-      },
-      resetTag() {
-        this.image.tag = null;
       },
     },
   };
