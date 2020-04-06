@@ -1,12 +1,19 @@
 package io.codeka.gaia.stacks.controller;
 
+import io.codeka.gaia.modules.bo.TerraformImage;
+import io.codeka.gaia.modules.bo.TerraformModule;
+import io.codeka.gaia.modules.repository.TerraformModuleRepository;
+import io.codeka.gaia.stacks.bo.Job;
+import io.codeka.gaia.stacks.bo.JobType;
 import io.codeka.gaia.stacks.bo.Stack;
+import io.codeka.gaia.stacks.repository.JobRepository;
 import io.codeka.gaia.stacks.repository.StackRepository;
 import io.codeka.gaia.stacks.service.StackCostCalculator;
 import io.codeka.gaia.teams.Team;
 import io.codeka.gaia.teams.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,7 +22,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,8 +52,14 @@ class StackRestControllerTest {
     @Mock
     private StackCostCalculator stackCostCalculator;
 
+    @Mock
+    private TerraformModuleRepository terraformModuleRepository;
+
+    @Mock
+    private JobRepository jobRepository;
+
     @Test
-    void listStack_shouldFindAllStacks_forAdminUser(){
+    void listStack_shouldFindAllStacks_forAdminUser() {
         // when
         stackRestController.listStacks(adminUser);
 
@@ -51,7 +68,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void listStack_shouldFindTeamStacks_forStandardUser(){
+    void listStack_shouldFindTeamStacks_forStandardUser() {
         // when
         stackRestController.listStacks(standardUser);
 
@@ -60,7 +77,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void listStack_shouldFindOwnedStacks_forUserWithNoTeam(){
+    void listStack_shouldFindOwnedStacks_forUserWithNoTeam() {
         // when
         stackRestController.listStacks(userWithNoTeam);
 
@@ -69,7 +86,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void getStack_shouldFindStack_forAdminUser(){
+    void getStack_shouldFindStack_forAdminUser() {
         // given
         when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
 
@@ -81,7 +98,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void getStack_shouldFindStack_forStandardUser(){
+    void getStack_shouldFindStack_forStandardUser() {
         // given
         when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.of(stack));
 
@@ -93,7 +110,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void getStack_shouldFindStack_forUserWithNoTeam(){
+    void getStack_shouldFindStack_forUserWithNoTeam() {
         // given
         when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
 
@@ -105,7 +122,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void getStack_shouldCalculateRunningCost_forStandardUser(){
+    void getStack_shouldCalculateRunningCost_forStandardUser() {
         // given
         when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.of(stack));
 
@@ -118,7 +135,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void getStack_shouldThrowStackNotFoundException(){
+    void getStack_shouldThrowStackNotFoundException() {
         // given
         when(stackRepository.findById("12")).thenReturn(Optional.empty());
         when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.empty());
@@ -129,7 +146,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void save_shouldSaveStack(){
+    void save_shouldSaveStack() {
         // when
         stackRestController.save(stack, userTeam, standardUser);
 
@@ -142,7 +159,7 @@ class StackRestControllerTest {
     }
 
     @Test
-    void update_shouldSaveStack(){
+    void update_shouldSaveStack() {
         // when
         stackRestController.update("12", stack, standardUser);
 
@@ -151,4 +168,33 @@ class StackRestControllerTest {
         assertThat(stack.getUpdatedAt()).isEqualToIgnoringSeconds(LocalDateTime.now());
         verify(stackRepository).save(stack);
     }
+
+    @Test
+    void launchJob_shouldConfigureAndSaveTheJob() {
+        // given
+        var stack = new Stack();
+        var module = new TerraformModule();
+        module.setTerraformImage(TerraformImage.Companion.defaultInstance());
+        var user = new User("test_user", null);
+
+        // when
+        when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
+        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
+        var result = stackRestController.launchJob("test_stack", JobType.RUN, user);
+
+        // then
+        assertThat(result)
+            .isNotNull()
+            .containsKeys("jobId");
+
+        var captor = forClass(Job.class);
+        verify(jobRepository).save(captor.capture());
+        var job = captor.getValue();
+        assertNotNull(job);
+        assertEquals(JobType.RUN, job.getType());
+        assertEquals("test_stack", job.getStackId());
+        assertEquals(user, job.getUser());
+        assertEquals(module.getTerraformImage(), job.getTerraformImage());
+    }
+
 }

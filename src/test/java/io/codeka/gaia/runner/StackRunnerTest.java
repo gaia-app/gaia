@@ -147,7 +147,7 @@ class StackRunnerTest {
 
         // then
         assertEquals(StackState.NEW, stack.getState());
-        verifyZeroInteractions(stackRepository);
+        verifyNoInteractions(stackRepository);
     }
 
     @Test
@@ -162,7 +162,7 @@ class StackRunnerTest {
 
         // then
         assertEquals(StackState.RUNNING, stack.getState());
-        verifyZeroInteractions(stackRepository);
+        verifyNoInteractions(stackRepository);
     }
 
     @Test
@@ -365,7 +365,7 @@ class StackRunnerTest {
 
         // then
         assertEquals(StackState.NEW, stack.getState());
-        verifyZeroInteractions(stackRepository);
+        verifyNoInteractions(stackRepository);
     }
 
     @Test
@@ -380,7 +380,7 @@ class StackRunnerTest {
 
         // then
         assertEquals(StackState.RUNNING, stack.getState());
-        verifyZeroInteractions(stackRepository);
+        verifyNoInteractions(stackRepository);
     }
 
     @Test
@@ -391,17 +391,6 @@ class StackRunnerTest {
         // then
         verify(jobRepository, times(2)).save(job);
         verify(stepRepository, times(2)).saveAll(job.getSteps());
-    }
-
-    @Test
-    void getJob_shouldReturnJob_whenNotInMemory() {
-        // when
-        when(jobRepository.findById(anyString())).thenReturn(Optional.of(job));
-        var result = stackRunner.getJob("test_jobId");
-
-        // then
-        assertEquals(job, result);
-        verify(jobRepository).findById("test_jobId");
     }
 
 }
