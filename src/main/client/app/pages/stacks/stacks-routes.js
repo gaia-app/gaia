@@ -11,12 +11,9 @@ const stacksRoutes = [
   },
   {
     path: '/stacks/:stackId',
-    name: 'stack',
     component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack.vue'),
     meta: {
       authorities: ['ROLE_USER'],
-      breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack' }],
-      title: 'Gaia - Stack edition',
     },
     children: [
       {
@@ -43,13 +40,14 @@ const stacksRoutes = [
       },
       {
         path: 'jobs/:jobId',
-        name: 'stack_job',
-        component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-job.vue'),
+        name: 'job',
+        component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/job/job.vue'),
+        props: true,
         meta: {
           authorities: ['ROLE_USER'],
           breadcrumb: [
             { text: 'Stacks', to: { name: 'stacks' } },
-            { text: 'Stack', to: { name: 'stack' } },
+            { text: 'Stack', to: { name: 'stack_edition' } },
             { text: 'Job' },
           ],
           title: 'Gaia - Stack job',

@@ -6,3 +6,4 @@ export { default as AppBreadcrumb } from '@/shared/components/breadcrumb/breadcr
 export { default as AppCliBadge } from '@/shared/components/cli-badge.vue';
 export { default as AppFormTypeahead } from '@/shared/components/form-typeahead.vue';
 export { default as AppMarkdown } from '@/shared/components/markdown.vue';
+export { default as AppConsole } from '@/shared/components/console/console.vue';
