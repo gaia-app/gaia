@@ -172,7 +172,10 @@
   import AppStackOutputs from '@/pages/stacks/stack-outputs.vue';
   import AppUserBadge from '@/pages/users/user-badge.vue';
   import AppJobHistory from '@/pages/stacks/job/job-history.vue';
-  import { displayNotification } from '@/shared/services/modal-service';
+  import {
+    displayConfirmDialog,
+    displayNotification,
+  } from '@/shared/services/modal-service';
   import { getJobs } from '@/shared/api/jobs-api';
 
   export default {
@@ -248,7 +251,8 @@
       },
       async runStack() {
         // ask for confirmation
-        if (await this.confirmDialog('Run request', 'Modifications must be saved before. Continue?')) {
+        const message = 'Modifications must be saved before. Continue?';
+        if (await displayConfirmDialog(this, { title: 'Run request', message })) {
           await this.saveStack();
           this.$router.push({ path: `/stacks/${this.stack.id}/RUN` });
         }
@@ -256,20 +260,9 @@
       async stopStack() {
         // ask for confirmation
         const message = 'This will completely stop the stack, and destroy all created resources. Continue?';
-        if (await this.confirmDialog('Stop request', message)) {
+        if (await displayConfirmDialog(this, { title: 'Stop request', message })) {
           this.$router.push({ path: `/stacks/${this.stack.id}/DESTROY` });
         }
-      },
-      async confirmDialog(title, message) {
-        return this.$bvModal.msgBoxConfirm(message, {
-          title,
-          centered: true,
-          noCloseOnBackdrop: true,
-          cancelTitle: 'No',
-          okVariant: 'danger',
-          okTitle: 'Yes',
-          returnFocus: 'body',
-        });
       },
       async refreshJobs() {
         this.jobs = await getJobs(this.stackId);
