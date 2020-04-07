@@ -20,7 +20,7 @@ class JobRestController(
         private val stepRepository: StepRepository) {
 
     @GetMapping(params = ["stackId"])
-    fun jobs(@RequestParam stackId: String) = jobRepository.findAllByStackId(stackId)
+    fun jobs(@RequestParam stackId: String) = jobRepository.findAllByStackIdOrderByStartDateTimeDesc(stackId)
 
     @GetMapping("/{id}")
     fun job(@PathVariable id: String): Job  {
