@@ -35,7 +35,7 @@ public class StackCostCalculator {
      * @return
      */
     public BigDecimal calculateRunningCostEstimation(Stack stack){
-        var jobs = jobRepository.findAllByStackId(stack.getId());
+        var jobs = jobRepository.findAllByStackIdOrderByStartDateTimeDesc(stack.getId());
 
         if(jobs.isEmpty()){
             return BigDecimal.ZERO;

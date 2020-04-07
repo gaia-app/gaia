@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface JobRepository : MongoRepository<Job, String> {
 
-    fun findAllByStackId(stackId: String): List<Job>
+    fun findAllByStackIdOrderByStartDateTimeDesc(stackId: String): List<Job>
 
 }

@@ -50,7 +50,7 @@ class JobRestControllerTest {
         controller.jobs("stackId")
 
         // then
-        verify(jobRepository).findAllByStackId("stackId")
+        verify(jobRepository).findAllByStackIdOrderByStartDateTimeDesc("stackId")
     }
 
     @Test
