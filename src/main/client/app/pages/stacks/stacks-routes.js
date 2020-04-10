@@ -10,23 +10,23 @@ const stacksRoutes = [
     },
   },
   {
+    path: '/stacks/new',
+    name: 'stack_creation',
+    component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-creation.vue'),
+    props: true,
+    meta: {
+      authorities: ['ROLE_USER'],
+      breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack creation' }],
+      title: 'Gaia - Stack creation',
+    },
+  },
+  {
     path: '/stacks/:stackId',
     component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack.vue'),
     meta: {
       authorities: ['ROLE_USER'],
     },
     children: [
-      {
-        path: 'add',
-        name: 'stack_creation',
-        component: () => import(/* webpackChunkName: "chunk-stacks" */ '@/pages/stacks/stack-creation.vue'),
-        props: true,
-        meta: {
-          authorities: ['ROLE_USER'],
-          breadcrumb: [{ text: 'Stacks', to: { name: 'stacks' } }, { text: 'Stack creation' }],
-          title: 'Gaia - Stack creation',
-        },
-      },
       {
         path: 'edit',
         name: 'stack_edition',

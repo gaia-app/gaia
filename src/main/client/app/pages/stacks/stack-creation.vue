@@ -107,10 +107,6 @@
         type: String,
         required: true,
       },
-      stackId: {
-        type: String,
-        required: true,
-      },
     },
 
     data() {
@@ -131,7 +127,6 @@
       this.module = await getModule(this.moduleId);
 
       this.stack = {};
-      this.stack.id = this.stackId;
       this.stack.moduleId = this.module.id;
       this.stack.variableValues = {};
       this.stack.variables = this.module.variables.map((variable) => ({

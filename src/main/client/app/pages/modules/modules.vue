@@ -68,8 +68,6 @@
 
   import { AppCliBadge } from '@/shared/components';
 
-  import { v4 as uuidv4 } from 'uuid';
-
   export default {
     name: 'AppModules',
 
@@ -92,7 +90,6 @@
         this.$router.push({
           name: 'stack_creation',
           params: {
-            stackId: uuidv4(),
             moduleId,
           },
         });
