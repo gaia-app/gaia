@@ -1,5 +1,6 @@
 package io.codeka.gaia.teams
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef
 
@@ -25,6 +26,6 @@ data class User(
  * Gather data of user identified by OAuth2
  */
 data class OAuth2User(
-        val provider: String?,
-        val token: String?,
-        val attributes: Map<String, Any>?)
+    val provider: String?,
+    @JsonIgnore val token: String?,
+    val attributes: Map<String, Any>?)

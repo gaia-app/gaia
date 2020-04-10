@@ -114,4 +114,13 @@ class UsersRestControllerIT {
         mongoContainer.resetDatabase();
     }
 
+    @Test
+    void users_shouldNotLeakTheirOAuth2Credentials() throws Exception {
+        mockMvc.perform(get("/api/users"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[3].username", is("selmak")))
+            .andExpect(jsonPath("$[3].oauth2User.provider", is("github")))
+            .andExpect(jsonPath("$[3].oauth2User.token").doesNotExist());
+    }
+
 }
