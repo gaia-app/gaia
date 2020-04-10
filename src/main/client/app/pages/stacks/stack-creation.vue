@@ -80,7 +80,7 @@
           v-if="props.isLastStep"
           :style="props.fillButtonStyle"
           class="wizard-footer-right finish-button ml-3"
-          @click.native="run"
+          @click.native="saveAndRun"
         >
           <font-awesome-icon icon="rocket" /> Save and run
         </wizard-button>
@@ -91,7 +91,7 @@
 
 <script>
   import { getModule } from '@/shared/api/modules-api';
-  import { createStack } from '@/shared/api/stacks-api';
+  import { createStack, runStack } from '@/shared/api/stacks-api';
 
   import AppStackVariable from './stack-variable.vue';
 
@@ -155,17 +155,17 @@
         });
       },
       async saveStack() {
+        this.stackVariablesMgmt();
         return createStack(this.stack);
       },
       async save() {
-        this.stackVariablesMgmt();
-        const stack = await this.saveStack();
-        this.$router.push({ name: 'stack_edition', params: { stackId: stack.id } });
+        const { id: stackId } = await this.saveStack();
+        this.$router.push({ name: 'stack_edition', params: { stackId } });
       },
-      async run() {
-        this.stackVariablesMgmt();
-        const stack = await this.saveStack();
-        this.$router.push({ path: `/stacks/${stack.id}/RUN` });
+      async saveAndRun() {
+        const { id: stackId } = await this.saveStack();
+        const { jobId } = await runStack(stackId);
+        this.$router.push({ name: 'job', params: { stackId, jobId } });
       },
     },
   };
