@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -74,6 +75,7 @@ class UsersRestControllerIT {
     @Test
     void saveUser_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(put("/api/users/test")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"Bob\"}"))
                 .andExpect(status().isOk())
@@ -94,6 +96,7 @@ class UsersRestControllerIT {
 
         // when
         mockMvc.perform(put("/api/users/Darth Vader")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\": \"Darth Vader\",\"team\": {\"id\": \"Sith\"}}"))
                 .andDo(print())
@@ -109,6 +112,15 @@ class UsersRestControllerIT {
                 .hasValue(new Team("Sith"));
 
         mongoContainer.resetDatabase();
+    }
+
+    @Test
+    void users_shouldNotLeakTheirOAuth2Credentials() throws Exception {
+        mockMvc.perform(get("/api/users"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[3].username", is("selmak")))
+            .andExpect(jsonPath("$[3].oauth2User.provider", is("github")))
+            .andExpect(jsonPath("$[3].oauth2User.token").doesNotExist());
     }
 
 }

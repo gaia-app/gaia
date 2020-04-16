@@ -38,12 +38,12 @@ jobs:
       - git fetch origin +refs/heads/master:refs/remotes/origin/master
       # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
       - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report sonar:sonar
-    - stage: test
-      name: "Visual Non Regression Tests"
-      if: env(PERCY_TOKEN) AND ( type = pull_request OR branch = master )
-      script:
-      - npm install @percy/agent
-      - npx percy exec -- mvn test -Dgroups=e2e
+#    - stage: test
+#      name: "Visual Non Regression Tests"
+#      if: env(PERCY_TOKEN) AND ( type = pull_request OR branch = master )
+#      script:
+#      - npm install @percy/agent
+#      - npx percy exec -- mvn test -Dgroups=e2e
     - stage: deploy
       name: "Deploy to hub.docker.com"
       script:

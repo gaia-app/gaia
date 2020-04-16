@@ -1,0 +1,298 @@
+/*------------------------------------------------------------------
+    File Name: responsive.css
+    Template Name: Pluto - Responsive HTML5 Template
+    Created By: html.design
+    Envato Profile: https://themeforest.net/user/htmldotdesign
+    Website: https://html.design
+    Version: 1.0
+-------------------------------------------------------------------*/
+
+@media (min-width: 768px) and (max-width: 991px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .info_people .user_info_cont {
+    width: 60%;
+    padding-left: 30px;
+    padding-top: 0;
+  }
+
+  .fw_icon {
+    width: 33.33%;
+  }
+}
+
+@media (max-width: 575px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .padding_infor_info {
+    padding: 20px 20px;
+  }
+
+  .payment_option li {
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 1199px) {
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 350px) {
+  .icon_info > ul > li {
+    margin: 15px 0 0 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #testimonial_slider.carousel .carousel-control {
+    top: -35px;
+  }
+
+  .content.testimonial {
+    margin-top: 50px;
+  }
+
+  #testimonial_slider.carousel .testimonial {
+    font-size: 13px;
+    line-height: normal;
+  }
+
+  .progress_bar {
+    padding: 15px 25px 50px 25px;
+  }
+
+  .dash_head {
+    padding: 30px 30px 25px;
+  }
+
+  .task_list li {
+    padding: 20px 30px;
+  }
+
+  .task_list li a {
+    color: #99abb4;
+    font-size: 15px;
+    line-height: normal;
+    margin-bottom: 10px;
+    float: left;
+    width: 100%;
+  }
+
+  .msg_list_main ul li {
+    display: block;
+  }
+
+  .msg_list_main ul li > span:nth-child(1) {
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+
+  /*----- widgets page css -----*/
+  .info_people {
+    padding: 25px;
+    display: block;
+  }
+
+  .info_people .p_info_img {
+    width: 100%;
+    text-align: center;
+  }
+
+  .info_people .p_info_img img {
+    width: 90px;
+  }
+
+  .info_people .user_info_cont {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 25px;
+    text-align: center;
+  }
+
+  .calendar {
+    overflow: auto;
+  }
+
+  /** accordian css **/
+  .tab_style3 .tabbar {
+    display: block;
+  }
+
+  .tab_style3 #v-pills-tabContent {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 25px;
+  }
+
+  .pagination.button_section {
+    display: block;
+  }
+
+  .pagination.button_section .btn-group {
+    margin: 5px 0 0;
+  }
+
+  .fw_icon {
+    width: 50%;
+  }
+
+  /**-- email page --**/
+  .mail-box {
+    float: left;
+    width: 100%;
+  }
+
+  .mail-box .sm-side {
+    width: 100%;
+    float: left;
+  }
+
+  .mail-box .lg-side {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 0 4px 4px 0;
+    width: 100%;
+    float: left;
+    overflow: auto;
+  }
+
+  aside.lg-side .inbox-body {
+    min-width: 565px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .table.table-striped.projects {
+    min-width: 780px;
+  }
+
+  /** login page **/
+  .full_height {
+    height: auto;
+  }
+
+  .login_section {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .login_form form .field input {
+    max-width: 395px;
+    width: 100%;
+  }
+
+  .login_form form .field label.label_field {
+    text-align: left;
+  }
+
+  .login_form form .field {
+    display: block;
+    margin: 0 0 20px;
+    float: left;
+    width: 100%;
+  }
+
+  .label_field.hidden {
+    display: none;
+  }
+
+  .login_form form .field .form-check-label {
+    float: left;
+    width: 100%;
+  }
+
+  .forgot {
+    float: left;
+  }
+
+  .error_page h3 {
+    font-size: 36px;
+    line-height: 45px;
+  }
+}
+
+@media (max-width: 420px) {
+  .model_bt {
+    padding: 11px 0 10px;
+    width: 100%;
+  }
+
+  .fw_icon {
+    width: 100%;
+  }
+
+  aside .inbox-head .position.search_inbox {
+    display: none;
+  }
+
+  .contact_inner .left {
+    width: 100%;
+    float: left;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .contact_inner .right {
+    width: 100%;
+    float: left;
+  }
+
+  .bottom_list .right_button {
+    float: right;
+    display: flex;
+  }
+
+  .bottom_list .right_button button {
+    margin: 0 0 0 5px;
+  }
+
+  .dis_flex {
+    display: block;
+    margin: 0;
+  }
+
+  .dis_flex .profile_img {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+}

@@ -40,7 +40,7 @@ class StackCostCalculatorTest {
         var stack = new Stack();
         stack.setId("12");
 
-        when(jobRepository.findAllByStackId("12")).thenReturn(Collections.EMPTY_LIST);
+        when(jobRepository.findAllByStackIdOrderByStartDateTimeDesc("12")).thenReturn(Collections.EMPTY_LIST);
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);
@@ -66,7 +66,7 @@ class StackCostCalculatorTest {
         job.start();
         job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
-        when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job));
+        when(jobRepository.findAllByStackIdOrderByStartDateTimeDesc("12")).thenReturn(List.of(job));
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);
@@ -100,7 +100,7 @@ class StackCostCalculatorTest {
         jobStop.end(JobStatus.APPLY_FINISHED);
         jobStop.setStartDateTime(LocalDateTime.now().minusDays(1));
 
-        when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job, jobStop));
+        when(jobRepository.findAllByStackIdOrderByStartDateTimeDesc("12")).thenReturn(List.of(job, jobStop));
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);
@@ -141,7 +141,7 @@ class StackCostCalculatorTest {
         jobRelaunch.end(JobStatus.APPLY_FINISHED);
         jobRelaunch.setStartDateTime(LocalDateTime.now().minusHours(1));
 
-        when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job, jobStop, jobRelaunch));
+        when(jobRepository.findAllByStackIdOrderByStartDateTimeDesc("12")).thenReturn(List.of(job, jobStop, jobRelaunch));
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);
@@ -163,7 +163,7 @@ class StackCostCalculatorTest {
         job.start();
         job.end(JobStatus.APPLY_FINISHED);
         job.setStartDateTime(LocalDateTime.now().minusDays(2));
-        when(jobRepository.findAllByStackId("12")).thenReturn(List.of(job));
+        when(jobRepository.findAllByStackIdOrderByStartDateTimeDesc("12")).thenReturn(List.of(job));
 
         // but a module with no cost
         var module = new TerraformModule();

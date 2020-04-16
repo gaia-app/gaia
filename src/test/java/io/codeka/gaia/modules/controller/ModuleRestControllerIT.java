@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -95,6 +96,7 @@ class ModuleRestControllerIT {
     @WithMockUser("Mary J")
     void saveModule_shouldNotBeAccessible_forStandardUsers() throws Exception {
         mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"module-test\"," +
                         "\"terraformImage\":{\"repository\":\"hashicorp/terraform\",\"tag\":\"latest\"}," +
@@ -105,6 +107,7 @@ class ModuleRestControllerIT {
     @Test
     void saveModule_shouldBeAccessible_forAdmin() throws Exception {
         mockMvc.perform(put("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"module-test\"," +
                         "\"terraformImage\":{\"repository\":\"hashicorp/terraform\",\"tag\":\"latest\"}," +
@@ -117,6 +120,7 @@ class ModuleRestControllerIT {
     @Test
     void saveModule_shouldValidateModuleContent_forBlankFields() throws Exception {
         mockMvc.perform(put("/api/modules/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty module
                 .content("{}"))
@@ -128,6 +132,7 @@ class ModuleRestControllerIT {
     @Test
     void saveModule_shouldValidateModuleVariables_forBlankFields() throws Exception {
         mockMvc.perform(put("/api/modules/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty variable name
                 .content("{\"variables\":[{\"name\":\"  \"}]}"))
@@ -138,6 +143,7 @@ class ModuleRestControllerIT {
     @Test
     void saveModule_shouldValidateTerraformImage_forBlankFields() throws Exception {
         mockMvc.perform(put("/api/modules/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty terraform image
                 .content("{\"terraformImage\":{\"repository\":\"  \",\"tag\":\"  \"}}"))
@@ -149,6 +155,7 @@ class ModuleRestControllerIT {
     @Test
     void saveModule_shouldValidateTerraformImage_forWrongRepositoryName() throws Exception {
         mockMvc.perform(put("/api/modules/stacks")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty terraform image
                 .content("{\"terraformImage\":{\"repository\":\"wrong+pattern+image\",\"tag\":\"shame\"}}"))
@@ -160,6 +167,7 @@ class ModuleRestControllerIT {
     @Test
     void createModule_shouldSaveAModule() throws Exception {
         mockMvc.perform(post("/api/modules")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 // empty variable name
                 .content("{\"name\":\"new-module\"}"))

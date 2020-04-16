@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 @Testcontainers
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("e2e")
 public class SeleniumIT {
@@ -83,7 +82,8 @@ public class SeleniumIT {
         driver.get(testUrl());
         driver.manage().window().setSize(new Dimension(1280,800));
 
-        LoginPage page = PageFactory.initElements(driver, LoginPage.class);
+        var page = new LoginPage(driver);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
 
         percy.snapshot("Login Page");
 
@@ -92,9 +92,11 @@ public class SeleniumIT {
 
     @Test
     void dashboardPage_showsModuleCount() {
-        driver.get(testUrl()+"/");
+        driver.get(testUrl()+"/dashboard");
 
-        var page = PageFactory.initElements(driver, DashboardPage.class);
+        var page = new DashboardPage(driver);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
+        page.waitForPageLoaded();
 
         assertEquals(3, page.modulesCount());
         assertEquals(1, page.stacksCount());
@@ -107,7 +109,10 @@ public class SeleniumIT {
     void modulesPage_showsModules() {
         driver.get(testUrl()+"/modules");
 
-        var page = PageFactory.initElements(driver, ModulesPage.class);
+        var page = new ModulesPage(driver);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
+        page.waitForPageLoaded();
+
         assertEquals(3, page.modulesCount());
 
         percy.snapshot("Modules");
@@ -129,7 +134,7 @@ public class SeleniumIT {
 
     @Test
     void stackPage_showsStackDetails() {
-        driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2");
+        driver.get(testUrl()+"/stacks/de28a01f-257a-448d-8e1b-00e4e3a41db2/edit");
 
         var page = new StackPage(driver);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), page);
@@ -151,9 +156,13 @@ public class SeleniumIT {
         percy.snapshot("Job Details");
     }
 
-    void takeScreenshot() throws IOException {
+    void takeScreenshot() {
         var file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         System.out.println(file.getAbsolutePath());
-        FileUtils.copyFileToDirectory(file, new File("./target"));
+        try {
+            FileUtils.copyFileToDirectory(file, new File("./target"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

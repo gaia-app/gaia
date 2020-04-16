@@ -10,10 +10,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers.header
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
+import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 import java.nio.charset.Charset
 
@@ -49,6 +51,23 @@ class GithubRegistryApiTest{
 
         // then
         assertThat(repositories).containsExactly(sampleResult)
+    }
+
+    @Test
+    fun `getRepositories() should return empty list in case of 404`() {
+        // given
+        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+            .andExpect(header("Authorization", "Bearer johnstoken"))
+            .andRespond(withStatus(HttpStatus.NOT_FOUND))
+
+        val john = User("john", null)
+        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+
+        // when
+        val repositories = githubRegistryApi.getRepositories(john)
+
+        // then
+        assertThat(repositories).isEmpty()
     }
 
     @Test
@@ -90,6 +109,23 @@ class GithubRegistryApiTest{
 
         // then
         assertThat(content).isEqualTo(readmeContent)
+    }
+
+    @Test
+    fun `getFileContent() should return an empty string when file doesnt exists`() {
+        // given
+        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/non-existing.md?ref=master"))
+            .andExpect(header("Authorization", "Bearer johnstoken"))
+            .andRespond(withStatus(HttpStatus.NOT_FOUND))
+
+        val john = User("john", null)
+        john.oAuth2User = OAuth2User("github", "johnstoken", null)
+
+        // when
+        val content = githubRegistryApi.getFileContent(john, "terraform-aws-modules/terraform-aws-rds", "non-existing.md")
+
+        // then
+        assertThat(content).isEqualTo("")
     }
 
 }

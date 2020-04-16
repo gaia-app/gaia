@@ -12,7 +12,7 @@
 
     <groupId>io.codeka</groupId>
     <artifactId>gaia</artifactId>
-    <version>1.3.0</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>gaia</name>
@@ -46,6 +46,9 @@
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
         <kotlin.version>1.3.61</kotlin.version>
         <testcontainers.version>1.12.5</testcontainers.version>
+        <node.version>v12.16.0</node.version>
+        <npm.version>6.13.4</npm.version>
+        <frontend-maven-plugin.version>1.9.1</frontend-maven-plugin.version>
 
         <sonar.projectKey>gaia-app:gaia</sonar.projectKey>
         <sonar.organization>gaia-app</sonar.organization>
@@ -74,10 +77,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,38 +95,6 @@
             <artifactId>junit-jupiter</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>4.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>vue</artifactId>
-            <version>2.6.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>font-awesome</artifactId>
-            <version>5.12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>bootstrap-vue</artifactId>
-            <version>2.4.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>marked</artifactId>
-            <version>0.8.0</version>
         </dependency>
 
         <dependency>
@@ -155,10 +122,6 @@
             <artifactId>spring-security-ldap</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
         </dependency>
@@ -167,25 +130,6 @@
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
             <version>0.9.6</version>
-        </dependency>
-
-        <!-- better toasts https://github.com/HubSpot/messenger -->
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
-            <artifactId>messenger</artifactId>
-            <version>1.5.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>vue-multiselect</artifactId>
-            <version>2.1.6</version>
         </dependency>
 
         <dependency>
@@ -226,23 +170,6 @@
             <artifactId>percy-java-selenium</artifactId>
             <version>0.1.3</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- typeahead component -->
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>corejs-typeahead</artifactId>
-            <version>1.2.1</version>
-            <!--
-                need to exclude it. get trouble to download it from maven.
-                not really needed because jquery 3+ is already coming from another dependency
-             -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.webjars.npm</groupId>
-                    <artifactId>jquery</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
     </dependencies>
@@ -372,7 +299,46 @@
                     </avoidCallsTo>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>${frontend-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>vue build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build</arguments>
+                            <environmentVariables>
+                            </environmentVariables>
+                            <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
+
     </build>
 
 </project>

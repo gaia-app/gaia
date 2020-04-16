@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.Supplier;
@@ -119,20 +120,20 @@ public class StackRunner {
     @Async
     public void plan(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         treatJob(
-                jobWorkflow,
-                JobWorkflow::plan,
-                () -> managePlanScript(jobWorkflow.getJob(), stack, module),
-                result -> managePlanResult(result, jobWorkflow, stack)
+            jobWorkflow,
+            JobWorkflow::plan,
+            () -> managePlanScript(jobWorkflow.getJob(), stack, module),
+            result -> managePlanResult(result, jobWorkflow, stack)
         );
     }
 
     @Async
     public void apply(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         treatJob(
-                jobWorkflow,
-                JobWorkflow::apply,
-                () -> manageApplyScript(jobWorkflow.getJob(), stack, module),
-                result -> manageApplyResult(result, jobWorkflow, stack)
+            jobWorkflow,
+            JobWorkflow::apply,
+            () -> manageApplyScript(jobWorkflow.getJob(), stack, module),
+            result -> manageApplyResult(result, jobWorkflow, stack)
         );
     }
 
@@ -140,20 +141,15 @@ public class StackRunner {
     public void retry(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         stepRepository.deleteByJobId(jobWorkflow.getJob().getId());
         treatJob(
-                jobWorkflow,
-                JobWorkflow::retry,
-                () -> managePlanScript(jobWorkflow.getJob(), stack, module),
-                result -> managePlanResult(result, jobWorkflow, stack)
+            jobWorkflow,
+            JobWorkflow::retry,
+            () -> managePlanScript(jobWorkflow.getJob(), stack, module),
+            result -> managePlanResult(result, jobWorkflow, stack)
         );
     }
 
-    public Job getJob(String jobId) {
-        if (this.jobs.containsKey(jobId)) {
-            // try in memory
-            return this.jobs.get(jobId);
-        }
-        // or find in repository
-        return this.jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("job not found"));
+    public Optional<Job> getJob(String jobId) {
+        return Optional.ofNullable(this.jobs.get(jobId));
     }
 
 }

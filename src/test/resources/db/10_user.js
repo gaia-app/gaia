@@ -16,6 +16,7 @@ gaia.user.insert([
     {
         "_id": "selmak",
         "oAuth2User": {
+            "provider": "github",
             "token": "Tok'ra"
         }
     }
