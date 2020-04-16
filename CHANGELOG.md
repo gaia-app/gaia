@@ -1,5 +1,141 @@
 # Changelog
 
+<a name="2.0.0"></a>
+## 2.0.0 (2020-04-10)
+
+### Added
+
+- ✅ : make selenium tests work again [[0cc5419](https://github.com/gaia-app/gaia/commit/0cc5419cf342aede4ddd23e0d25ed0b1ba2731ad)]
+- ✨ : add api to plan or apply a job [[6b6664d](https://github.com/gaia-app/gaia/commit/6b6664df2270b9db22e5fa7439a5550590c676e2)]
+- ✨ : add api to run or destroy a stack [[b6f2210](https://github.com/gaia-app/gaia/commit/b6f2210a6ba7604eb474811a9249919819bcffdb)]
+- ✨ : add service to display confirm modal [[f80cff9](https://github.com/gaia-app/gaia/commit/f80cff9236935b66765409eefaff23a0cacdf667)]
+- ✨ : add api to get job [[f2bc5ee](https://github.com/gaia-app/gaia/commit/f2bc5ee85a16428be4e1af29d6bd19ac45ab9337)]
+- ➕ : add ansi-to-html dependency [[22a81bb](https://github.com/gaia-app/gaia/commit/22a81bb9e143c52c6da25d48c95eb76db3e5712f)]
+- ✨ : add api to get stacks [[6310b45](https://github.com/gaia-app/gaia/commit/6310b45b33f27fe76ca43d0bcc191e72dffa7086)]
+- ✨ : add modal service to display notifications [[9f7cba6](https://github.com/gaia-app/gaia/commit/9f7cba6c6ccb76d3fc71946563045e390a78af62)]
+- ✨ : add axios interceptors to handle responses [[2ff794f](https://github.com/gaia-app/gaia/commit/2ff794f674b1de6cf249ef9bca1ca9d48895f57b)]
+- ✨ : add api service for users [[0194fb8](https://github.com/gaia-app/gaia/commit/0194fb862a0d44dcd0798f9ed57042c003e045df)]
+- ✨ : add api service for settings [[67b6ef1](https://github.com/gaia-app/gaia/commit/67b6ef122172ef704d1de3e51e63b50233a1b846)]
+- ✨ : add resource to expose settings [[1a6213f](https://github.com/gaia-app/gaia/commit/1a6213f7cf060fdf6989e3c614bcbbea48f91d44)]
+- ✨ : add api service for dashboard summary [[f2d5e68](https://github.com/gaia-app/gaia/commit/f2d5e686444dbb15ec17647269e334f70edad7d1)]
+- ✨ : add resource to expose dashboard summary [[557674f](https://github.com/gaia-app/gaia/commit/557674f2ffae16b2f8b99007ee1afab9ccb4f191)]
+- ✨ : update page title for each route [[1d13bcc](https://github.com/gaia-app/gaia/commit/1d13bcca29f4fa33371b02c3a5c264c9bedfc297)]
+- ➕ : add uuid dependency [[941b11f](https://github.com/gaia-app/gaia/commit/941b11fdfa2564056c75cb46bf614c2d045eb6d4)]
+- ✅ : disable selenium IT until migration completed [[cd7a38c](https://github.com/gaia-app/gaia/commit/cd7a38c05a53d52b8d5eab231ffbbeef79dcdcf7)]
+- ✅ : fix tests after security process rework [[81e78a3](https://github.com/gaia-app/gaia/commit/81e78a354936f51ee33e9072d8554d663f4f4bd3)]
+- ✨ : add component for oauth signin [[dded8ed](https://github.com/gaia-app/gaia/commit/dded8edff855faf3e92605d29b4d3acd9793e784)]
+- ✨ : add default layout [[129ef69](https://github.com/gaia-app/gaia/commit/129ef6970287b9e06317c47fb06884b5b6f429e9)]
+- ✨ : add service to manage cookie [[2317c3b](https://github.com/gaia-app/gaia/commit/2317c3ba258ea6b3722fbeb2dd3bd20b3dc2a46d)]
+- ✨ : add api service for build infos [[82b8155](https://github.com/gaia-app/gaia/commit/82b81557c573643cef35c28b7ad70091d75eab14)]
+- ✨ : add error layout [[93ffff5](https://github.com/gaia-app/gaia/commit/93ffff51e6744eb15f2c02631375f9a1140edf07)]
+- ✨ : add layout system and none layout [[c6f151b](https://github.com/gaia-app/gaia/commit/c6f151bfc8bb4eee69fb2d48077452d45da6a8b2)]
+- ✨ : add navigation guard [[ca10adb](https://github.com/gaia-app/gaia/commit/ca10adbad83064758f4b5ea6a10d7ff3a57349a2)]
+- ✨ : add service for session storage [[0a9ab01](https://github.com/gaia-app/gaia/commit/0a9ab01d29a705ee3864b506ba2222cb84747a61)]
+- ✨ : add store management for user session [[82a1cf6](https://github.com/gaia-app/gaia/commit/82a1cf624ba69be0933b9beed2f88d3975fee2a2)]
+- ✨ : add authentication api service in client [[cc1d3d7](https://github.com/gaia-app/gaia/commit/cc1d3d73e527a7e9f1b43a34970ffb5aabd7d7b2)]
+- ➕ : add axios dependency [[3e3bf0c](https://github.com/gaia-app/gaia/commit/3e3bf0cd64e39640aecc6058269704ad9e692e67)]
+- ➕ : add node modules which were previously webjars [[50e55b8](https://github.com/gaia-app/gaia/commit/50e55b8b411d1763177d18d96416793547888774)]
+
+### Changed
+
+- ♻️ : change the route for stack creation [[12fdcff](https://github.com/gaia-app/gaia/commit/12fdcff1ce3163cee7d91acb03d31ec8e54a16e9)]
+- 💄 : add overlay on dashboard loading [[27a62aa](https://github.com/gaia-app/gaia/commit/27a62aad929660fb62229dc524420cba4c83aef8)]
+- ⬆️ : bump bootstrap-vue from 2.4.2 to 2.10.1 [[f00edb8](https://github.com/gaia-app/gaia/commit/f00edb87aec18a3a62b6370da1629abba1375398)]
+- 🚚 : split shared components in subfolders [[8ec8295](https://github.com/gaia-app/gaia/commit/8ec829571063f0ff0aa1d4673202f2d74f5ed187)]
+- ♻️ : migrate job page [[02fdbf3](https://github.com/gaia-app/gaia/commit/02fdbf3bf7e2808aa700e5331558fbe3988c19c4)]
+- ♻️ : migrate backend for job [[23495b9](https://github.com/gaia-app/gaia/commit/23495b9810a66eb37eb7aa4746041bfb1aaf3651)]
+- ⚡ : call api simultaneously on users page [[6c48041](https://github.com/gaia-app/gaia/commit/6c48041bde44fc1bb2b3a4de6a7ae65d5b7b69a5)]
+- 💄 : enhance look of user-badge icon [[80c8391](https://github.com/gaia-app/gaia/commit/80c8391f652d3721fe55775c740468ce7c41d62b)]
+- ♻️ : migrate stacks page [[e83caf4](https://github.com/gaia-app/gaia/commit/e83caf45c6de61afc529f630f1ec2ba443c99a73)]
+- ♻️ : migrate stack edition page [[5a77b98](https://github.com/gaia-app/gaia/commit/5a77b98d7c07cf811c725b31e0b606433bbf255e)]
+- 🚚 : rename api service file for stacks [[f5c81dc](https://github.com/gaia-app/gaia/commit/f5c81dcb4adb6d856bf932920a3b11035fd1aed6)]
+- ♻️ : migrate users page [[43d65f6](https://github.com/gaia-app/gaia/commit/43d65f6d9040693c4548af78ed6be925e47eba97)]
+- ♻️ : migrate settings page [[4bf2d24](https://github.com/gaia-app/gaia/commit/4bf2d2474fa534a10a2f3e90ace35b8a59c20e86)]
+- 🔧 : move vue-form-wizard declaration [[e519110](https://github.com/gaia-app/gaia/commit/e5191100aaeeac58992088b1d1894fc8d57b51e3)]
+- 🔧 : move vue-multiselect declaration [[f3e9a9c](https://github.com/gaia-app/gaia/commit/f3e9a9c7d1eba2177d4255bd2960c19fb9c501f8)]
+- ♻️ : migrate dashboard page [[094f05a](https://github.com/gaia-app/gaia/commit/094f05a254aaf58b8e911a359067de26849186b4)]
+- 🍱 : update logo for topbar [[52e934d](https://github.com/gaia-app/gaia/commit/52e934d09a17c07fa824e4b153ade9e8f5c4aabe)]
+- ♻️ : extract module-variable component [[0692969](https://github.com/gaia-app/gaia/commit/06929694777e154e9cda741b13ac5e6f9d529c8b)]
+- ♻️ : make the import route a POST [[7c621c1](https://github.com/gaia-app/gaia/commit/7c621c16f1ae6983b347b2af42998905880cec50)]
+- ♻️ : add stack-api [[ea0f2d1](https://github.com/gaia-app/gaia/commit/ea0f2d1bfbf33212125f59269cba42cb9bcb2071)]
+- ♻️ : use markdown component in readme [[03d58c2](https://github.com/gaia-app/gaia/commit/03d58c281fec00a50347ad66a1bf08ae83ba35c4)]
+- 💄 : use &lt;font-awesome&gt; component instead of &lt;i&gt; [[c0e1fe0](https://github.com/gaia-app/gaia/commit/c0e1fe0e306065d09cdb96ba8a8f3891090cd7b8)]
+- ♻️ : extract api services [[2440473](https://github.com/gaia-app/gaia/commit/2440473c67f57bb8e9e6c0fd773ba9cb425e948a)]
+- ♻️ : import markdown css in its dedicated component [[6804875](https://github.com/gaia-app/gaia/commit/6804875160b1104ef6225bd54649d771da46460e)]
+- ♻️ : use props instead of $route to get component inputs [[119bb4e](https://github.com/gaia-app/gaia/commit/119bb4e172d033ae1df07380cd27e0c7e54c9d64)]
+- ♻️ : move stack creation route to stack pages [[b2b28a3](https://github.com/gaia-app/gaia/commit/b2b28a37e831cca82a142d2c7d4bd985435ea125)]
+- ♻️ : migrate new stack page [[40ab014](https://github.com/gaia-app/gaia/commit/40ab01400884d6826638ed13b9e03e467a87275b)]
+- ♻️ : migrate module-import page [[17dac15](https://github.com/gaia-app/gaia/commit/17dac158a073165e2f18f5edc6b65b9e866d27a7)]
+- ♻️ : migrate module-description page [[3df8a15](https://github.com/gaia-app/gaia/commit/3df8a15b3f9586c65811702b8a154777e3b960ba)]
+- ♻️ : migrate the module details page [[6cc3fa3](https://github.com/gaia-app/gaia/commit/6cc3fa3a409bc8cb2ff2da398d004ed9c248c1d2)]
+- ♻️ : migrate the modules page [[c1d939e](https://github.com/gaia-app/gaia/commit/c1d939e5602b3dc526ee426c404214ad2294f4a4)]
+- ♻️ : rework breadcrumb [[508aad5](https://github.com/gaia-app/gaia/commit/508aad5e22814f3dc0e0b5bd201923a7bf059578)]
+- 🚚 : move job page as child of stack page [[c878d0a](https://github.com/gaia-app/gaia/commit/c878d0a1e570e48732e7c3b7bdc96a7f04452147)]
+- 🔧 : use alias @ in all import and export paths [[eb6dbbf](https://github.com/gaia-app/gaia/commit/eb6dbbfb692739ec97c018d6b4dad930990d7fae)]
+- ♻️ : small rework on login page [[26ca8e5](https://github.com/gaia-app/gaia/commit/26ca8e512dd35087a9ad2a3cb2226c030a203d02)]
+- 🚚 : gather error pages in a sub folder [[07a1fee](https://github.com/gaia-app/gaia/commit/07a1fee9438885357a16b44518fb9740257db35c)]
+- ♻️ : rework login page [[b4f9f72](https://github.com/gaia-app/gaia/commit/b4f9f72676c12fb31941857068c1881fb03a8c25)]
+- ♻️ : rework security process [[7f65585](https://github.com/gaia-app/gaia/commit/7f65585e8ba473b5b5a4b28d9e95aaed731e2d04)]
+- 🔧 : configure vue cli dev server with proxy [[45081db](https://github.com/gaia-app/gaia/commit/45081dbbc7893ec9d6f85650ab740420f0617943)]
+- 🔧 : specify frontend directory for lint [[cb8d84f](https://github.com/gaia-app/gaia/commit/cb8d84f2a1faf393a4dd55f2093059390c29830f)]
+- 🏗️ : init frontend structure and routes [[8d0a71c](https://github.com/gaia-app/gaia/commit/8d0a71c32a9f924d15c61de0831c71c8fa9604ff)]
+- 🔧 : configure vue-multiselect [[ae1225d](https://github.com/gaia-app/gaia/commit/ae1225dfe98ec486b739734f7630efd6b15e9a94)]
+- 🔧 : configure bootstrap and bootstrap-vue [[fbc11ba](https://github.com/gaia-app/gaia/commit/fbc11bacd55c4cab4eae2fa64b7d858056bb0c85)]
+- 🔧 : configure vue-fontawesone [[17eb2a2](https://github.com/gaia-app/gaia/commit/17eb2a2841e9f102a10ba33bca83bf524294713b)]
+- 🔧 : add webpack configuration for frontend [[7e18f64](https://github.com/gaia-app/gaia/commit/7e18f644a63edf4dbcf9a7996223adc85f8fcb74)]
+- 🔧 : add maven configuration for frontend [[1db14be](https://github.com/gaia-app/gaia/commit/1db14be160118c0bdc2408eb02cdd5d8a0081ee0)]
+- 🎨 : add .editorconfig [[7a3c277](https://github.com/gaia-app/gaia/commit/7a3c277689a85606b450a99aaa1dca6191b45608)]
+- 🎨 : add .eslintrc [[1f5cc15](https://github.com/gaia-app/gaia/commit/1f5cc1538419a3c27d519b4e562bfbc996740760)]
+- 🏗️ : add controller to manage natural routes for frontend [[9f9090c](https://github.com/gaia-app/gaia/commit/9f9090c65b4133ea61513ffaaf0172e1027f5d6a)]
+- 🏗️ : init new frontend application [[3c69763](https://github.com/gaia-app/gaia/commit/3c697635b5bbe215ac46af5c0cc2cb7d8f5f02d1)]
+
+### Removed
+
+- ➖ : remove the UUID dependency [[2a40ab8](https://github.com/gaia-app/gaia/commit/2a40ab8025aa21e926772489cba1871d0ca71b48)]
+- 🔥 : remove old spring templates and assets [[39b6f8c](https://github.com/gaia-app/gaia/commit/39b6f8c10f02e82fbb60b7842d4b66701afe24b2)]
+- 🔥 : remove useless id on vue template [[5ada7af](https://github.com/gaia-app/gaia/commit/5ada7af9ea717d8ba969a84a08de31dcc2b05b48)]
+- 🔥 : remove useless users mvc controller [[b3918fa](https://github.com/gaia-app/gaia/commit/b3918fad98787d532965d55724a0ad255c9cfbef)]
+- 🔥 : remove index.js from shared api and services [[410503b](https://github.com/gaia-app/gaia/commit/410503bc894822fb2d4eb859ccefa3b07bdfc641)]
+- 🔥 : remove ModuleMVCController [[eba9e2b](https://github.com/gaia-app/gaia/commit/eba9e2b083678856aecc274012714df9db0789db)]
+- 🔥 : remove useless constructor term in kotlin [[2b737b2](https://github.com/gaia-app/gaia/commit/2b737b2e160ba7d571f4de0eee21228f8c12c24c)]
+- 🔥 : remove demo css [[c737c93](https://github.com/gaia-app/gaia/commit/c737c93de54063fbc3dd0d2bb8051a92f27ccc23)]
+- 🔥 : remove UiExtensions process [[28f1be3](https://github.com/gaia-app/gaia/commit/28f1be3fe4c4fa23ef19c289d4e54937dae5f836)]
+- ➖ : remove webjars dependencies [[b8c40c8](https://github.com/gaia-app/gaia/commit/b8c40c88d28f4ad90df338c68149ae43c215f157)]
+- 🔥 : deactivate mvc controllers [[85004d5](https://github.com/gaia-app/gaia/commit/85004d547c82deaeacbd4f6af685efa1bf13e9b7)]
+- 🔥 : remove thymeleaf [[7e0e953](https://github.com/gaia-app/gaia/commit/7e0e9533b1cbcd4ad302fda0b640c57fd4c172d9)]
+
+### Fixed
+
+- 🐛 : fix the save and run on stack creation [[0095823](https://github.com/gaia-app/gaia/commit/0095823e938e02de6be3226f80374dab4e16128a)]
+- 🐛 : sort jobs by start date desc [[81f7411](https://github.com/gaia-app/gaia/commit/81f7411a4f2a98b85c151f950c08e2daee7b5a6d)]
+- 🐛 : fix issues with terraform-image-input component [[6a85e5e](https://github.com/gaia-app/gaia/commit/6a85e5eaf34802945b3938f66a9ccf831d0231ad)]
+- 🐛 : fix redirection reload issue to job in stack page [[74f73e4](https://github.com/gaia-app/gaia/commit/74f73e47e25fce1dca6f097388151b11ae373003)]
+- 🐛 : fix issue with authentication guard [[579ab0e](https://github.com/gaia-app/gaia/commit/579ab0ec8d8aa57be785476bbe93f710a7c04516)]
+- 🐛 : fix stack loading when user has no team [[2f5ba22](https://github.com/gaia-app/gaia/commit/2f5ba2269ab6539515b405243dc66a691ef9ab4c)]
+- 🐛 : disable CSRF on state api to allow POST [[118cc40](https://github.com/gaia-app/gaia/commit/118cc40657207b7c9ba66ec7efc386acb1995585)]
+- 🐛 : fix missing BadgePlugin declaration [[8e533a7](https://github.com/gaia-app/gaia/commit/8e533a7080f6ff9ca792803813b85e0d1bd2b65b)]
+- 🐛 : correct potential NPE on 404 [[be05718](https://github.com/gaia-app/gaia/commit/be057187878704abf5115acfcfad9eaf32df874b)]
+- 🐛 : return empty string when file doesn&#x27;t exist [[2c4644b](https://github.com/gaia-app/gaia/commit/2c4644b7835ff941dd752cd803e3e84cc6232c7e)]
+- 🐛 : fix issue on page authorities management [[f3e063f](https://github.com/gaia-app/gaia/commit/f3e063f8ab996da2ed978e3a65fefac3a94b59bb)]
+- 🐛 : fix error on sidebar when cookie is missing [[0122518](https://github.com/gaia-app/gaia/commit/0122518732160ce04f0a65b9e2c53afa29fa10b6)]
+- 🐛 : fix error on authentication at loading [[e5ad303](https://github.com/gaia-app/gaia/commit/e5ad30393dafb5c0012e561684aaa4cdca176270)]
+
+### Security
+
+- 🔒 : users should not leak their oauth2 token through json [[aa9a749](https://github.com/gaia-app/gaia/commit/aa9a749ccd9e3a002d31099ecf92bd4a5ef8b4d1)]
+
+### Miscellaneous
+
+- 👌 : use named routes [[91e5a48](https://github.com/gaia-app/gaia/commit/91e5a48264291f3014c4f6ebc6c4f9ee3e58319a)]
+- 👌 : fix await usage [[250441e](https://github.com/gaia-app/gaia/commit/250441ee3bd588611856e3335fe40b42574f3fb7)]
+- 🙈 : ignore frontend build output dir [[b10c2bf](https://github.com/gaia-app/gaia/commit/b10c2bffbbfea3b8e577e6cb481dc590e153cc7d)]
+- 🙈 : update .gitignore for frontend [[ebb886c](https://github.com/gaia-app/gaia/commit/ebb886c6cb0f3bf46ec5687e52d1179d95d69ca7)]
+- 🐳 : fix tag for mongo image [[997808c](https://github.com/gaia-app/gaia/commit/997808ca6e07b7402dcc4d6b4d238f84ea72229c)]
+- 📝 : add missing documentation about authorization [[1b819d4](https://github.com/gaia-app/gaia/commit/1b819d45c25c669a2187da56361dccdeb380fd4c)]
+- 🔀 : Merge pull request [#235](https://github.com/gaia-app/gaia/issues/235) from binlab/fix/add-missed-documentation [[03fd692](https://github.com/gaia-app/gaia/commit/03fd692542b167f878c9db0bae74d005c9d3f859)]
+- 🔀 : Merge pull request [#229](https://github.com/gaia-app/gaia/issues/229) from gaia-app/release/1.3.0 [[9b39ccc](https://github.com/gaia-app/gaia/commit/9b39ccce387321b8068aad4d0101e6de1f017842)]
+
+
 <a name="1.3.0"></a>
 ## 1.3.0 (2020-02-13)
 
