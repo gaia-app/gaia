@@ -1,4 +1,4 @@
-FROM maven:3-jdk-11 as BUILD
+FROM maven:3-jdk-14 as BUILD
 
 COPY . /usr/src/app
 RUN mvn --batch-mode -DskipTests -f /usr/src/app/pom.xml clean package
