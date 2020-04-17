@@ -6,3 +6,5 @@ snapshot:
     .build_commit {
       display: none;
     }
+
+  widths: [1920]
