@@ -12,7 +12,7 @@
     </span>
     <span
       v-if="buildInfo.commitId"
-      class="build-info"
+      class="build-info build-commit"
     >
       <font-awesome-icon
         :icon="['fab', 'github']"
