@@ -2,6 +2,8 @@ language: java
 
 jdk:
 - openjdk11
+nodejs:
+- lts/*
 
 addons:
   firefox: latest
@@ -44,6 +46,7 @@ jobs:
       install: skip
       script:
       # searching for the 'no-percy' label on the PR, if it is found, do not run percy :)
+      - node --version
       - echo "checking is percy is enabled on PR $TRAVIS_PULL_REQUEST"
       - NO_PERCY=$(curl -s https://api.github.com/repos/gaia-app/gaia/pulls/$TRAVIS_PULL_REQUEST | jq '.labels[].name | select(.=="no-percy")' | tr -d \")
       - if [[ $NO_PERCY != "no-percy" ]]; then npm install @percy/agent; npx percy exec -- mvn test -Dgroups=e2e; fi
