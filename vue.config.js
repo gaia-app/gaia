@@ -28,18 +28,13 @@ module.exports = {
   chainWebpack: (config) => {
     config
       .plugin('copy')
-      .use(CopyPlugin, [[{
-        from: 'src/main/client/public',
-        to: '',
-        toType: 'dir',
-        ignore: [
-          '.DS_Store',
-          {
-            glob: 'index.html',
-            matchBase: false,
-          },
-        ],
-      }]]);
+      .use(CopyPlugin, [{
+        patterns: [{
+          from: 'src/main/client/public',
+          to: '',
+          toType: 'dir',
+        }]
+      }]);
   },
   devServer: {
     port: 3200,
