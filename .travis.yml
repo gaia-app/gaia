@@ -16,6 +16,7 @@ env:
 cache:
   directories:
     - $HOME/.m2
+    - node_modules/
 
 git:
   depth: false
