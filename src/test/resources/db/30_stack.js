@@ -70,6 +70,6 @@ gaia.stack.insert([
             "$id" : "admin"
         },
         "updatedAt" : ISODate("2020-02-05T07:01:29.935Z"),
-        "_class" : "io.codeka.gaia.stacks.bo.Stack"
+        "_class" : "io.gaia_app.stacks.bo.Stack"
     }
 ]);

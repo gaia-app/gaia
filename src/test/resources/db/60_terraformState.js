@@ -127,6 +127,6 @@ gaia.terraformState.insert([
                 }
             ]
         },
-        "_class" : "io.codeka.gaia.stacks.bo.TerraformState"
+        "_class" : "io.gaia_app.stacks.bo.TerraformState"
     }
 ]);
