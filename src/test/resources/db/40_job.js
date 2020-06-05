@@ -26,7 +26,7 @@ gaia.job.insert([
             "$ref" : "user",
             "$id" : "selmak"
         },
-        "_class" : "io.codeka.gaia.stacks.bo.Job"
+        "_class" : "io.gaia_app.stacks.bo.Job"
     },
     {
         "_id" : "5e856dc7-6bed-465f-abf1-02980206ab2a",
@@ -53,7 +53,7 @@ gaia.job.insert([
             "$ref" : "user",
             "$id" : "selmak"
         },
-        "_class" : "io.codeka.gaia.stacks.bo.Job"
+        "_class" : "io.gaia_app.stacks.bo.Job"
     }
 
 ]);
