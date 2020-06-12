@@ -110,7 +110,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.docker-java</groupId>
-            <artifactId>docker-java-transport-zerodep</artifactId>
+            <artifactId>docker-java-transport-okhttp</artifactId>
             <version>${docker-java.version}</version>
         </dependency>
 

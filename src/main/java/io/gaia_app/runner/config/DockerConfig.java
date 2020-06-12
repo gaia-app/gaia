@@ -1,47 +1,41 @@
 package io.gaia_app.runner.config;
 
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.HostConfig;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.okhttp.OkHttpDockerCmdExecFactory;
 import io.gaia_app.settings.bo.Settings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration of the docker client
+ * Configuration of the docker transport
  */
 @Configuration
 public class DockerConfig {
 
     /**
-     * builds the docker client
-     * @param settings the Gaia's settings
-     * @return a docker client
+     * builds the DockerClientConfig based on Gaia's settings
+     * @param settings Gaia's settings
+     * @return a docker client configuration
      */
     @Bean
-    DockerClient client(Settings settings) {
-        return DefaultDockerClient
-                .builder()
-                .uri(settings.getDockerDaemonUrl())
-                .build();
+    DockerClientConfig dockerClientConfig(Settings settings) {
+        return DefaultDockerClientConfig.createDefaultConfigBuilder()
+            .withDockerHost(settings.getDockerDaemonUrl())
+            .build();
     }
 
+    /**
+     * builds the docker client
+     * @param config the configuration (host/registries...)
+     * @return
+     */
     @Bean
-    ContainerConfig.Builder containerConfig(){
-        return ContainerConfig.builder()
-                // bind mounting the docker sock (to be able to use docker provider in terraform)
-                .hostConfig(HostConfig.builder().binds(HostConfig.Bind.builder().from("/var/run/docker.sock").to("/var/run/docker.sock").build()).build())
-                // resetting entrypoint to empty
-                .entrypoint()
-                // and using a simple shell as command
-                .cmd("/bin/sh")
-                .attachStdin(true)
-                .attachStdout(true)
-                .attachStderr(true)
-                .stdinOnce(true)
-                .openStdin(true)
-                .tty(false);
+    DockerClient client(DockerClientConfig config){
+        return DockerClientImpl.getInstance(config)
+            .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
     }
 
 }

@@ -1,7 +1,6 @@
 package io.gaia_app.runner.config;
 
 
-import com.spotify.docker.client.exceptions.DockerException;
 import io.gaia_app.settings.bo.Settings;
 import org.junit.jupiter.api.Test;
 
@@ -10,15 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DockerConfigTest {
 
     @Test
-    void dockerClient_shouldUseDockerDaemonUrlSetting() throws DockerException, InterruptedException {
+    void dockerClient_shouldUseDockerDaemonUrlSetting() {
         var settings = new Settings();
-        settings.setDockerDaemonUrl("http://test:2375");
+        settings.setDockerDaemonUrl("tcp://test:2375");
 
         var dockerConfig = new DockerConfig();
 
-        var dockerClient = dockerConfig.client(settings);
+        var dockerClientConfig = dockerConfig.dockerClientConfig(settings);
 
-        assertEquals("test", dockerClient.getHost());
+        assertEquals("tcp://test:2375", dockerClientConfig.getDockerHost().toString());
     }
 
 }

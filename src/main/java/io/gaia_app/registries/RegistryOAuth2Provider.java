@@ -1,8 +1,6 @@
 package io.gaia_app.registries;
 
 import io.gaia_app.teams.OAuth2User;
-import io.gaia_app.teams.OAuth2User;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
@@ -16,7 +14,7 @@ public interface RegistryOAuth2Provider {
      * Determines if the strategy is matching the provider
      */
     default boolean isAssignableFor(String provider) {
-        return StringUtils.equals(getProvider(), provider);
+        return getProvider().equals(provider);
     }
 
     /**
