@@ -137,6 +137,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- validation of domain model objects -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- jackson support for kotlin -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
