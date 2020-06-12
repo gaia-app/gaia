@@ -1,6 +1,7 @@
 package io.gaia_app.test;
 
-import com.mongodb.MongoClient;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.io.IOUtils;
 import org.bson.Document;
@@ -48,9 +49,13 @@ public class MongoContainer extends GenericContainer {
 
     public MongoClient getClient() {
         if (client == null) {
-            client = new MongoClient(this.getContainerIpAddress(), getMappedPort(MONGO_PORT));
+            client = MongoClients.create(connectionURL());
         }
         return client;
+    }
+
+    public String connectionURL(){
+        return String.format("mongodb://%s:%d",this.getContainerIpAddress(), getMappedPort(MONGO_PORT));
     }
 
     public MongoDatabase getDatabase() {
