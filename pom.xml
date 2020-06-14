@@ -41,6 +41,7 @@
 
     <properties>
         <antlr4.version>4.8-1</antlr4.version>
+        <docker-java.version>3.2.2</docker-java.version>
         <java.version>11</java.version>
         <jersey.version>2.27</jersey.version>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
@@ -103,14 +104,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.spotify</groupId>
-            <artifactId>docker-client</artifactId>
-            <version>8.16.0</version>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-core</artifactId>
+            <version>${docker-java.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <version>${jersey.version}</version>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-transport-okhttp</artifactId>
+            <version>${docker-java.version}</version>
         </dependency>
 
         <dependency>
