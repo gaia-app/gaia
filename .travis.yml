@@ -35,6 +35,7 @@ jobs:
   include:
     - stage: test
       name: "Unit Tests"
+      install: skip
       script:
       # fetching master refs when building other branches helps sonar computing PRs
       - git fetch origin +refs/heads/master:refs/remotes/origin/master
