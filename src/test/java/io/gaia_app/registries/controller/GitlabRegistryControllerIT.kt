@@ -7,8 +7,9 @@ import io.gaia_app.registries.RegistryDetails
 import io.gaia_app.registries.RegistryType
 import io.gaia_app.teams.OAuth2User
 import io.gaia_app.teams.User
-import io.gaia_app.test.MongoContainer
+import io.gaia_app.test.SharedMongoContainerTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
@@ -26,16 +26,12 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.web.client.RestTemplate
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 
 @SpringBootTest
-@DirtiesContext
-@Testcontainers
 @AutoConfigureWebClient
 @AutoConfigureMockMvc
-class GitlabRegistryControllerIT {
+class GitlabRegistryControllerIT: SharedMongoContainerTest() {
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -49,13 +45,14 @@ class GitlabRegistryControllerIT {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    companion object {
-        @Container
-        private val mongoContainer = MongoContainer().withScript("src/test/resources/db/10_user.js")
-    }
-
     @Autowired
     private lateinit var gitlabRegistryController: GitlabRegistryController
+
+    @BeforeEach
+    internal fun setUp() {
+        mongo.emptyDatabase()
+        mongo.runScript("src/test/resources/db/10_user.js")
+    }
 
     @Test
     fun validateTestConfiguration() {

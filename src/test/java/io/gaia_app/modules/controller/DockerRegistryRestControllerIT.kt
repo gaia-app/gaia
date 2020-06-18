@@ -1,8 +1,10 @@
 package io.gaia_app.modules.controller;
 
-import io.gaia_app.test.MongoContainer
+import io.gaia_app.test.SharedMongoContainerTest
 import org.hamcrest.Matchers.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -10,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.client.MockRestServiceServer.bindTo
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
@@ -19,15 +20,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.client.RestTemplate
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest
-@DirtiesContext
-@Testcontainers
 @AutoConfigureWebClient
 @AutoConfigureMockMvc
-class DockerRegistryRestControllerIT {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class DockerRegistryRestControllerIT: SharedMongoContainerTest() {
 
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -35,9 +33,10 @@ class DockerRegistryRestControllerIT {
     @Autowired
     lateinit var restTemplate: RestTemplate
 
-    companion object {
-        @Container
-        val mongoContainer = MongoContainer().withScript("src/test/resources/db/10_user.js")
+    @BeforeAll
+    internal fun setUp() {
+        mongo.emptyDatabase()
+        mongo.runScript("src/test/resources/db/10_user.js")
     }
 
     @Test

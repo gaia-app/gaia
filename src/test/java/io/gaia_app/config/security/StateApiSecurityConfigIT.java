@@ -1,14 +1,11 @@
 package io.gaia_app.config.security;
 
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -18,12 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext
-@Testcontainers
-public class StateApiSecurityConfigIT {
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer();
+public class StateApiSecurityConfigIT extends SharedMongoContainerTest {
 
     @Autowired
     private StateApiSecurityConfig.StateApiSecurityProperties props;

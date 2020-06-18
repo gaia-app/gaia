@@ -3,30 +3,18 @@ package io.gaia_app.modules.repository;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
-import io.gaia_app.test.MongoContainer;
-import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataMongoTest
-@Testcontainers
-@DirtiesContext
-class TerraformModuleRepositoryIT {
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer();
+class TerraformModuleRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
     private TerraformModuleRepository terraformModuleRepository;

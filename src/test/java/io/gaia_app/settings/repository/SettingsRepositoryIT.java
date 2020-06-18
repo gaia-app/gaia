@@ -1,28 +1,19 @@
 package io.gaia_app.settings.repository;
 
 import io.gaia_app.settings.bo.Settings;
-import io.gaia_app.test.MongoContainer;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@Testcontainers
 @TestPropertySource(properties = {"gaia.externalUrl=http://gaia.io", "gaia.dockerDaemonUrl=unix:///var/run/docker.sock"})
-@DirtiesContext
-class SettingsRepositoryIT {
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer();
+class SettingsRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;

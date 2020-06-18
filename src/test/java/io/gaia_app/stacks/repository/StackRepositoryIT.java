@@ -3,14 +3,11 @@ package io.gaia_app.stacks.repository;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.StackState;
 import io.gaia_app.teams.Team;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
@@ -19,15 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DataMongoTest
-@Testcontainers
-@DirtiesContext
-class StackRepositoryIT {
+class StackRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
     StackRepository stackRepository;
-
-    @Container
-    private static MongoContainer mongo = new MongoContainer();
 
     @BeforeEach
     void setUp() {

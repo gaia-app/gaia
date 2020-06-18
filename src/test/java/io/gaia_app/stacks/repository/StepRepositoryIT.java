@@ -3,18 +3,11 @@ package io.gaia_app.stacks.repository;
 import io.gaia_app.stacks.bo.Step;
 import io.gaia_app.stacks.bo.StepStatus;
 import io.gaia_app.stacks.bo.StepType;
-import io.gaia_app.test.MongoContainer;
-import io.gaia_app.stacks.bo.Step;
-import io.gaia_app.stacks.bo.StepStatus;
-import io.gaia_app.stacks.bo.StepType;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 
@@ -22,15 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataMongoTest
-@Testcontainers
-@DirtiesContext
-class StepRepositoryIT {
+class StepRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
     StepRepository stepRepository;
-
-    @Container
-    private static MongoContainer mongo = new MongoContainer();
 
     @Test
     void jobShouldBeSavedWithLogs() throws IOException {

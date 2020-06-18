@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController
 
 @SpringBootTest(classes = [SecurityConfig::class, SecurityConfigIT.FakeRestController::class])
 @AutoConfigureMockMvc
-@DirtiesContext
 @TestPropertySource(properties = ["gaia.admin-password=admin456"])
 class SecurityConfigIT {
 
