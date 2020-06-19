@@ -1,5 +1,6 @@
 package io.gaia_app.stacks.bo;
 
+import io.gaia_app.credentials.Credentials;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformImage;
@@ -27,6 +28,7 @@ public class Job {
     private List<Step> steps = new ArrayList<>(2);
     @DBRef
     private User user;
+    private Credentials credentials;
 
     public Job() {
     }
@@ -137,5 +139,13 @@ public class Job {
             return null;
         }
         return Duration.between(this.startDateTime, this.endDateTime).toMillis();
+    }
+
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
     }
 }

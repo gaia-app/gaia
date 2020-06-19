@@ -95,6 +95,7 @@ public class StackRestController {
         // create a new job
         var job = new Job(jobType, id, user);
         job.setTerraformImage(module.getTerraformImage());
+        job.setCredentials(stack.getCredentials());
         jobRepository.save(job);
 
         return Map.of("jobId", job.getId());

@@ -52,6 +52,11 @@ public class DockerRunner {
 
             var job = jobWorkflow.getJob();
 
+            // add credentials of the job, if any
+            if (job.getCredentials() != null){
+                env.addAll(job.getCredentials().toEnv());
+            }
+
             // pulling the image
             dockerClient.pullImageCmd(job.getTerraformImage().image())
                 .start()

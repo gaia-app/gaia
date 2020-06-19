@@ -1,5 +1,6 @@
 package io.gaia_app.stacks.bo;
 
+import io.gaia_app.credentials.Credentials;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -58,6 +59,9 @@ public class Stack {
     private Team ownerTeam;
 
     private BigDecimal estimatedRunningCost;
+
+    @DBRef
+    private Credentials credentials;
 
     @DBRef
     private User createdBy;
@@ -173,4 +177,11 @@ public class Stack {
         this.updatedAt = updatedAt;
     }
 
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
+    }
 }

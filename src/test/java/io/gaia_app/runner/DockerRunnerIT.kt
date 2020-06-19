@@ -1,5 +1,6 @@
 package io.gaia_app.runner
 
+import io.gaia_app.credentials.AWSCredentials
 import io.gaia_app.modules.bo.TerraformImage
 import io.gaia_app.runner.config.DockerConfig
 import io.gaia_app.settings.bo.Settings
@@ -71,6 +72,21 @@ class DockerRunnerIT {
         dockerRunner.runContainerForJob(jobWorkflow, script)
 
         assertThat(jobWorkflow.currentStep.logs).isEqualTo("hello world\n");
+    }
+
+    @Test
+    fun `runContainerForJob() use credentials of the job`() {
+        val script = "echo \$AWS_ACCESS_KEY_ID; exit 0;"
+
+        val job = Job()
+        job.terraformImage = TerraformImage.defaultInstance()
+        job.credentials = AWSCredentials("SOME_ACCESS_KEY", "SOME_SECRET_KEY")
+        val jobWorkflow = JobWorkflow(job)
+        jobWorkflow.currentStep = Step()
+
+        dockerRunner.runContainerForJob(jobWorkflow, script)
+
+        assertThat(jobWorkflow.currentStep.logs).isEqualTo("SOME_ACCESS_KEY\n");
     }
 
     @Test
