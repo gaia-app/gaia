@@ -36,7 +36,7 @@
           route: 'stacks', icon: 'layer-group', class: 'blue2_color', title: 'Stacks', roles: ['ROLE_USER'],
         },
         {
-          route: 'credentials', icon: 'lock', class: 'orange_color', title: 'Credentials', roles: ['ROLE_USER'],
+          route: 'credentialsList', icon: 'lock', class: 'orange_color', title: 'Credentials', roles: ['ROLE_USER'],
         },
         {
           route: 'settings', icon: 'cog', class: 'yellow_color', title: 'Settings', roles: ['ROLE_ADMIN'],

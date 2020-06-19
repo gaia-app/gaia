@@ -1,78 +1,122 @@
 <template>
   <div>
-    <b-button
-      :to="{ name: 'new_credentials' }"
-      title="Create new credentials"
-      variant="success"
-      class="mb-4"
+    <b-card
+      v-if="credentials"
+      :header-class="credentials.provider"
     >
-      <font-awesome-icon icon="plus" /> Create new credentials
-    </b-button>
+      <b-card-title>
+        Credentials : {{ credentials.name }}
+      </b-card-title>
 
-    <b-card-group deck>
-      <b-card
-        v-for="credentials in credentialsList"
-        :key="credentials.id"
-        :title="credentials.name"
-        style="max-width: 20rem;"
-        :header-class="credentials.provider"
+      <template v-slot:header>
+        <b-img
+          :src="imageUrl"
+          class="rounded-logo"
+          rounded="circle"
+          width="80px"
+          height="80px"
+          left
+        />
+        <p class="providerName">
+          {{ providerName(credentials) }}
+        </p>
+      </template>
+
+      <b-form-group
+        label="Name"
+        description="The name of your credentials"
       >
-        <template v-slot:header>
-          <b-img
-            :src="imageUrl(credentials)"
-            class="rounded-logo"
-            rounded="circle"
-            width="80px"
-            height="80px"
-            left
-          />
-          <p class="providerName">
-            {{ providerName(credentials) }}
-          </p>
-        </template>
+        <b-input
+          id="credentials.name"
+          v-model="credentials.name"
+          :state="notEmpty(credentials.name)"
+        />
+        <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+      </b-form-group>
 
-        <b-button
-          :to="{ name: 'credentials', params: { credentialsId: credentials.id }}"
-          title="Edit this credentials"
-          variant="primary"
-          class="mr-1"
-        >
-          <font-awesome-icon icon="edit" />
-        </b-button>
-      </b-card>
-    </b-card-group>
+      <app-credentials-aws
+        v-if="credentials.provider === 'aws'"
+        :credentials="credentials"
+      />
+      <app-credentials-azurerm
+        v-if="credentials.provider === 'azurerm'"
+        :credentials="credentials"
+      />
+      <app-credentials-google
+        v-if="credentials.provider === 'google'"
+        :credentials="credentials"
+      />
+
+      <b-button
+        title="Save"
+        variant="success"
+        class="mb-4"
+        @click="save"
+      >
+        <font-awesome-icon icon="save" /> Save
+      </b-button>
+    </b-card>
   </div>
 </template>
 
 <script>
-  import { getCredentialsList } from '@/shared/api/credentials-api';
+  import { getCredentials, updateCredentials } from '@/shared/api/credentials-api';
+  import { displayNotification } from '@/shared/services/modal-service';
+
+  import AppCredentialsAws from '@/pages/credentials/providers/credentials-aws.vue';
+  import AppCredentialsAzurerm from '@/pages/credentials/providers/credentials-azurerm.vue';
+  import AppCredentialsGoogle from '@/pages/credentials/providers/credentials-google.vue';
 
   export default {
     name: 'Credentials',
 
+    components: {
+      AppCredentialsAws,
+      AppCredentialsAzurerm,
+      AppCredentialsGoogle,
+    },
+
+    props: {
+      credentialsId: {
+        type: String,
+        required: true,
+      },
+    },
+
     data: function data() {
       return {
-        credentialsList: [],
+        credentials: null,
       };
     },
 
+    computed: {
+      imageUrl() {
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        return require(`@/assets/images/providers/logos/${this.credentials.provider}.png`);
+      },
+    },
+
     async created() {
-      this.credentialsList = await getCredentialsList();
+      this.credentials = await getCredentials(this.credentialsId);
     },
 
     methods: {
-      imageUrl(credentials) {
-        console.log(`@/assets/images/providers/${JSON.stringify(credentials)}.png`);
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        return require(`@/assets/images/providers/logos/${credentials.provider}.png`);
-      },
-
       providerName(credentials) {
         return {
           aws: 'AWS',
           google: 'GCP',
           azurerm: 'Azure',
         }[credentials.provider];
+      },
+
+      notEmpty(field) {
+        return typeof field !== 'undefined' && field !== null && field.trim() !== '';
+      },
+
+      async save() {
+        await updateCredentials(this.credentials)
+          .then(() => displayNotification(this, { message: 'Credentials saved', variant: 'success' }))
+          .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'danger' }));
       },
     },
 

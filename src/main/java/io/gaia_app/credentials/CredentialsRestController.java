@@ -21,6 +21,11 @@ public class CredentialsRestController {
         return this.credentialsRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Credentials getCredentials(@PathVariable String id){
+        return this.credentialsRepository.findById(id).orElse(null);
+    }
+
     @PostMapping
     public Credentials createCredentials(@RequestBody Credentials credentials){
         return this.credentialsRepository.save(credentials);
