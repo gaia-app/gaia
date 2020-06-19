@@ -72,4 +72,18 @@ class DockerRunnerIT {
 
         assertThat(jobWorkflow.currentStep.logs).isEqualTo("hello world\n");
     }
+
+    @Test
+    fun `runContainerForJob() use TF_IN_AUTOMATION env var`() {
+        val script = "echo \$TF_IN_AUTOMATION; exit 0;"
+
+        val job = Job()
+        job.terraformImage = TerraformImage.defaultInstance()
+        val jobWorkflow = JobWorkflow(job)
+        jobWorkflow.currentStep = Step()
+
+        dockerRunner.runContainerForJob(jobWorkflow, script)
+
+        assertThat(jobWorkflow.currentStep.logs).isEqualTo("true\n");
+    }
 }
