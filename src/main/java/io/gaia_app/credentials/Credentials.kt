@@ -12,30 +12,32 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "provider")
 @JsonSubTypes(
-    Type(value = AWSCredentials::class, name = "AWS"),
-    Type(value = GCPCredentials::class, name = "GCP"),
-    Type(value = AzureCredentials::class, name = "Azure")
+    Type(value = AWSCredentials::class, name = "aws"),
+    Type(value = GoogleCredentials::class, name = "google"),
+    Type(value = AzureRMCredentials::class, name = "azurerm")
 )
 abstract class Credentials {
 
     @Id
     lateinit var id: String
 
+    lateinit var name: String
+
     abstract fun toEnv(): List<String>
     abstract fun provider(): String
 }
 
 data class AWSCredentials(val accessKey:String, val secretKey:String):Credentials() {
-    override fun toEnv() = listOf("""AWS_ACCESS_KEY_ID=${accessKey}""", """AWS_SECRET_ACCESS_KEY=${secretKey}""")
-    override fun provider() = "AWS"
+    override fun toEnv() = listOf("AWS_ACCESS_KEY_ID=$accessKey", "AWS_SECRET_ACCESS_KEY=$secretKey")
+    override fun provider() = "aws"
 }
 
-data class GCPCredentials(val serviceAccountJSONContents:String):Credentials() {
-    override fun toEnv() = listOf("""GOOGLE_CREDENTIALS=${serviceAccountJSONContents}""")
-    override fun provider() = "GCP"
+data class GoogleCredentials(val serviceAccountJSONContents:String):Credentials() {
+    override fun toEnv() = listOf("GOOGLE_CREDENTIALS=$serviceAccountJSONContents")
+    override fun provider() = "google"
 }
 
-data class AzureCredentials(val clientId:String, val clientSecret:String):Credentials() {
-    override fun toEnv() = listOf("""ARM_CLIENT_ID=${clientId}""", """ARM_CLIENT_SECRET=${clientSecret}""")
-    override fun provider() = "Azure"
+data class AzureRMCredentials(val clientId:String, val clientSecret:String):Credentials() {
+    override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret")
+    override fun provider() = "azurerm"
 }
