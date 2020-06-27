@@ -28,6 +28,13 @@
           >
             <font-awesome-icon icon="edit" />
           </b-button>
+          <b-button
+            title="Delete this credentials"
+            variant="danger"
+            @click="deleteCredentials(credentials)"
+          >
+            <font-awesome-icon :icon="['far', 'trash-alt']" />
+          </b-button>
         </template>
       </b-card>
     </b-card-group>
@@ -35,9 +42,10 @@
 </template>
 
 <script>
-  import { getCredentialsList } from '@/shared/api/credentials-api';
+  import { getCredentialsList, deleteCredentials } from '@/shared/api/credentials-api';
 
   import { AppProviderHeader } from '@/shared/components';
+  import { displayConfirmDialog, displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'Credentials',
@@ -55,6 +63,24 @@
     async created() {
       this.credentialsList = await getCredentialsList();
     },
+
+    methods: {
+      async deleteCredentials(credentials) {
+        const message = 'This will delete the credentials. Continue?';
+        const confirm = await displayConfirmDialog(this, { title: 'Delete Request', message });
+        if (confirm) {
+          try {
+            await deleteCredentials(credentials);
+            displayNotification(this, { message: 'Credentials deleted.', variant: 'info' });
+
+            const index = this.credentialsList.findIndex((cred) => cred.id === credentials.id);
+            this.credentialsList.splice(index, 1);
+          } catch (e) {
+            displayNotification(this, { message: 'Unable to delete credentials.', variant: 'danger' });
+          }
+        }
+      },
+    },
   };
 </script>
 
@@ -65,5 +91,11 @@
 
   .card-title {
     margin: 0;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+
   }
 </style>

@@ -35,4 +35,9 @@ public class CredentialsRestController {
     public Credentials updateCredentials(@RequestBody Credentials credentials, @PathVariable  String id){
         return this.credentialsRepository.save(credentials);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCredentials(@PathVariable String id){
+        this.credentialsRepository.deleteById(id);
+    }
 }
