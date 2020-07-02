@@ -1,0 +1,18 @@
+package io.gaia_app.config
+
+import io.gaia_app.teams.User
+import io.gaia_app.teams.repository.UserRepository
+import org.springframework.data.domain.AuditorAware
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
+import java.util.*
+
+@Component
+class SpringSecurityUserAuditorAware(val userRepository: UserRepository):AuditorAware<User> {
+
+    override fun getCurrentAuditor(): Optional<User> {
+        val authentication = SecurityContextHolder.getContext().authentication
+        return userRepository.findById(authentication.name)
+    }
+
+}
