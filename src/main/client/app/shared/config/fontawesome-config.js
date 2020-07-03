@@ -11,6 +11,7 @@ import {
   faChevronUp,
   faCircleNotch,
   faCog,
+  faDollarSign,
   faEdit,
   faFile,
   faFolder,
@@ -55,6 +56,7 @@ export default {
   init: () => {
     library.add(
       faCalendarAlt,
+      faDollarSign,
       faEdit,
       faUser,
       faLock,

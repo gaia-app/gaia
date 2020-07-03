@@ -98,7 +98,7 @@
     computed: {
       imageUrl() {
         // eslint-disable-next-line global-require, import/no-dynamic-require
-        return require(`@/assets/images/providers/${this.module.mainProvider}.png`);
+        return require(`@/assets/images/providers/${this.module.mainProvider || 'unknown'}.png`);
       },
     },
 
