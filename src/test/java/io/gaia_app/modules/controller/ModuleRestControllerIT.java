@@ -1,6 +1,6 @@
 package io.gaia_app.modules.controller;
 
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -24,24 +21,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Simple integration test that validates the security configuration of the TeamsRestController, and its http routes
  */
 @SpringBootTest
-@DirtiesContext
-@Testcontainers
 @AutoConfigureMockMvc
 @WithMockUser(value = "admin", roles = "ADMIN")
-class ModuleRestControllerIT {
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer()
-            .withScript("src/test/resources/db/00_team.js")
-            .withScript("src/test/resources/db/10_user.js")
-            .withScript("src/test/resources/db/20_module.js");
+class ModuleRestControllerIT extends SharedMongoContainerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach
     void setup() {
-        mongoContainer.resetDatabase();
+        mongo.emptyDatabase();
+        mongo.runScript("src/test/resources/db/00_team.js");
+        mongo.runScript("src/test/resources/db/10_user.js");
+        mongo.runScript("src/test/resources/db/20_module.js");
     }
 
     @Test

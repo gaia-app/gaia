@@ -1,35 +1,33 @@
 package io.gaia_app.client.controller
 
-import io.gaia_app.test.MongoContainer
+import io.gaia_app.test.SharedMongoContainerTest
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest
-@DirtiesContext
-@Testcontainers
 @AutoConfigureMockMvc
-class AuthenticationRestControllerIT {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class AuthenticationRestControllerIT: SharedMongoContainerTest() {
 
     @Autowired
     lateinit var mockMvc: MockMvc
 
-    companion object {
-        @Container
-        val mongoContainer = MongoContainer()
-            .withScript("src/test/resources/db/00_team.js")
-            .withScript("src/test/resources/db/10_user.js")
+    @BeforeAll
+    fun setUp() {
+        mongo.emptyDatabase()
+        mongo.runScript("src/test/resources/db/00_team.js")
+        mongo.runScript("src/test/resources/db/10_user.js")
     }
 
     @Test

@@ -1,6 +1,6 @@
 package io.gaia_app.config.security.oauth2
 
-import io.gaia_app.test.MongoContainer
+import io.gaia_app.test.SharedMongoContainerTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Nested
@@ -8,27 +8,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
-@DirtiesContext
-@Testcontainers
 class OAuth2ClientSecurityConfigIT {
-
-    companion object {
-        @Container
-        val mongoContainer = MongoContainer()
-    }
 
     @Nested
     @SpringBootTest
-    inner class OAuth2ClientSecurityConfigNotLoadedTest {
+    inner class OAuth2ClientSecurityConfigNotLoadedTest: SharedMongoContainerTest() {
 
         @Test
         fun `oauth2ClientSecurityConfig should not be instantiated`(
@@ -47,7 +37,7 @@ class OAuth2ClientSecurityConfigIT {
     @Nested
     @SpringBootTest
     @ActiveProfiles("oauth2")
-    inner class OAuth2ClientSecurityConfigLoadedTest {
+    inner class OAuth2ClientSecurityConfigLoadedTest: SharedMongoContainerTest() {
 
         @Test
         fun `oauth2ClientSecurityConfig should be instantiated`(
@@ -75,7 +65,7 @@ class OAuth2ClientSecurityConfigIT {
         "spring.security.oauth2.client.provider.dummy.token-uri=https://dummy.com/oauth/token",
         "spring.security.oauth2.client.provider.dummy.user-info-uri=https://dummy.com/api/v4/user",
         "spring.security.oauth2.client.provider.dummy.user-name-attribute=username"])
-    inner class OAuth2ClientSecurityTest {
+    inner class OAuth2ClientSecurityTest: SharedMongoContainerTest() {
 
         @Autowired
         lateinit var mockMvc: MockMvc

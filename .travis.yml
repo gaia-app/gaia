@@ -35,11 +35,12 @@ jobs:
   include:
     - stage: test
       name: "Unit Tests"
+      install: skip
       script:
       # fetching master refs when building other branches helps sonar computing PRs
       - git fetch origin +refs/heads/master:refs/remotes/origin/master
       # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-      - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report sonar:sonar
+      - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report sonar:sonar -DexcludedGroups=e2e -P ci-tu
     - stage: test
       name: "Visual Non Regression Tests"
       if: env(PERCY_TOKEN) AND ( type = pull_request OR branch = master )

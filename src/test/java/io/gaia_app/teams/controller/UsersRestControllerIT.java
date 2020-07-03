@@ -3,8 +3,9 @@ package io.gaia_app.teams.controller;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
 import io.gaia_app.teams.repository.UserRepository;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -32,16 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Simple integration test that validates the security configuration of the UsersRestController, and its http routes
  */
 @SpringBootTest
-@DirtiesContext
-@Testcontainers
 @AutoConfigureMockMvc
 @WithMockUser(value = "admin", roles = "ADMIN")
-class UsersRestControllerIT {
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer()
-            .withScript("src/test/resources/db/00_team.js")
-            .withScript("src/test/resources/db/10_user.js");
+class UsersRestControllerIT extends SharedMongoContainerTest {
 
     @Autowired
     private UsersRestController usersRestController;
@@ -51,6 +42,13 @@ class UsersRestControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        mongo.emptyDatabase();
+        mongo.runScript("src/test/resources/db/00_team.js");
+        mongo.runScript("src/test/resources/db/10_user.js");
+    }
 
     @Test
     @WithMockUser("Matthew Bellamy")
@@ -66,23 +64,23 @@ class UsersRestControllerIT {
     @Test
     void users_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(get("/api/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(4)))
-                .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "selmak")))
-                .andExpect(jsonPath("$..admin", contains(true, false, false, false)))
-                .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(4)))
+            .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "selmak")))
+            .andExpect(jsonPath("$..admin", contains(true, false, false, false)))
+            .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
     }
 
     @Test
     void saveUser_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(put("/api/users/test")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\":\"Bob\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("Bob")))
-                .andExpect(jsonPath("$.admin", is(false)))
-                .andExpect(jsonPath("$.team", isEmptyOrNullString()));
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"username\":\"Bob\"}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.username", is("Bob")))
+            .andExpect(jsonPath("$.admin", is(false)))
+            .andExpect(jsonPath("$.team", isEmptyOrNullString()));
 
         assertThat(userRepository.existsById("Bob")).isTrue();
     }
@@ -91,28 +89,26 @@ class UsersRestControllerIT {
     void users_canBeChangedOfTeam() throws Exception {
         // given
         assertThat(userRepository.findById("Darth Vader"))
-                .isPresent()
-                .map(User::getTeam)
-                .isNotPresent();
+            .isPresent()
+            .map(User::getTeam)
+            .isNotPresent();
 
         // when
         mockMvc.perform(put("/api/users/Darth Vader")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"username\": \"Darth Vader\",\"team\": {\"id\": \"Sith\"}}"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("Darth Vader")))
-                .andExpect(jsonPath("$.admin", is(false)))
-                .andExpect(jsonPath("$.team.id", is("Sith")));
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"username\": \"Darth Vader\",\"team\": {\"id\": \"Sith\"}}"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.username", is("Darth Vader")))
+            .andExpect(jsonPath("$.admin", is(false)))
+            .andExpect(jsonPath("$.team.id", is("Sith")));
 
         // then
         assertThat(userRepository.findById("Darth Vader"))
-                .isPresent()
-                .map(User::getTeam)
-                .hasValue(new Team("Sith"));
-
-        mongoContainer.resetDatabase();
+            .isPresent()
+            .map(User::getTeam)
+            .hasValue(new Team("Sith"));
     }
 
     @Test

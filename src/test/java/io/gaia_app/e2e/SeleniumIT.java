@@ -1,7 +1,6 @@
 package io.gaia_app.e2e;
 
-import io.gaia_app.test.MongoContainer;
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
@@ -15,9 +14,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,24 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
-@Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("e2e")
-public class SeleniumIT {
+public class SeleniumIT extends SharedMongoContainerTest {
 
     @LocalServerPort
     private int serverPort;
-
-    @Container
-    private static MongoContainer mongoContainer = new MongoContainer()
-            .withScript("src/test/resources/db/00_team.js")
-            .withScript("src/test/resources/db/10_user.js")
-            .withScript("src/test/resources/db/20_module.js")
-            .withScript("src/test/resources/db/30_stack.js")
-            .withScript("src/test/resources/db/40_job.js")
-            .withScript("src/test/resources/db/50_step.js")
-            .withScript("src/test/resources/db/60_terraformState.js");
 
     private static WebDriver driver;
 
@@ -65,6 +49,15 @@ public class SeleniumIT {
         percy = new Percy(driver);
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        mongo.emptyDatabase();
+        mongo.runScript("src/test/resources/db/00_team.js");
+        mongo.runScript("src/test/resources/db/10_user.js");
+        mongo.runScript("src/test/resources/db/20_module.js");
+        mongo.runScript("src/test/resources/db/30_stack.js");
+        mongo.runScript("src/test/resources/db/40_job.js");
+        mongo.runScript("src/test/resources/db/50_step.js");
+        mongo.runScript("src/test/resources/db/60_terraformState.js");
     }
 
     @AfterAll

@@ -1,14 +1,11 @@
 package io.gaia_app.config.security.actuator;
 
-import io.gaia_app.test.MongoContainer;
+import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,15 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext
-@Testcontainers
-class ActuatorSecurityConfigIT {
+class ActuatorSecurityConfigIT extends SharedMongoContainerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Container
-    private static MongoContainer mongo = new MongoContainer();
 
     @Test
     void actuatorHealth_shouldNotNeedAuthentication() throws Exception {
