@@ -1,5 +1,6 @@
 package io.gaia_app.stacks.controller;
 
+import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
@@ -60,6 +61,9 @@ class StackRestControllerTest {
 
     @Mock
     private JobRepository jobRepository;
+
+    @Mock
+    private CredentialsRepository credentialsRepository;
 
     @Test
     void listStack_shouldFindAllStacks_forAdminUser() {
