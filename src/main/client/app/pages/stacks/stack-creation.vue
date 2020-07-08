@@ -51,6 +51,19 @@
           @valid="(isValid) => variable.isValid = isValid"
         />
       </tab-content>
+      <tab-content title="Credentials">
+        <h2>Select credentials for your stack</h2>
+        <b-form-group>
+          <b-select
+            v-if="credentials"
+            v-model="stack.credentialsId"
+            :options="credentials"
+          />
+          <p v-if="! credentials">
+            No credentials found for a module with provider {{ module.mainProvider }}
+          </p>
+        </b-form-group>
+      </tab-content>
       <tab-content title="Start">
         <h2>Run</h2>
         <p>Save your stack or run it !</p>
@@ -92,6 +105,7 @@
 <script>
   import { getModule } from '@/shared/api/modules-api';
   import { createStack, runStack } from '@/shared/api/stacks-api';
+  import { getCredentialsList } from '@/shared/api/credentials-api';
 
   import AppStackVariable from './stack-variable.vue';
 
@@ -114,6 +128,7 @@
         module: null,
         stack: null,
         stacksVariablesValidated: false,
+        credentials: null,
       };
     },
 
@@ -124,9 +139,15 @@
     },
 
     async created() {
-      this.module = await getModule(this.moduleId);
-
       this.stack = {};
+
+      this.module = await getModule(this.moduleId);
+      const credentialsList = await getCredentialsList();
+      this.credentials = credentialsList
+        .filter((cred) => cred.provider === this.module.mainProvider)
+        .map((cred) => ({ value: cred.id, text: cred.name }));
+
+
       this.stack.moduleId = this.module.id;
       this.stack.variableValues = {};
       this.stack.variables = this.module.variables.map((variable) => ({
