@@ -1,9 +1,11 @@
 package io.gaia_app.stacks.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.gaia_app.credentials.Credentials;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformImage;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.Duration;
@@ -28,6 +30,9 @@ public class Job {
     private List<Step> steps = new ArrayList<>(2);
     @DBRef
     private User user;
+
+    @Transient
+    @JsonIgnore
     private Credentials credentials;
 
     public Job() {

@@ -1,19 +1,12 @@
 package io.gaia_app.runner;
 
+import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.StackState;
 import io.gaia_app.stacks.repository.JobRepository;
-import io.gaia_app.stacks.repository.StackRepository;
-import io.gaia_app.stacks.repository.StepRepository;
-import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.JobType;
-import io.gaia_app.stacks.bo.Stack;
-import io.gaia_app.stacks.bo.StackState;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.repository.StepRepository;
 import io.gaia_app.stacks.workflow.JobWorkflow;
@@ -39,17 +32,19 @@ public class StackRunner {
     private StackRepository stackRepository;
     private JobRepository jobRepository;
     private StepRepository stepRepository;
+    private CredentialsRepository credentialsRepository;
 
     private Map<String, Job> jobs = new HashMap<>();
 
     @Autowired
     public StackRunner(DockerRunner dockerRunner, StackCommandBuilder stackCommandBuilder,
-                       StackRepository stackRepository, JobRepository jobRepository, StepRepository stepRepository) {
+                       StackRepository stackRepository, JobRepository jobRepository, StepRepository stepRepository, CredentialsRepository credentialsRepository) {
         this.dockerRunner = dockerRunner;
         this.stackCommandBuilder = stackCommandBuilder;
         this.stackRepository = stackRepository;
         this.jobRepository = jobRepository;
         this.stepRepository = stepRepository;
+        this.credentialsRepository = credentialsRepository;
     }
 
     private String managePlanScript(Job job, Stack stack, TerraformModule module) {
@@ -127,6 +122,9 @@ public class StackRunner {
 
     @Async
     public void plan(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        if(stack.getCredentialsId() != null){
+            jobWorkflow.getJob().setCredentials(this.credentialsRepository.findById(stack.getCredentialsId()).orElseThrow());
+        }
         treatJob(
             jobWorkflow,
             JobWorkflow::plan,
@@ -137,6 +135,9 @@ public class StackRunner {
 
     @Async
     public void apply(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        if(stack.getCredentialsId() != null){
+            jobWorkflow.getJob().setCredentials(this.credentialsRepository.findById(stack.getCredentialsId()).orElseThrow());
+        }
         treatJob(
             jobWorkflow,
             JobWorkflow::apply,
@@ -147,6 +148,9 @@ public class StackRunner {
 
     @Async
     public void retry(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
+        if(stack.getCredentialsId() != null){
+            jobWorkflow.getJob().setCredentials(this.credentialsRepository.findById(stack.getCredentialsId()).orElseThrow());
+        }
         stepRepository.deleteByJobId(jobWorkflow.getJob().getId());
         treatJob(
             jobWorkflow,

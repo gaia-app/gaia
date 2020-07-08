@@ -6,7 +6,7 @@ import java.util.*
 
 interface CredentialsRepository: MongoRepository<Credentials, String> {
 
-    fun findAllByCreatedBy(user: User): List<Credentials>
+    fun findAllByCreatedBy(user: User): List<EmptyCredentials>
 
     fun findByIdAndCreatedBy(id: String, createdBy: User): Optional<Credentials>
 }

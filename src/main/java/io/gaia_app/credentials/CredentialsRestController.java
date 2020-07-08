@@ -20,7 +20,7 @@ public class CredentialsRestController {
     }
 
     @GetMapping
-    public List<Credentials> getAllCredentials(User user) {
+    public List<EmptyCredentials> getAllCredentials(User user) {
         return this.credentialsRepository.findAllByCreatedBy(user);
     }
 

@@ -40,10 +40,18 @@ class CredentialsRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(get("/api/credentials"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].provider", is("aws")));
+    }
+
+    @Test
+    @WithMockUser("Darth Vader")
+    void credentialsDetailsShouldNotLeak_forListAccess() throws Exception {
+        mockMvc.perform(get("/api/credentials"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
             .andExpect(jsonPath("$[0].provider", is("aws")))
-            .andExpect(jsonPath("$[0].accessKey", is("DEATH_STAR_KEY")))
-            .andExpect(jsonPath("$[0].secretKey", is("DEATH_STAR_SECRET")))
-            .andExpect(jsonPath("$[0].createdBy.username", is("Darth Vader")));
+            .andExpect(jsonPath("$[0].accessKey").doesNotExist())
+            .andExpect(jsonPath("$[0].secretKey").doesNotExist());
     }
 
     @Test
