@@ -11,8 +11,9 @@ import java.util.*
 class SpringSecurityUserAuditorAware(val userRepository: UserRepository):AuditorAware<User> {
 
     override fun getCurrentAuditor(): Optional<User> {
-        val authentication = SecurityContextHolder.getContext().authentication
+        val authentication = SecurityContextHolder.getContext().authentication ?: return Optional.empty()
         return userRepository.findById(authentication.name)
     }
 
 }
+
