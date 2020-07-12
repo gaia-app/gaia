@@ -1,5 +1,8 @@
 package io.gaia_app.runner;
 
+import io.gaia_app.credentials.AWSCredentials;
+import io.gaia_app.credentials.CredentialsRepository;
+import io.gaia_app.credentials.EmptyCredentials;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobType;
@@ -18,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -38,6 +42,9 @@ class StackRunnerTest {
 
     @Mock
     private StepRepository stepRepository;
+
+    @Mock
+    private CredentialsRepository credentialsRepository;
 
     @Mock
     private JobWorkflow jobWorkflow;
@@ -391,6 +398,54 @@ class StackRunnerTest {
         // then
         verify(jobRepository, times(2)).save(job);
         verify(stepRepository, times(2)).saveAll(job.getSteps());
+    }
+
+    @Test
+    void credentialsShouldBeInjected_whenRunningAPlan(){
+        // given
+        stack.setCredentialsId("dummy");
+        var credentials = new AWSCredentials("dummy","dummy");
+
+        when(credentialsRepository.findById("dummy")).thenReturn(Optional.of(credentials));
+
+        // when
+        stackRunner.plan(jobWorkflow, module, stack);
+
+        // then
+        verify(credentialsRepository).findById("dummy");
+        assertThat(job.getCredentials()).isEqualTo(credentials);
+    }
+
+    @Test
+    void credentialsShouldBeInjected_whenRunningAnApply(){
+        // given
+        stack.setCredentialsId("dummy");
+        var credentials = new AWSCredentials("dummy","dummy");
+
+        when(credentialsRepository.findById("dummy")).thenReturn(Optional.of(credentials));
+
+        // when
+        stackRunner.apply(jobWorkflow, module, stack);
+
+        // then
+        verify(credentialsRepository).findById("dummy");
+        assertThat(job.getCredentials()).isEqualTo(credentials);
+    }
+
+    @Test
+    void credentialsShouldBeInjected_whenRunningARetry(){
+        // given
+        stack.setCredentialsId("dummy");
+        var credentials = new AWSCredentials("dummy","dummy");
+
+        when(credentialsRepository.findById("dummy")).thenReturn(Optional.of(credentials));
+
+        // when
+        stackRunner.retry(jobWorkflow, module, stack);
+
+        // then
+        verify(credentialsRepository).findById("dummy");
+        assertThat(job.getCredentials()).isEqualTo(credentials);
     }
 
 }

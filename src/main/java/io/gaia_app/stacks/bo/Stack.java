@@ -59,6 +59,8 @@ public class Stack {
 
     private BigDecimal estimatedRunningCost;
 
+    private String credentialsId;
+
     @DBRef
     private User createdBy;
 
@@ -173,4 +175,11 @@ public class Stack {
         this.updatedAt = updatedAt;
     }
 
+    public String getCredentialsId() {
+        return credentialsId;
+    }
+
+    public void setCredentialsId(String credentialsId) {
+        this.credentialsId = credentialsId;
+    }
 }

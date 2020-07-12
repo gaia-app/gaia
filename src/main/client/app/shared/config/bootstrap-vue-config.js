@@ -9,6 +9,7 @@ import {
   FormGroupPlugin,
   FormInputPlugin,
   FormPlugin,
+  FormSelectPlugin,
   FormTextareaPlugin,
   ImagePlugin,
   InputGroupPlugin,
@@ -35,6 +36,7 @@ export default {
     Vue.use(FormGroupPlugin);
     Vue.use(FormInputPlugin);
     Vue.use(FormPlugin);
+    Vue.use(FormSelectPlugin);
     Vue.use(FormTextareaPlugin);
     Vue.use(ImagePlugin);
     Vue.use(InputGroupPlugin);

@@ -23,6 +23,17 @@
               <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
             </b-form-group>
           </b-col>
+          <b-col>
+            <b-form-group
+              label="Main provider"
+              description="The main provider of this module"
+            >
+              <b-form-select
+                v-model="module.mainProvider"
+                :options="providers"
+              />
+            </b-form-group>
+          </b-col>
           <b-col :md="isTerraformImageOverride ? '5' : '3'">
             <app-terraform-image-input
               :image="module.terraformImage"
@@ -162,6 +173,12 @@
         isTerraformImageValid: null,
         isTerraformImageOverride: null,
         teams: [],
+        providers: [
+          { value: 'aws', text: 'AWS' },
+          { value: 'azurerm', text: 'Azure' },
+          { value: 'docker', text: 'Docker' },
+          { value: 'google', text: 'GCP' },
+        ],
       };
     },
 

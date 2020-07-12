@@ -14,6 +14,9 @@ gaia.user.insert([
         "_id": "Darth Vader"
     },
     {
+        "_id": "Luke Skywalker"
+    },
+    {
         "_id": "selmak",
         "oAuth2User": {
             "provider": "github",

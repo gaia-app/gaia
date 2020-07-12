@@ -1,5 +1,6 @@
 package io.gaia_app.stacks.controller;
 
+import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobType;
@@ -9,7 +10,6 @@ import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
-import io.gaia_app.stacks.bo.Stack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +32,20 @@ public class StackRestController {
 
     private JobRepository jobRepository;
 
+    private CredentialsRepository credentialsRepository;
+
     @Autowired
     public StackRestController(
         StackRepository stackRepository,
         StackCostCalculator stackCostCalculator,
         TerraformModuleRepository terraformModuleRepository,
-        JobRepository jobRepository) {
+        JobRepository jobRepository,
+        CredentialsRepository credentialsRepository) {
         this.stackRepository = stackRepository;
         this.stackCostCalculator = stackCostCalculator;
         this.terraformModuleRepository = terraformModuleRepository;
         this.jobRepository = jobRepository;
+        this.credentialsRepository = credentialsRepository;
     }
 
     @GetMapping
@@ -95,6 +99,8 @@ public class StackRestController {
         // create a new job
         var job = new Job(jobType, id, user);
         job.setTerraformImage(module.getTerraformImage());
+        this.credentialsRepository.findById(stack.getCredentialsId())
+            .ifPresent(job::setCredentials);
         jobRepository.save(job);
 
         return Map.of("jobId", job.getId());

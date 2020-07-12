@@ -17,7 +17,8 @@
     props: {
       provider: {
         type: String,
-        required: true,
+        required: false,
+        default: null,
       },
       size: {
         type: String,

@@ -125,6 +125,16 @@
                 class="form-control"
               />
             </div>
+            <b-form-group label="Credentials">
+              <b-select
+                v-if="credentials"
+                v-model="stack.credentialsId"
+                :options="credentials"
+              />
+              <p v-if="! credentials">
+                No credentials found for a module with provider {{ module.mainProvider }}
+              </p>
+            </b-form-group>
           </div>
         </div>
       </div>
@@ -182,6 +192,7 @@
     displayNotification,
   } from '@/shared/services/modal-service';
   import { getJobs } from '@/shared/api/jobs-api';
+  import { getCredentialsList } from '@/shared/api/credentials-api';
 
   export default {
     name: 'AppStackEdition',
@@ -205,6 +216,7 @@
       module: null,
       state: { outputs: {} },
       jobs: [],
+      credentials: null,
     }),
 
     computed: {
@@ -219,6 +231,12 @@
     async created() {
       const stack = await getStack(this.stackId);
       this.module = await getModule(stack.moduleId);
+
+      const credentialsList = await getCredentialsList();
+      this.credentials = credentialsList
+        .filter((cred) => cred.provider === this.module.mainProvider)
+        .map((cred) => ({ value: cred.id, text: cred.name }));
+
       try {
         this.state = await getState(this.stackId);
       } catch (e) {

@@ -65,9 +65,9 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
     void users_shouldBeExposed_atSpecificUrl() throws Exception {
         mockMvc.perform(get("/api/users"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(4)))
-            .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "selmak")))
-            .andExpect(jsonPath("$..admin", contains(true, false, false, false)))
+            .andExpect(jsonPath("$", hasSize(5)))
+            .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "Luke Skywalker", "selmak")))
+            .andExpect(jsonPath("$..admin", contains(true, false, false, false, false)))
             .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
     }
 
@@ -115,9 +115,9 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
     void users_shouldNotLeakTheirOAuth2Credentials() throws Exception {
         mockMvc.perform(get("/api/users"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[3].username", is("selmak")))
-            .andExpect(jsonPath("$[3].oauth2User.provider", is("github")))
-            .andExpect(jsonPath("$[3].oauth2User.token").doesNotExist());
+            .andExpect(jsonPath("$[4].username", is("selmak")))
+            .andExpect(jsonPath("$[4].oauth2User.provider", is("github")))
+            .andExpect(jsonPath("$[4].oauth2User.token").doesNotExist());
     }
 
 }

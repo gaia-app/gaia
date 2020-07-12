@@ -8,3 +8,4 @@ export { default as AppFormTypeahead } from '@/shared/components/typeahead/form-
 export { default as AppMarkdown } from '@/shared/components/markdown/markdown.vue';
 export { default as AppConsole } from '@/shared/components/console/console.vue';
 export { default as AppProviderLogo } from '@/shared/components/providers/provider-logo.vue';
+export { default as AppProviderHeader } from '@/shared/components/providers/provider-header.vue';
