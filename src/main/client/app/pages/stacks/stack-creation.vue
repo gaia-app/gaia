@@ -147,7 +147,6 @@
         .filter((cred) => cred.provider === this.module.mainProvider)
         .map((cred) => ({ value: cred.id, text: cred.name }));
 
-
       this.stack.moduleId = this.module.id;
       this.stack.variableValues = {};
       this.stack.variables = this.module.variables.map((variable) => ({
