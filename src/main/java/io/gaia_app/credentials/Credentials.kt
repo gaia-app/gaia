@@ -43,7 +43,7 @@ abstract class Credentials {
 }
 
 @Document
-data class AWSCredentials(val accessKey:String, val secretKey:String):Credentials("aws") {
+data class AWSCredentials(var accessKey:String, var secretKey:String):Credentials("aws") {
     override fun toEnv() = listOf("AWS_ACCESS_KEY_ID=$accessKey", "AWS_SECRET_ACCESS_KEY=$secretKey")
 }
 
