@@ -26,7 +26,7 @@
     "vue-form-wizard": "^0.8.4",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.3.4",
-    "vuex": "^3.4.0"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.4",
