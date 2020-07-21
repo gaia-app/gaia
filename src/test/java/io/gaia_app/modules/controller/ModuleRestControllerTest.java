@@ -230,7 +230,7 @@ class ModuleRestControllerTest {
         var result = moduleRestController.readme("TEST");
 
         // then
-        assertThat(result).isPresent().get().isEqualTo(readme);
+        assertThat(result).isEqualTo(readme);
         verify(moduleRepository).findById("TEST");
         verify(moduleGitRepository).getReadme(module);
     }
