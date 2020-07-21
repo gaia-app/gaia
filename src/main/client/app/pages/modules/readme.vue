@@ -38,7 +38,11 @@
     }),
 
     async created() {
-      this.content = await getModuleReadme(this.moduleId);
+      try {
+        this.content = await getModuleReadme(this.moduleId);
+      } catch (e) {
+        this.content = '# No readme file for this module';
+      }
       this.loaded = true;
     },
   };
