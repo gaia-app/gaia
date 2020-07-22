@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -76,9 +76,9 @@ public class ModuleRestController {
     }
 
     @GetMapping(value = "/{id}/readme", produces = MediaType.TEXT_PLAIN_VALUE)
-    public Optional<String> readme(@PathVariable String id) {
+    public String readme(@PathVariable String id) {
         var module = moduleRepository.findById(id).orElseThrow();
-        return moduleGitRepository.getReadme(module);
+        return moduleGitRepository.getReadme(module).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND) );
     }
 
 }

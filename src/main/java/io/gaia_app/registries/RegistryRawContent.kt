@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
@@ -19,20 +20,24 @@ abstract class RegistryRawContent(private val registryType: RegistryType, privat
         val token = module.moduleMetadata.createdBy?.oAuth2User?.token;
 
         val headers = HttpHeaders()
-        if(token != null) {
+        if (token != null) {
             headers.add("Authorization", "Bearer $token")
         }
 
         val requestEntity = HttpEntity<Any>(headers)
 
-        val response = restTemplate.exchange(
+        try {
+            val response = restTemplate.exchange(
                 this.registryType.readmeUrl.replace("{id}", module.registryDetails.projectId),
                 HttpMethod.GET,
                 requestEntity,
                 RegistryFile::class.java)
 
-        if(response.statusCode == HttpStatus.OK) {
-            return Optional.of(String(Base64.getDecoder().decode(response.body?.content?.replace("\n",""))))
+            if (response.statusCode == HttpStatus.OK) {
+                return Optional.of(String(Base64.getDecoder().decode(response.body?.content?.replace("\n", ""))))
+            }
+        } catch (e: RestClientException) {
+            return Optional.empty()
         }
         return Optional.empty()
     }
