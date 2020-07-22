@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500" src="assets/gaia_logo_with_title.png">
+  <img width="500" src="https://github.com/gaia-app/gaia/raw/master/assets/gaia_logo_with_title.png">
 </p>
 
 Gaia is a Terraform UI for your Terraform modules, and self-service infrastructure.
@@ -24,15 +24,15 @@ It features :
 
 The module edition view allows you to edit module details, such as variables and their validation.
 
-![module edition view](./assets/screenshot-gaia-module.png)
+![module edition view](https://github.com/gaia-app/gaia/raw/master/assets/screenshot-gaia-module.png)
 
 The stack view helps you to input your variable values, and shows job results and latest output values.
 
-![stack edition view](./assets/screenshot-gaia-stack.png)
+![stack edition view](https://github.com/gaia-app/gaia/raw/master//assets/screenshot-gaia-stack.png)
 
 The job view shows you the Terraform workflow, and the logs of the `plan` and `apply` logs
 
-![job view](./assets/screenshot-gaia-job.png)
+![job view](https://github.com/gaia-app/gaia/raw/master//assets/screenshot-gaia-job.png)
 
 ## Requirements
 
