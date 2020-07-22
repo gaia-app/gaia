@@ -7,7 +7,7 @@ Gaia is a Terraform UI for your Terraform modules, and self-service infrastructu
 [![Build Status](https://travis-ci.com/gaia-app/gaia.svg?branch=master)](https://travis-ci.com/gaia-app/gaia)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gaia-app%3Agaia&metric=alert_status)](https://sonarcloud.io/dashboard?id=gaia-app%3Agaia)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gaia-app%3Agaia&metric=coverage)](https://sonarcloud.io/dashboard?id=gaia-app%3Agaia)
-![Docker Pulls](https://img.shields.io/docker/pulls/gaia-app/gaia)
+![Docker Pulls](https://img.shields.io/docker/pulls/gaiaapp/gaia)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=gaia-app/gaia)](https://dependabot.com)
 
 ## What is it?
