@@ -9,7 +9,7 @@
       <font-awesome-icon icon="plus" /> Create new credentials
     </b-button>
 
-    <b-card-group deck>
+    <div class="card-layout">
       <b-card
         v-for="credentials in credentialsList"
         :key="credentials.id"
@@ -37,7 +37,7 @@
           </b-button>
         </template>
       </b-card>
-    </b-card-group>
+    </div>
   </div>
 </template>
 
@@ -85,6 +85,17 @@
 </script>
 
 <style scoped>
+  .card-layout {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    width: 350px;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+
   .card-header {
     padding: 0;
   }
