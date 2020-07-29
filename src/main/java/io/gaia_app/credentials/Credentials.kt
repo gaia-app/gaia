@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Document
     Type(value = GoogleCredentials::class, name = "google"),
     Type(value = AzureRMCredentials::class, name = "azurerm")
 )
-abstract class Credentials {
+sealed class Credentials(var provider: String) {
 
     @Id
     lateinit var id: String
@@ -33,12 +33,6 @@ abstract class Credentials {
     @DBRef
     lateinit var createdBy: User
 
-    var provider: String
-
-    constructor(provider: String) {
-        this.provider = provider
-    }
-
     abstract fun toEnv(): List<String>
 }
 
@@ -48,12 +42,12 @@ data class AWSCredentials(var accessKey:String, var secretKey:String):Credential
 }
 
 @Document
-data class GoogleCredentials(val serviceAccountJSONContents:String):Credentials("google") {
+data class GoogleCredentials(var serviceAccountJSONContents:String):Credentials("google") {
     override fun toEnv() = listOf("GOOGLE_CREDENTIALS=$serviceAccountJSONContents")
 }
 
 @Document
-data class AzureRMCredentials(val clientId:String, val clientSecret:String):Credentials("azurerm") {
+data class AzureRMCredentials(var clientId:String, var clientSecret:String):Credentials("azurerm") {
     override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret")
 }
 
