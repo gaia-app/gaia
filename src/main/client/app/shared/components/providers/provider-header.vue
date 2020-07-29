@@ -34,6 +34,7 @@
           aws: 'AWS',
           google: 'GCP',
           azurerm: 'Azure',
+          'vault-aws': 'Vault for AWS',
         }[this.provider];
       },
     },
@@ -56,6 +57,10 @@
 
   .google {
     background-color: #2f6fd8;
+  }
+
+  .vault-aws {
+    background-color: #000000;
   }
 
   .providerName {

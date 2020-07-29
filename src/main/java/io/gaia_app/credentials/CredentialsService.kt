@@ -1,13 +1,20 @@
 package io.gaia_app.credentials
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import io.gaia_app.encryption.EncryptionService
 import io.gaia_app.teams.User
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.vault.core.VaultTemplate
 import java.util.*
 
 @Service
 class CredentialsService(val credentialsRepository: CredentialsRepository, val encryptionService: EncryptionService) {
+
+    @Autowired(required = false)
+    var vaultTemplate: VaultTemplate? = null
 
     fun findById(id: String): Optional<Credentials> = this.credentialsRepository.findById(id).map { decrypt(it) }
 
@@ -25,26 +32,33 @@ class CredentialsService(val credentialsRepository: CredentialsRepository, val e
         is AWSCredentials -> encryptionService.encryptAwsCredentials(it)
         is GoogleCredentials -> encryptionService.encryptGoogleCredentials(it)
         is AzureRMCredentials -> encryptionService.encryptAzurermCredentials(it)
+        // vault credentials does no need encryption
+        is VaultAWSCredentials -> it
     }
 
     fun decrypt(it: Credentials): Credentials = when (it) {
         is AWSCredentials -> encryptionService.decryptAwsCredentials(it)
         is GoogleCredentials -> encryptionService.decryptGoogleCredentials(it)
         is AzureRMCredentials -> encryptionService.decryptAzurermCredentials(it)
+        is VaultAWSCredentials -> loadAWSCredentialsFromVault(it)
     }
 
-    fun decrypt(it: Credentials): Credentials {
-        return when(it) {
-            is AWSCredentials -> encryptionService?.decrypt(it) ?: it
-            else -> it
+    fun loadAWSCredentialsFromVault(vaultAWSCredentials: VaultAWSCredentials): AWSCredentials {
+        val path = "${vaultAWSCredentials.vaultAwsSecretEnginePath.trimEnd('/')}/creds/${vaultAWSCredentials.vaultAwsRole}"
+        val vaultResponse = vaultTemplate!!.read(path, VaultAWSResponse::class.java)
+
+        // IAM credentials are eventually consistent with respect to other Amazon services.
+        // adding a delay of 5 seconds before returning them
+        runBlocking {
+            delay(5_000)
         }
+
+        return vaultResponse?.data?.toAWSCredentials() ?: throw RuntimeException("Unable to get AWS credentials from Vault")
     }
 }
 
-fun EncryptionService.decrypt(awsCredentials: AWSCredentials): AWSCredentials {
-    awsCredentials.accessKey = this.decrypt(awsCredentials.accessKey)
-    awsCredentials.secretKey = this.decrypt(awsCredentials.secretKey)
-    return awsCredentials
+data class VaultAWSResponse(@JsonAlias("access_key") val accessKey: String, @JsonAlias("secret_key") val secretKey: String) {
+    fun toAWSCredentials() = AWSCredentials(accessKey, secretKey)
 }
 
 fun EncryptionService.encryptAwsCredentials(awsCredentials: AWSCredentials): Credentials {

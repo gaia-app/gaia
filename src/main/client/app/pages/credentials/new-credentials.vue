@@ -44,7 +44,7 @@
         credentials: {
           provider: null,
         },
-        providerList: ['aws', 'azurerm', 'google'],
+        providerList: ['aws', 'azurerm', 'google', 'vault-aws'],
       }
     ),
   };

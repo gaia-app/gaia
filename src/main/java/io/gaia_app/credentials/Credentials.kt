@@ -20,7 +20,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 @JsonSubTypes(
     Type(value = AWSCredentials::class, name = "aws"),
     Type(value = GoogleCredentials::class, name = "google"),
-    Type(value = AzureRMCredentials::class, name = "azurerm")
+    Type(value = AzureRMCredentials::class, name = "azurerm"),
+    Type(value = VaultAWSCredentials::class, name = "vault-aws")
 )
 sealed class Credentials(var provider: String) {
 
@@ -49,6 +50,11 @@ data class GoogleCredentials(var serviceAccountJSONContents:String):Credentials(
 @Document
 data class AzureRMCredentials(var clientId:String, var clientSecret:String):Credentials("azurerm") {
     override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret")
+}
+
+@Document
+data class VaultAWSCredentials(var vaultAwsSecretEnginePath: String, var vaultAwsRole: String):Credentials("vault-aws") {
+    override fun toEnv() = listOf("EMPTY")
 }
 
 data class EmptyCredentials(val id: String, val name: String, val provider: String)

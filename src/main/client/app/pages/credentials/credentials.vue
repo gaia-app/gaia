@@ -35,6 +35,10 @@
         v-if="credentials.provider === 'google'"
         :credentials="credentials"
       />
+      <app-credentials-vault-aws
+        v-if="credentials.provider === 'vault-aws'"
+        :credentials="credentials"
+      />
 
       <template v-slot:footer>
         <b-button
@@ -57,6 +61,7 @@
   import AppCredentialsAws from '@/pages/credentials/providers/credentials-aws.vue';
   import AppCredentialsAzurerm from '@/pages/credentials/providers/credentials-azurerm.vue';
   import AppCredentialsGoogle from '@/pages/credentials/providers/credentials-google.vue';
+  import AppCredentialsVaultAws from '@/pages/credentials/providers/credentials-vault-aws.vue';
 
   export default {
     name: 'Credentials',
@@ -65,6 +70,7 @@
       AppCredentialsAws,
       AppCredentialsAzurerm,
       AppCredentialsGoogle,
+      AppCredentialsVaultAws,
       AppProviderHeader,
     },
 

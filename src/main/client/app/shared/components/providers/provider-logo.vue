@@ -59,4 +59,8 @@
   .azurerm {
     background-color: #007cc1;
   }
+
+  .vault-aws {
+    background-color: #000000;
+  }
 </style>
