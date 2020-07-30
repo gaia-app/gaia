@@ -1,0 +1,31 @@
+version: "3"
+services:
+    gaia:
+        build: .
+        image: gaia
+        ports:
+            - '8080:8080'
+        environment:
+            - "GAIA_MONGODB_URI=mongodb://mongo/gaia"
+            - "GAIA_EXTERNAL_URL=http://172.17.0.1:8080"
+            - "SPRING_PROFILES_ACTIVE=vault"
+            - "GAIA_VAULT_URI=http://vault:8200"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+    mongo:
+        build:
+            context: .
+            dockerfile: ./Dockerfile-db
+        image: gaia-db
+        ports:
+            - "27017:27017"
+
+    vault:
+        image: vault
+        ports:
+            - "8200:8200"
+        environment:
+            - "VAULT_DEV_ROOT_TOKEN_ID=admin123"
+        cap_add:
+          - IPC_LOCK
