@@ -2,17 +2,18 @@ package io.gaia_app.credentials;
 
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -218,6 +219,14 @@ class CredentialsRestControllerIT extends SharedMongoContainerTest {
         // Luke cannot see Vader's credentials
         mockMvc.perform(delete("/api/credentials/1").with(csrf()))
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser("Luke Skywalker")
+    void providerListTest() throws Exception {
+        mockMvc.perform(get("/api/credentials/providers"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", contains("aws","azurerm","google")));
     }
 
 }

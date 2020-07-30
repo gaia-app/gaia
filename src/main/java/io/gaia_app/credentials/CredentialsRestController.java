@@ -1,11 +1,13 @@
 package io.gaia_app.credentials;
 
 import io.gaia_app.teams.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,5 +53,18 @@ public class CredentialsRestController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         this.credentialsService.deleteById(id);
+    }
+
+    /**
+     * Lists available credentials providers
+     * @return the list of available credentials providers
+     */
+    @GetMapping("/providers")
+    public List<String> providers(@Value("${gaia.vault.enabled:false}") boolean vaultEnabled){
+        var providers = new ArrayList<>(List.of("aws", "azurerm", "google"));
+        if(vaultEnabled){
+            providers.add("vault-aws");
+        }
+        return providers;
     }
 }

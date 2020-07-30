@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const getProviders = async () => axios.get('/api/credentials/providers');
+
 export const getCredentialsList = async () => axios.get('/api/credentials');
 
 export const getCredentials = async (credentialsId) => axios.get(`/api/credentials/${credentialsId}`);
