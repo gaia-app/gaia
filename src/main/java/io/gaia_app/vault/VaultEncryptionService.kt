@@ -20,17 +20,6 @@ class VaultEncryptionService(val vaultTemplate: VaultTemplate): EncryptionServic
 
     override fun encrypt(plaintext: String): String = vaultTemplate.opsForTransit(transitPath).encrypt(transitKey, plaintext)
 
-    override fun encryptBatch(plaintext: List<String>): List<String> {
-        return vaultTemplate.opsForTransit(transitPath)
-            .encrypt(transitKey, plaintext.map { Plaintext.of(it) })
-            .map { it.get().ciphertext }
-    }
-
     override fun decrypt(cipherText: String): String = vaultTemplate.opsForTransit(transitPath).decrypt(transitKey, cipherText)
 
-    override fun decryptBatch(cipherText: List<String>): List<String> {
-        return vaultTemplate.opsForTransit(transitPath)
-            .decrypt(transitKey, cipherText.map { Ciphertext.of(it) })
-            .map { String(it.get().plaintext) }
-    }
 }

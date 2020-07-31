@@ -11,11 +11,7 @@ interface EncryptionService {
 
     fun encrypt(plaintext:String): String
 
-    fun encryptBatch(plaintext: List<String>): List<String>
-
     fun decrypt(cipherText: String): String
-
-    fun decryptBatch(cipherText: List<String>): List<String>
 
 }
 
@@ -32,10 +28,6 @@ class NoOpEncryptionService:EncryptionService{
 
     override fun encrypt(plaintext: String) = plaintext
 
-    override fun encryptBatch(plaintext: List<String>) = plaintext
-
     override fun decrypt(cipherText: String) = cipherText
-
-    override fun decryptBatch(cipherText: List<String>) = cipherText
 
 }

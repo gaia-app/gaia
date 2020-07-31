@@ -43,22 +43,9 @@ internal class VaultEncryptionServiceIT {
     }
 
     @Test
-    fun encryptBatch() {
-        val encrypted = vaultEncryptionService.encryptBatch(listOf("some_text", "some_other_text"))
-        assertThat(encrypted).allMatch { it.startsWith("vault:v1:") }
-    }
-
-    @Test
     fun decrypt() {
         val encrypted = vaultEncryptionService.encrypt("some_text")
         val plain = vaultEncryptionService.decrypt(encrypted)
         assertThat(plain).isEqualTo("some_text")
-    }
-
-    @Test
-    fun decryptBatch() {
-        val encrypted = vaultEncryptionService.encryptBatch(listOf("some_text", "some_other_text"))
-        val plain = vaultEncryptionService.decryptBatch(encrypted)
-        assertThat(plain).containsExactly("some_text", "some_other_text")
     }
 }
