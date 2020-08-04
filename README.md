@@ -9,6 +9,7 @@ Gaia is a Terraform UI for your Terraform modules, and self-service infrastructu
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gaia-app%3Agaia&metric=coverage)](https://sonarcloud.io/dashboard?id=gaia-app%3Agaia)
 ![Docker Pulls](https://img.shields.io/docker/pulls/gaiaapp/gaia)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=gaia-app/gaia)](https://dependabot.com)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgaia-app%2Fgaia.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgaia-app%2Fgaia?ref=badge_shield)
 
 ## What is it?
 
@@ -68,3 +69,7 @@ Default credentials for entering:
 ## Contributors
 
 Gaia is made with ❤️ in  🇫🇷 by [Cyril DUBUISSON](https://github.com/cdubuisson) and [Julien WITTOUCK](https://github.com/juwit)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgaia-app%2Fgaia.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgaia-app%2Fgaia?ref=badge_large)
