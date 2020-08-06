@@ -3,7 +3,7 @@ snapshot:
   # percy specific CSS used when rendering snapshots
   # ignoring build_commit block, as it changes everytime !
   percy-css: |
-    .build_commit {
+    .build-info.build-commit {
       display: none;
     }
 
