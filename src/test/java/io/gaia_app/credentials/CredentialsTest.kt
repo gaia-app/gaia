@@ -20,8 +20,8 @@ internal class CredentialsTest {
     }
 
     @Test
-    fun `toEnv() for GoogleCredentials should return GOOGLE_CREDENTIALS`() {
-        assertThat(GoogleCredentials("jsonContent").toEnv())
-            .containsExactly("GOOGLE_CREDENTIALS=jsonContent")
+    fun `toEnv() for GoogleCredentials should return GOOGLE_CREDENTIALS and GOOGLE_PROJECT`() {
+        assertThat(GoogleCredentials("jsonContent", "projectId").toEnv())
+            .containsExactly("GOOGLE_CREDENTIALS=jsonContent", "GOOGLE_PROJECT=projectId")
     }
 }
