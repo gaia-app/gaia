@@ -3,10 +3,23 @@
     <b-card
       v-for="stack in stacks"
       :key="stack.id"
-      :title="stack.name"
       :sub-title="stack.description"
+      :header-class="stack.module.mainProvider || 'unknown'"
+      no-body
     >
-      <b-card-text>
+      <template v-slot:header>
+        <h1>{{ stack.name }}</h1>
+        <app-provider-logo
+          :provider="stack.module.mainProvider || 'unknown'"
+          size="40px"
+        />
+      </template>
+
+      <b-card-body>
+        <p>{{ stack.description }}</p>
+      </b-card-body>
+
+      <b-card-footer>
         <b-badge
           :id="'badge-' + stack.id"
           pill
@@ -17,25 +30,31 @@
         <b-tooltip :target="'badge-' + stack.id">
           {{ states[stack.state].tooltip }}
         </b-tooltip>
-      </b-card-text>
+      </b-card-footer>
 
-      <b-button
-        :to="{ name: 'stack_edition', params: { stackId: stack.id }}"
-        title="Edit this stack"
-        variant="primary"
-        class="mr-1"
-      >
-        <font-awesome-icon icon="edit" />
-      </b-button>
+      <b-card-footer>
+        <b-button
+          :to="{ name: 'stack_edition', params: { stackId: stack.id }}"
+          title="Edit this stack"
+          variant="primary"
+          class="mr-1"
+        >
+          <font-awesome-icon icon="edit" />
+        </b-button>
+      </b-card-footer>
     </b-card>
   </b-card-group>
 </template>
 
 <script>
   import { getStacks } from '@/shared/api/stacks-api';
+  import { AppProviderLogo } from '@/shared/components';
 
   export default {
     name: 'AppStacks',
+    components: {
+      AppProviderLogo,
+    },
     data: () => ({
       stacks: [],
       states: {
@@ -72,5 +91,43 @@
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 0;
+}
 
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.card-header h1 {
+  color: white;
+}
+
+.card-header.unknown {
+  background-color: #4f55e3;
+}
+
+.card-header.google {
+  background-color: #2f6fd8;
+}
+
+.card-header.docker {
+  background-color: #2496ed;
+}
+
+.card-header.aws {
+  background-color: #ea8c00;
+}
+
+.card-header.azurerm {
+  background-color: #007cc1;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
