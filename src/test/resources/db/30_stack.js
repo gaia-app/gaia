@@ -3,7 +3,7 @@ gaia.stack.drop();
 gaia.stack.insert([
     {
         "_id": "5a215b6b-fe53-4afa-85f0-a10175a7f264",
-        "moduleId": "e01f9925-a559-45a2-8a55-f93dc434c676",
+        "module": {"$ref": "terraformModule", "$id": "e01f9925-a559-45a2-8a55-f93dc434c676"},
         "name": "mongo-instance-1",
         "description": "first instance of mongo module",
         "variableValues": {
@@ -21,7 +21,7 @@ gaia.stack.insert([
     },
     {
         "_id": "143773fa-4c2e-4baf-a7fb-79d23e01c5ca",
-        "moduleId": "e01f9925-a559-45a2-8a55-f93dc434c676",
+        "module": {"$ref": "terraformModule", "$id": "e01f9925-a559-45a2-8a55-f93dc434c676"},
         "name": "mongo-instance-2",
         "description": "second instance of mongo module",
         "variablesValues": {},
@@ -36,7 +36,7 @@ gaia.stack.insert([
     },
     {
         "_id": "845543d0-20a5-466c-8978-33c9a4661606",
-        "moduleId": "845543d0-20a5-466c-8978-33c9a4661606",
+        "module": {"$ref": "terraformModule", "$id": "e01f9925-a559-45a2-8a55-f93dc434c676"},
         "name": "mongo-instance-limited",
         "description": "instance of mongo module for team Not Ze Team",
         "variablesValues": {},
@@ -51,7 +51,7 @@ gaia.stack.insert([
     },
     {
         "_id" : "de28a01f-257a-448d-8e1b-00e4e3a41db2",
-        "moduleId" : "e01f9925-a559-45a2-8a55-f93dc434c676",
+        "module": {"$ref": "terraformModule", "$id": "e01f9925-a559-45a2-8a55-f93dc434c676"},
         "variableValues" : {
             "mongo_container_name" : "local-mongo",
             "mongo_exposed_port" : "28017"

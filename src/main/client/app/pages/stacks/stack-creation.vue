@@ -139,7 +139,11 @@
     },
 
     async created() {
-      this.stack = {};
+      this.stack = {
+        module: {
+          id: this.moduleId,
+        },
+      };
 
       this.module = await getModule(this.moduleId);
       const credentialsList = await getCredentialsList();
@@ -147,7 +151,6 @@
         .filter((cred) => cred.provider.includes(this.module.mainProvider))
         .map((cred) => ({ value: cred.id, text: cred.name }));
 
-      this.stack.moduleId = this.module.id;
       this.stack.variableValues = {};
       this.stack.variables = this.module.variables.map((variable) => ({
         ...variable,

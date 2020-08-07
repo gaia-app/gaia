@@ -33,9 +33,6 @@ class StackCostCalculatorTest {
     @Mock
     private JobRepository jobRepository;
 
-    @Mock
-    private TerraformModuleRepository moduleRepository;
-
     @InjectMocks
     private StackCostCalculator calculator;
 
@@ -59,11 +56,10 @@ class StackCostCalculatorTest {
         // given
         var stack = new Stack();
         stack.setId("12");
-        stack.setModuleId("42");
 
         var module = new TerraformModule();
         module.setEstimatedMonthlyCost(BigDecimal.valueOf(31));
-        when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
+        stack.setModule(module);
 
         // a job started two days ago
         var job = new Job();
@@ -85,11 +81,10 @@ class StackCostCalculatorTest {
         // given
         var stack = new Stack();
         stack.setId("12");
-        stack.setModuleId("42");
 
         var module = new TerraformModule();
         module.setEstimatedMonthlyCost(BigDecimal.valueOf(31));
-        when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
+        stack.setModule(module);
 
         // a job started two days ago
         var job = new Job();
@@ -119,11 +114,10 @@ class StackCostCalculatorTest {
         // given
         var stack = new Stack();
         stack.setId("12");
-        stack.setModuleId("42");
 
         var module = new TerraformModule();
         module.setEstimatedMonthlyCost(BigDecimal.valueOf(31));
-        when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
+        stack.setModule(module);
 
         // a job started two days ago
         var job = new Job();
@@ -160,7 +154,6 @@ class StackCostCalculatorTest {
         // given
         var stack = new Stack();
         stack.setId("12");
-        stack.setModuleId("42");
 
         // a job started two days ago
         var job = new Job();
@@ -172,7 +165,7 @@ class StackCostCalculatorTest {
 
         // but a module with no cost
         var module = new TerraformModule();
-        when(moduleRepository.findById("42")).thenReturn(Optional.of(module));
+        stack.setModule(module);
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);

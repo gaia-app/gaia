@@ -51,8 +51,8 @@ class StackRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(get("/api/stacks"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(4)))
-            .andExpect(jsonPath("$..name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo")))
-            .andExpect(jsonPath("$..ownerTeam.id", contains("Ze Team", "Ze Team", "Not Ze Team")));
+            .andExpect(jsonPath("$.[*].name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo")))
+            .andExpect(jsonPath("$.[*].ownerTeam.id", contains("Ze Team", "Ze Team", "Not Ze Team")));
     }
 
     @Test
@@ -87,7 +87,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(post("/api/stacks")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
+            .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"e01f9925-a559-45a2-8a55-f93dc434c676\"}}"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", notNullValue()))
             .andExpect(jsonPath("$.ownerTeam.id", is("Not Ze Team")))
@@ -101,7 +101,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(put("/api/stacks/test")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\":\"stack-test\", \"moduleId\": \"e01f9925-a559-45a2-8a55-f93dc434c676\"}"))
+            .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"e01f9925-a559-45a2-8a55-f93dc434c676\"}}"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.updatedBy.username", is("Mary J")))
             .andExpect(jsonPath("$.updatedAt", notNullValue()));
@@ -116,7 +116,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .content("{}"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", containsString("name must not be blank")))
-            .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
+            .andExpect(jsonPath("$.message", containsString("module must not be null")));
     }
 
     @Test
@@ -125,22 +125,10 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             // empty name and module id
-            .content("{\"name\":\"      \",\"moduleId\":\"   \"}"))
+            .content("{\"name\":\"      \"}"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", containsString("name must not be blank")))
-            .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
-    }
-
-    @Test
-    void updateStack_shouldValidateStackContent() throws Exception {
-        mockMvc.perform(put("/api/stacks/test")
-            .with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            // empty name and module id
-            .content("{\"name\":\"\", \"moduleId\": \"\"}"))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", containsString("name must not be blank")))
-            .andExpect(jsonPath("$.message", containsString("moduleId must not be blank")));
+            .andExpect(jsonPath("$.message", containsString("module must not be null")));
     }
 
     @Test
@@ -149,7 +137,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             // null variable
-            .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{}}"))
+            .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"b39ccd07-80f5-455f-a6b3-b94f915738c4\"}, \"variableValues\":{}}"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", is("mandatory variables should not be blank")));
     }
@@ -160,7 +148,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             // empty name
-            .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
+            .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"b39ccd07-80f5-455f-a6b3-b94f915738c4\"}, \"variableValues\":{\"mongo_container_name\":\"someContainerName\"}}"))
             .andExpect(status().isOk());
     }
 
@@ -170,7 +158,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             // null variable
-            .content("{\"name\":\"stack-test\", \"moduleId\": \"b39ccd07-80f5-455f-a6b3-b94f915738c4\", \"variableValues\":{\"mongo_container_name\":\"someContainerName\",\"mongo_exposed_port\":\"toto\"}}"))
+            .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"b39ccd07-80f5-455f-a6b3-b94f915738c4\"}, \"variableValues\":{\"mongo_container_name\":\"someContainerName\",\"mongo_exposed_port\":\"toto\"}}"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", is("variables should match the regex")));
     }

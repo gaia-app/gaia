@@ -17,12 +17,12 @@ class RegexStackVariablesValidator(@Autowired val moduleRepository: TerraformMod
 
     override fun isValid(stack: Stack, constraintValidatorContext: ConstraintValidatorContext?): Boolean {
         // we do not validate anything if the stacks has no module reference (it will send a BadRequest anyway)
-        if( stack.moduleId.isNullOrBlank()) {
+        if (stack.module == null) {
             return true
         }
         // getting the module, returning true if module cannot be found !
         // this should (let's hope so) never happen ! another validator should handle this case
-        val module = this.moduleRepository.findByIdOrNull(stack.moduleId) ?: return true
+        val module = this.moduleRepository.findByIdOrNull(stack.module.id) ?: return true
 
         return module.variables
                 // not checking non regex values

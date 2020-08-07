@@ -1,7 +1,6 @@
 package io.gaia_app.stacks.controller;
 
 import io.gaia_app.credentials.CredentialsRepository;
-import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
@@ -28,8 +27,6 @@ public class StackRestController {
 
     private StackCostCalculator stackCostCalculator;
 
-    private TerraformModuleRepository terraformModuleRepository;
-
     private JobRepository jobRepository;
 
     private CredentialsRepository credentialsRepository;
@@ -38,12 +35,10 @@ public class StackRestController {
     public StackRestController(
         StackRepository stackRepository,
         StackCostCalculator stackCostCalculator,
-        TerraformModuleRepository terraformModuleRepository,
         JobRepository jobRepository,
         CredentialsRepository credentialsRepository) {
         this.stackRepository = stackRepository;
         this.stackCostCalculator = stackCostCalculator;
-        this.terraformModuleRepository = terraformModuleRepository;
         this.jobRepository = jobRepository;
         this.credentialsRepository = credentialsRepository;
     }
@@ -93,12 +88,9 @@ public class StackRestController {
         // get the stack
         var stack = this.stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
 
-        // get the module
-        var module = this.terraformModuleRepository.findById(stack.getModuleId()).orElseThrow();
-
         // create a new job
         var job = new Job(jobType, id, user);
-        job.setTerraformImage(module.getTerraformImage());
+        job.setTerraformImage(stack.getModule().getTerraformImage());
         this.credentialsRepository.findById(stack.getCredentialsId())
             .ifPresent(job::setCredentials);
         jobRepository.save(job);
