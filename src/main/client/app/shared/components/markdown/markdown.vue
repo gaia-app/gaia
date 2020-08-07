@@ -31,4 +31,8 @@
 
 <style>
   @import "~@/assets/css/github-markdown.css";
+
+  .markdown-body{
+    padding: 1rem;
+  }
 </style>
