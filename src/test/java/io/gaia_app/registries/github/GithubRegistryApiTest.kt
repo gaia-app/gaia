@@ -39,7 +39,7 @@ class GithubRegistryApiTest{
         val sampleListResult = listOf(sampleResult)
         val listDetailsString = objectMapper.writeValueAsString(sampleListResult)
 
-        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+        server.expect(requestTo("https://api.github.com/user/repos?visibility=public&per_page=100"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
                 .andRespond(withSuccess(listDetailsString, MediaType.APPLICATION_JSON))
 
@@ -56,7 +56,7 @@ class GithubRegistryApiTest{
     @Test
     fun `getRepositories() should return empty list in case of 404`() {
         // given
-        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+        server.expect(requestTo("https://api.github.com/user/repos?visibility=public&per_page=100"))
             .andExpect(header("Authorization", "Bearer johnstoken"))
             .andRespond(withStatus(HttpStatus.NOT_FOUND))
 

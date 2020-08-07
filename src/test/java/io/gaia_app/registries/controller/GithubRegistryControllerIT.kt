@@ -67,7 +67,7 @@ class GithubRegistryControllerIT: SharedMongoContainerTest() {
     fun testGetRepositories() {
         // given
         val server = MockRestServiceServer.bindTo(restTemplate).build()
-        server.expect(requestTo("https://api.github.com/user/repos?visibility=public"))
+        server.expect(requestTo("https://api.github.com/user/repos?visibility=public&per_page=100"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-public-repos.json"), MediaType.APPLICATION_JSON))
 
