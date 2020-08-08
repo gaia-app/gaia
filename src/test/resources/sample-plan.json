@@ -1,0 +1,324 @@
+{
+  "format_version": "0.1",
+  "terraform_version": "0.12.28",
+  "variables": {
+    "mongo_container_name": {
+      "value": "test-plan-analysis"
+    },
+    "mongo_exposed_port": {
+      "value": 27017
+    }
+  },
+  "planned_values": {
+    "outputs": {
+      "docker_container_name": {
+        "sensitive": false,
+        "value": "test-plan-analysis"
+      }
+    },
+    "root_module": {
+      "resources": [
+        {
+          "address": "docker_container.mongo",
+          "mode": "managed",
+          "type": "docker_container",
+          "name": "mongo",
+          "provider_name": "docker",
+          "schema_version": 2,
+          "values": {
+            "attach": false,
+            "capabilities": [],
+            "cpu_set": null,
+            "cpu_shares": null,
+            "destroy_grace_seconds": null,
+            "devices": [],
+            "dns_search": null,
+            "domainname": null,
+            "env": null,
+            "group_add": null,
+            "healthcheck": [],
+            "host": [],
+            "labels": [],
+            "links": null,
+            "logs": false,
+            "max_retry_count": null,
+            "memory": null,
+            "memory_swap": null,
+            "mounts": [],
+            "must_run": true,
+            "name": "test-plan-analysis",
+            "network_alias": null,
+            "network_mode": null,
+            "networks": null,
+            "networks_advanced": [],
+            "pid_mode": null,
+            "ports": [
+              {
+                "external": 27017,
+                "internal": 27017,
+                "ip": "0.0.0.0",
+                "protocol": "tcp"
+              }
+            ],
+            "privileged": null,
+            "publish_all_ports": null,
+            "read_only": false,
+            "restart": "no",
+            "rm": false,
+            "start": true,
+            "sysctls": null,
+            "tmpfs": null,
+            "ulimit": [],
+            "upload": [],
+            "userns_mode": null,
+            "volumes": []
+          }
+        },
+        {
+          "address": "docker_image.mongo",
+          "mode": "managed",
+          "type": "docker_image",
+          "name": "mongo",
+          "provider_name": "docker",
+          "schema_version": 0,
+          "values": {
+            "keep_locally": true,
+            "name": "mongo",
+            "pull_trigger": null,
+            "pull_triggers": null
+          }
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "no-op-resource",
+      "type": "dummy-type",
+      "provider_name": "dummy-provider",
+      "change": {
+        "actions": ["no-op"]
+      }
+    },
+    {
+      "address": "update-resource",
+      "type": "dummy-type",
+      "provider_name": "dummy-provider",
+      "change": {
+        "actions": ["update"]
+      }
+    },
+    {
+      "address": "docker_container.mongo",
+      "mode": "managed",
+      "type": "docker_container",
+      "name": "mongo",
+      "provider_name": "docker",
+      "change": {
+        "actions": [
+          "create", "delete"
+        ],
+        "before": null,
+        "after": {
+          "attach": false,
+          "capabilities": [],
+          "cpu_set": null,
+          "cpu_shares": null,
+          "destroy_grace_seconds": null,
+          "devices": [],
+          "dns_search": null,
+          "domainname": null,
+          "env": null,
+          "group_add": null,
+          "healthcheck": [],
+          "host": [],
+          "labels": [],
+          "links": null,
+          "logs": false,
+          "max_retry_count": null,
+          "memory": null,
+          "memory_swap": null,
+          "mounts": [],
+          "must_run": true,
+          "name": "test-plan-analysis",
+          "network_alias": null,
+          "network_mode": null,
+          "networks": null,
+          "networks_advanced": [],
+          "pid_mode": null,
+          "ports": [
+            {
+              "external": 27017,
+              "internal": 27017,
+              "ip": "0.0.0.0",
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": null,
+          "publish_all_ports": null,
+          "read_only": false,
+          "restart": "no",
+          "rm": false,
+          "start": true,
+          "sysctls": null,
+          "tmpfs": null,
+          "ulimit": [],
+          "upload": [],
+          "userns_mode": null,
+          "volumes": []
+        },
+        "after_unknown": {
+          "bridge": true,
+          "capabilities": [],
+          "command": true,
+          "container_logs": true,
+          "devices": [],
+          "dns": true,
+          "dns_opts": true,
+          "entrypoint": true,
+          "exit_code": true,
+          "gateway": true,
+          "healthcheck": [],
+          "host": [],
+          "hostname": true,
+          "id": true,
+          "image": true,
+          "ip_address": true,
+          "ip_prefix_length": true,
+          "ipc_mode": true,
+          "labels": [],
+          "log_driver": true,
+          "log_opts": true,
+          "mounts": [],
+          "network_data": true,
+          "networks_advanced": [],
+          "ports": [
+            {}
+          ],
+          "shm_size": true,
+          "ulimit": [],
+          "upload": [],
+          "user": true,
+          "volumes": [],
+          "working_dir": true
+        }
+      }
+    },
+    {
+      "address": "docker_image.mongo",
+      "mode": "managed",
+      "type": "docker_image",
+      "name": "mongo",
+      "provider_name": "docker",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "keep_locally": true,
+          "name": "mongo",
+          "pull_trigger": null,
+          "pull_triggers": null
+        },
+        "after_unknown": {
+          "id": true,
+          "latest": true
+        }
+      }
+    }
+  ],
+  "output_changes": {
+    "docker_container_name": {
+      "actions": [
+        "create"
+      ],
+      "before": null,
+      "after": "test-plan-analysis",
+      "after_unknown": false
+    }
+  },
+  "configuration": {
+    "provider_config": {
+      "docker": {
+        "name": "docker",
+        "expressions": {
+          "host": {
+            "constant_value": "unix:///var/run/docker.sock"
+          }
+        }
+      }
+    },
+    "root_module": {
+      "outputs": {
+        "docker_container_name": {
+          "expression": {
+            "references": [
+              "docker_container.mongo"
+            ]
+          },
+          "description": "name of the docker container"
+        }
+      },
+      "resources": [
+        {
+          "address": "docker_container.mongo",
+          "mode": "managed",
+          "type": "docker_container",
+          "name": "mongo",
+          "provider_config_key": "docker",
+          "expressions": {
+            "image": {
+              "references": [
+                "docker_image.mongo"
+              ]
+            },
+            "name": {
+              "references": [
+                "var.mongo_container_name"
+              ]
+            },
+            "ports": [
+              {
+                "external": {
+                  "references": [
+                    "var.mongo_exposed_port"
+                  ]
+                },
+                "internal": {
+                  "constant_value": 27017
+                }
+              }
+            ]
+          },
+          "schema_version": 2
+        },
+        {
+          "address": "docker_image.mongo",
+          "mode": "managed",
+          "type": "docker_image",
+          "name": "mongo",
+          "provider_config_key": "docker",
+          "expressions": {
+            "keep_locally": {
+              "constant_value": true
+            },
+            "name": {
+              "constant_value": "mongo"
+            }
+          },
+          "schema_version": 0
+        }
+      ],
+      "variables": {
+        "mongo_container_name": {
+          "description": "name of the container"
+        },
+        "mongo_exposed_port": {
+          "default": 27017,
+          "description": "exposed port of the mongo container"
+        }
+      }
+    }
+  }
+}
