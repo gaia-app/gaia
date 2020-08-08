@@ -400,50 +400,50 @@ class StackRunnerTest {
     }
 
     @Test
-    void credentialsShouldBeInjected_whenRunningAPlan(){
+    void credentialsShouldBeLoadedAndInjected_whenRunningAPlan(){
         // given
         stack.setCredentialsId("dummy");
         var credentials = new AWSCredentials("dummy","dummy");
 
-        when(credentialsService.findById("dummy")).thenReturn(Optional.of(credentials));
+        when(credentialsService.load("dummy")).thenReturn(Optional.of(credentials));
 
         // when
         stackRunner.plan(jobWorkflow, module, stack);
 
         // then
-        verify(credentialsService).findById("dummy");
+        verify(credentialsService).load("dummy");
         assertThat(job.getCredentials()).isEqualTo(credentials);
     }
 
     @Test
-    void credentialsShouldBeInjected_whenRunningAnApply(){
+    void credentialsShouldBeLoadedAndInjected_whenRunningAnApply(){
         // given
         stack.setCredentialsId("dummy");
         var credentials = new AWSCredentials("dummy","dummy");
 
-        when(credentialsService.findById("dummy")).thenReturn(Optional.of(credentials));
+        when(credentialsService.load("dummy")).thenReturn(Optional.of(credentials));
 
         // when
         stackRunner.apply(jobWorkflow, module, stack);
 
         // then
-        verify(credentialsService).findById("dummy");
+        verify(credentialsService).load("dummy");
         assertThat(job.getCredentials()).isEqualTo(credentials);
     }
 
     @Test
-    void credentialsShouldBeInjected_whenRunningARetry(){
+    void credentialsShouldBeLoadedAndInjected_whenRunningARetry(){
         // given
         stack.setCredentialsId("dummy");
         var credentials = new AWSCredentials("dummy","dummy");
 
-        when(credentialsService.findById("dummy")).thenReturn(Optional.of(credentials));
+        when(credentialsService.load("dummy")).thenReturn(Optional.of(credentials));
 
         // when
         stackRunner.retry(jobWorkflow, module, stack);
 
         // then
-        verify(credentialsService).findById("dummy");
+        verify(credentialsService).load("dummy");
         assertThat(job.getCredentials()).isEqualTo(credentials);
     }
 

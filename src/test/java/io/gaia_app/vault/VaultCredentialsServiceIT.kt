@@ -1,7 +1,7 @@
-package io.gaia_app.credentials
+package io.gaia_app.vault
 
-import io.gaia_app.encryption.EncryptionService
-import io.gaia_app.vault.VaultConfiguration
+import io.gaia_app.credentials.CredentialsRepository
+import io.gaia_app.credentials.VaultAWSCredentials
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,22 +17,19 @@ import org.springframework.test.web.client.response.MockRestResponseCreators
 import org.springframework.vault.core.VaultTemplate
 import org.springframework.web.client.RestTemplate
 
-@RestClientTest(components = [CredentialsService::class, VaultConfiguration::class],
+@RestClientTest(components = [VaultCredentialsService::class, VaultConfiguration::class, VaultEncryptionService::class],
 properties = ["gaia.vault.enabled=true",
 "gaia.vault.authentication.token=vault-token",
 "gaia.vault.uri=http://vault-host:8200"
 ])
 @AutoConfigureWebClient(registerRestTemplate = true)
-class CredentialsServiceIT {
+class VaultCredentialsServiceIT {
 
     @Autowired
-    lateinit var credentialsService: CredentialsService
+    lateinit var credentialsService: VaultCredentialsService
 
     @MockBean
     lateinit var credentialsRepository: CredentialsRepository
-
-    @MockBean
-    lateinit var encryptionService: EncryptionService
 
     @Autowired
     lateinit var vaultTemplate: VaultTemplate
