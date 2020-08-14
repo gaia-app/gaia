@@ -1,4 +1,4 @@
-package io.gaia_app.e2e
+package io.gaia_app.e2e.pages
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.openqa.selenium.By

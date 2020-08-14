@@ -1,4 +1,4 @@
-package io.gaia_app.e2e
+package io.gaia_app.e2e.pages
 
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
