@@ -10,4 +10,6 @@ import org.junit.runner.RunWith;
 @Tag("e2e")
 public class CucumberIT {
 
+    // ces TU sont exécutés avec JUnit 4, et ne sont donc pas filtrés par maven avec le tag
+
 }
