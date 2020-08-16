@@ -20,9 +20,10 @@ import org.springframework.data.mongodb.core.mapping.Document
 @JsonSubTypes(
     Type(value = AWSCredentials::class, name = "aws"),
     Type(value = GoogleCredentials::class, name = "google"),
-    Type(value = AzureRMCredentials::class, name = "azurerm")
+    Type(value = AzureRMCredentials::class, name = "azurerm"),
+    Type(value = VaultAWSCredentials::class, name = "vault-aws")
 )
-abstract class Credentials {
+sealed class Credentials(var provider: String) {
 
     @Id
     lateinit var id: String
@@ -33,28 +34,27 @@ abstract class Credentials {
     @DBRef
     lateinit var createdBy: User
 
-    var provider: String
-
-    constructor(provider: String) {
-        this.provider = provider
-    }
-
     abstract fun toEnv(): List<String>
 }
 
 @Document
-data class AWSCredentials(val accessKey:String, val secretKey:String):Credentials("aws") {
+data class AWSCredentials(var accessKey:String, var secretKey:String):Credentials("aws") {
     override fun toEnv() = listOf("AWS_ACCESS_KEY_ID=$accessKey", "AWS_SECRET_ACCESS_KEY=$secretKey")
 }
 
 @Document
-data class GoogleCredentials(val serviceAccountJSONContents:String):Credentials("google") {
+data class GoogleCredentials(var serviceAccountJSONContents:String):Credentials("google") {
     override fun toEnv() = listOf("GOOGLE_CREDENTIALS=$serviceAccountJSONContents")
 }
 
 @Document
-data class AzureRMCredentials(val clientId:String, val clientSecret:String):Credentials("azurerm") {
+data class AzureRMCredentials(var clientId:String, var clientSecret:String):Credentials("azurerm") {
     override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret")
+}
+
+@Document
+data class VaultAWSCredentials(var vaultAwsSecretEnginePath: String, var vaultAwsRole: String):Credentials("vault-aws") {
+    override fun toEnv() = listOf("EMPTY")
 }
 
 data class EmptyCredentials(val id: String, val name: String, val provider: String)

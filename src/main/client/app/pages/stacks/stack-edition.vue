@@ -234,7 +234,7 @@
 
       const credentialsList = await getCredentialsList();
       this.credentials = credentialsList
-        .filter((cred) => cred.provider === this.module.mainProvider)
+        .filter((cred) => cred.provider.includes(this.module.mainProvider))
         .map((cred) => ({ value: cred.id, text: cred.name }));
 
       try {

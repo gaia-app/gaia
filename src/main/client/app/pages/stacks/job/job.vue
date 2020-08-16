@@ -89,7 +89,7 @@
       },
     },
     async created() {
-      [this.stack, this.job] = await Promise.all([getStack(this.stackId), this.refreshJob()]);
+      [this.stack, this.job] = await Promise.all([getStack(this.stackId), this.refreshJobUntilCompletion()]);
       this.loaded = true;
       if (!this.job.status) {
         await this.planJob();
@@ -101,15 +101,21 @@
     methods: {
       async planJob() {
         await planJob(this.jobId);
-        this.refreshIntervalId = setInterval(this.refreshJob, INTERVAL_TIMEOUT);
+        await this.waitUntilJobStarted();
+
+        this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
       },
       async applyJob() {
         await applyJob(this.jobId);
-        this.refreshIntervalId = setInterval(this.refreshJob, INTERVAL_TIMEOUT);
+        await this.waitUntilJobStarted();
+
+        this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
       },
       async retryJob() {
         await retryJob(this.jobId);
-        this.refreshIntervalId = setInterval(this.refreshJob, INTERVAL_TIMEOUT);
+        await this.waitUntilJobStarted();
+
+        this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
       },
       async deleteJob() {
         const message = 'This will delete the job. Continue?';
@@ -124,13 +130,26 @@
           }
         }
       },
-      async refreshJob() {
+      async refreshJobUntilCompletion() {
         this.job = await getJob(this.jobId);
         if (this.job.status && !this.job.status.includes('STARTED')) {
           clearInterval(this.refreshIntervalId);
         }
         return this.job;
       },
+      // wait until the job is in "started" state
+      async waitUntilJobStarted() {
+        const poll = async (resolve) => {
+          this.job = await getJob(this.jobId);
+          if (this.job.status && this.job.status.includes('STARTED')) {
+            resolve();
+          } else {
+            setTimeout(() => poll(resolve), 500);
+          }
+        };
+        return new Promise(poll);
+      },
+
     },
   };
 </script>

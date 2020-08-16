@@ -32,6 +32,7 @@
 <script>
   import { AppProviderHeader } from '@/shared/components';
   import AppCredentials from '@/pages/credentials/credentials.vue';
+  import { getProviders } from '@/shared/api/credentials-api';
 
   export default {
     name: 'NewCredentials',
@@ -44,9 +45,12 @@
         credentials: {
           provider: null,
         },
-        providerList: ['aws', 'azurerm', 'google'],
+        providerList: [],
       }
     ),
+    async created() {
+      this.providerList = await getProviders();
+    },
   };
 </script>
 

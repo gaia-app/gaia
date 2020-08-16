@@ -46,9 +46,11 @@
         <jersey.version>2.27</jersey.version>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
         <kotlin.version>1.3.72</kotlin.version>
+        <kotlinx.version>1.3.7</kotlinx.version>
         <testcontainers.version>1.14.3</testcontainers.version>
         <node.version>v12.16.0</node.version>
         <npm.version>6.13.4</npm.version>
+        <spring.vault.version>2.2.2.RELEASE</spring.vault.version>
         <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
 
         <sonar.projectKey>gaia-app:gaia</sonar.projectKey>
@@ -69,6 +71,11 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>${kotlinx.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -88,6 +95,12 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>vault</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
@@ -163,6 +176,12 @@
             <version>${antlr4.version}</version>
         </dependency>
 
+        <!-- vault is used for credentials mgmt and encryption -->
+        <dependency>
+            <groupId>org.springframework.vault</groupId>
+            <artifactId>spring-vault-core</artifactId>
+        </dependency>
+
         <!-- selenium tests -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -187,6 +206,13 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>29.0-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.vault</groupId>
+                <artifactId>spring-vault-dependencies</artifactId>
+                <version>${spring.vault.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>

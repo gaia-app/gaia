@@ -16,8 +16,6 @@ gaia.terraformModule.insert([
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
-        "estimatedMonthlyCost": 0.99,
-        "estimatedMonthlyCostDescription": "Kamoulox",
         "variables": [
             {
                 "name": "mongo_container_name",
@@ -48,8 +46,6 @@ gaia.terraformModule.insert([
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
-        "estimatedMonthlyCost": 9.99,
-        "estimatedMonthlyCostDescription": "Not Ze Team! Not Ze Team!",
         "variables": []
     },
     {
@@ -67,8 +63,6 @@ gaia.terraformModule.insert([
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
-        "estimatedMonthlyCost": 0.99,
-        "estimatedMonthlyCostDescription": "Kamoulox",
         "variables": [
             {
                 "name": "mongo_container_name",
