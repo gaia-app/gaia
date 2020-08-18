@@ -9,7 +9,7 @@
       <font-awesome-icon icon="save" /> Import Module
     </b-button>
 
-    <b-card-group columns>
+    <div class="card-layout">
       <b-card
         v-for="module in modules"
         :key="module.id"
@@ -71,7 +71,7 @@
           </b-button>
         </b-card-footer>
       </b-card>
-    </b-card-group>
+    </div>
   </div>
 </template>
 
@@ -115,6 +115,17 @@
 <style scoped>
   p {
     margin-bottom: 0;
+  }
+
+  .card-layout {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    width: 30%;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
   }
 
   .card-header {

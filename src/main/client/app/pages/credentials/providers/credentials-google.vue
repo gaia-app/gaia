@@ -11,9 +11,20 @@
         <b-form-textarea
           v-model="credentials.serviceAccountJSONContents"
           :state="notEmpty(credentials.serviceAccountJSONContents)"
+          rows="10"
         />
       </b-input-group>
       <b-form-invalid-feedback>This field is mandatory</b-form-invalid-feedback>
+    </b-form-group>
+
+    <b-form-group
+      label="Project"
+      description="Your GCP Project id (GOOGLE_PROJECT)"
+    >
+      <b-input
+        id="credentials.projectId"
+        v-model="credentials.projectId"
+      />
     </b-form-group>
   </div>
 </template>

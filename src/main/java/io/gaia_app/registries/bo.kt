@@ -5,7 +5,7 @@ enum class RegistryType(val repositoriesUrl: String,
                         val fileContentUrl: String,
                         val readmeUrl: String){
 
-    GITHUB("https://api.github.com/user/repos?visibility=public",
+    GITHUB("https://api.github.com/user/repos?visibility=public&per_page=100",
             "https://api.github.com/repos/%s",
             "https://api.github.com/repos/%s/contents/%s?ref=master",
             "https://api.github.com/repos/{id}/contents/README.md?ref=master"),

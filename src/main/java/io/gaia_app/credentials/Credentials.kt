@@ -43,8 +43,8 @@ data class AWSCredentials(var accessKey:String, var secretKey:String):Credential
 }
 
 @Document
-data class GoogleCredentials(var serviceAccountJSONContents:String):Credentials("google") {
-    override fun toEnv() = listOf("GOOGLE_CREDENTIALS=$serviceAccountJSONContents")
+data class GoogleCredentials(var serviceAccountJSONContents:String, var projectId:String? = null):Credentials("google") {
+    override fun toEnv() = listOf("GOOGLE_CREDENTIALS=$serviceAccountJSONContents", "GOOGLE_PROJECT=$projectId")
 }
 
 @Document
