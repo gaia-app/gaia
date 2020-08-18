@@ -193,7 +193,7 @@
         <dependency>
             <groupId>io.percy</groupId>
             <artifactId>percy-java-selenium</artifactId>
-            <version>0.1.3</version>
+            <version>0.1.4</version>
             <scope>test</scope>
         </dependency>
 
