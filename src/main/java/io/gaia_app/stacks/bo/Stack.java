@@ -1,10 +1,12 @@
 package io.gaia_app.stacks.bo;
 
+import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,11 +27,9 @@ public class Stack {
      */
     private String id;
 
-    /**
-     * The id of the referenced module
-     */
-    @NotBlank
-    private String moduleId;
+    @DBRef
+    @NotNull
+    private TerraformModule module;
 
     /**
      * The variable values of the module
@@ -79,12 +79,12 @@ public class Stack {
         this.id = id;
     }
 
-    public String getModuleId() {
-        return moduleId;
+    public TerraformModule getModule() {
+        return module;
     }
 
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
+    public void setModule(TerraformModule module) {
+        this.module = module;
     }
 
     public Map<String, String> getVariableValues() {

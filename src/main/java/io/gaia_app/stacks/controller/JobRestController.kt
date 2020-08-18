@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 class JobRestController(
         private val jobRepository: JobRepository,
         private val stackRepository: StackRepository,
-        private val moduleRepository: TerraformModuleRepository,
         private val stackRunner: StackRunner,
         private val stepRepository: StepRepository) {
 
@@ -35,24 +34,21 @@ class JobRestController(
     fun plan(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
         val stack = stackRepository.findById(job.stackId).orElseThrow()
-        val module = moduleRepository.findById(stack.moduleId).orElseThrow()
-        stackRunner.plan(JobWorkflow(job), module, stack)
+        stackRunner.plan(JobWorkflow(job), stack.module, stack)
     }
 
     @PostMapping("/{id}/apply")
     fun apply(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
         val stack = stackRepository.findById(job.stackId).orElseThrow()
-        val module = moduleRepository.findById(stack.moduleId).orElseThrow()
-        stackRunner.apply(JobWorkflow(job), module, stack)
+        stackRunner.apply(JobWorkflow(job), stack.module, stack)
     }
 
     @PostMapping("/{id}/retry")
     fun retry(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
         val stack = stackRepository.findById(job.stackId).orElseThrow()
-        val module = moduleRepository.findById(stack.moduleId).orElseThrow()
-        stackRunner.retry(JobWorkflow(job), module, stack)
+        stackRunner.retry(JobWorkflow(job), stack.module, stack)
     }
 
     @DeleteMapping("/{id}")

@@ -180,7 +180,6 @@
     runStack,
     saveStack,
   } from '@/shared/api/stacks-api';
-  import { getModule } from '@/shared/api/modules-api';
   import { getState } from '@/shared/api/state-api';
 
   import AppStackVariable from '@/pages/stacks/stack-variable.vue';
@@ -230,11 +229,10 @@
 
     async created() {
       const stack = await getStack(this.stackId);
-      this.module = await getModule(stack.moduleId);
 
       const credentialsList = await getCredentialsList();
       this.credentials = credentialsList
-        .filter((cred) => cred.provider.includes(this.module.mainProvider))
+        .filter((cred) => cred.provider.includes(stack.module.mainProvider))
         .map((cred) => ({ value: cred.id, text: cred.name }));
 
       try {
@@ -247,7 +245,7 @@
       } catch (e) {
         // unable to load job info, (stack never run), keeping default empty data
       }
-      stack.variables = this.module.variables.map((variable) => ({
+      stack.variables = stack.module.variables.map((variable) => ({
         ...variable,
         value: stack.variableValues[variable.name],
         isValid: true,
@@ -258,7 +256,7 @@
 
     methods: {
       moduleVar(name) {
-        return this.module.variables.find((variable) => variable.name === name);
+        return this.stack.module.variables.find((variable) => variable.name === name);
       },
       saveStack() {
         this.stack.variableValues = {};

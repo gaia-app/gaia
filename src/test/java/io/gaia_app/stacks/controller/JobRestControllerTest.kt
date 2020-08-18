@@ -36,9 +36,6 @@ class JobRestControllerTest {
     lateinit var stackRepository: StackRepository
 
     @Mock
-    lateinit var moduleRepository: TerraformModuleRepository
-
-    @Mock
     lateinit var stackRunner: StackRunner
 
     @InjectMocks
@@ -112,32 +109,20 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `plan() should throw an exception for non existing module`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(of(Stack()))
-        whenever(moduleRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.plan("test_jobId") }
-    }
-
-    @Test
     fun `plan() should plan a job`() {
         // given
         val job = Job()
         val stack = Stack()
-        val module = TerraformModule()
+        stack.module = TerraformModule()
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
         whenever(stackRepository.findById(any())).thenReturn(of(stack))
-        whenever(moduleRepository.findById(any())).thenReturn(of(module))
         controller.plan("test_jobId")
 
         // then
         val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).plan(captor.capture(), eq(module), eq(stack))
+        verify(stackRunner).plan(captor.capture(), eq(stack.module), eq(stack))
         assertThat(captor.value).isNotNull
         assertThat(captor.value.job).isNotNull.isEqualTo(job)
     }
@@ -162,32 +147,20 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `apply() should throw an exception for non existing module`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(of(Stack()))
-        whenever(moduleRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.apply("test_jobId") }
-    }
-
-    @Test
     fun `apply() should apply a job`() {
         // given
         val job = Job()
         val stack = Stack()
-        val module = TerraformModule()
+        stack.module = TerraformModule()
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
         whenever(stackRepository.findById(any())).thenReturn(of(stack))
-        whenever(moduleRepository.findById(any())).thenReturn(of(module))
         controller.apply("test_jobId")
 
         // then
         val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).apply(captor.capture(), eq(module), eq(stack))
+        verify(stackRunner).apply(captor.capture(), eq(stack.module), eq(stack))
         assertThat(captor.value).isNotNull
         assertThat(captor.value.job).isNotNull.isEqualTo(job)
     }
@@ -212,32 +185,20 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `retry() should throw an exception for non existing module`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(of(Stack()))
-        whenever(moduleRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.retry("test_jobId") }
-    }
-
-    @Test
     fun `retry() should retry a job`() {
         // given
         val job = Job()
         val stack = Stack()
-        val module = TerraformModule()
+        stack.module = TerraformModule()
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
         whenever(stackRepository.findById(any())).thenReturn(of(stack))
-        whenever(moduleRepository.findById(any())).thenReturn(of(module))
         controller.retry("test_jobId")
 
         // then
         val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).retry(captor.capture(), eq(module), eq(stack))
+        verify(stackRunner).retry(captor.capture(), eq(stack.module), eq(stack))
         assertThat(captor.value).isNotNull
         assertThat(captor.value.job).isNotNull.isEqualTo(job)
     }

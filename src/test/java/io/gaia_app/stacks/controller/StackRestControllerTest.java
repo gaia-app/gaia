@@ -57,9 +57,6 @@ class StackRestControllerTest {
     private StackCostCalculator stackCostCalculator;
 
     @Mock
-    private TerraformModuleRepository terraformModuleRepository;
-
-    @Mock
     private JobRepository jobRepository;
 
     @Mock
@@ -182,11 +179,11 @@ class StackRestControllerTest {
         var stack = new Stack();
         var module = new TerraformModule();
         module.setTerraformImage(TerraformImage.Companion.defaultInstance());
+        stack.setModule(module);
         var user = new User("test_user", null);
 
         // when
         when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
-        when(terraformModuleRepository.findById(any())).thenReturn(Optional.of(module));
         var result = stackRestController.launchJob("test_stack", JobType.RUN, user);
 
         // then

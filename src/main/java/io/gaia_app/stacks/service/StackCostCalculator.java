@@ -1,11 +1,9 @@
 package io.gaia_app.stacks.service;
 
-import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.repository.JobRepository;
-import io.gaia_app.stacks.bo.Stack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +20,9 @@ public class StackCostCalculator {
 
     private JobRepository jobRepository;
 
-    private TerraformModuleRepository moduleRepository;
-
     @Autowired
-    public StackCostCalculator(JobRepository jobRepository, TerraformModuleRepository moduleRepository) {
+    public StackCostCalculator(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
-        this.moduleRepository = moduleRepository;
     }
 
     /**
@@ -42,7 +37,7 @@ public class StackCostCalculator {
             return BigDecimal.ZERO;
         }
 
-        var module = moduleRepository.findById(stack.getModuleId()).orElseThrow();
+        var module = stack.getModule();
 
         if(module.getEstimatedMonthlyCost() == null){
             return BigDecimal.ZERO;

@@ -35,25 +35,18 @@ class RegexStackVariablesValidatorTest {
     }
 
     @Test
-    void validator_shouldWork_whenModuleIsBlank(){
-        var stack = new Stack();
-        stack.setModuleId("     ");
-
-        assertThat(validator.isValid(stack, null)).isTrue();
-    }
-
-    @Test
     void validator_shouldNotCheckNullVariables(){
         var variable = new Variable("test");
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
+        module.setId("12");
         module.setVariables(List.of(variable));
 
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         var stack = new Stack();
-        stack.setModuleId("12");
+        stack.setModule(module);
 
         assertThat(validator.isValid(stack, null)).isTrue();
     }
@@ -64,12 +57,13 @@ class RegexStackVariablesValidatorTest {
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
+        module.setId("12");
         module.setVariables(List.of(variable));
 
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         var stack = new Stack();
-        stack.setModuleId("12");
+        stack.setModule(module);
         stack.setVariableValues(Map.of("test", "     "));
 
         assertThat(validator.isValid(stack, null)).isTrue();
@@ -80,12 +74,13 @@ class RegexStackVariablesValidatorTest {
         var variable = new Variable("test");
 
         var module = new TerraformModule();
+        module.setId("12");
         module.setVariables(List.of(variable));
 
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         var stack = new Stack();
-        stack.setModuleId("12");
+        stack.setModule(module);
         stack.setVariableValues(Map.of("test", "value"));
 
         assertThat(validator.isValid(stack, null)).isTrue();
@@ -97,12 +92,13 @@ class RegexStackVariablesValidatorTest {
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
+        module.setId("12");
         module.setVariables(List.of(variable));
 
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         var stack = new Stack();
-        stack.setModuleId("12");
+        stack.setModule(module);
         stack.setVariableValues(Map.of("test", "value"));
 
         assertThat(validator.isValid(stack, null)).isFalse();
@@ -114,12 +110,13 @@ class RegexStackVariablesValidatorTest {
         variable.setValidationRegex("\\d{3,6}");
 
         var module = new TerraformModule();
+        module.setId("12");
         module.setVariables(List.of(variable));
 
         when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
 
         var stack = new Stack();
-        stack.setModuleId("12");
+        stack.setModule(module);
         stack.setVariableValues(Map.of("test", "1234"));
 
         assertThat(validator.isValid(stack, null)).isTrue();

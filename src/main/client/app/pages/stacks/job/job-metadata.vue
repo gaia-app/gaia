@@ -11,8 +11,8 @@
           class="icon"
         />&nbsp;
         Module
-        <router-link :to="{ name: 'module_description', params: { moduleId: stack.moduleId }}">
-          {{ stack.moduleId }}
+        <router-link :to="{ name: 'module_description', params: { moduleId: stack.module.id }}">
+          {{ stack.module.id }}
         </router-link>
       </p>
       <p>
