@@ -1,7 +1,7 @@
 package io.gaia_app.runner;
 
 import com.github.mustachejava.Mustache;
-import io.gaia_app.config.security.StateApiSecurityConfig;
+import io.gaia_app.config.security.RunnerApiSecurityConfig;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.registries.RegistryOAuth2Provider;
 import io.gaia_app.settings.bo.Settings;
@@ -28,16 +28,16 @@ import java.util.function.BiFunction;
 public class StackCommandBuilder {
 
     private Settings settings;
-    private StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties;
+    private RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties;
     private Mustache terraformMustache;
     private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties) {
+    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
         this.registryOAuth2Providers = registryOAuth2Providers;
-        this.stateApiSecurityProperties = stateApiSecurityProperties;
+        this.runnerApiSecurityProperties = runnerApiSecurityProperties;
     }
 
     /**
@@ -60,8 +60,8 @@ public class StackCommandBuilder {
                                BiFunction<Stack, TerraformModule, String> command) {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
-                .setStateApiUser(stateApiSecurityProperties.getUsername())
-                .setStateApiPassword(stateApiSecurityProperties.getPassword())
+                .setStateApiUser(runnerApiSecurityProperties.getUsername())
+                .setStateApiPassword(runnerApiSecurityProperties.getPassword())
                 .setStackId(stack.getId())
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
                 .setTerraformImage(job.getTerraformImage().image());

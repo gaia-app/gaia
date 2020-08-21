@@ -25,7 +25,7 @@ public class UserControllerAdvice {
         if (authentication == null) {
             return null;
         }
-        if ("gaia-backend".equals(authentication.getName())) {
+        if ("gaia-runner".equals(authentication.getName())) {
             return null;
         }
         return userRepository.findById(authentication.getName()).orElseThrow();
@@ -38,7 +38,7 @@ public class UserControllerAdvice {
             return null;
         }
         // in case of state access only
-        if ("gaia-backend".equals(authentication.getName())) {
+        if ("gaia-runner".equals(authentication.getName())) {
             return null;
         }
         return user.getTeam();

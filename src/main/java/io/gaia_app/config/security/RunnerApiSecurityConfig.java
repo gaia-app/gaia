@@ -15,25 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 @Configuration
-@Order(69)
-public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class RunnerApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private PasswordEncoder bCrypt;
 
-    private static final Log logger = LogFactory.getLog(StateApiSecurityConfig.class);
+    private static final Log logger = LogFactory.getLog(RunnerApiSecurityConfig.class);
 
     @Autowired
-    public StateApiSecurityConfig(PasswordEncoder bCrypt) {
+    public RunnerApiSecurityConfig(PasswordEncoder bCrypt) {
         this.bCrypt = bCrypt;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .antMatcher("/api/runner/**")
                 .csrf().disable()
-                .antMatcher("/api/state/**")
                 .authorizeRequests()
-                    .anyRequest().hasAnyRole("STATE", "USER")
+                    .anyRequest().hasAnyRole("RUNNER", "USER")
                 .and()
                 .httpBasic();
     }
@@ -45,22 +45,22 @@ public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
         // configure default backend user
         auth
                 .inMemoryAuthentication()
-                .withUser(properties().getUsername()).password(bCrypt.encode(properties().getPassword())).authorities("ROLE_STATE");
+                .withUser(properties().getUsername()).password(bCrypt.encode(properties().getPassword())).authorities("ROLE_RUNNER");
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "gaia.state.api")
-    public StateApiSecurityProperties properties(){
-        return new StateApiSecurityProperties("gaia-backend", UUID.randomUUID().toString());
+    @ConfigurationProperties(prefix = "gaia.runner.api")
+    public RunnerApiSecurityProperties properties(){
+        return new RunnerApiSecurityProperties("gaia-runner", UUID.randomUUID().toString());
     }
 
-    public static class StateApiSecurityProperties {
+    public static class RunnerApiSecurityProperties {
 
         private String password;
 
         private String username;
 
-        public StateApiSecurityProperties(String username, String password) {
+        public RunnerApiSecurityProperties(String username, String password) {
             this.username = username;
             this.password = password;
         }
@@ -71,6 +71,10 @@ public class StateApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
         public String getPassword() {
             return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
 
     }

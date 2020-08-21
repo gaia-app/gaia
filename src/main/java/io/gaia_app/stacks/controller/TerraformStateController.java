@@ -19,7 +19,7 @@ public class TerraformStateController {
         this.stateService = stateService;
     }
 
-    @GetMapping("/api/state/{id}")
+    @GetMapping({"/api/state/{id}", "/api/runner/state/{id}"})
     public Map<String, Object> getState(@PathVariable String id){
         return stateService.findById(id)
                 .orElseThrow(
@@ -27,7 +27,7 @@ public class TerraformStateController {
                 .getValue();
     }
 
-    @PostMapping("/api/state/{id}")
+    @PostMapping({"/api/state/{id}", "/api/runner/state/{id}"})
     public void postState(@PathVariable String id, @RequestBody Map<String, Object> body){
         var terraformState = new TerraformState();
         terraformState.setId(id);

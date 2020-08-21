@@ -13,7 +13,7 @@ cd module
 echo '[gaia] generating backend configuration'
 echo 'terraform {
     backend "http" {
-        address = "{{externalUrl}}/api/state/{{stackId}}"
+        address = "{{externalUrl}}/api/runner/state/{{stackId}}"
         username = "{{stateApiUser}}"
         password = "{{stateApiPassword}}"
     }

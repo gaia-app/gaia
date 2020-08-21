@@ -1,7 +1,7 @@
 package io.gaia_app.runner;
 
 import com.github.mustachejava.DefaultMustacheFactory;
-import io.gaia_app.config.security.StateApiSecurityConfig;
+import io.gaia_app.config.security.RunnerApiSecurityConfig;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.bo.Variable;
 import io.gaia_app.registries.RegistryOAuth2Provider;
