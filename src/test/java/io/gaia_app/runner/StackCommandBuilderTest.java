@@ -107,12 +107,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertTrue(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan"));
@@ -126,12 +126,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan"));
@@ -147,12 +147,12 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildPlanScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan"));
@@ -222,12 +222,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertTrue(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform apply"));
@@ -241,12 +241,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform apply"));
@@ -262,12 +262,12 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildApplyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform apply"));
@@ -337,12 +337,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertTrue(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan -destroy"));
@@ -356,12 +356,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan -destroy"));
@@ -377,12 +377,12 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform plan -destroy"));
@@ -452,12 +452,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertTrue(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform destroy"));
@@ -471,12 +471,12 @@ class StackCommandBuilderTest {
 
         var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone git://test module"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform destroy"));
@@ -492,12 +492,12 @@ class StackCommandBuilderTest {
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
         var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
 
-        assertTrue(script.contains("echo 'using image hashicorp/terraform:latest'"));
-        assertTrue(script.contains("echo 'cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
+        assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
+        assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
         assertTrue(script.contains("git clone url_with_token"));
         assertTrue(script.contains("cd module"));
         assertFalse(script.contains("cd directory"));
-        assertTrue(script.contains("echo 'generating backend configuration'"));
+        assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
         assertTrue(script.contains("terraform destroy"));
