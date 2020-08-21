@@ -2,6 +2,9 @@ set -e
 
 echo '[gaia] using image {{terraformImage}}'
 
+echo '[gaia] installing curl'
+apk -q add curl
+
 echo '[gaia] cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
 git clone {{gitRepositoryUrl}} module
 
@@ -18,6 +21,9 @@ echo 'terraform {
         password = "{{stateApiPassword}}"
     }
 }' > backend.tf
+
+echo '[gaia] generating tfvars variable file'
+curl --silent --user {{stateApiUser}}:{{stateApiPassword}} {{externalUrl}}/api/runner/stacks/{{stackId}}.tfvars > gaia.auto.tfvars
 
 echo '[gaia] running terraform init'
 terraform version

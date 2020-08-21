@@ -182,4 +182,24 @@ public class Stack {
     public void setCredentialsId(String credentialsId) {
         this.credentialsId = credentialsId;
     }
+
+    /**
+     * Builds tfvars file for this stack
+     * @return a string with the content of the tfvars file
+     */
+    public String tfvars() {
+        var varLine = "%s = \"%s\"\n";
+        var variablesBuilder = new StringBuilder();
+
+        module.getVariables().forEach(terraformVariable -> {
+            var variableName = terraformVariable.getName();
+            var variableValue = terraformVariable.getDefaultValue();
+            // try getting the value
+            if (this.variableValues.containsKey(variableName)) {
+                variableValue = this.variableValues.get(variableName);
+            }
+            variablesBuilder.append(String.format(varLine, variableName, variableValue));
+        });
+        return variablesBuilder.toString();
+    }
 }
