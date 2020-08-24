@@ -57,7 +57,8 @@ class RunnerCommandBuilderTest {
         assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan"));
+        assertTrue(script.contains("terraform plan -out plan.binary"));
+        assertTrue(script.contains("terraform show -json plan.binary > plan.json"));
     }
 
     @Test

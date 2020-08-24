@@ -29,7 +29,18 @@ echo '[gaia] running terraform init'
 terraform version
 terraform init
 
+set +e
 echo '[gaia] running terraform job'
 {{&command}}
+set -e
 
-exit 0
+TERRAFORM_EXITCODE=$?
+
+{{#uploadPlan}}
+# for plans, we also convert them to JSON, and send them to the server
+echo '[gaia] analysing plan'
+terraform show -json plan.binary > plan.json
+curl --silent --user {{stateApiUser}}:{{stateApiPassword}} -X POST -H "Content-Type: application/json" --data "@plan.json" {{externalUrl}}/api/runner/stacks/{{stackId}}/jobs/{{jobId}}/plan
+{{/uploadPlan}}
+
+exit $TERRAFORM_EXITCODE
