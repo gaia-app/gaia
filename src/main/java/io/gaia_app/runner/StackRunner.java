@@ -123,7 +123,7 @@ public class StackRunner {
     @Async
     public void plan(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         if(stack.getCredentialsId() != null){
-            jobWorkflow.getJob().setCredentials(this.credentialsService.findById(stack.getCredentialsId()).orElseThrow());
+            jobWorkflow.getJob().setCredentials(this.credentialsService.load(stack.getCredentialsId()).orElseThrow());
         }
         treatJob(
             jobWorkflow,
@@ -136,7 +136,7 @@ public class StackRunner {
     @Async
     public void apply(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         if(stack.getCredentialsId() != null){
-            jobWorkflow.getJob().setCredentials(this.credentialsService.findById(stack.getCredentialsId()).orElseThrow());
+            jobWorkflow.getJob().setCredentials(this.credentialsService.load(stack.getCredentialsId()).orElseThrow());
         }
         treatJob(
             jobWorkflow,
@@ -149,7 +149,7 @@ public class StackRunner {
     @Async
     public void retry(JobWorkflow jobWorkflow, TerraformModule module, Stack stack) {
         if(stack.getCredentialsId() != null){
-            jobWorkflow.getJob().setCredentials(this.credentialsService.findById(stack.getCredentialsId()).orElseThrow());
+            jobWorkflow.getJob().setCredentials(this.credentialsService.load(stack.getCredentialsId()).orElseThrow());
         }
         stepRepository.deleteByJobId(jobWorkflow.getJob().getId());
         treatJob(

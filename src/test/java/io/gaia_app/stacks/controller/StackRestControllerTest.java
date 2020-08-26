@@ -1,5 +1,6 @@
 package io.gaia_app.stacks.controller;
 
+import io.gaia_app.credentials.AWSCredentials;
 import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.modules.bo.TerraformModule;
@@ -199,6 +200,39 @@ class StackRestControllerTest {
         assertEquals("test_stack", job.getStackId());
         assertEquals(user, job.getUser());
         assertEquals(module.getTerraformImage(), job.getTerraformImage());
+    }
+
+    @Test
+    void launchJob_shouldInjectCredentialsIntoJob() {
+        // given
+        var stack = new Stack();
+        stack.setCredentialsId("123456");
+        var module = new TerraformModule();
+        module.setTerraformImage(TerraformImage.Companion.defaultInstance());
+        stack.setModule(module);
+        var user = new User("test_user", null);
+
+        AWSCredentials awsCredentials = new AWSCredentials("a", "s");
+        when(credentialsRepository.findById("123456")).thenReturn(Optional.of(awsCredentials));
+
+        // when
+        when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
+        var result = stackRestController.launchJob("test_stack", JobType.RUN, user);
+
+        // then
+        assertThat(result)
+            .isNotNull()
+            .containsKeys("jobId");
+
+        var captor = forClass(Job.class);
+        verify(jobRepository).save(captor.capture());
+        var job = captor.getValue();
+        assertNotNull(job);
+        assertEquals(JobType.RUN, job.getType());
+        assertEquals("test_stack", job.getStackId());
+        assertEquals(user, job.getUser());
+        assertEquals(module.getTerraformImage(), job.getTerraformImage());
+        assertEquals(job.getCredentials(), awsCredentials);
     }
 
 }
