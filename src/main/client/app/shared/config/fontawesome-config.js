@@ -24,6 +24,7 @@ import {
   faObjectGroup,
   faPlay,
   faPlus,
+  faPollH,
   faRedo,
   faRocket,
   faSave,
@@ -110,6 +111,7 @@ export default {
       faChevronDown,
       faChevronUp,
       faCircleNotch,
+      faPollH,
     );
     Vue.component('font-awesome-icon', FontAwesomeIcon);
   },
