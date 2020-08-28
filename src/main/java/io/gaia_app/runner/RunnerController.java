@@ -3,6 +3,7 @@ package io.gaia_app.runner;
 import io.gaia_app.credentials.CredentialsService;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
+import io.gaia_app.stacks.repository.PlanRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.repository.StepRepository;
 import io.gaia_app.stacks.workflow.JobWorkflow;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Controller for the operations that are called by the runner only
@@ -21,6 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/runner")
 public class RunnerController {
+
+    private static final Logger LOG = Logger.getLogger("RunnerController");
 
     @Autowired
     private StackRepository stackRepository;
@@ -36,6 +40,9 @@ public class RunnerController {
 
     @Autowired
     private RunnerCommandBuilder runnerCommandBuilder;
+
+    @Autowired
+    private PlanRepository planRepository;
 
     @GetMapping(value = "/stacks/{id}.tfvars", produces = "text/plain")
     public String tfvars(@PathVariable String id){
@@ -147,5 +154,20 @@ public class RunnerController {
         // save the job & step to update their status
         this.stepRepository.saveAll(job.getSteps());
         this.jobRepository.save(job);
+    }
+
+    @PostMapping(value = "/stacks/{stackId}/jobs/{jobId}/plan")
+    public void uploadPlan(@PathVariable String stackId, @PathVariable String jobId, @RequestBody Plan plan){
+        LOG.info("received plan from runner");
+
+        // saving the plan
+        planRepository.save(plan);
+
+        var job = this.jobRepository.findById(jobId).orElseThrow();
+        var planStep = job.getSteps().get(0);
+        planStep.setPlan(plan);
+
+        // updating the step with the link to the plan
+        stepRepository.save(planStep);
     }
 }

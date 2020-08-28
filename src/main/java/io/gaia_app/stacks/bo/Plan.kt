@@ -4,12 +4,22 @@ import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
+import java.util.*
 
 /**
  * Represents the structure of terraform plan result.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Plan(val terraform_version:String, val resource_changes:List<ResourceChange>)
+data class Plan(val id:String = UUID.randomUUID().toString(),
+                val terraform_version:String,
+                val resource_changes:List<ResourceChange>) {
+
+    fun getCreateCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.CREATE) }
+    fun getUpdateCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.UPDATE) }
+    fun getDeleteCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.DELETE) }
+    fun getNoOpCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.NOOP) }
+
+}
 
 /**
  * Represents a resource_changes object in the plan

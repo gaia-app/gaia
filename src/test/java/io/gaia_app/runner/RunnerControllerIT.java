@@ -6,18 +6,22 @@ import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.repository.StepRepository;
 import io.gaia_app.test.SharedMongoContainerTest;
+import org.assertj.core.util.Files;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -250,5 +254,43 @@ class RunnerControllerIT extends SharedMongoContainerTest {
 
         var updatedStack = this.stackRepository.findById("fakeStackId").orElseThrow();
         assertThat(updatedStack.getState()).isEqualTo(StackState.STOPPED);
+    }
+
+    @Test
+    @WithMockUser("gaia-runner")
+    void uploadPlan_shouldUpdateTheJob_withThePlanData() throws Exception {
+        // given
+        var planStep = new Step(StepType.PLAN, "fakeJobId");
+        planStep.setStatus(StepStatus.FINISHED);
+
+        var job = new Job();
+        job.setId("fakeJobId");
+        job.setStackId("fakeStackId");
+        job.setType(JobType.DESTROY);
+        job.setStatus(JobStatus.APPLY_STARTED);
+        job.setSteps(List.of(planStep));
+
+        this.jobRepository.save(job);
+        this.stepRepository.saveAll(job.getSteps());
+
+        // when
+        String planContent = Files.contentOf(new ClassPathResource("sample-plan.json").getFile(), StandardCharsets.UTF_8);
+        mockMvc.perform(
+            post("/api/runner/stacks/{stackId}/jobs/{jobId}/plan", "stackId", job.getId())
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(planContent))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        // then
+        var savedStep = stepRepository.findById(planStep.getId());
+        assertThat(savedStep).isPresent();
+        assertThat(savedStep.get().getPlan()).satisfies(it -> {
+            assertThat(it.getCreateCount()).isEqualTo(2);
+            assertThat(it.getUpdateCount()).isEqualTo(1);
+            assertThat(it.getDeleteCount()).isEqualTo(1);
+            assertThat(it.getNoOpCount()).isEqualTo(1);
+        });
     }
 }
