@@ -23,7 +23,7 @@ public class MongoContainer extends GenericContainer {
     private MongoDatabase database;
 
     public MongoContainer() {
-        super("mongo:4.0");
+        super("mongo:4.4");
         withClasspathResourceMapping("db", GAIA_SCRIPTS_DIRECTORY, BindMode.READ_ONLY);
     }
 
