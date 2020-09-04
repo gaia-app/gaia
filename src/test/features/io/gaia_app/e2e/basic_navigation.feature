@@ -1,3 +1,4 @@
+@e2e
 Feature: Basic Navigation
 
     Background:

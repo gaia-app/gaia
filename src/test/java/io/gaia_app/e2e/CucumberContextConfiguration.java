@@ -8,11 +8,16 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@io.cucumber.spring.CucumberContextConfiguration
 public class CucumberContextConfiguration extends SharedMongoContainerTest {
+
+    @LocalServerPort
+    private int serverPort;
 
     @Before
     public void setup_cucumber_spring_context() {
