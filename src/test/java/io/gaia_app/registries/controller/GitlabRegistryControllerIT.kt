@@ -51,7 +51,7 @@ class GitlabRegistryControllerIT: SharedMongoContainerTest() {
     @BeforeEach
     internal fun setUp() {
         mongo.emptyDatabase()
-        mongo.runScript("src/test/resources/db/10_user.js")
+        mongo.runScript("10_user.js")
     }
 
     @Test

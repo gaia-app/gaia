@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("e2e")
-public class SeleniumIT extends SharedMongoContainerTest {
+class SeleniumIT extends SharedMongoContainerTest {
 
     @LocalServerPort
     private int serverPort;
@@ -51,13 +51,13 @@ public class SeleniumIT extends SharedMongoContainerTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         mongo.emptyDatabase();
-        mongo.runScript("src/test/resources/db/00_team.js");
-        mongo.runScript("src/test/resources/db/10_user.js");
-        mongo.runScript("src/test/resources/db/20_module.js");
-        mongo.runScript("src/test/resources/db/30_stack.js");
-        mongo.runScript("src/test/resources/db/40_job.js");
-        mongo.runScript("src/test/resources/db/50_step.js");
-        mongo.runScript("src/test/resources/db/60_terraformState.js");
+        mongo.runScript("00_team.js");
+        mongo.runScript("10_user.js");
+        mongo.runScript("20_module.js");
+        mongo.runScript("30_stack.js");
+        mongo.runScript("40_job.js");
+        mongo.runScript("50_step.js");
+        mongo.runScript("60_terraformState.js");
     }
 
     @AfterAll

@@ -30,9 +30,9 @@ class CredentialsRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setup() {
         mongo.emptyDatabase();
-        mongo.runScript("src/test/resources/db/00_team.js");
-        mongo.runScript("src/test/resources/db/10_user.js");
-        mongo.runScript("src/test/resources/db/70_credentials.js");
+        mongo.runScript("00_team.js");
+        mongo.runScript("10_user.js");
+        mongo.runScript("70_credentials.js");
     }
 
     @Test

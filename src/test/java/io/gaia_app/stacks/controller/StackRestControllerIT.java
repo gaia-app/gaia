@@ -30,10 +30,10 @@ class StackRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setUp() {
         mongo.emptyDatabase();
-        mongo.runScript("src/test/resources/db/00_team.js");
-        mongo.runScript("src/test/resources/db/10_user.js");
-        mongo.runScript("src/test/resources/db/20_module.js");
-        mongo.runScript("src/test/resources/db/30_stack.js");
+        mongo.runScript("00_team.js");
+        mongo.runScript("10_user.js");
+        mongo.runScript("20_module.js");
+        mongo.runScript("30_stack.js");
     }
 
     @Test
