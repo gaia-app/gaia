@@ -22,7 +22,7 @@
     "jquery": "^3.5.0",
     "marked": "^1.1.1",
     "messenger-hubspot": "^1.5.0",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-form-wizard": "^0.8.4",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.4.3",
@@ -39,7 +39,7 @@
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.12",
     "copy-webpack-plugin": "^6.0.3"
   }
 }
