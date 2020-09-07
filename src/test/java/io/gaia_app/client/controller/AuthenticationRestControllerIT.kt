@@ -26,8 +26,8 @@ class AuthenticationRestControllerIT: SharedMongoContainerTest() {
     @BeforeAll
     fun setUp() {
         mongo.emptyDatabase()
-        mongo.runScript("src/test/resources/db/00_team.js")
-        mongo.runScript("src/test/resources/db/10_user.js")
+        mongo.runScript("00_team.js")
+        mongo.runScript("10_user.js")
     }
 
     @Test
