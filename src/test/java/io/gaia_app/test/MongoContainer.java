@@ -50,9 +50,12 @@ public class MongoContainer extends GenericContainer {
             var result = this.execInContainer("mongo", GAIA_SCRIPTS_DIRECTORY+resource);
             if(result.getExitCode() != 0){
                 LOG.error("Script execution raised an error : {}", result.getStdout());
+                throw new RuntimeException("Script execution raised an error : " + result.getStdout());
             }
         } catch (IOException | InterruptedException e) {
             LOG.warn("Unable to execute script: {} skipped.", resource);
+            throw new RuntimeException("Unable to execute script : " + resource, e);
+
         }
     }
 

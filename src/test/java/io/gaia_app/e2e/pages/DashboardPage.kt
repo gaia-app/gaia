@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 
-class DashboardPage (val webDriver: WebDriver){
+class DashboardPage (private val webDriver: WebDriver){
 
     init {
         if(! webDriver.currentUrl.endsWith("/dashboard")){

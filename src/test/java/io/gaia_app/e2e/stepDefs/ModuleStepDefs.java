@@ -1,10 +1,8 @@
 package io.gaia_app.e2e.stepDefs;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.gaia_app.e2e.pages.*;
-import org.openqa.selenium.By;
+import io.gaia_app.e2e.pages.ModulePage;
+import io.gaia_app.e2e.pages.ModulesPage;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 

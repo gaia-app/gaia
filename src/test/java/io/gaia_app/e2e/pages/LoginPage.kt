@@ -1,21 +1,16 @@
 package io.gaia_app.e2e.pages
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.openqa.selenium.By
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.FindBy
-import org.openqa.selenium.support.PageFactory
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
 import org.openqa.selenium.support.ui.WebDriverWait
 
-class LoginPage(val webDriver: WebDriver) {
+class LoginPage(private val webDriver: WebDriver) {
 
     init {
         val wait = WebDriverWait(webDriver, 10)
-        wait.until { titleIs("Gaia - A terraform UI - Login") }
+        wait.until(titleIs("Gaia - A terraform UI - Login"))
     }
 
     @FindBy(name="username")
@@ -34,9 +29,7 @@ class LoginPage(val webDriver: WebDriver) {
 
         // wait for successful login
         val wait = WebDriverWait(webDriver, 10)
-        wait.until { titleIs("Gaia - A terraform UI").andThen { elementToBeClickable(By.id("user.name")) } }
-
-        assertEquals("admin", webDriver.findElement(By.id("user.name")).text);
+        wait.until(titleIs("Gaia - Dashboard"))
     }
 
 }

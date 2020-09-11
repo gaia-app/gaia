@@ -1,9 +1,9 @@
 @e2e
 Feature: Basic Navigation
 
+    # re-login at each scenario
     Background:
         Given I go on the Gaia login page
-#        And Percy takes a snapshot named 'Login Page'
         And I login with user 'admin' and password 'admin123'
 
     Scenario: View Dashboard
