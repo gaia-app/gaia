@@ -1,8 +1,11 @@
 set -e
 
-echo 'using image {{terraformImage}}'
+echo '[gaia] using image {{terraformImage}}'
 
-echo 'cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
+echo '[gaia] installing curl'
+apk -q add curl
+
+echo '[gaia] cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
 git clone {{gitRepositoryUrl}} module
 
 cd module
@@ -10,17 +13,23 @@ cd module
     cd {{gitDirectory}}
 {{/gitDirectory}}
 
-echo 'generating backend configuration'
+echo '[gaia] generating backend configuration'
 echo 'terraform {
     backend "http" {
-        address = "{{externalUrl}}/api/state/{{stackId}}"
+        address = "{{externalUrl}}/api/runner/state/{{stackId}}"
         username = "{{stateApiUser}}"
         password = "{{stateApiPassword}}"
     }
 }' > backend.tf
 
+echo '[gaia] generating tfvars variable file'
+curl --silent --user {{stateApiUser}}:{{stateApiPassword}} {{externalUrl}}/api/runner/stacks/{{stackId}}.tfvars > gaia.auto.tfvars
+
+echo '[gaia] running terraform init'
 terraform version
 terraform init
+
+echo '[gaia] running terraform job'
 {{&command}}
 
 exit 0

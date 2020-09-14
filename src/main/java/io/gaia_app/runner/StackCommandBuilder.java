@@ -1,14 +1,10 @@
 package io.gaia_app.runner;
 
 import com.github.mustachejava.Mustache;
-import io.gaia_app.config.security.StateApiSecurityConfig;
+import io.gaia_app.config.security.RunnerApiSecurityConfig;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.registries.RegistryOAuth2Provider;
 import io.gaia_app.settings.bo.Settings;
-import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.Stack;
-import io.gaia_app.stacks.bo.mustache.TerraformScript;
-import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.mustache.TerraformScript;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.function.BiFunction;
 
 /**
  * A builder class to create stack commands
@@ -28,16 +23,16 @@ import java.util.function.BiFunction;
 public class StackCommandBuilder {
 
     private Settings settings;
-    private StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties;
+    private RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties;
     private Mustache terraformMustache;
     private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, StateApiSecurityConfig.StateApiSecurityProperties stateApiSecurityProperties) {
+    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
         this.registryOAuth2Providers = registryOAuth2Providers;
-        this.stateApiSecurityProperties = stateApiSecurityProperties;
+        this.runnerApiSecurityProperties = runnerApiSecurityProperties;
     }
 
     /**
@@ -56,12 +51,11 @@ public class StackCommandBuilder {
                 .orElse(url);
     }
 
-    private String buildScript(Job job, Stack stack, TerraformModule module,
-                               BiFunction<Stack, TerraformModule, String> command) {
+    private String buildScript(Job job, Stack stack, TerraformModule module, String command) {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
-                .setStateApiUser(stateApiSecurityProperties.getUsername())
-                .setStateApiPassword(stateApiSecurityProperties.getPassword())
+                .setStateApiUser(runnerApiSecurityProperties.getUsername())
+                .setStateApiPassword(runnerApiSecurityProperties.getPassword())
                 .setStackId(stack.getId())
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
                 .setTerraformImage(job.getTerraformImage().image());
@@ -70,7 +64,7 @@ public class StackCommandBuilder {
             script.setGitDirectory(module.getDirectory());
         }
 
-        script.setCommand(command.apply(stack, module));
+        script.setCommand(command);
 
         var writer = new StringWriter();
         try {
@@ -82,31 +76,13 @@ public class StackCommandBuilder {
         return StringUtils.EMPTY;
     }
 
-    private String buildCommand(Stack stack, TerraformModule module, String command) {
-        var varFormatString = "-var \"%s=%s\" ";
-        var variablesBuilder = new StringBuilder();
-
-        module.getVariables().forEach(terraformVariable -> {
-
-            var name = terraformVariable.getName();
-            String value = terraformVariable.getDefaultValue();
-            // try getting the value from the stack
-            if (stack.getVariableValues().containsKey(name)) {
-                value = stack.getVariableValues().get(name);
-            }
-            variablesBuilder.append(String.format(varFormatString, name, value));
-        });
-
-        return String.format("%s %s", command, variablesBuilder.toString());
-    }
-
     /**
      * builds the terraform plan script
      *
      * @return
      */
     String buildPlanScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, this::buildPlanCommand);
+        return buildScript(job, stack, module, "terraform plan -detailed-exitcode");
     }
 
     /**
@@ -115,7 +91,7 @@ public class StackCommandBuilder {
      * @return
      */
     String buildApplyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, this::buildApplyCommand);
+        return buildScript(job, stack, module, "terraform apply -auto-approve");
     }
 
     /**
@@ -124,7 +100,7 @@ public class StackCommandBuilder {
      * @return
      */
     String buildPlanDestroyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, this::buildPlanDestroyCommand);
+        return buildScript(job, stack, module, "terraform plan -destroy -detailed-exitcode");
     }
 
     /**
@@ -133,51 +109,7 @@ public class StackCommandBuilder {
      * @return
      */
     String buildDestroyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, this::buildDestroyCommand);
-    }
-
-    /**
-     * builds the terraform plan command
-     *
-     * @param stack
-     * @param module
-     * @return
-     */
-    String buildPlanCommand(Stack stack, TerraformModule module) {
-        return buildCommand(stack, module, "terraform plan -detailed-exitcode");
-    }
-
-    /**
-     * builds the terraform apply command
-     *
-     * @param stack
-     * @param module
-     * @return
-     */
-    String buildApplyCommand(Stack stack, TerraformModule module) {
-        return buildCommand(stack, module, "terraform apply -auto-approve");
-    }
-
-    /**
-     * builds the terraform plan destroy command
-     *
-     * @param stack
-     * @param module
-     * @return
-     */
-    String buildPlanDestroyCommand(Stack stack, TerraformModule module) {
-        return buildCommand(stack, module, "terraform plan -destroy -detailed-exitcode");
-    }
-
-    /**
-     * builds the terraform destroy command
-     *
-     * @param stack
-     * @param module
-     * @return
-     */
-    String buildDestroyCommand(Stack stack, TerraformModule module) {
-        return buildCommand(stack, module, "terraform destroy -auto-approve");
+        return buildScript(job, stack, module, "terraform destroy -auto-approve");
     }
 
 }

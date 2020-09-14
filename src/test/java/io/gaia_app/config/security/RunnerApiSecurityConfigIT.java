@@ -15,40 +15,48 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StateApiSecurityConfigIT extends SharedMongoContainerTest {
+class RunnerApiSecurityConfigIT extends SharedMongoContainerTest {
 
     @Autowired
-    private StateApiSecurityConfig.StateApiSecurityProperties props;
+    private RunnerApiSecurityConfig.RunnerApiSecurityProperties props;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void gaiaBackend_shouldHaveAccessToStateApi() throws Exception {
-        mockMvc.perform(get("/api/state/test").with(httpBasic(props.getUsername(), props.getPassword())))
-                .andExpect(authenticated().withUsername("gaia-backend").withRoles("STATE"));
+        mockMvc.perform(get("/api/runner/state/test").with(httpBasic(props.getUsername(), props.getPassword())))
+                .andExpect(authenticated().withUsername("gaia-runner").withRoles("RUNNER"));
     }
 
     @Test
     void gaiaBackend_shouldHaveAccessToStateApiWithPost() throws Exception {
-        mockMvc.perform(post("/api/state/test")
+        mockMvc.perform(post("/api/runner/state/test")
             .content("{}")
             .contentType("application/json")
             .with(httpBasic(props.getUsername(), props.getPassword())))
-            .andExpect(authenticated().withUsername("gaia-backend").withRoles("STATE"));
+            .andExpect(authenticated().withUsername("gaia-runner").withRoles("RUNNER"));
+    }
+
+    @Test
+    void gaiaBackend_shouldHaveAccessToTfVars() throws Exception {
+        mockMvc.perform(get("/api/runner/stacks/test/tfvars")
+            .with(httpBasic(props.getUsername(), props.getPassword())))
+            .andExpect(authenticated().withUsername("gaia-runner").withRoles("RUNNER"));
     }
 
     @Test
     void gaiaBackend_shouldNotHaveAccessToOtherApis() throws Exception {
-        mockMvc.perform(get("/api/modules/test").with(httpBasic(props.getUsername(), props.getPassword())))
+        mockMvc.perform(get("/api/modules/test")
+            .with(httpBasic(props.getUsername(), props.getPassword())))
                 .andExpect(unauthenticated());
     }
 
     @Test
     void gaiaBackend_shouldNotHaveAccessToScreens() throws Exception {
-        mockMvc.perform(get("/modules/test").with(httpBasic(props.getUsername(), props.getPassword())))
+        mockMvc.perform(get("/modules/test")
+            .with(httpBasic(props.getUsername(), props.getPassword())))
                 .andExpect(unauthenticated());
     }
-
 
 }
