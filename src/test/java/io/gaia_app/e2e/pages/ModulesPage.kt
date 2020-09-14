@@ -1,4 +1,4 @@
-package io.gaia_app.e2e
+package io.gaia_app.e2e.pages
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 
-class ModulesPage (val webDriver: WebDriver){
+class ModulesPage (private val webDriver: WebDriver){
 
     private lateinit var moduleCards: List<WebElement>
 
@@ -22,7 +22,7 @@ class ModulesPage (val webDriver: WebDriver){
         val wait = WebDriverWait(webDriver, 10)
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("moduleCard")))
 
-        moduleCards = webDriver.findElements(By.className("moduleCard"));
+        moduleCards = webDriver.findElements(By.className("moduleCard"))
     }
 
 }
