@@ -41,7 +41,7 @@
 
     <properties>
         <antlr4.version>4.8-1</antlr4.version>
-        <cucumber-jvm.version>6.7.0</cucumber-jvm.version>
+        <cucumber-jvm.version>6.8.0</cucumber-jvm.version>
         <docker-java.version>3.2.5</docker-java.version>
         <java.version>11</java.version>
         <jersey.version>2.27</jersey.version>
