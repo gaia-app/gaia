@@ -24,12 +24,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class StackCommandBuilderTest {
+class RunnerCommandBuilderTest {
 
     @Mock
     RegistryOAuth2Provider registryOAuth2Provider;
 
-    private StackCommandBuilder stackCommandBuilder;
+    private RunnerCommandBuilder runnerCommandBuilder;
 
     @BeforeEach
     void setup() {
@@ -37,7 +37,7 @@ class StackCommandBuilderTest {
 
         var stateApiSecurityProperties = new RunnerApiSecurityConfig.RunnerApiSecurityProperties("gaia-backend", "password");
 
-        stackCommandBuilder = new StackCommandBuilder(new Settings(), mustache, List.of(registryOAuth2Provider), stateApiSecurityProperties);
+        runnerCommandBuilder = new RunnerCommandBuilder(new Settings(), mustache, List.of(registryOAuth2Provider), stateApiSecurityProperties);
     }
 
     @Test
@@ -47,7 +47,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -67,7 +67,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -89,7 +89,7 @@ class StackCommandBuilderTest {
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildPlanScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -110,7 +110,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -130,7 +130,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -152,7 +152,7 @@ class StackCommandBuilderTest {
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildApplyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildApplyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -173,7 +173,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -193,7 +193,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -215,7 +215,7 @@ class StackCommandBuilderTest {
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildPlanDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildPlanDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -236,7 +236,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -256,7 +256,7 @@ class StackCommandBuilderTest {
         stack.setModule(module);
         var job = new Job();
 
-        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning git://test' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));
@@ -278,7 +278,7 @@ class StackCommandBuilderTest {
 
         when(registryOAuth2Provider.isAssignableFor(anyString())).thenReturn(true);
         when(registryOAuth2Provider.getOAuth2Url(anyString(), anyString())).thenReturn("url_with_token");
-        var script = stackCommandBuilder.buildDestroyScript(job, stack, module);
+        var script = runnerCommandBuilder.buildDestroyScript(job, stack, module);
 
         assertTrue(script.contains("echo '[gaia] using image hashicorp/terraform:latest'"));
         assertTrue(script.contains("echo '[gaia] cloning url_with_token' | awk '{ sub(/oauth2:(.*)@/, \"oauth2:[MASKED]@\");}1'"));

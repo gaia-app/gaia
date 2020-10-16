@@ -20,7 +20,7 @@ import java.util.List;
  * A builder class to create stack commands
  */
 @Component
-public class StackCommandBuilder {
+public class RunnerCommandBuilder {
 
     private Settings settings;
     private RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties;
@@ -28,7 +28,7 @@ public class StackCommandBuilder {
     private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
+    RunnerCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
         this.registryOAuth2Providers = registryOAuth2Providers;

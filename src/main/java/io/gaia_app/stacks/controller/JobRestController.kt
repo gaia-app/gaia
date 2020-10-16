@@ -1,8 +1,7 @@
 package io.gaia_app.stacks.controller
 
-import io.gaia_app.modules.repository.TerraformModuleRepository
-import io.gaia_app.runner.StackRunner
 import io.gaia_app.stacks.bo.Job
+import io.gaia_app.stacks.bo.JobStatus
 import io.gaia_app.stacks.repository.JobRepository
 import io.gaia_app.stacks.repository.StackRepository
 import io.gaia_app.stacks.repository.StepRepository
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/jobs")
 class JobRestController(
         private val jobRepository: JobRepository,
-        private val stackRepository: StackRepository,
-        private val stackRunner: StackRunner,
         private val stepRepository: StepRepository) {
 
     @GetMapping(params = ["stackId"])
@@ -23,32 +20,30 @@ class JobRestController(
 
     @GetMapping("/{id}")
     fun job(@PathVariable id: String): Job {
-        val runningJob = stackRunner.getJob(id);
-        if (runningJob.isPresent) {
-            return runningJob.get();
-        }
         return jobRepository.findById(id).orElseThrow { JobNotFoundException() }
     }
 
     @PostMapping("/{id}/plan")
     fun plan(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
-        val stack = stackRepository.findById(job.stackId).orElseThrow()
-        stackRunner.plan(JobWorkflow(job), stack.module, stack)
+        val workflow = JobWorkflow(job)
+        workflow.plan()
+        jobRepository.save(job)
     }
 
     @PostMapping("/{id}/apply")
     fun apply(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
-        val stack = stackRepository.findById(job.stackId).orElseThrow()
-        stackRunner.apply(JobWorkflow(job), stack.module, stack)
+        job.status = JobStatus.APPLY_PENDING
+        jobRepository.save(job)
     }
 
     @PostMapping("/{id}/retry")
     fun retry(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
-        val stack = stackRepository.findById(job.stackId).orElseThrow()
-        stackRunner.retry(JobWorkflow(job), stack.module, stack)
+        val workflow = JobWorkflow(job)
+        workflow.retry()
+        jobRepository.save(job)
     }
 
     @DeleteMapping("/{id}")

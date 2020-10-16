@@ -1,9 +1,8 @@
 package io.gaia_app.stacks.controller
 
 import io.gaia_app.modules.bo.TerraformModule
-import io.gaia_app.modules.repository.TerraformModuleRepository
-import io.gaia_app.runner.StackRunner
 import io.gaia_app.stacks.bo.Job
+import io.gaia_app.stacks.bo.JobStatus
 import io.gaia_app.stacks.bo.Stack
 import io.gaia_app.stacks.repository.JobRepository
 import io.gaia_app.stacks.repository.StackRepository
@@ -32,12 +31,6 @@ class JobRestControllerTest {
     @Mock
     lateinit var stepRepository: StepRepository
 
-    @Mock
-    lateinit var stackRepository: StackRepository
-
-    @Mock
-    lateinit var stackRunner: StackRunner
-
     @InjectMocks
     lateinit var controller: JobRestController
 
@@ -51,31 +44,15 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `job() should return the running job if exists`() {
+    fun `job() should return the job`() {
         // given
         val job = mock(Job::class.java)
 
         // when
-        whenever(stackRunner.getJob(any())).thenReturn(of(job))
-        controller.job("12")
-
-        // then
-        verify(stackRunner).getJob("12")
-        verifyNoInteractions(jobRepository)
-    }
-
-    @Test
-    fun `job() should return the saved job if no running`() {
-        // given
-        val job = mock(Job::class.java)
-
-        // when
-        whenever(stackRunner.getJob(any())).thenReturn(empty())
         whenever(jobRepository.findById("12")).thenReturn(of(job))
         controller.job("12")
 
         // then
-        verify(stackRunner, times(1)).getJob("12")
         verify(jobRepository).findById("12")
     }
 
@@ -99,32 +76,18 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `plan() should throw an exception for non existing stack`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.plan("test_jobId") }
-    }
-
-    @Test
     fun `plan() should plan a job`() {
         // given
         val job = Job()
-        val stack = Stack()
-        stack.module = TerraformModule()
+        job.status = JobStatus.PLAN_PENDING
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
-        whenever(stackRepository.findById(any())).thenReturn(of(stack))
         controller.plan("test_jobId")
 
         // then
-        val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).plan(captor.capture(), eq(stack.module), eq(stack))
-        assertThat(captor.value).isNotNull
-        assertThat(captor.value.job).isNotNull.isEqualTo(job)
+        assertThat(job.status).isEqualTo(JobStatus.PLAN_STARTED)
+        verify(jobRepository).save(job)
     }
 
     @Test
@@ -137,32 +100,18 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `apply() should throw an exception for non existing stack`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.apply("test_jobId") }
-    }
-
-    @Test
     fun `apply() should apply a job`() {
         // given
         val job = Job()
-        val stack = Stack()
-        stack.module = TerraformModule()
+        job.status = JobStatus.APPLY_PENDING
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
-        whenever(stackRepository.findById(any())).thenReturn(of(stack))
         controller.apply("test_jobId")
 
         // then
-        val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).apply(captor.capture(), eq(stack.module), eq(stack))
-        assertThat(captor.value).isNotNull
-        assertThat(captor.value.job).isNotNull.isEqualTo(job)
+        assertThat(job.status).isEqualTo(JobStatus.APPLY_STARTED)
+        verify(jobRepository).save(job)
     }
 
     @Test
@@ -175,32 +124,18 @@ class JobRestControllerTest {
     }
 
     @Test
-    fun `retry() should throw an exception for non existing stack`() {
-        // when
-        whenever(jobRepository.findById(any())).thenReturn(of(Job()))
-        whenever(stackRepository.findById(any())).thenReturn(empty())
-
-        // then
-        assertThrows(NoSuchElementException::class.java) { controller.retry("test_jobId") }
-    }
-
-    @Test
     fun `retry() should retry a job`() {
         // given
         val job = Job()
-        val stack = Stack()
-        stack.module = TerraformModule()
+        job.status = JobStatus.PLAN_FAILED
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
-        whenever(stackRepository.findById(any())).thenReturn(of(stack))
         controller.retry("test_jobId")
 
         // then
-        val captor = forClass(JobWorkflow::class.java)
-        verify(stackRunner).retry(captor.capture(), eq(stack.module), eq(stack))
-        assertThat(captor.value).isNotNull
-        assertThat(captor.value.job).isNotNull.isEqualTo(job)
+        assertThat(job.status).isEqualTo(JobStatus.PLAN_STARTED)
+        verify(jobRepository).save(job)
     }
 
     @Test

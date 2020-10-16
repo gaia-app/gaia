@@ -78,7 +78,7 @@
       <app-console
         :id="'logs-' + id"
         :css-style="'max-height: 300px'"
-        :logs="step.logs"
+        :logs="step.logs.join('')"
       />
     </b-collapse>
   </div>

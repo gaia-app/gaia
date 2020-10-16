@@ -8,6 +8,5 @@ interface RetryableState extends JobState {
     default void retry(JobWorkflow jobWorkflow) {
         jobWorkflow.getJob().reset();
         jobWorkflow.setState(new NotStartedState());
-        jobWorkflow.plan();
     }
 }

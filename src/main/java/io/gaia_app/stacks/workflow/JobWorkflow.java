@@ -1,8 +1,6 @@
 package io.gaia_app.stacks.workflow;
 
-import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.JobStatus;
-import io.gaia_app.stacks.bo.Step;
+import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.workflow.state.*;
 import io.gaia_app.stacks.workflow.state.*;
 
@@ -83,6 +81,9 @@ public class JobWorkflow {
             case PLAN_FAILED:
                 result = new PlanFailedState();
                 break;
+            case APPLY_PENDING:
+                result = new PlanFinishedState();
+                break;
             case APPLY_STARTED:
                 result = new ApplyStartedState();
                 break;
@@ -94,5 +95,48 @@ public class JobWorkflow {
                 break;
         }
         return result;
+    }
+
+    public Step startWorkflow() {
+        if(this.job.getStatus() == JobStatus.PLAN_PENDING){
+            this.state.plan(this);
+        }
+        else if(this.job.getStatus() == JobStatus.APPLY_PENDING) {
+            this.state.apply(this);
+        }
+        return this.currentStep;
+    }
+
+    /**
+     * Updates workflow to next status depending of the result code
+     * @param stepResultCode
+     */
+    public void next(int stepResultCode) {
+        if(this.job.getStatus() == JobStatus.PLAN_STARTED){
+            this.managePlanResult(stepResultCode);
+        }
+        else if(this.job.getStatus() == JobStatus.APPLY_STARTED) {
+            this.managerApplyResult(stepResultCode);
+        }
+    }
+
+    private void managePlanResult(int result) {
+        if (result == 0) {
+            // diff is empty
+            this.end();
+        } else if (result == 2) {
+            this.end();
+        } else {
+            // error
+            this.fail();
+        }
+    }
+
+    private void managerApplyResult(int result){
+        if (result == 0) {
+            this.end();
+        } else {
+            this.fail();
+        }
     }
 }

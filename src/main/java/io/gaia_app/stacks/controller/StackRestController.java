@@ -2,6 +2,7 @@ package io.gaia_app.stacks.controller;
 
 import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.stacks.bo.Job;
+import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.repository.JobRepository;
@@ -90,6 +91,9 @@ public class StackRestController {
 
         // create a new job
         var job = new Job(jobType, id, user);
+        // setting the status to pending
+        job.setStatus(JobStatus.PLAN_PENDING);
+
         job.setTerraformImage(stack.getModule().getTerraformImage());
         if(stack.getCredentialsId() != null){
             this.credentialsRepository.findById(stack.getCredentialsId())
