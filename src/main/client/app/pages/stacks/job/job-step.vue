@@ -22,7 +22,7 @@
       <div class="job-step-header-title">
         <span>{{ headerTitle }}</span>
         <font-awesome-icon
-          v-if="step.status === 'STARTED'"
+          v-if="step.status === 'STARTED' || step.status === 'PENDING'"
           icon="circle-notch"
           spin
           class="icon"
@@ -173,6 +173,11 @@
     background: linear-gradient(to right, #eaeaea 0, #eaeaea 1rem, #fff 1rem, #fff 100%) no-repeat;
     color: #eaeaea;
     cursor: default;
+  }
+
+  .job-step-container[class*=PENDING] .job-step-header {
+    background: linear-gradient(to right, #91B0B1 0, #91B0B1 1rem, #fff 1rem, #fff 100%) no-repeat;
+    color: #91B0B1;
   }
 
   .job-step-container[class*=STARTED] .job-step-header {

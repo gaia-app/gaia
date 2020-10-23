@@ -190,7 +190,7 @@
     displayConfirmDialog,
     displayNotification,
   } from '@/shared/services/modal-service';
-  import { getJobs } from '@/shared/api/jobs-api';
+  import { getJobs, planJob } from '@/shared/api/jobs-api';
   import { getCredentialsList } from '@/shared/api/credentials-api';
 
   export default {
@@ -275,6 +275,7 @@
         if (await displayConfirmDialog(this, { title: 'Run request', message })) {
           await this.saveStack();
           const { jobId } = await runStack(this.stack.id);
+          await planJob(jobId);
           this.$router.push({ name: 'job', params: { jobId } });
         }
       },
@@ -283,6 +284,7 @@
         const message = 'This will completely stop the stack, and destroy all created resources. Continue?';
         if (await displayConfirmDialog(this, { title: 'Stop request', message })) {
           const { jobId } = await destroyStack(this.stack.id);
+          await planJob(jobId);
           this.$router.push({ name: 'job', params: { jobId } });
         }
       },
