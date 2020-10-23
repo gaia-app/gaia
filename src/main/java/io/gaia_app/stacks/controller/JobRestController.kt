@@ -29,21 +29,28 @@ class JobRestController(
         val workflow = JobWorkflow(job)
         workflow.plan()
         jobRepository.save(job)
+        stepRepository.save(workflow.currentStep)
     }
 
     @PostMapping("/{id}/apply")
     fun apply(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
-        job.status = JobStatus.APPLY_PENDING
+        val workflow = JobWorkflow(job)
+        workflow.apply()
         jobRepository.save(job)
+        stepRepository.save(workflow.currentStep)
     }
 
     @PostMapping("/{id}/retry")
     fun retry(@PathVariable id: String) {
         val job = jobRepository.findById(id).orElseThrow { JobNotFoundException() }
+
+        stepRepository.deleteByJobId(id)
+
         val workflow = JobWorkflow(job)
         workflow.retry()
         jobRepository.save(job)
+        stepRepository.save(workflow.currentStep)
     }
 
     @DeleteMapping("/{id}")

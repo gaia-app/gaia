@@ -4,6 +4,7 @@ import io.gaia_app.modules.bo.TerraformModule
 import io.gaia_app.stacks.bo.Job
 import io.gaia_app.stacks.bo.JobStatus
 import io.gaia_app.stacks.bo.Stack
+import io.gaia_app.stacks.bo.Step
 import io.gaia_app.stacks.repository.JobRepository
 import io.gaia_app.stacks.repository.StackRepository
 import io.gaia_app.stacks.repository.StepRepository
@@ -79,14 +80,13 @@ class JobRestControllerTest {
     fun `plan() should plan a job`() {
         // given
         val job = Job()
-        job.status = JobStatus.PLAN_PENDING
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
         controller.plan("test_jobId")
 
         // then
-        assertThat(job.status).isEqualTo(JobStatus.PLAN_STARTED)
+        assertThat(job.status).isEqualTo(JobStatus.PLAN_PENDING)
         verify(jobRepository).save(job)
     }
 
@@ -103,14 +103,15 @@ class JobRestControllerTest {
     fun `apply() should apply a job`() {
         // given
         val job = Job()
-        job.status = JobStatus.APPLY_PENDING
+        job.status = JobStatus.PLAN_FINISHED
+        job.steps.add(Step())
 
         // when
         whenever(jobRepository.findById(any())).thenReturn(of(job))
         controller.apply("test_jobId")
 
         // then
-        assertThat(job.status).isEqualTo(JobStatus.APPLY_STARTED)
+        assertThat(job.status).isEqualTo(JobStatus.APPLY_PENDING)
         verify(jobRepository).save(job)
     }
 
@@ -134,7 +135,7 @@ class JobRestControllerTest {
         controller.retry("test_jobId")
 
         // then
-        assertThat(job.status).isEqualTo(JobStatus.PLAN_STARTED)
+        assertThat(job.status).isEqualTo(JobStatus.PLAN_PENDING)
         verify(jobRepository).save(job)
     }
 

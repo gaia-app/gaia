@@ -37,7 +37,7 @@ class StepRepositoryIT extends SharedMongoContainerTest {
         Assertions.assertEquals("12", saved.get().getId());
         Assertions.assertEquals("42", saved.get().getJobId());
         Assertions.assertEquals(StepStatus.FINISHED, saved.get().getStatus());
-        Assertions.assertEquals("some logs", saved.get().getLogs());
+        Assertions.assertEquals(List.of("some logs"), saved.get().getLogs());
     }
 
 }

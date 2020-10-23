@@ -30,6 +30,7 @@ class NotStartedStateTest {
 
     @Mock
     JobWorkflow jobWorkflow;
+
     private Job job;
 
     private NotStartedState state;
@@ -44,17 +45,16 @@ class NotStartedStateTest {
     }
 
     @Test
-    void plan_shouldStartTheJob() {
+    void plan_shouldUpdateJob() {
         // when
         state.plan(jobWorkflow);
 
         // then
-        Assertions.assertEquals(JobStatus.PLAN_STARTED, job.getStatus());
-        assertThat(job.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
+        assertEquals(JobStatus.PLAN_PENDING, job.getStatus());
     }
 
     @Test
-    void plan_shouldStartAPlanStep() {
+    void plan_shouldCreateAPlanStep() {
         // when
         state.plan(jobWorkflow);
 
@@ -63,9 +63,8 @@ class NotStartedStateTest {
         var step = job.getSteps().get(0);
         assertNotNull(step.getId());
         assertEquals("test_jobId", step.getJobId());
-        Assertions.assertEquals(StepType.PLAN, step.getType());
-        Assertions.assertEquals(StepStatus.STARTED, step.getStatus());
-        assertThat(step.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
+        assertEquals(StepType.PLAN, step.getType());
+        assertEquals(StepStatus.PENDING, step.getStatus());
     }
 
     @Test
@@ -74,9 +73,12 @@ class NotStartedStateTest {
         state.plan(jobWorkflow);
 
         // then
-        var step = job.getSteps().get(0);
-        verify(jobWorkflow).setCurrentStep(step);
-        verify(jobWorkflow).setState(any(PlanStartedState.class));
+        verify(jobWorkflow).setState(any(PlanPendingState.class));
+    }
+
+    @Test
+    void start_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.start(jobWorkflow));
     }
 
     @Test

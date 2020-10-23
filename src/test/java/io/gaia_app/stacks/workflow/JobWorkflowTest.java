@@ -47,18 +47,6 @@ class JobWorkflowTest {
     }
 
     @Test
-    void jobWorkflow_shouldHaveCurrentStep() {
-        // given
-        var step = new Step();
-
-        // when
-        jobWorkflow.setCurrentStep(step);
-
-        // then
-        Assertions.assertEquals(step, jobWorkflow.getCurrentStep());
-    }
-
-    @Test
     void plan_shouldPlanState() {
         // given
         jobWorkflow.setState(jobState);
@@ -68,6 +56,18 @@ class JobWorkflowTest {
 
         // then
         verify(jobState).plan(jobWorkflow);
+    }
+
+    @Test
+    void start_shouldStartState() {
+        // given
+        jobWorkflow.setState(jobState);
+
+        // when
+        jobWorkflow.start();
+
+        // then
+        verify(jobState).start(jobWorkflow);
     }
 
     @Test
@@ -83,24 +83,65 @@ class JobWorkflowTest {
     }
 
     @Test
-    void end_shouldEndState() {
+    void end_shouldEndState_whenPlanIsSuccessful() {
         // given
+        job.setStatus(JobStatus.PLAN_STARTED);
         jobWorkflow.setState(jobState);
 
         // when
-        jobWorkflow.end();
+        jobWorkflow.end(0);
 
         // then
         verify(jobState).end(jobWorkflow);
     }
 
     @Test
-    void fail_shouldFailState() {
+    void end_shouldEndState_whenPlanIsSuccessfulWithChanges() {
         // given
+        job.setStatus(JobStatus.PLAN_STARTED);
         jobWorkflow.setState(jobState);
 
         // when
-        jobWorkflow.fail();
+        jobWorkflow.end(2);
+
+        // then
+        verify(jobState).end(jobWorkflow);
+    }
+
+    @Test
+    void end_shouldFailState_whenPlanIsUnSuccessful() {
+        // given
+        job.setStatus(JobStatus.PLAN_STARTED);
+        jobWorkflow.setState(jobState);
+
+        // when
+        jobWorkflow.end(99);
+
+        // then
+        verify(jobState).fail(jobWorkflow);
+    }
+
+    @Test
+    void end_shouldEndState_whenApplyIsSuccessful() {
+        // given
+        job.setStatus(JobStatus.APPLY_STARTED);
+        jobWorkflow.setState(jobState);
+
+        // when
+        jobWorkflow.end(0);
+
+        // then
+        verify(jobState).end(jobWorkflow);
+    }
+
+    @Test
+    void end_shouldFailState_whenApplyIsUnSuccessful() {
+        // given
+        job.setStatus(JobStatus.APPLY_STARTED);
+        jobWorkflow.setState(jobState);
+
+        // when
+        jobWorkflow.end(99);
 
         // then
         verify(jobState).fail(jobWorkflow);
@@ -128,6 +169,15 @@ class JobWorkflowTest {
     }
 
     @Test
+    void evalInitialState_shouldReturnPlanPendingState() {
+        // when
+        var result = jobWorkflow.evalInitialState(JobStatus.PLAN_PENDING);
+
+        // then
+        assertThat(result).isInstanceOf(PlanPendingState.class);
+    }
+
+    @Test
     void evalInitialState_shouldReturnPlanStartedState() {
         // when
         var result = jobWorkflow.evalInitialState(JobStatus.PLAN_STARTED);
@@ -152,6 +202,15 @@ class JobWorkflowTest {
 
         // then
         assertThat(result).isInstanceOf(PlanFailedState.class);
+    }
+
+    @Test
+    void evalInitialState_shouldReturnApplyPendingState() {
+        // when
+        var result = jobWorkflow.evalInitialState(JobStatus.APPLY_PENDING);
+
+        // then
+        assertThat(result).isInstanceOf(ApplyPendingState.class);
     }
 
     @Test

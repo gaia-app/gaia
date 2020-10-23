@@ -91,9 +91,6 @@ public class StackRestController {
 
         // create a new job
         var job = new Job(jobType, id, user);
-        // setting the status to pending
-        job.setStatus(JobStatus.PLAN_PENDING);
-
         job.setTerraformImage(stack.getModule().getTerraformImage());
         if(stack.getCredentialsId() != null){
             this.credentialsRepository.findById(stack.getCredentialsId())

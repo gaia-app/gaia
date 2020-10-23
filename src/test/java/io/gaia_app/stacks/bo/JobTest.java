@@ -65,7 +65,7 @@ class JobTest {
     }
 
     @Test
-    void reset_shouldResetStatus() {
+    void reset_shouldResetStatusToPlanPending() {
         // given
         var job = new Job();
         job.setStatus(JobStatus.PLAN_STARTED);
@@ -74,7 +74,7 @@ class JobTest {
         job.reset();
 
         // then
-        assertNull(job.getStatus());
+        assertThat(job.getStatus()).isEqualTo(JobStatus.PLAN_PENDING);
     }
 
     @Test

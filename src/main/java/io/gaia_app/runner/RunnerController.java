@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Controller for the operations that are called by the runner only
@@ -55,12 +55,7 @@ public class RunnerController {
 
         // get the workflow
         var workflow = new JobWorkflow(job);
-        // start the workflow
-        var step = workflow.startWorkflow();
-
-        // saving the job
-        this.jobRepository.save(job);
-        this.stepRepository.save(step);
+        var step = workflow.getCurrentStep();
 
         var script = "";
         // generate the script
@@ -111,18 +106,29 @@ public class RunnerController {
      */
     @PutMapping("/steps/{stepId}/status")
     public void updateStepStatus(@PathVariable String stepId, @RequestBody int status) {
-        var step = this.stepRepository.findById(stepId).orElseThrow();
+        // getting jobId
+        var jobId = this.stepRepository.findById(stepId).orElseThrow().getJobId();
 
         // reload the job to check workflow status
-        var job = this.jobRepository.findById(step.getJobId()).orElseThrow();
+        var job = this.jobRepository.findById(jobId).orElseThrow();
 
         // rebuild the workflow
         var workflow = new JobWorkflow(job);
-        workflow.setCurrentStep(step);
-        workflow.next(status);
+        workflow.end(status);
+
+        var stack = this.stackRepository.findById(job.getStackId()).orElseThrow();
+        if(job.getStatus() == JobStatus.APPLY_FINISHED) {
+            if(job.getType() == JobType.RUN){
+                stack.setState(StackState.RUNNING);
+            }
+            else{
+                stack.setState(StackState.STOPPED);
+            }
+        }
+        this.stackRepository.save(stack);
 
         // save the job & step to update their status
-        this.stepRepository.save(step);
+        this.stepRepository.saveAll(job.getSteps());
         this.jobRepository.save(job);
     }
 
@@ -131,18 +137,18 @@ public class RunnerController {
      */
     @PutMapping("/steps/{stepId}/start")
     public void startStep(@PathVariable String stepId) {
-        // getting step
-        var step = this.stepRepository.findById(stepId).orElseThrow();
+        // getting jobId
+        var jobId = this.stepRepository.findById(stepId).orElseThrow().getJobId();
 
         // reload the job to check workflow status
-        var job = this.jobRepository.findById(step.getJobId()).orElseThrow();
+        var job = this.jobRepository.findById(jobId).orElseThrow();
 
         // rebuild the workflow and start it
         var workflow = new JobWorkflow(job);
-        workflow.startWorkflow();
+        workflow.start();
 
         // save the job & step to update their status
-        this.stepRepository.save(step);
+        this.stepRepository.saveAll(job.getSteps());
         this.jobRepository.save(job);
     }
 }

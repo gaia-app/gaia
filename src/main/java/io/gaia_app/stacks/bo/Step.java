@@ -17,7 +17,7 @@ public class Step {
     private LocalDateTime endDateTime;
     private Long executionTime;
     private StepType type;
-    private StepStatus status;
+    private StepStatus status = StepStatus.PENDING;
     private List<String> logs = new LinkedList<>();
 
     public Step() {

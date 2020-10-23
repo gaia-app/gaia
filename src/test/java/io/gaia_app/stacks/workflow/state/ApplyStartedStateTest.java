@@ -49,16 +49,6 @@ class ApplyStartedStateTest {
     }
 
     @Test
-    void plan_shouldNotBePossible() {
-        assertThrows(UnsupportedOperationException.class, () -> state.plan(jobWorkflow));
-    }
-
-    @Test
-    void apply_shouldNotBePossible() {
-        assertThrows(UnsupportedOperationException.class, () -> state.apply(jobWorkflow));
-    }
-
-    @Test
     void end_shouldEndTheStep() {
         // when
         state.end(jobWorkflow);
@@ -114,6 +104,21 @@ class ApplyStartedStateTest {
 
         // then
         verify(jobWorkflow).setState(any(ApplyFailedState.class));
+    }
+
+    @Test
+    void start_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.start(jobWorkflow));
+    }
+
+    @Test
+    void plan_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.plan(jobWorkflow));
+    }
+
+    @Test
+    void apply_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.apply(jobWorkflow));
     }
 
     @Test

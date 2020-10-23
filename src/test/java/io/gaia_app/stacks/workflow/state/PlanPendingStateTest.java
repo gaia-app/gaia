@@ -1,10 +1,9 @@
 package io.gaia_app.stacks.workflow.state;
 
-import io.gaia_app.stacks.bo.*;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.Step;
+import io.gaia_app.stacks.bo.StepStatus;
 import io.gaia_app.stacks.workflow.JobWorkflow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,69 +14,60 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class PlanFailedStateTest {
+class PlanPendingStateTest {
 
     @Mock
     JobWorkflow jobWorkflow;
+
     private Job job;
 
-    private PlanFailedState state;
+    private PlanPendingState state;
+
+    private Step planStep;
 
     @BeforeEach
     void setup() {
         job = new Job();
-        job.setStatus(JobStatus.APPLY_FAILED);
+        job.setStatus(JobStatus.APPLY_PENDING);
         job.setStartDateTime(LocalDateTime.now());
         job.setEndDateTime(LocalDateTime.now());
-        job.getSteps().add(new Step());
+
+        planStep = new Step();
+        job.getSteps().add(planStep);
+
         lenient().when(jobWorkflow.getJob()).thenReturn(job); // use lenient to prevent mockito from throwing exception for tests not needing this mock
+        lenient().when(jobWorkflow.getCurrentStep()).thenReturn(planStep); // use lenient to prevent mockito from throwing exception for tests not needing this mock
 
-        state = new PlanFailedState();
+        state = new PlanPendingState();
     }
 
     @Test
-    void retry_shouldResetJob() {
-        // when
-        state.retry(jobWorkflow);
+    void start_shouldStartTheStep(){
+        state.start(jobWorkflow);
 
-        // then
-        assertThat(job.getStatus()).isEqualTo(JobStatus.PLAN_PENDING);
-        assertNull(job.getStartDateTime());
-        assertNull(job.getEndDateTime());
+        assertThat(planStep.getStatus()).isEqualTo(StepStatus.STARTED);
+        assertThat(planStep.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
     }
 
     @Test
-    void retry_shouldUpdateWorkflow() {
-        // when
-        state.retry(jobWorkflow);
+    void start_shouldUpdateWorkflow(){
+        state.start(jobWorkflow);
 
-        // then
-        verify(jobWorkflow).setState(any(PlanPendingState.class));
+        verify(jobWorkflow).setState(any(PlanStartedState.class));
     }
 
     @Test
-    void retry_shouldCreateAPlanStep() {
-        // when
-        state.retry(jobWorkflow);
+    void start_shouldUpdateTheJob(){
+        state.start(jobWorkflow);
 
-        // then
-        assertThat(job.getSteps()).isNotEmpty().hasSize(1);
-        var step = job.getSteps().get(0);
-        assertNotNull(step.getId());
-        assertEquals(StepType.PLAN, step.getType());
-        assertEquals(StepStatus.PENDING, step.getStatus());
-    }
-
-    @Test
-    void start_shouldNotBePossible() {
-        assertThrows(UnsupportedOperationException.class, () -> state.start(jobWorkflow));
+        assertThat(job.getStatus()).isEqualTo(JobStatus.PLAN_STARTED);
+        assertThat(job.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
     }
 
     @Test
@@ -98,5 +88,10 @@ class PlanFailedStateTest {
     @Test
     void fail_shouldNotBePossible() {
         assertThrows(UnsupportedOperationException.class, () -> state.fail(jobWorkflow));
+    }
+
+    @Test
+    void retry_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.retry(jobWorkflow));
     }
 }
