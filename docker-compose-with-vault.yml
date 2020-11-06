@@ -10,8 +10,6 @@ services:
             - "GAIA_EXTERNAL_URL=http://172.17.0.1:8080"
             - "SPRING_PROFILES_ACTIVE=vault"
             - "GAIA_VAULT_URI=http://vault:8200"
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
 
     mongo:
         build:
