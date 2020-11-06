@@ -25,3 +25,7 @@ Feature: Basic Navigation
     Scenario: View job details
         When I go on the job '5e856dc7-6bed-465f-abf1-02980206ab2a' for stack 'de28a01f-257a-448d-8e1b-00e4e3a41db2' page
         Then Percy takes a snapshot named 'Job Details'
+
+    Scenario: View users list
+        When I go on the users page
+        Then Percy takes a snapshot named 'Users'
