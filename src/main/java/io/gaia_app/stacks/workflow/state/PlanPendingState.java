@@ -1,6 +1,5 @@
 package io.gaia_app.stacks.workflow.state;
 
-import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.workflow.JobWorkflow;
 
 /**

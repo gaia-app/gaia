@@ -2,7 +2,6 @@ package io.gaia_app.stacks.controller;
 
 import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.repository.JobRepository;

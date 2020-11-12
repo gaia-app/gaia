@@ -6,6 +6,7 @@ import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
+import io.gaia_app.stacks.repository.StepRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +30,9 @@ class RunnerControllerTest {
     private JobRepository jobRepository;
 
     @Mock
+    private StepRepository stepRepository;
+
+    @Mock
     private StackRepository stackRepository;
 
     @Mock
@@ -38,6 +40,8 @@ class RunnerControllerTest {
 
     @Mock
     private CredentialsService credentialsService;
+
+    private Step step;
 
     private Job job;
 
@@ -51,8 +55,15 @@ class RunnerControllerTest {
         this.job.setSteps(List.of(new Step(), new Step()));
         this.job.setTerraformImage(new TerraformImage("hashicorp/terraform", "0.13.0"));
 
-        when(jobRepository.findFirstByStatusEqualsOrStatusEquals(JobStatus.PLAN_PENDING, JobStatus.APPLY_PENDING))
-            .thenReturn(Optional.of(job));
+        this.step = new Step();
+        this.step.setId("fakeStepId");
+        this.step.setStatus(StepStatus.PENDING);
+        this.step.setType(StepType.PLAN);
+        this.step.setJobId("fakeJobId");
+
+        when(stepRepository.findFirstByStatus(StepStatus.PENDING)).thenReturn(Optional.of(step));
+
+        when(jobRepository.findById("fakeJobId")).thenReturn(Optional.of(job));
 
         this.stack = new Stack();
         when(stackRepository.findById("fakeStackId")).thenReturn(Optional.of(stack));
@@ -64,14 +75,14 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldUsePlanScript() {
+    void findFirstRunnableStep_shouldUsePlanScript() {
         // given
         this.job.setType(JobType.RUN);
         this.job.setStatus(JobStatus.PLAN_PENDING);
         this.job.getSteps().get(0).setType(StepType.PLAN);
 
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         verify(runnerCommandBuilder).buildPlanScript(job, stack, null);
@@ -81,14 +92,14 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldUseApplyScript() {
+    void findFirstRunnableStep_shouldUseApplyScript() {
         // given
         this.job.setType(JobType.RUN);
         this.job.setStatus(JobStatus.APPLY_PENDING);
-        this.job.getSteps().get(0).setType(StepType.APPLY);
+        this.step.setType(StepType.APPLY);
 
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         verify(runnerCommandBuilder).buildApplyScript(job, stack, null);
@@ -98,14 +109,13 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldUsePlanDestroyScript() {
+    void findFirstRunnableStep_shouldUsePlanDestroyScript() {
         // given
         this.job.setType(JobType.DESTROY);
         this.job.setStatus(JobStatus.PLAN_PENDING);
-        this.job.getSteps().get(0).setType(StepType.PLAN);
 
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         verify(runnerCommandBuilder).buildPlanDestroyScript(job, stack, null);
@@ -115,14 +125,14 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldUseApplyDestroyScript() {
+    void findFirstRunnableStep_shouldUseApplyDestroyScript() {
         // given
         this.job.setType(JobType.DESTROY);
         this.job.setStatus(JobStatus.APPLY_PENDING);
-        this.job.getSteps().get(0).setType(StepType.APPLY);
+        this.step.setType(StepType.APPLY);
 
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         verify(runnerCommandBuilder).buildDestroyScript(job, stack, null);
@@ -132,35 +142,19 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldUsePlanStep() {
-        //given
-        this.job.setStatus(JobStatus.PLAN_PENDING);
-
+    void findFirstRunnableStep_shouldUsePlanStep() {
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         assertThat(result)
-            .containsEntry("step", job.getSteps().get(0));
+            .containsEntry("id", "fakeStepId");
     }
 
     @Test
-    void findFirstRunnableJob_shouldUseApplyStep() {
-        //given
-        this.job.setStatus(JobStatus.APPLY_PENDING);
-
+    void findFirstRunnableStep_shouldUseStackImage() {
         // when
-        var result = runnerController.findFirstRunnableJob();
-
-        // then
-        assertThat(result)
-            .containsEntry("step", job.getSteps().get(1));
-    }
-
-    @Test
-    void findFirstRunnableJob_shouldUseStackImage() {
-        // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         assertThat(result)
@@ -168,7 +162,7 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableJob_shouldStackCredentials() {
+    void findFirstRunnableStep_shouldStackCredentials() {
         //given
         stack.setCredentialsId("fakeCredentials");
 
@@ -177,7 +171,7 @@ class RunnerControllerTest {
         when(credentials.toEnv()).thenReturn(List.of("access_key=value","secret_key=secretValue"));
 
         // when
-        var result = runnerController.findFirstRunnableJob();
+        var result = runnerController.findFirstRunnableStep();
 
         // then
         assertThat(result)

@@ -15,6 +15,4 @@ interface JobRepository : MongoRepository<Job, String> {
 
     fun findAllByStackIdOrderByStartDateTimeDesc(stackId: String): List<Job>
 
-    fun findFirstByStatusEqualsOrStatusEquals(planPending: JobStatus, applyPending: JobStatus): @NotNull Optional<Job>
-
 }

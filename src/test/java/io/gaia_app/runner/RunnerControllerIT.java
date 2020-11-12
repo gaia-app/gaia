@@ -54,10 +54,8 @@ class RunnerControllerIT extends SharedMongoContainerTest {
     @Test
     @WithMockUser("gaia-runner")
     void findFirstRunnableJob_shouldReturnNothing_whenNoJobIsPending() throws Exception {
-        var stackId = "5a215b6b-fe53-4afa-85f0-a10175a7f264";
-
         mockMvc.perform(get("/api/runner/steps/request"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNoContent());
     }
 
     @Test
@@ -71,7 +69,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
             .andExpect(jsonPath("$.jobId", notNullValue()));
 
         mockMvc.perform(get("/api/runner/steps/request"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isNoContent());
     }
 
     @Test
@@ -94,7 +92,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(get("/api/runner/steps/request"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.env", notNullValue()))
-            .andExpect(jsonPath("$.step", notNullValue()))
+            .andExpect(jsonPath("$.id", notNullValue()))
             .andExpect(jsonPath("$.script", notNullValue()))
             .andExpect(jsonPath("$.image", notNullValue()));
     }
@@ -167,7 +165,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
         this.stepRepository.save(step);
 
         mockMvc.perform(
-            put("/api/runner/steps/{stepId}/status", step.getId())
+            put("/api/runner/steps/{stepId}/end", step.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("0"))
@@ -179,9 +177,6 @@ class RunnerControllerIT extends SharedMongoContainerTest {
 
         var updatedJob = this.jobRepository.findById("fakeJobId").orElseThrow();
         assertThat(updatedJob.getStatus()).isEqualTo(JobStatus.PLAN_FINISHED);
-
-//        var updatedStack = this.stackRepository.findById("fakeStackId").orElseThrow();
-//        assertThat(updatedStack.getState()).isEqualTo(StackState.RUNNING);
     }
 
     @Test
@@ -209,7 +204,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
         this.stepRepository.saveAll(job.getSteps());
 
         mockMvc.perform(
-            put("/api/runner/steps/{stepId}/status", planStep.getId())
+            put("/api/runner/steps/{stepId}/end", planStep.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("0"))
@@ -246,7 +241,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
         this.stepRepository.saveAll(job.getSteps());
 
         mockMvc.perform(
-            put("/api/runner/steps/{stepId}/status", planStep.getId())
+            put("/api/runner/steps/{stepId}/end", planStep.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("0"))

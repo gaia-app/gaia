@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Controller for the operations that are called by the runner only
@@ -48,14 +47,12 @@ public class RunnerController {
      * Gets the first job step that can be run by the runner (one in "pending" state)
      */
     @GetMapping("/steps/request")
-    public Map<String, Object> findFirstRunnableJob() {
-        var job = this.jobRepository.findFirstByStatusEqualsOrStatusEquals(JobStatus.PLAN_PENDING, JobStatus.APPLY_PENDING)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        var stack = this.stackRepository.findById(job.getStackId()).orElseThrow();
+    public Map<String, Object> findFirstRunnableStep() {
+        var step = this.stepRepository.findFirstByStatus(StepStatus.PENDING)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
-        // get the workflow
-        var workflow = new JobWorkflow(job);
-        var step = workflow.getCurrentStep();
+        var job = this.jobRepository.findById(step.getJobId()).orElseThrow();
+        var stack = this.stackRepository.findById(job.getStackId()).orElseThrow();
 
         var script = "";
         // generate the script
@@ -85,7 +82,7 @@ public class RunnerController {
         }
 
         return Map.of(
-            "step", step,
+            "id", step.getId(),
             "script", script,
             "env", env,
             "image", job.getTerraformImage().image());
@@ -104,7 +101,7 @@ public class RunnerController {
     /**
      * Updates the step status
      */
-    @PutMapping("/steps/{stepId}/status")
+    @PutMapping("/steps/{stepId}/end")
     public void updateStepStatus(@PathVariable String stepId, @RequestBody int status) {
         // getting jobId
         var jobId = this.stepRepository.findById(stepId).orElseThrow().getJobId();
