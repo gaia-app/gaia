@@ -9,6 +9,8 @@ import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.mustache.TerraformScript;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,8 @@ import java.util.List;
  */
 @Component
 public class RunnerCommandBuilder {
+
+    private static final Logger logger = LoggerFactory.getLogger(RunnerCommandBuilder.class);
 
     private Settings settings;
     private RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties;
@@ -71,7 +75,7 @@ public class RunnerCommandBuilder {
             terraformMustache.execute(writer, script).flush();
             return writer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Unable to generate script : {}", e.getMessage());
         }
         return StringUtils.EMPTY;
     }
