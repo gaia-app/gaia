@@ -8,7 +8,6 @@ import io.gaia_app.settings.bo.Settings;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.mustache.TerraformScript;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class RunnerCommandBuilder {
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
                 .setTerraformImage(job.getTerraformImage().image());
 
-        if (StringUtils.isNotBlank(module.getDirectory())) {
+        if (module.getDirectory() != null && !module.getDirectory().isBlank()) {
             script.setGitDirectory(module.getDirectory());
         }
 
@@ -77,7 +76,7 @@ public class RunnerCommandBuilder {
         } catch (IOException e) {
             logger.error("Unable to generate script : {}", e.getMessage());
         }
-        return StringUtils.EMPTY;
+        return "";
     }
 
     /**

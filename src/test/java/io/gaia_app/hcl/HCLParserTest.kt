@@ -2,13 +2,14 @@ package io.gaia_app.hcl
 
 import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
-import org.apache.commons.io.IOUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 import java.io.IOException
 import java.nio.charset.Charset
+import java.nio.file.Files
+import java.nio.file.Path
 
 class HCLParserTest {
 
@@ -18,7 +19,7 @@ class HCLParserTest {
     @Throws(IOException::class)
     fun parsing_variables_shouldWorkWithVisitor() {
         // given
-        val fileContent = IOUtils.toString(ClassPathResource("hcl/variables.tf").url, Charset.defaultCharset())
+        val fileContent = Files.readString(Path.of(ClassPathResource("hcl/variables.tf").uri), Charset.defaultCharset())
 
         // when
         val variables = hclParser.parseVariables(fileContent)
@@ -35,7 +36,7 @@ class HCLParserTest {
     @Throws(IOException::class)
     fun parsing_variables_shouldWork_withComplexFile() {
         // given
-        val fileContent = IOUtils.toString(ClassPathResource("hcl/variables_aws_eks.tf").url, Charset.defaultCharset())
+        val fileContent = Files.readString(Path.of(ClassPathResource("hcl/variables_aws_eks.tf").uri), Charset.defaultCharset())
 
         // when
         val variables = hclParser.parseVariables(fileContent)
@@ -48,7 +49,7 @@ class HCLParserTest {
     @Throws(IOException::class)
     fun parsing_variables_shouldWork_withAnotherComplexFile() {
         // given
-        val fileContent = IOUtils.toString(ClassPathResource("hcl/variables_aws_vpc.tf").url, Charset.defaultCharset())
+        val fileContent = Files.readString(Path.of(ClassPathResource("hcl/variables_aws_vpc.tf").uri), Charset.defaultCharset())
 
         // when
         val variables = hclParser.parseVariables(fileContent)
@@ -61,7 +62,7 @@ class HCLParserTest {
     @Throws(IOException::class)
     fun parsing_outputs_shouldWorkWithVisitor() {
         // given
-        val fileContent = IOUtils.toString(ClassPathResource("hcl/outputs.tf").url, Charset.defaultCharset())
+        val fileContent = Files.readString(Path.of(ClassPathResource("hcl/outputs.tf").uri), Charset.defaultCharset())
 
         // when
         val outputs = hclParser.parseOutputs(fileContent)
@@ -77,7 +78,7 @@ class HCLParserTest {
     @Throws(IOException::class)
     fun parsing_outputs_shouldWork_withComplexFile() {
         // given
-        val fileContent = IOUtils.toString(ClassPathResource("hcl/outputs_aws_eks.tf").url, Charset.defaultCharset())
+        val fileContent = Files.readString(Path.of(ClassPathResource("hcl/outputs_aws_eks.tf").uri), Charset.defaultCharset())
 
         // when
         val outputs = hclParser.parseOutputs(fileContent)
@@ -96,7 +97,7 @@ class HCLParserTest {
         @Throws(IOException::class)
         fun parsing_provider_shouldWork_withMainFile_includingProviderDirective() {
             // given
-            val fileContent = IOUtils.toString(ClassPathResource("hcl/terraform_docker_mongo_main_with_provider.tf").url, Charset.defaultCharset())
+            val fileContent = Files.readString(Path.of(ClassPathResource("hcl/terraform_docker_mongo_main_with_provider.tf").uri), Charset.defaultCharset())
             // when
             val provider: String = hclParser.parseProvider(fileContent)
             // then
@@ -107,7 +108,7 @@ class HCLParserTest {
         @Throws(IOException::class)
         fun parsing_provider_shouldWork_withMainFile_withoutProviderDirective() {
             // given
-            val fileContent = IOUtils.toString(ClassPathResource("hcl/terraform_docker_mongo_main_without_provider.tf").url, Charset.defaultCharset())
+            val fileContent = Files.readString(Path.of(ClassPathResource("hcl/terraform_docker_mongo_main_without_provider.tf").uri), Charset.defaultCharset())
 
             // when
             val provider: String = hclParser.parseProvider(fileContent)
@@ -120,7 +121,7 @@ class HCLParserTest {
         @Throws(IOException::class)
         fun parsing_provider_shouldReturn_unknown_ifNoProviderFound() {
             // given
-            val fileContent = IOUtils.toString(ClassPathResource("hcl/variables.tf").url, Charset.defaultCharset())
+            val fileContent = Files.readString(Path.of(ClassPathResource("hcl/variables.tf").uri), Charset.defaultCharset())
 
             // when
             val provider: String = hclParser.parseProvider(fileContent)
