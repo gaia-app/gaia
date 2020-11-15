@@ -40,17 +40,12 @@ class PlanFinishedStateTest {
     }
 
     @Test
-    void plan_shouldNotBePossible() {
-        assertThrows(UnsupportedOperationException.class, () -> state.plan(jobWorkflow));
-    }
-
-    @Test
-    void apply_shouldStartTheJob() {
+    void apply_shouldMarkTheJobAsPending() {
         // when
         state.apply(jobWorkflow);
 
         // then
-        Assertions.assertEquals(JobStatus.APPLY_STARTED, job.getStatus());
+        Assertions.assertEquals(JobStatus.APPLY_PENDING, job.getStatus());
     }
 
     @Test
@@ -64,8 +59,7 @@ class PlanFinishedStateTest {
         assertNotNull(step.getId());
         assertEquals("test_jobId", step.getJobId());
         Assertions.assertEquals(StepType.APPLY, step.getType());
-        Assertions.assertEquals(StepStatus.STARTED, step.getStatus());
-        assertThat(step.getStartDateTime()).isNotNull().isEqualToIgnoringSeconds(LocalDateTime.now());
+        Assertions.assertEquals(StepStatus.PENDING, step.getStatus());
     }
 
     @Test
@@ -74,9 +68,17 @@ class PlanFinishedStateTest {
         state.apply(jobWorkflow);
 
         // then
-        var step = job.getSteps().get(1);
-        verify(jobWorkflow).setCurrentStep(step);
-        verify(jobWorkflow).setState(any(ApplyStartedState.class));
+        verify(jobWorkflow).setState(any(ApplyPendingState.class));
+    }
+
+    @Test
+    void start_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.start(jobWorkflow));
+    }
+
+    @Test
+    void plan_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.plan(jobWorkflow));
     }
 
     @Test

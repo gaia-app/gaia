@@ -41,7 +41,6 @@
     applyJob,
     deleteJob,
     getJob,
-    planJob,
     retryJob,
   } from '@/shared/api/jobs-api';
   import { getStack } from '@/shared/api/stacks-api';
@@ -83,6 +82,7 @@
       },
       isSecondStepDoable() {
         return this.job.status
+          && !this.job.status.includes('PENDING')
           && !this.job.status.includes('STARTED')
           && !this.job.status.includes('FAILED')
           && !this.job.status.includes('APPLY');
@@ -91,29 +91,20 @@
     async created() {
       [this.stack, this.job] = await Promise.all([getStack(this.stackId), this.refreshJobUntilCompletion()]);
       this.loaded = true;
-      if (!this.job.status) {
-        await this.planJob();
-      }
+
+      this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
     },
     destroyed() {
       clearInterval(this.refreshIntervalId);
     },
     methods: {
-      async planJob() {
-        await planJob(this.jobId);
-        await this.waitUntilJobStarted();
-
-        this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
-      },
       async applyJob() {
         await applyJob(this.jobId);
-        await this.waitUntilJobStarted();
 
         this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
       },
       async retryJob() {
         await retryJob(this.jobId);
-        await this.waitUntilJobStarted();
 
         this.refreshIntervalId = setInterval(this.refreshJobUntilCompletion, INTERVAL_TIMEOUT);
       },
@@ -132,24 +123,11 @@
       },
       async refreshJobUntilCompletion() {
         this.job = await getJob(this.jobId);
-        if (this.job.status && !this.job.status.includes('STARTED')) {
+        if (this.job.status.includes('FINISHED') || this.job.status.includes('FAILED')) {
           clearInterval(this.refreshIntervalId);
         }
         return this.job;
       },
-      // wait until the job is in "started" state
-      async waitUntilJobStarted() {
-        const poll = async (resolve) => {
-          this.job = await getJob(this.jobId);
-          if (this.job.status && this.job.status.includes('STARTED')) {
-            resolve();
-          } else {
-            setTimeout(() => poll(resolve), 500);
-          }
-        };
-        return new Promise(poll);
-      },
-
     },
   };
 </script>

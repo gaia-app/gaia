@@ -4,7 +4,6 @@ import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.Step;
 import io.gaia_app.stacks.workflow.state.*;
-import io.gaia_app.stacks.workflow.state.*;
 
 import java.util.Objects;
 
@@ -13,8 +12,7 @@ import java.util.Objects;
  */
 public class JobWorkflow {
 
-    private Job job;
-    private Step currentStep;
+    private final Job job;
     private JobState state;
 
     public JobWorkflow(Job job) {
@@ -30,14 +28,6 @@ public class JobWorkflow {
         this.state.apply(this);
     }
 
-    public void end() {
-        this.state.end(this);
-    }
-
-    public void fail() {
-        this.state.fail(this);
-    }
-
     public void retry() {
         this.state.retry(this);
     }
@@ -47,11 +37,20 @@ public class JobWorkflow {
     }
 
     public Step getCurrentStep() {
-        return currentStep;
-    }
-
-    public void setCurrentStep(Step currentStep) {
-        this.currentStep = currentStep;
+        // calculating current step depending on the state
+        switch (this.job.getStatus()){
+            case PLAN_PENDING:
+            case PLAN_STARTED:
+            case PLAN_FINISHED:
+            case PLAN_FAILED:
+                return this.job.getSteps().get(0);
+            case APPLY_PENDING:
+            case APPLY_STARTED:
+            case APPLY_FAILED:
+            case APPLY_FINISHED:
+                return this.job.getSteps().get(1);
+        }
+        return null;
     }
 
     public JobState getState() {
@@ -74,6 +73,9 @@ public class JobWorkflow {
             return result;
         }
         switch (jobStatus) {
+            case PLAN_PENDING:
+                result = new PlanPendingState();
+                break;
             case PLAN_STARTED:
                 result = new PlanStartedState();
                 break;
@@ -82,6 +84,9 @@ public class JobWorkflow {
                 break;
             case PLAN_FAILED:
                 result = new PlanFailedState();
+                break;
+            case APPLY_PENDING:
+                result = new ApplyPendingState();
                 break;
             case APPLY_STARTED:
                 result = new ApplyStartedState();
@@ -94,5 +99,40 @@ public class JobWorkflow {
                 break;
         }
         return result;
+    }
+
+    public void start() {
+        this.state.start(this);
+    }
+
+    /**
+     * Updates workflow to next status depending of the result code
+     * @param stepResultCode
+     */
+    public void end(int stepResultCode) {
+        if(this.job.getStatus() == JobStatus.PLAN_STARTED){
+            this.managePlanResult(stepResultCode);
+        }
+        else if(this.job.getStatus() == JobStatus.APPLY_STARTED) {
+            this.managerApplyResult(stepResultCode);
+        }
+    }
+
+    private void managePlanResult(int result) {
+        if (result == 0 || result == 2) {
+            // diff is empty
+            this.state.end(this);
+        } else {
+            // error
+            this.state.fail(this);
+        }
+    }
+
+    private void managerApplyResult(int result){
+        if (result == 0) {
+            this.state.end(this);
+        } else {
+            this.state.fail(this);;
+        }
     }
 }

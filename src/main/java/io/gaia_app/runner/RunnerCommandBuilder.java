@@ -8,7 +8,8 @@ import io.gaia_app.settings.bo.Settings;
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.bo.mustache.TerraformScript;
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,9 @@ import java.util.List;
  * A builder class to create stack commands
  */
 @Component
-public class StackCommandBuilder {
+public class RunnerCommandBuilder {
+
+    private static final Logger logger = LoggerFactory.getLogger(RunnerCommandBuilder.class);
 
     private Settings settings;
     private RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties;
@@ -28,7 +31,7 @@ public class StackCommandBuilder {
     private List<RegistryOAuth2Provider> registryOAuth2Providers;
 
     @Autowired
-    StackCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
+    RunnerCommandBuilder(Settings settings, Mustache terraformMustache, List<RegistryOAuth2Provider> registryOAuth2Providers, RunnerApiSecurityConfig.RunnerApiSecurityProperties runnerApiSecurityProperties) {
         this.settings = settings;
         this.terraformMustache = terraformMustache;
         this.registryOAuth2Providers = registryOAuth2Providers;
@@ -60,7 +63,7 @@ public class StackCommandBuilder {
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
                 .setTerraformImage(job.getTerraformImage().image());
 
-        if (StringUtils.isNotBlank(module.getDirectory())) {
+        if (module.getDirectory() != null && !module.getDirectory().isBlank()) {
             script.setGitDirectory(module.getDirectory());
         }
 
@@ -71,9 +74,9 @@ public class StackCommandBuilder {
             terraformMustache.execute(writer, script).flush();
             return writer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Unable to generate script : {}", e.getMessage());
         }
-        return StringUtils.EMPTY;
+        return "";
     }
 
     /**

@@ -24,6 +24,11 @@ class ApplyFinishedStateTest {
     }
 
     @Test
+    void start_shouldNotBePossible() {
+        assertThrows(UnsupportedOperationException.class, () -> state.start(jobWorkflow));
+    }
+
+    @Test
     void plan_shouldNotBePossible() {
         assertThrows(UnsupportedOperationException.class, () -> state.plan(jobWorkflow));
     }

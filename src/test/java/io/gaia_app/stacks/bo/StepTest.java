@@ -12,19 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StepTest {
 
     @Test
-    void getLogs_shouldReturnOutputStreamResult() {
-        var step = new Step();
-
-        PrintWriter printWriter = new PrintWriter(step.getLogsWriter());
-        printWriter.println("Test Line 1");
-        printWriter.println("Test Line 2");
-
-        var logs = step.getLogs();
-
-        assertEquals("Test Line 1\nTest Line 2\n", logs);
-    }
-
-    @Test
     void start_shouldSetStatusToStarted() {
         var step = new Step();
 

@@ -8,8 +8,7 @@ services:
         environment:
             - "GAIA_MONGODB_URI=mongodb://mongo/gaia"
             - "GAIA_EXTERNAL_URL=http://172.17.0.1:8080"
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
+            - "GAIA_RUNNER_API_PASSWORD=123456"
 
     mongo:
         build:

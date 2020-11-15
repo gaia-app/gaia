@@ -7,6 +7,11 @@ import io.gaia_app.stacks.workflow.JobWorkflow;
  * Describe the state of job and its possible actions
  */
 public interface JobState {
+
+    default void start(JobWorkflow jobWorkflow){
+        throw new UnsupportedOperationException();
+    }
+
     default void plan(JobWorkflow jobWorkflow) {
         throw new UnsupportedOperationException();
     }

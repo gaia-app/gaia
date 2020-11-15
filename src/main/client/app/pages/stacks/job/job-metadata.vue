@@ -148,6 +148,15 @@
     margin-bottom: 1rem;
   }
 
+  .job-metadata-container[class*=PENDING] {
+    background: linear-gradient(to right, #91B0B1 0, #91B0B1 1rem, #fff 1rem, #fff 100%) no-repeat;
+    color: #91B0B1;
+  }
+
+  .job-metadata-container[class*=PENDING] .job-detail-title {
+    color: #91B0B1;
+  }
+
   .job-metadata-container[class*=STARTED] {
     background: linear-gradient(to right, #2196f3 0, #2196f3 1rem, #fff 1rem, #fff 100%) no-repeat;
   }

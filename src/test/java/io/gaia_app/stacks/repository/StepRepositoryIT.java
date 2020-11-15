@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,7 +25,7 @@ class StepRepositoryIT extends SharedMongoContainerTest {
     void jobShouldBeSavedWithLogs() throws IOException {
         var step = new Step(StepType.PLAN, "42");
         step.setId("12");
-        step.getLogsWriter().write("some logs");
+        step.setLogs(List.of("some logs"));
         step.start();
         step.end();
 
@@ -36,7 +37,7 @@ class StepRepositoryIT extends SharedMongoContainerTest {
         Assertions.assertEquals("12", saved.get().getId());
         Assertions.assertEquals("42", saved.get().getJobId());
         Assertions.assertEquals(StepStatus.FINISHED, saved.get().getStatus());
-        Assertions.assertEquals("some logs", saved.get().getLogs());
+        Assertions.assertEquals(List.of("some logs"), saved.get().getLogs());
     }
 
 }

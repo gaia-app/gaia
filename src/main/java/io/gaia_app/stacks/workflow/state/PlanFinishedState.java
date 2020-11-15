@@ -15,14 +15,11 @@ import io.gaia_app.stacks.workflow.JobWorkflow;
 public class PlanFinishedState implements JobState {
     @Override
     public void apply(JobWorkflow jobWorkflow) {
+        jobWorkflow.setState(new ApplyPendingState());
         var job = jobWorkflow.getJob();
-        job.proceed(JobStatus.APPLY_STARTED);
+        job.setStatus(JobStatus.APPLY_PENDING);
 
         var step = new Step(StepType.APPLY, job.getId());
         job.getSteps().add(step);
-        jobWorkflow.setCurrentStep(step);
-        step.start();
-
-        jobWorkflow.setState(new ApplyStartedState());
     }
 }

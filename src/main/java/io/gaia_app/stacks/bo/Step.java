@@ -1,12 +1,9 @@
 package io.gaia_app.stacks.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.Transient;
-
-import java.io.StringWriter;
-import java.io.Writer;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,10 +17,8 @@ public class Step {
     private LocalDateTime endDateTime;
     private Long executionTime;
     private StepType type;
-    private StepStatus status;
-    @Transient
-    private StringWriter logsWriter = new StringWriter();
-    private String logs;
+    private StepStatus status = StepStatus.PENDING;
+    private List<String> logs = new LinkedList<>();
 
     public Step() {
     }
@@ -42,14 +37,12 @@ public class Step {
     public void end() {
         this.endDateTime = LocalDateTime.now();
         this.executionTime = Duration.between(this.startDateTime, this.endDateTime).toMillis();
-        this.logs = this.logsWriter.toString();
         this.status = StepStatus.FINISHED;
     }
 
     public void fail() {
         this.endDateTime = LocalDateTime.now();
         this.executionTime = Duration.between(this.startDateTime, this.endDateTime).toMillis();
-        this.logs = this.logsWriter.toString();
         this.status = StepStatus.FAILED;
     }
 
@@ -109,20 +102,12 @@ public class Step {
         this.status = status;
     }
 
-    public String getLogs() {
-        if (status == StepStatus.FINISHED || status == StepStatus.FAILED) {
-            return logs;
-        }
-        return logsWriter.toString();
+    public List<String> getLogs() {
+        return logs;
     }
 
-    public void setLogs(String logs) {
+    public void setLogs(List<String> logs) {
         this.logs = logs;
-    }
-
-    @JsonIgnore
-    public Writer getLogsWriter() {
-        return logsWriter;
     }
 
 }

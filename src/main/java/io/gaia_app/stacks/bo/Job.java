@@ -61,7 +61,7 @@ public class Job {
     }
 
     public void reset() {
-        this.status = null;
+        this.status = JobStatus.PLAN_PENDING;
         this.startDateTime = null;
         this.endDateTime = null;
         this.steps.clear();

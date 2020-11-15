@@ -57,13 +57,6 @@ jobs:
       - echo "checking is percy is enabled on PR $TRAVIS_PULL_REQUEST"
       - NO_PERCY=$(curl -s https://api.github.com/repos/gaia-app/gaia/pulls/$TRAVIS_PULL_REQUEST | jq '.labels[].name | select(.=="no-percy")' | tr -d \")
       - if [[ $NO_PERCY != "no-percy" ]]; then npm install @percy/agent; npx percy exec -- mvn test -Dgroups=e2e; fi
-    - stage: deploy
-      name: "Deploy to hub.docker.com"
-      script:
-      - export DOCKER_TAG=`echo $TRAVIS_TAG | cut -d 'v' -f 2`
-      - echo "$DOCKER_PASSWORD" | docker login -u codekaio --password-stdin
-      - docker build -t codekaio/gaia:$DOCKER_TAG .
-      - docker push codekaio/gaia:$DOCKER_TAG
 
 after_success:
   - wget https://raw.githubusercontent.com/CodeKaio/travis-ci-discord-webhook/master/send.sh
