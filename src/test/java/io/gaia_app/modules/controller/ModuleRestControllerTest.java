@@ -47,6 +47,7 @@ class ModuleRestControllerTest {
     @BeforeEach
     void setUp() {
         admin = new User("admin", null);
+        admin.setAdmin(true);
 
         john = new User("John Dorian", null);
 

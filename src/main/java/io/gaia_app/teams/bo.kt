@@ -16,8 +16,7 @@ data class User(
         @Id val username: String,
         @DBRef val team: Team?) {
 
-    val isAdmin: Boolean
-        get() = "admin" == this.username
+    var isAdmin: Boolean = false
 
     var oAuth2User: OAuth2User? = null
 }

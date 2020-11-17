@@ -15,6 +15,7 @@ class TerraformModuleTest {
     void module_shouldBeAuthorized_forAdminUser(){
         // given
         var admin = new User("admin", null);
+        admin.setAdmin(true);
         var module = new TerraformModule();
 
         // when

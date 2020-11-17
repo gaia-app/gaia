@@ -7,6 +7,7 @@ import io.gaia_app.teams.Team
 import io.gaia_app.teams.User
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -30,7 +31,13 @@ class DashboardRestControllerTest {
     @Nested
     inner class WhenAdminUserTest {
 
-        private val user = User("admin", null)
+        private lateinit var user: User
+
+        @BeforeEach
+        internal fun setUp() {
+            user = User("admin", null)
+            user.isAdmin = true
+        }
 
         @Test
         fun `summary() should return modules count`() {

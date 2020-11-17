@@ -3,7 +3,8 @@ gaia.user.drop();
 gaia.user.insert([
     {
         "_id": "admin",
-        "team": {"$ref": "team", "$id": "Ze Team"}
+        "team": {"$ref": "team", "$id": "Ze Team"},
+        "isAdmin": true
     },
     {
         "_id": "Mary J",
