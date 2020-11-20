@@ -73,16 +73,16 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
 
     @Test
     void saveUser_shouldBeExposed_atSpecificUrl() throws Exception {
-        mockMvc.perform(put("/api/users/test")
+        mockMvc.perform(put("/api/users/Luke Skywalker")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"username\":\"Bob\"}"))
+            .content("{\"username\":\"Luke Skywalker\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.username", is("Bob")))
+            .andExpect(jsonPath("$.username", is("Luke Skywalker")))
             .andExpect(jsonPath("$.admin", is(false)))
             .andExpect(jsonPath("$.team", isEmptyOrNullString()));
 
-        assertThat(userRepository.existsById("Bob")).isTrue();
+        assertThat(userRepository.existsById("Luke Skywalker")).isTrue();
     }
 
     @Test

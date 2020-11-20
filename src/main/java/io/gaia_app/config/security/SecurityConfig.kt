@@ -1,13 +1,17 @@
 package io.gaia_app.config.security
 
+import io.gaia_app.teams.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
@@ -19,7 +23,8 @@ class SecurityConfig(
         val failureHandler: FailureHandler,
         val logoutSuccessHandler: LogoutSuccessHandler,
         val accessDeniedHandler: AccessDeniedHandler,
-        val authenticationEntryPoint: AuthenticationEntryPoint) : WebSecurityConfigurerAdapter() {
+        val authenticationEntryPoint: AuthenticationEntryPoint,
+        val userRepository: UserRepository) : WebSecurityConfigurerAdapter() {
 
     @Value("\${gaia.admin-password:admin123}")
     private val adminPassword: String? = null
@@ -74,15 +79,21 @@ class SecurityConfig(
         // @formatter:on
     }
 
-    public override fun configure(auth: AuthenticationManagerBuilder) {
-        // @formatter:off
-        auth
-            .inMemoryAuthentication()
-            // configure default admin user
-            .withUser("admin").password(bcrypt().encode(adminPassword)).authorities("ROLE_ADMIN", "ROLE_USER")
-        .and()
-            .withUser("user").password(bcrypt().encode("user123")).authorities("ROLE_USER")
-        // @formatter:on
+    @Bean
+    override fun userDetailsService(): UserDetailsService {
+        return UserDetailsService {
+            username:String -> userRepository.findById(username)
+            .map { User.builder().username(it.username).password(it.password).authorities(it.toAuthorities()).build() }
+            .orElseThrow()
+        }
     }
 
+}
+
+fun io.gaia_app.teams.User.toAuthorities(): List<GrantedAuthority> {
+    return if (this.isAdmin) {
+        listOf(SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("ROLE_USER"))
+    } else {
+        listOf(SimpleGrantedAuthority("ROLE_USER"))
+    }
 }

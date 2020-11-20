@@ -1,7 +1,7 @@
 package io.gaia_app.teams.controller;
 
 import io.gaia_app.teams.User;
-import io.gaia_app.teams.repository.UserRepository;
+import io.gaia_app.teams.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 class UsersRestControllerTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private UsersRestController usersRestController;
@@ -23,7 +23,7 @@ class UsersRestControllerTest {
     void users_shouldReturnAllTeams() {
         usersRestController.users();
 
-        verify(userRepository).findAll();
+        verify(userService).findAll();
     }
 
     @Test
@@ -31,6 +31,6 @@ class UsersRestControllerTest {
         var john = new User("john", null);
         usersRestController.saveUser(john);
 
-        verify(userRepository).save(john);
+        verify(userService).update(john);
     }
 }
