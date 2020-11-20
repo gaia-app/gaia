@@ -4,7 +4,9 @@ gaia.user.insert([
     {
         "_id": "admin",
         "team": {"$ref": "team", "$id": "Ze Team"},
-        "isAdmin": true
+        "isAdmin": true,
+        // admin123
+        "password": "$2a$10$hr8QjaJ0ync5OQoCtoown.XKplCdhAnyfkWaCf9fto9Cd4470hO/e"
     },
     {
         "_id": "Mary J",

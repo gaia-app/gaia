@@ -20,11 +20,20 @@ class UsersRestControllerTest {
     private UsersRestController usersRestController;
 
     @Test
-    void users_shouldReturnAllTeams() {
+    void users_shouldReturnAllUsers() {
         usersRestController.users();
 
         verify(userService).findAll();
     }
+
+    @Test
+    void createUser_shouldSaveTheUser() {
+        var john = new User("john", null);
+        usersRestController.createUser(john);
+
+        verify(userService).create(john);
+    }
+
 
     @Test
     void saveUser_shouldSaveTheUser() {
@@ -32,5 +41,19 @@ class UsersRestControllerTest {
         usersRestController.saveUser(john);
 
         verify(userService).update(john);
+    }
+
+    @Test
+    void deleteUser_shouldDeleteTheUser() {
+        usersRestController.deleteUser("john");
+
+        verify(userService).deleteUser("john");
+    }
+
+    @Test
+    void changeUserPassword_shouldChangeThePassword() {
+        usersRestController.changeUserPassword("john", "password");
+
+        verify(userService).changeUserPassword("john", "password");
     }
 }

@@ -2,7 +2,7 @@
   <div>
     <b-button
       variant="primary"
-      :to="{ name: 'user_edition', params: { username: 'new' }}"
+      :to="{ name: 'new_user' }"
     >
       <font-awesome-icon
         icon="user-plus"

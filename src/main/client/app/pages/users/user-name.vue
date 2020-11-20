@@ -5,6 +5,7 @@
     <b-badge
       v-if="user.admin"
       variant="primary"
+      class="mr-1"
     >
       <font-awesome-icon icon="user-shield" /> Administrator
     </b-badge>
