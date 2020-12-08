@@ -40,6 +40,6 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.12",
-    "copy-webpack-plugin": "^6.1.0"
+    "copy-webpack-plugin": "^6.4.0"
   }
 }
