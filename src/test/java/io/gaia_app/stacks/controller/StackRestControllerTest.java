@@ -16,6 +16,7 @@ import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.stacks.bo.Stack;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -62,6 +63,11 @@ class StackRestControllerTest {
 
     @Mock
     private CredentialsRepository credentialsRepository;
+
+    @BeforeEach
+    void setUp() {
+        adminUser.setAdmin(true);
+    }
 
     @Test
     void listStack_shouldFindAllStacks_forAdminUser() {

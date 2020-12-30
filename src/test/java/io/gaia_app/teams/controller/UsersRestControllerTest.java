@@ -1,7 +1,7 @@
 package io.gaia_app.teams.controller;
 
 import io.gaia_app.teams.User;
-import io.gaia_app.teams.repository.UserRepository;
+import io.gaia_app.teams.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,23 +14,46 @@ import static org.mockito.Mockito.verify;
 class UsersRestControllerTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private UsersRestController usersRestController;
 
     @Test
-    void users_shouldReturnAllTeams() {
+    void users_shouldReturnAllUsers() {
         usersRestController.users();
 
-        verify(userRepository).findAll();
+        verify(userService).findAll();
     }
+
+    @Test
+    void createUser_shouldSaveTheUser() {
+        var john = new User("john", null);
+        usersRestController.createUser(john);
+
+        verify(userService).create(john);
+    }
+
 
     @Test
     void saveUser_shouldSaveTheUser() {
         var john = new User("john", null);
         usersRestController.saveUser(john);
 
-        verify(userRepository).save(john);
+        verify(userService).update(john);
+    }
+
+    @Test
+    void deleteUser_shouldDeleteTheUser() {
+        usersRestController.deleteUser("john");
+
+        verify(userService).deleteUser("john");
+    }
+
+    @Test
+    void changeUserPassword_shouldChangeThePassword() {
+        usersRestController.changeUserPassword("john", "password");
+
+        verify(userService).changeUserPassword("john", "password");
     }
 }

@@ -2,11 +2,9 @@ package io.gaia_app.teams.controller;
 
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.repository.TeamRepository;
-import io.gaia_app.teams.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +22,18 @@ public class TeamsRestController {
     @GetMapping
     public List<Team> teams(){
         return this.teamRepository.findAll();
+    }
+
+    @PostMapping
+    @Secured("ROLE_ADMIN")
+    public Team createOrganization(@RequestBody Team organization){
+        return this.teamRepository.save(organization);
+    }
+
+    @DeleteMapping("/{organizationId}")
+    @Secured("ROLE_ADMIN")
+    public void deleteOrganization(@PathVariable String organizationId){
+        this.teamRepository.deleteById(organizationId);
     }
 
 }

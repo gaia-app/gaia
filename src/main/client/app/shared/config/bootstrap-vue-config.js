@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  AlertPlugin,
   BadgePlugin,
   BreadcrumbPlugin,
   ButtonPlugin,
@@ -27,6 +28,7 @@ import {
 
 export default {
   init: () => {
+    Vue.use(AlertPlugin);
     Vue.use(BadgePlugin);
     Vue.use(BreadcrumbPlugin);
     Vue.use(ButtonPlugin);

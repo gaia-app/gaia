@@ -44,6 +44,9 @@
         {
           route: 'users', icon: 'user-friends', class: 'yellow_color', title: 'Users', roles: ['ROLE_ADMIN'],
         },
+        {
+          route: 'organizations', icon: 'sitemap', class: 'yellow_color', title: 'Organizations', roles: ['ROLE_ADMIN'],
+        },
       ],
     }),
     computed: {

@@ -208,13 +208,7 @@
     </dependencies>
 
     <dependencyManagement>
-        <!-- we need this as selenium needs guava 25, and docker-client embeds guava 20 -->
         <dependencies>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>29.0-jre</version>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.vault</groupId>
                 <artifactId>spring-vault-dependencies</artifactId>

@@ -1,9 +1,11 @@
 package io.gaia_app.config.security
 
+import io.gaia_app.teams.User
+import io.gaia_app.teams.repository.UserRepository
 import io.gaia_app.test.any
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @SpringBootTest(classes = [SecurityConfig::class, SecurityConfigIT.FakeRestController::class])
 @AutoConfigureMockMvc
@@ -44,6 +47,16 @@ class SecurityConfigIT {
 
     @MockBean
     lateinit var authenticationEntryPoint: AuthenticationEntryPoint
+
+    @MockBean
+    lateinit var userRepository: UserRepository
+
+    @BeforeEach
+    internal fun setUp() {
+        val adminUser = User("admin", null)
+        adminUser.password = "\$2a\$10\$hr8QjaJ0ync5OQoCtoown.XKplCdhAnyfkWaCf9fto9Cd4470hO/e"
+        `when`(userRepository.findById("admin")).thenReturn(Optional.of(adminUser));
+    }
 
     @Test
     fun `security should not authenticate assets access`() {
@@ -84,7 +97,7 @@ class SecurityConfigIT {
 
     @Test
     fun `security should handle login success`() {
-        mockMvc.perform(formLogin("/auth/classic").user("admin").password("admin456"))
+        mockMvc.perform(formLogin("/auth/classic").user("admin").password("admin123"))
             .andExpect(authenticated().withUsername("admin"))
         verify(successHandler).onAuthenticationSuccess(any(), any(), any())
     }

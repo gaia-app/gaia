@@ -1,6 +1,8 @@
 package io.gaia_app.teams
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef
 
@@ -16,10 +18,12 @@ data class User(
         @Id val username: String,
         @DBRef val team: Team?) {
 
-    val isAdmin: Boolean
-        get() = "admin" == this.username
+    var isAdmin: Boolean = false
 
     var oAuth2User: OAuth2User? = null
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    var password: String? = null
 }
 
 /**
