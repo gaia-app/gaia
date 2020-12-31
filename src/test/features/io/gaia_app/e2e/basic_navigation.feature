@@ -28,4 +28,5 @@ Feature: Basic Navigation
 
     Scenario: View users list
         When I go on the users page
+        Then I can see 5 users
         Then Percy takes a snapshot named 'Users'
