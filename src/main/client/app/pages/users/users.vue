@@ -13,6 +13,7 @@
 
     <div class="block mt-3">
       <b-table
+        id="usersTable"
         :items="users"
         :fields="fields"
         striped
