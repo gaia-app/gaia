@@ -1,6 +1,6 @@
 <template>
   <div class="block">
-    <div class="block_head dark_bg">
+    <div class="block_head job_header">
       <h2><span><font-awesome-icon icon="history" /> Job history</span></h2>
     </div>
     <ul
@@ -160,6 +160,18 @@
 </script>
 
 <style scoped>
+  .job_header {
+    background: #0971b8;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 0;
+    margin-top: 0;
+  }
+  .job_header h2 {
+    color: #fff;
+  }
+
   .job_list {
     width: 100%;
     list-style: none;

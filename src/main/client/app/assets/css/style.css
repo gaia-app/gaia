@@ -52,8 +52,6 @@
     2. import files
 -------------------------------------------------------------------*/
 
-@import url(animate.css);
-
 /*------------------------------------------------------------------
     3. basic
 -------------------------------------------------------------------*/
@@ -967,28 +965,6 @@ a:focus {
   border-radius: 5px;
   margin-top: 0;
 }
-
-
-.block_head.dark_bg {
-  border-bottom: 0;
-}
-
-.dark_bg {
-  background: #214162;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  margin-top: 0;
-}
-
-.dark_bg .graph_head {
-  border-bottom: solid rgba(255, 255, 255, .1) 2px;
-}
-
-.dark_bg h2 {
-  color: #fff;
-}
-
 
 /*------------------------------------------------------------------
     8. Social icon
