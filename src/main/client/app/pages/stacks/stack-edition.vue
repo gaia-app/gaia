@@ -10,7 +10,7 @@
         <font-awesome-icon icon="save" /> Save
       </b-button>
       <b-button
-        v-if="stack.state === 'NEW' || stack.state === 'STOPPED'"
+        v-if="canRunStack"
         :disabled="!formValid"
         variant="primary"
         class="mr-1"
@@ -19,7 +19,7 @@
         <font-awesome-icon icon="rocket" /> Run
       </b-button>
       <b-button
-        v-if="stack.state === 'TO_UPDATE'"
+        v-if="canUpdateStack"
         :disabled="!formValid"
         variant="warning"
         class="mr-1"
@@ -28,13 +28,29 @@
         <font-awesome-icon icon="upload" /> Update
       </b-button>
       <b-button
-        v-if="stack.state === 'RUNNING' || stack.state === 'TO_UPDATE'"
+        v-if="canStopStack"
         :disabled="!formValid"
         variant="danger"
         class="mr-1"
         @click="stopStack"
       >
         <font-awesome-icon icon="stop-circle" /> Destroy
+      </b-button>
+      <b-button
+        v-if="canArchiveStack"
+        variant="danger"
+        class="float-right"
+        @click="archiveStack"
+      >
+        <font-awesome-icon icon="archive" /> Archive
+      </b-button>
+      <b-button
+        v-if="canUnarchiveStack"
+        variant="danger"
+        class="float-right"
+        @click="unarchiveStack"
+      >
+        <font-awesome-icon icon="archive" /> Un-Archive
       </b-button>
     </div>
 
@@ -94,6 +110,16 @@
                 title="Your stack has been stopped."
               >
                 <i class="fas fa-stop-circle" /> stopped
+              </b-badge>
+
+              <b-badge
+                v-if="stack.state === 'ARCHIVED'"
+                pill
+                variant="danger"
+                class="ml-1"
+              >
+                <font-awesome-icon icon="archive" />
+                archived
               </b-badge>
             </h2>
           </div>
@@ -225,6 +251,21 @@
       editableVars() {
         return this.stack.variables.filter((variable) => variable.editable);
       },
+      canRunStack() {
+        return this.stack.state !== 'ARCHIVED' && (this.stack.state === 'NEW' || this.stack.state === 'STOPPED');
+      },
+      canStopStack() {
+        return this.stack.state !== 'ARCHIVED' && (this.stack.state === 'RUNNING' || this.stack.state === 'TO_UPDATE');
+      },
+      canUpdateStack() {
+        return this.stack.state !== 'ARCHIVED' && this.stack.state === 'TO_UPDATE';
+      },
+      canArchiveStack() {
+        return this.stack.state !== 'ARCHIVED';
+      },
+      canUnarchiveStack() {
+        return this.stack.state === 'ARCHIVED';
+      },
     },
 
     async created() {
@@ -286,6 +327,27 @@
           const { jobId } = await destroyStack(this.stack.id);
           await planJob(jobId);
           this.$router.push({ name: 'job', params: { jobId } });
+        }
+      },
+      async archiveStack() {
+        // ask for confirmation
+        const message = 'This will archive the stack. '
+          + 'The stack will no longer be visible in the stacks list. '
+          + 'This will not destroy any Terraform resources. Continue?';
+        if (await displayConfirmDialog(this, { title: 'Archive Stack', message })) {
+          this.stack.state = 'ARCHIVED';
+          await saveStack(this.stack);
+          this.$router.push({ name: 'stacks' });
+        }
+      },
+      async unarchiveStack() {
+        // ask for confirmation
+        const message = 'This will un-archive the stack. '
+          + 'The stack will be restored in the stacks list. '
+          + 'Continue?';
+        if (await displayConfirmDialog(this, { title: 'UnArchive Stack', message })) {
+          this.stack.state = 'NEW';
+          await saveStack(this.stack);
         }
       },
       async refreshJobs() {

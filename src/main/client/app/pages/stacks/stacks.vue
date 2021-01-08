@@ -30,6 +30,16 @@
         <b-tooltip :target="'badge-' + stack.id">
           {{ states[stack.state].tooltip }}
         </b-tooltip>
+
+        <b-badge
+          v-if="stack.archived"
+          pill
+          variant="danger"
+          class="ml-1"
+        >
+          <font-awesome-icon icon="archive" />
+          archived
+        </b-badge>
       </b-card-footer>
 
       <b-card-footer>
@@ -86,6 +96,8 @@
     }),
     async created() {
       this.stacks = await getStacks();
+      // filter archived stacks by default
+      this.stacks = this.stacks.filter((stack) => stack.state !== 'ARCHIVED');
     },
   };
 </script>
