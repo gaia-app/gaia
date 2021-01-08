@@ -88,10 +88,15 @@ public class StackRestController {
         // get the stack
         var stack = this.stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
 
+        // do not launch jobs of archived stacks
+        if (stack.isArchived()) {
+            throw new StackArchivedException();
+        }
+
         // create a new job
         var job = new Job(jobType, id, user);
         job.setTerraformImage(stack.getModule().getTerraformImage());
-        if(stack.getCredentialsId() != null){
+        if (stack.getCredentialsId() != null) {
             this.credentialsRepository.findById(stack.getCredentialsId())
                 .ifPresent(job::setCredentials);
         }
@@ -104,4 +109,8 @@ public class StackRestController {
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 class StackNotFoundException extends RuntimeException {
+}
+
+@ResponseStatus(HttpStatus.FORBIDDEN)
+class StackArchivedException extends RuntimeException {
 }

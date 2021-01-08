@@ -5,9 +5,7 @@ import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
-import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.JobType;
-import io.gaia_app.stacks.bo.Stack;
+import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
@@ -239,6 +237,20 @@ class StackRestControllerTest {
         assertEquals(user, job.getUser());
         assertEquals(module.getTerraformImage(), job.getTerraformImage());
         assertEquals(job.getCredentials(), awsCredentials);
+    }
+
+    @Test
+    void launchJob_shouldThrowAnException_forArchivedStacks(){
+        // given
+        var stack = new Stack();
+        stack.setState(StackState.ARCHIVED);
+
+        var user = new User("test_user", null);
+
+        // when
+        when(stackRepository.findById(anyString())).thenReturn(Optional.of(stack));
+
+        assertThrows(StackArchivedException.class, () -> stackRestController.launchJob("test_stack", JobType.RUN, user));
     }
 
 }

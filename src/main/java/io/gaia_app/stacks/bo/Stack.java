@@ -202,4 +202,8 @@ public class Stack {
         });
         return variablesBuilder.toString();
     }
+
+    public boolean isArchived() {
+        return this.state == StackState.ARCHIVED;
+    }
 }
