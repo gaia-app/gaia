@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faArchive,
   faAngleDoubleDown,
   faAngleDoubleLeft,
   faAngleDoubleRight,
@@ -59,6 +60,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 export default {
   init: () => {
     library.add(
+      faArchive,
       faCalendarAlt,
       faDollarSign,
       faEdit,

@@ -23,6 +23,11 @@ public enum StackState {
     /**
      * When the stack has been stopped
      */
-    STOPPED
+    STOPPED,
+
+    /**
+     * When the stack is archived, and cannot be run anymore
+     */
+    ARCHIVED
 
 }

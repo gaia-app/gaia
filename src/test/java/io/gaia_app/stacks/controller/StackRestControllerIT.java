@@ -50,8 +50,8 @@ class StackRestControllerIT extends SharedMongoContainerTest {
     void listStacks_shouldReturnAllStacks_forAdmin() throws Exception {
         mockMvc.perform(get("/api/stacks"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(4)))
-            .andExpect(jsonPath("$.[*].name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo")))
+            .andExpect(jsonPath("$", hasSize(5)))
+            .andExpect(jsonPath("$.[*].name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo", "archived-stack")))
             .andExpect(jsonPath("$.[*].ownerTeam.id", contains("Ze Team", "Ze Team", "Not Ze Team")));
     }
 
@@ -161,6 +161,13 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"b39ccd07-80f5-455f-a6b3-b94f915738c4\"}, \"variableValues\":{\"mongo_container_name\":\"someContainerName\",\"mongo_exposed_port\":\"toto\"}}"))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message", is("variables should match the regex")));
+    }
+
+    @Test
+    void launchJob_shouldThrowABadRequest_forArchivedStacks() throws Exception {
+        mockMvc.perform(post("/api/stacks/archived-stack/RUN")
+            .with(csrf()))
+            .andExpect(status().isForbidden());
     }
 
 }

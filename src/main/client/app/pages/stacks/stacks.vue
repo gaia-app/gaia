@@ -1,49 +1,59 @@
 <template>
-  <b-card-group columns>
-    <b-card
-      v-for="stack in stacks"
-      :key="stack.id"
-      :sub-title="stack.description"
-      :header-class="stack.module.mainProvider || 'unknown'"
-      no-body
-    >
-      <template v-slot:header>
-        <h1>{{ stack.name }}</h1>
-        <app-provider-logo
-          :provider="stack.module.mainProvider || 'unknown'"
-          size="40px"
-        />
-      </template>
+  <div>
+    <div class="page_controls">
+      <b-form-checkbox
+        v-model="showArchived"
+        switch
+      >
+        Show archived stacks
+      </b-form-checkbox>
+    </div>
+    <b-card-group columns>
+      <b-card
+        v-for="stack in visibleStacks"
+        :key="stack.id"
+        :sub-title="stack.description"
+        :header-class="stack.module.mainProvider || 'unknown'"
+        no-body
+      >
+        <template v-slot:header>
+          <h1>{{ stack.name }}</h1>
+          <app-provider-logo
+            :provider="stack.module.mainProvider || 'unknown'"
+            size="40px"
+          />
+        </template>
 
-      <b-card-body>
-        <p>{{ stack.description }}</p>
-      </b-card-body>
+        <b-card-body>
+          <p>{{ stack.description }}</p>
+        </b-card-body>
 
-      <b-card-footer>
-        <b-badge
-          :id="'badge-' + stack.id"
-          pill
-          :variant="states[stack.state].variant"
-        >
-          <font-awesome-icon :icon="states[stack.state].icon" />&nbsp;{{ states[stack.state].text }}
-        </b-badge>
-        <b-tooltip :target="'badge-' + stack.id">
-          {{ states[stack.state].tooltip }}
-        </b-tooltip>
-      </b-card-footer>
+        <b-card-footer>
+          <b-badge
+            :id="'badge-' + stack.id"
+            pill
+            :variant="states[stack.state].variant"
+          >
+            <font-awesome-icon :icon="states[stack.state].icon" />&nbsp;{{ states[stack.state].text }}
+          </b-badge>
+          <b-tooltip :target="'badge-' + stack.id">
+            {{ states[stack.state].tooltip }}
+          </b-tooltip>
+        </b-card-footer>
 
-      <b-card-footer>
-        <b-button
-          :to="{ name: 'stack_edition', params: { stackId: stack.id }}"
-          title="Edit this stack"
-          variant="primary"
-          class="mr-1"
-        >
-          <font-awesome-icon icon="edit" />
-        </b-button>
-      </b-card-footer>
-    </b-card>
-  </b-card-group>
+        <b-card-footer>
+          <b-button
+            :to="{ name: 'stack_edition', params: { stackId: stack.id }}"
+            title="Edit this stack"
+            variant="primary"
+            class="mr-1"
+          >
+            <font-awesome-icon icon="edit" />
+          </b-button>
+        </b-card-footer>
+      </b-card>
+    </b-card-group>
+  </div>
 </template>
 
 <script>
@@ -57,6 +67,7 @@
     },
     data: () => ({
       stacks: [],
+      showArchived: false,
       states: {
         NEW: {
           variant: 'success',
@@ -82,8 +93,22 @@
           icon: 'stop-circle',
           text: 'stopped',
         },
+        ARCHIVED: {
+          variant: 'danger',
+          tooltip: 'Your stack is archived.',
+          icon: 'archive',
+          text: 'archived',
+        },
       },
     }),
+    computed: {
+      visibleStacks() {
+        if (this.showArchived) {
+          return this.stacks;
+        }
+        return this.stacks.filter((stack) => stack.state !== 'ARCHIVED');
+      },
+    },
     async created() {
       this.stacks = await getStacks();
     },
