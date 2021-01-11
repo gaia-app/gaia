@@ -1,6 +1,12 @@
 name: Visual Non Regression
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   vnr:
