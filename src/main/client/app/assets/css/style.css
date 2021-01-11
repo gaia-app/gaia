@@ -46,13 +46,50 @@
     1. import fonts
 -------------------------------------------------------------------*/
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+/* poppins-300 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  src: local(''),
+  url('../fonts/poppins-v15-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../fonts/poppins-v15-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-regular - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+  url('../fonts/poppins-v15-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../fonts/poppins-v15-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-500 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  src: local(''),
+  url('../fonts/poppins-v15-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../fonts/poppins-v15-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-700 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+  url('../fonts/poppins-v15-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('../fonts/poppins-v15-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 
 /*------------------------------------------------------------------
     2. import files
 -------------------------------------------------------------------*/
-
-@import url(animate.css);
 
 /*------------------------------------------------------------------
     3. basic
@@ -967,28 +1004,6 @@ a:focus {
   border-radius: 5px;
   margin-top: 0;
 }
-
-
-.block_head.dark_bg {
-  border-bottom: 0;
-}
-
-.dark_bg {
-  background: #214162;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  margin-top: 0;
-}
-
-.dark_bg .graph_head {
-  border-bottom: solid rgba(255, 255, 255, .1) 2px;
-}
-
-.dark_bg h2 {
-  color: #fff;
-}
-
 
 /*------------------------------------------------------------------
     8. Social icon
