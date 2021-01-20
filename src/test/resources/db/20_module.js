@@ -16,6 +16,10 @@ gaia.terraformModule.insert([
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
+        "registryDetails": {
+            "registryType": "GITHUB",
+            "projectId": "juwit/terraform-docker-mongo"
+        },
         "variables": [
             {
                 "name": "mongo_container_name",
@@ -46,6 +50,10 @@ gaia.terraformModule.insert([
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
+        "registryDetails": {
+            "registryType": "GITHUB",
+            "projectId": "juwit/terraform-docker-mongo"
+        },
         "variables": []
     },
     {
@@ -62,6 +70,10 @@ gaia.terraformModule.insert([
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
+        },
+        "registryDetails": {
+            "registryType": "GITHUB",
+            "projectId": "juwit/terraform-docker-mongo"
         },
         "variables": [
             {
