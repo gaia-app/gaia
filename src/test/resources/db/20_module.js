@@ -14,6 +14,7 @@ gaia.terraformModule.insert([
         },
         "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
         "moduleMetadata": {
+            "createdAt": "2020-08-07T14:32:22.015+00:00",
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
         "registryDetails": {
