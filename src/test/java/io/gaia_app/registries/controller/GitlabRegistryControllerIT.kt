@@ -113,7 +113,7 @@ class GitlabRegistryControllerIT: SharedMongoContainerTest() {
         assertThat(importedModule.name).isEqualTo("selmak/terraform-docker-mongo")
 
         assertThat(importedModule.moduleMetadata.createdBy).isEqualTo(selmak)
-        assertThat(importedModule.moduleMetadata.createdAt).isEqualToIgnoringSeconds(LocalDateTime.now())
+        assertThat(importedModule.moduleMetadata.createdAt).isEqualToIgnoringMinutes(LocalDateTime.now())
 
         assertThat(importedModule.gitRepositoryUrl).isEqualTo("https://gitlab.com/selmak/terraform-docker-mongo")
         assertThat(importedModule.registryDetails).isEqualTo(RegistryDetails(RegistryType.GITLAB, "16181047"))
