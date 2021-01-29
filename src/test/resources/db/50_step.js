@@ -32,6 +32,10 @@ gaia.step.insert([
         "type" : "PLAN",
         "status" : "FINISHED",
         "logs" : "",
+        "plan": {
+          "$ref" : "plan",
+          "$id" : "1f38d7e3-b7d5-4bbb-9a75-1c1ea35dfee9"
+        },
         "_class" : "io.gaia_app.stacks.bo.Step"
     },
     {
