@@ -13,6 +13,8 @@ public class TerraformScript {
     private String command;
     private String stateApiUser;
     private String stateApiPassword;
+    private boolean uploadPlan;
+    private String jobId;
 
     public String getTerraformImage() {
         return terraformImage;
@@ -84,5 +86,23 @@ public class TerraformScript {
     public TerraformScript setStateApiPassword(String stateApiPassword) {
         this.stateApiPassword = stateApiPassword;
         return this;
+    }
+
+    public boolean isUploadPlan() {
+        return uploadPlan;
+    }
+
+    public TerraformScript setUploadPlan(boolean uploadPlan) {
+        this.uploadPlan = uploadPlan;
+        return this;
+    }
+
+    public TerraformScript setJobId(String jobId) {
+        this.jobId = jobId;
+        return this;
+    }
+
+    public String getJobId() {
+        return jobId;
     }
 }

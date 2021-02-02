@@ -1,5 +1,7 @@
 package io.gaia_app.stacks.bo;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -19,6 +21,9 @@ public class Step {
     private StepType type;
     private StepStatus status = StepStatus.PENDING;
     private List<String> logs = new LinkedList<>();
+
+    @DBRef
+    private Plan plan;
 
     public Step() {
     }
@@ -110,4 +115,11 @@ public class Step {
         this.logs = logs;
     }
 
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
 }

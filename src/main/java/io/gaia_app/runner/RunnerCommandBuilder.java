@@ -54,14 +54,16 @@ public class RunnerCommandBuilder {
                 .orElse(url);
     }
 
-    private String buildScript(Job job, Stack stack, TerraformModule module, String command) {
+    private String buildScript(Job job, Stack stack, TerraformModule module, String command, boolean uploadPlan) {
         var script = new TerraformScript()
                 .setExternalUrl(settings.getExternalUrl())
                 .setStateApiUser(runnerApiSecurityProperties.getUsername())
                 .setStateApiPassword(runnerApiSecurityProperties.getPassword())
                 .setStackId(stack.getId())
+                .setJobId(job.getId())
                 .setGitRepositoryUrl(evalGitRepositoryUrl(module))
-                .setTerraformImage(job.getTerraformImage().image());
+                .setTerraformImage(job.getTerraformImage().image())
+                .setUploadPlan(uploadPlan);
 
         if (module.getDirectory() != null && !module.getDirectory().isBlank()) {
             script.setGitDirectory(module.getDirectory());
@@ -85,7 +87,7 @@ public class RunnerCommandBuilder {
      * @return
      */
     String buildPlanScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, "terraform plan -detailed-exitcode");
+        return buildScript(job, stack, module, "terraform plan -out plan.binary -detailed-exitcode", true);
     }
 
     /**
@@ -94,7 +96,7 @@ public class RunnerCommandBuilder {
      * @return
      */
     String buildApplyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, "terraform apply -auto-approve");
+        return buildScript(job, stack, module, "terraform apply -auto-approve", false);
     }
 
     /**
@@ -103,7 +105,7 @@ public class RunnerCommandBuilder {
      * @return
      */
     String buildPlanDestroyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, "terraform plan -destroy -detailed-exitcode");
+        return buildScript(job, stack, module, "terraform plan -destroy -detailed-exitcode", false);
     }
 
     /**
@@ -112,7 +114,7 @@ public class RunnerCommandBuilder {
      * @return
      */
     String buildDestroyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, "terraform destroy -auto-approve");
+        return buildScript(job, stack, module, "terraform destroy -auto-approve", false);
     }
 
 }

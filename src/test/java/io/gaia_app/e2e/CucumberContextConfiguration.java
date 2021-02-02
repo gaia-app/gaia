@@ -33,6 +33,7 @@ public class CucumberContextConfiguration extends SharedMongoContainerTest {
         mongo.runScript("40_job.js");
         mongo.runScript("50_step.js");
         mongo.runScript("60_terraformState.js");
+        mongo.runScript("80_plan.js");
     }
 
     @After

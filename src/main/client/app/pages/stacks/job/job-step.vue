@@ -39,6 +39,23 @@
         class="icon"
       />
     </div>
+    <div
+      v-if="!step.undefined && step.plan"
+      class="job-step-result"
+    >
+      <div v-if="step.plan">
+        <p>
+          <font-awesome-icon
+            icon="poll-h"
+            class="icon"
+          />
+          Resource changes :
+          <b>{{ step.plan.createCount }}</b> to add,
+          <b>{{ step.plan.updateCount }}</b> to change,
+          <b>{{ step.plan.delete }}</b> to delete
+        </p>
+      </div>
+    </div>
     <b-collapse
       v-if="!step.undefined"
       :id="'collapse-' + id"
@@ -141,6 +158,22 @@
 
   .job-step-container .job-step-header .icon {
     font-size: larger;
+  }
+
+  .job-step-container .job-step-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #eaeaea;
+    border-top: 0;
+    padding: 1rem 1rem 1rem 2rem;
+    font-size: larger;
+    font-weight: bolder;
+    cursor: pointer;
+  }
+
+  .job-step-container .job-step-result p {
+    margin-bottom: 0;
   }
 
   .job-step-container .job-step-body {
