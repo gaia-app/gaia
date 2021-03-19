@@ -28,4 +28,48 @@ internal class StackTest {
             .contains("variableWithDefault = \"myValue\"\n")
             .contains("mandatoryVariable = \"myOtherValue\"\n")
     }
+
+    @Test
+    fun tfvars_shouldGenerateTfvarContents_forComplexTypes() {
+        // given
+        val listOfNumbers = Variable("listOfNumbers", "list(number)", "a list variable")
+
+        val module = TerraformModule()
+        module.variables = listOf(listOfNumbers)
+
+        val stack = Stack()
+        stack.module = module
+        stack.variableValues = mapOf("listOfNumbers" to "[1,2]")
+
+        // then
+        Assertions.assertThat(stack.tfvars())
+            .contains("listOfNumbers = [1,2]\n")
+    }
+
+    @Test
+    fun tfvars_shouldGenerateTfvarContents_forComplexTypesOnMultilineStrings() {
+        // given
+        val mapVariable = Variable("mapVariable", "map", "a map variable")
+
+        val module = TerraformModule()
+        module.variables = listOf(mapVariable)
+
+        val stack = Stack()
+        stack.module = module
+        stack.variableValues = mapOf("mapVariable" to """
+            {
+                name = "Anakin"
+                age  = 45
+            }
+        """.trimIndent())
+
+        // then
+        Assertions.assertThat(stack.tfvars())
+            .contains("""
+            mapVariable = {
+                name = "Anakin"
+                age  = 45
+            }
+            """.trimIndent())
+    }
 }
