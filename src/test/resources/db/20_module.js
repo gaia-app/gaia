@@ -26,12 +26,14 @@ gaia.terraformModule.insert([
                 "name": "mongo_container_name",
                 "description": "the name of the docker container",
                 "defaultValue": null,
+                "type": "string",
                 "editable": true
             },
             {
                 "name": "mongo_exposed_port",
                 "description": "the exposed port of the mongo container",
                 "defaultValue": 27017,
+                "type": "number",
                 "editable": true
             }
         ]
@@ -82,6 +84,7 @@ gaia.terraformModule.insert([
                 "description": "the name of the docker container",
                 "defaultValue": null,
                 "editable": true,
+                "type": "string",
                 "mandatory": true
             },
             {
@@ -89,6 +92,7 @@ gaia.terraformModule.insert([
                 "description": "the exposed port of the mongo container",
                 "defaultValue": 27017,
                 "editable": true,
+                "type": "number",
                 "validationRegex": "\\d{3,6}"
             }
         ]
