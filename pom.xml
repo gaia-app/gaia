@@ -48,7 +48,7 @@
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
         <kotlin.version>1.6.21</kotlin.version>
         <kotlinx.version>1.5.1</kotlinx.version>
-        <testcontainers.version>1.15.2</testcontainers.version>
+        <testcontainers.version>1.15.3</testcontainers.version>
         <node.version>v12.16.0</node.version>
         <npm.version>6.13.4</npm.version>
         <spring.vault.version>2.3.2</spring.vault.version>
