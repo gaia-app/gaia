@@ -3,13 +3,6 @@
     :label="name"
     :description="description"
   >
-    <b-input
-      v-if="! isListRegex && ! complexType"
-      v-model="editableValue"
-      :state="validAndEmit().result"
-      trim
-      @input="$emit('input', editableValue)"
-    />
     <b-textarea
       v-if="complexType"
       v-model="editableValue"
@@ -19,10 +12,17 @@
       @input="$emit('input', editableValue)"
     />
     <b-select
-      v-if="isListRegex"
+      v-else-if="isListRegex"
       v-model="editableValue"
       :state="validAndEmit().result"
       :options="listOptions"
+      @input="$emit('input', editableValue)"
+    />
+    <b-input
+      v-else
+      v-model="editableValue"
+      :state="validAndEmit().result"
+      trim
       @input="$emit('input', editableValue)"
     />
     <b-form-invalid-feedback>{{ valid().message }}</b-form-invalid-feedback>
