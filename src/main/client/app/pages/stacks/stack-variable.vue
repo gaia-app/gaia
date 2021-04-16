@@ -3,18 +3,26 @@
     :label="name"
     :description="description"
   >
-    <b-input
-      v-if="! isListRegex"
+    <b-textarea
+      v-if="complexType"
       v-model="editableValue"
       :state="validAndEmit().result"
       trim
+      max-rows="10"
       @input="$emit('input', editableValue)"
     />
     <b-select
-      v-if="isListRegex"
+      v-else-if="isListRegex"
       v-model="editableValue"
       :state="validAndEmit().result"
       :options="listOptions"
+      @input="$emit('input', editableValue)"
+    />
+    <b-input
+      v-else
+      v-model="editableValue"
+      :state="validAndEmit().result"
+      trim
       @input="$emit('input', editableValue)"
     />
     <b-form-invalid-feedback>{{ valid().message }}</b-form-invalid-feedback>
@@ -26,6 +34,10 @@
     name: 'StackVariable',
     props: {
       name: {
+        type: String,
+        required: true,
+      },
+      type: {
         type: String,
         required: true,
       },
@@ -63,6 +75,9 @@
         // extracting the values from the regex
         // also adding empty string to the result to be able to not select anything !
         return ['', ...this.validationRegex.match(listExtractRegex)];
+      },
+      complexType() {
+        return this.type !== 'string' && this.type !== 'number';
       },
     },
 

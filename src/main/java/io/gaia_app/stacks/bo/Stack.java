@@ -188,7 +188,10 @@ public class Stack {
      * @return a string with the content of the tfvars file
      */
     public String tfvars() {
-        var varLine = "%s = \"%s\"\n";
+        // strings are quoted, other variable types are not
+        var stringVariableLine = "%s = \"%s\"\n";
+        var variableLine = "%s = %s\n";
+
         var variablesBuilder = new StringBuilder();
 
         module.getVariables().forEach(terraformVariable -> {
@@ -198,7 +201,13 @@ public class Stack {
             if (this.variableValues.containsKey(variableName)) {
                 variableValue = this.variableValues.get(variableName);
             }
-            variablesBuilder.append(String.format(varLine, variableName, variableValue));
+
+            if( "string".equals(terraformVariable.getType())){
+                variablesBuilder.append(String.format(stringVariableLine, variableName, variableValue));
+            }
+            else {
+                variablesBuilder.append(String.format(variableLine, variableName, variableValue));
+            }
         });
         return variablesBuilder.toString();
     }
