@@ -63,7 +63,7 @@
           name: this.moduleName,
         };
         module = await createModule(module);
-        this.$router.push({ name: 'module', params: { id: module.id } });
+        this.$router.push({ name: 'module', params: { moduleId: module.id } });
       },
     },
   };
