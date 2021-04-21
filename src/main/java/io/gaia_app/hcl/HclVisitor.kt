@@ -1,10 +1,10 @@
 package io.gaia_app.hcl
 
-import io.gaia_app.hcl.antlr.hclBaseVisitor
 import io.gaia_app.hcl.antlr.hclParser
 import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
 import java.util.*
+import kotlin.NoSuchElementException
 
 class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
 
@@ -66,7 +66,27 @@ class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
         if (provider != "unknown") return
 
         // check first part of the resource type
-        provider = ctx.STRING(0).text.removeSurrounding("\"")
-                .substringBefore("_")
+        val resourceProvider = ctx.STRING(0).text
+            .removeSurrounding("\"")
+            .substringBefore("_")
+
+        if (! IGNORED_PROVIDERS.contains(resourceProvider)) {
+            provider = resourceProvider
+        }
+    }
+
+    override fun visitTerraformDirective(ctx: hclParser.TerraformDirectiveContext) {
+        try {
+            // find required providers field
+            val requiredProviders = ctx.`object`().field()
+                .first { it.IDENTIFIER().text == "required_providers" }
+            // find first required provider that should not be ignored
+            val firstValidProvider = requiredProviders.`object`().field()
+                .first { ! IGNORED_PROVIDERS.contains(it.IDENTIFIER().text) }
+            provider = firstValidProvider.IDENTIFIER().text
+        }
+        catch (_: NoSuchElementException){
+            // NoSuchElementException is raised when no provider is found in the terraform directive
+        }
     }
 }

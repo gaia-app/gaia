@@ -131,6 +131,83 @@ class HCLParserTest {
         }
 
         @Test
+        @Throws(IOException::class)
+        fun parsing_provider_fromResources_shouldIgnoreDummyProviders() {
+            // given
+            val fileContent = """
+                resource "random_id" "id" {
+                }
+
+                resource "google_project" "this" {
+                }
+            """.trimIndent()
+
+            // when
+            val provider: String = hclParser.parseProvider(fileContent)
+
+            // then
+            assertThat(provider).isEqualTo("google")
+        }
+
+        @Test
+        @Throws(IOException::class)
+        fun parsing_provider_shouldAnalyseRequiredProvidersBlock() {
+            // given
+            val fileContent = """
+                terraform {
+                  required_version = ">= 0.14"
+                  required_providers {
+                    random = ">= 3.1.0"
+                    google = ">= 3.64.0"
+                  }
+                }
+            """.trimIndent()
+
+            // when
+            val provider: String = hclParser.parseProvider(fileContent)
+
+            // then
+            assertThat(provider).isEqualTo("google")
+        }
+
+        @Test
+        @Throws(IOException::class)
+        fun parsing_provider_shouldAnalyseRequiredProvidersBlock_withoutRelevantProvider() {
+            // given
+            val fileContent = """
+                terraform {
+                  required_version = ">= 0.14"
+                  required_providers {
+                    random = ">= 3.1.0"
+                  }
+                }
+            """.trimIndent()
+
+            // when
+            val provider: String = hclParser.parseProvider(fileContent)
+
+            // then
+            assertThat(provider).isEqualTo("unknown")
+        }
+
+        @Test
+        @Throws(IOException::class)
+        fun parsing_provider_shouldAnalyseRequiredProvidersBlock_withoutRequiredProviders() {
+            // given
+            val fileContent = """
+                terraform {
+                  required_version = ">= 0.14"
+                }
+            """.trimIndent()
+
+            // when
+            val provider: String = hclParser.parseProvider(fileContent)
+
+            // then
+            assertThat(provider).isEqualTo("unknown")
+        }
+
+        @Test
         fun dummyProvidersShouldBeIgnored() {
             assertThat(hclParser.parseProvider("""provider "null" {} """)).isEqualTo("unknown")
             assertThat(hclParser.parseProvider("""provider "template" {} """)).isEqualTo("unknown")
