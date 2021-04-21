@@ -1,7 +1,5 @@
 package io.gaia_app.hcl
 
-import io.gaia_app.hcl.antlr.hclBaseVisitor
-import io.gaia_app.hcl.antlr.hclParser
 import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
 import java.util.*
@@ -66,7 +64,12 @@ class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
         if (provider != "unknown") return
 
         // check first part of the resource type
-        provider = ctx.STRING(0).text.removeSurrounding("\"")
-                .substringBefore("_")
+        val resourceProvider = ctx.STRING(0).text
+            .removeSurrounding("\"")
+            .substringBefore("_")
+
+        if (! IGNORED_PROVIDERS.contains(resourceProvider)) {
+            provider = resourceProvider
+        }
     }
 }

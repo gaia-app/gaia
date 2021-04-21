@@ -131,6 +131,25 @@ class HCLParserTest {
         }
 
         @Test
+        @Throws(IOException::class)
+        fun parsing_provider_shouldIgnoreDummyProviders() {
+            // given
+            val fileContent = """
+                resource "random_id" "id" {
+                }
+
+                resource "google_project" "this" {
+                }
+            """.trimIndent()
+
+            // when
+            val provider: String = hclParser.parseProvider(fileContent)
+
+            // then
+            assertThat(provider).isEqualTo("google")
+        }
+
+        @Test
         fun dummyProvidersShouldBeIgnored() {
             assertThat(hclParser.parseProvider("""provider "null" {} """)).isEqualTo("unknown")
             assertThat(hclParser.parseProvider("""provider "template" {} """)).isEqualTo("unknown")
