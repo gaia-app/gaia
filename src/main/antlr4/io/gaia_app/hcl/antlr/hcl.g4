@@ -6,6 +6,7 @@ file
 
 directive
   : providerDirective
+  | terraformDirective
   | resourceDirective
   | variableDirective
   | outputDirective
@@ -13,6 +14,10 @@ directive
 
 providerDirective
   : 'provider' STRING object
+  ;
+
+terraformDirective
+  : 'terraform' object
   ;
 
 resourceDirective
@@ -64,7 +69,10 @@ object
   | '{' field+ '}'
   ;
 
-field: IDENTIFIER '=' expression;
+field
+  : IDENTIFIER '=' expression
+  | IDENTIFIER object // for dynamic blocks
+  ;
 
 variableDescription
   : 'description' '=' STRING
