@@ -7,8 +7,8 @@ enum class RegistryType(val repositoriesUrl: String,
 
     GITHUB("https://api.github.com/user/repos?visibility=public&per_page=100",
             "https://api.github.com/repos/%s",
-            "https://api.github.com/repos/%s/contents/%s?ref=master",
-            "https://api.github.com/repos/{id}/contents/README.md?ref=master"),
+            "https://api.github.com/repos/%s/contents/%s",
+            "https://api.github.com/repos/{id}/contents/README.md"),
 
     GITLAB("https://gitlab.com/api/v4/projects?visibility=public&owned=true",
             "https://gitlab.com/api/v4/projects/%s",

@@ -69,7 +69,7 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
                 eq(RegistryFile.class))).thenReturn(response);
@@ -99,7 +99,7 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
                 eq(RegistryFile.class))).thenReturn(response);
@@ -126,7 +126,7 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<>(githubFile, HttpStatus.OK);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
                 eq(RegistryFile.class))).thenReturn(response);
@@ -168,7 +168,7 @@ class GitHubRawContentTest {
         var response = new ResponseEntity<RegistryFile>(HttpStatus.NOT_FOUND);
 
         when(restTemplate.exchange(
-                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md?ref=master"),
+                eq("https://api.github.com/repos/Apophis/Chulak/contents/README.md"),
                 eq(HttpMethod.GET),
                 requestCaptor.capture(),
                 eq(RegistryFile.class))).thenReturn(response);
