@@ -96,11 +96,11 @@ class GithubRegistryControllerIT: SharedMongoContainerTest() {
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo.json"), MediaType.APPLICATION_JSON))
 
-        server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/variables.tf?ref=master"))
+        server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/variables.tf"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo-content-variables.json"), MediaType.APPLICATION_JSON))
 
-        server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/main.tf?ref=master"))
+        server.expect(requestTo("https://api.github.com/repos/selmak/terraform-docker-mongo/contents/main.tf"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/github/selmak-terraform-docker-mongo-content-main.json"), MediaType.APPLICATION_JSON))
 

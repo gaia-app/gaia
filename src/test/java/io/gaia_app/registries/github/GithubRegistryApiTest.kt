@@ -97,7 +97,7 @@ class GithubRegistryApiTest{
         """
         val sampleResult = RegistryFile(content = Base64.encode(readmeContent.toByteArray(Charset.defaultCharset())))
         val detailsString = objectMapper.writeValueAsString(sampleResult)
-        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/README.md?ref=master"))
+        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/README.md"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
                 .andRespond(withSuccess(detailsString, MediaType.APPLICATION_JSON))
 
@@ -114,7 +114,7 @@ class GithubRegistryApiTest{
     @Test
     fun `getFileContent() should return an empty string when file doesnt exists`() {
         // given
-        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/non-existing.md?ref=master"))
+        server.expect(requestTo("https://api.github.com/repos/terraform-aws-modules/terraform-aws-rds/contents/non-existing.md"))
             .andExpect(header("Authorization", "Bearer johnstoken"))
             .andRespond(withStatus(HttpStatus.NOT_FOUND))
 
