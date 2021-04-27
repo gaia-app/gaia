@@ -13,6 +13,6 @@ import java.util.*
 @Repository
 interface JobRepository : MongoRepository<Job, String> {
 
-    fun findAllByStackIdOrderByStartDateTimeDesc(stackId: String): List<Job>
+    fun findAllByStackIdOrderByScheduleTimeDesc(stackId: String): List<Job>
 
 }

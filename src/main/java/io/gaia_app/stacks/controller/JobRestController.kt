@@ -1,9 +1,7 @@
 package io.gaia_app.stacks.controller
 
 import io.gaia_app.stacks.bo.Job
-import io.gaia_app.stacks.bo.JobStatus
 import io.gaia_app.stacks.repository.JobRepository
-import io.gaia_app.stacks.repository.StackRepository
 import io.gaia_app.stacks.repository.StepRepository
 import io.gaia_app.stacks.workflow.JobWorkflow
 import org.springframework.http.HttpStatus
@@ -16,7 +14,7 @@ class JobRestController(
         private val stepRepository: StepRepository) {
 
     @GetMapping(params = ["stackId"])
-    fun jobs(@RequestParam stackId: String) = jobRepository.findAllByStackIdOrderByStartDateTimeDesc(stackId)
+    fun jobs(@RequestParam stackId: String) = jobRepository.findAllByStackIdOrderByScheduleTimeDesc(stackId)
 
     @GetMapping("/{id}")
     fun job(@PathVariable id: String): Job {
