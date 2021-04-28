@@ -52,7 +52,7 @@
           Resource changes :
           <b>{{ step.plan.createCount }}</b> to add,
           <b>{{ step.plan.updateCount }}</b> to change,
-          <b>{{ step.plan.delete }}</b> to delete
+          <b>{{ step.plan.deleteCount }}</b> to delete
         </p>
       </div>
     </div>
