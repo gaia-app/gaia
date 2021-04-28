@@ -19,6 +19,8 @@ data class Plan(val id:String = UUID.randomUUID().toString(),
     fun getDeleteCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.DELETE) }
     fun getNoOpCount() = resource_changes.count { it.change.actions.contains(ChangesTypes.NOOP) }
 
+    fun isUpToDate() = getCreateCount() == 0 && getUpdateCount() == 0 && getDeleteCount() == 0
+
 }
 
 /**

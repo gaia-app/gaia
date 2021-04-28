@@ -24,4 +24,28 @@ internal class PlanTest {
         assertThat(plan.resource_changes).containsAll(listOf(container, image))
     }
 
+    @Test
+    fun `a plan with no changes should be 'up to date'`() {
+        val plan = Plan(terraform_version = "0", resource_changes = listOf())
+        assertThat(plan.isUpToDate()).isTrue
+    }
+
+    @Test
+    fun `a plan with only no-op changes should be 'up to date'`() {
+        val noOpChange = ResourceChange("address", "provider", "type", Change(listOf(ChangesTypes.NOOP)))
+        val plan = Plan(terraform_version = "0", resource_changes = listOf(noOpChange))
+        assertThat(plan.isUpToDate()).isTrue
+    }
+
+    @Test
+    fun `a plan with at least one create,update, or delete should not be 'up to date'`() {
+        val createChange = ResourceChange("address", "provider", "type", Change(listOf(ChangesTypes.CREATE)))
+        val updateChange = ResourceChange("address", "provider", "type", Change(listOf(ChangesTypes.UPDATE)))
+        val deleteChange = ResourceChange("address", "provider", "type", Change(listOf(ChangesTypes.DELETE)))
+
+        assertThat(Plan(terraform_version = "0", resource_changes = listOf(createChange)).isUpToDate()).isFalse
+        assertThat(Plan(terraform_version = "0", resource_changes = listOf(updateChange)).isUpToDate()).isFalse
+        assertThat(Plan(terraform_version = "0", resource_changes = listOf(deleteChange)).isUpToDate()).isFalse
+    }
+
 }
