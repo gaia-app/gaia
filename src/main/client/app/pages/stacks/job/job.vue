@@ -80,8 +80,12 @@
       secondStepTitle() {
         return this.job.type === 'RUN' ? 'apply' : 'destroy';
       },
+      isPlanUpToDate() {
+        return this.job.steps[0] && this.job.steps[0].plan && this.job.steps[0].plan.upToDate;
+      },
       isSecondStepDoable() {
         return this.job.status
+          && !this.isPlanUpToDate
           && !this.job.status.includes('PENDING')
           && !this.job.status.includes('STARTED')
           && !this.job.status.includes('FAILED')

@@ -105,7 +105,7 @@ public class RunnerCommandBuilder {
      * @return
      */
     String buildPlanDestroyScript(Job job, Stack stack, TerraformModule module) {
-        return buildScript(job, stack, module, "terraform plan -destroy -detailed-exitcode", false);
+        return buildScript(job, stack, module, "terraform plan -out plan.binary -destroy -detailed-exitcode", true);
     }
 
     /**

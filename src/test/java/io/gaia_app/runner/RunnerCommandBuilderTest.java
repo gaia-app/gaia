@@ -184,7 +184,8 @@ class RunnerCommandBuilderTest {
         assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan -destroy"));
+        assertTrue(script.contains("terraform plan -out plan.binary -destroy"));
+        assertTrue(script.contains("terraform show -json plan.binary > plan.json"));
     }
 
     @Test
@@ -204,7 +205,8 @@ class RunnerCommandBuilderTest {
         assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan -destroy"));
+        assertTrue(script.contains("terraform plan -out plan.binary -destroy"));
+        assertTrue(script.contains("terraform show -json plan.binary > plan.json"));
     }
 
     @Test
@@ -226,7 +228,8 @@ class RunnerCommandBuilderTest {
         assertTrue(script.contains("echo '[gaia] generating backend configuration'"));
         assertTrue(script.contains("terraform version"));
         assertTrue(script.contains("terraform init"));
-        assertTrue(script.contains("terraform plan -destroy"));
+        assertTrue(script.contains("terraform plan -out plan.binary -destroy"));
+        assertTrue(script.contains("terraform show -json plan.binary > plan.json"));
     }
 
 
