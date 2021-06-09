@@ -4,6 +4,7 @@ gaia.job.insert([
     {
         "_id" : "32e4c316-287a-48ba-9c49-dd1b1a0204c8",
         "stackId" : "de28a01f-257a-448d-8e1b-00e4e3a41db2",
+        "scheduleTime" : ISODate("2020-02-03T18:03:12.227Z"),
         "startDateTime" : ISODate("2020-02-03T18:03:12.227Z"),
         "endDateTime" : ISODate("2020-02-03T18:03:24.323Z"),
         "type" : "RUN",
@@ -31,6 +32,7 @@ gaia.job.insert([
     {
         "_id" : "5e856dc7-6bed-465f-abf1-02980206ab2a",
         "stackId" : "de28a01f-257a-448d-8e1b-00e4e3a41db2",
+        "scheduleTime" : ISODate("2020-02-05T07:01:30.875Z"),
         "startDateTime" : ISODate("2020-02-05T07:01:30.875Z"),
         "endDateTime" : ISODate("2020-02-05T07:02:18.625Z"),
         "type" : "RUN",

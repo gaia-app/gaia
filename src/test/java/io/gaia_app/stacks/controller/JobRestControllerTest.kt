@@ -1,25 +1,19 @@
 package io.gaia_app.stacks.controller
 
-import io.gaia_app.modules.bo.TerraformModule
 import io.gaia_app.stacks.bo.Job
 import io.gaia_app.stacks.bo.JobStatus
-import io.gaia_app.stacks.bo.Stack
 import io.gaia_app.stacks.bo.Step
 import io.gaia_app.stacks.repository.JobRepository
-import io.gaia_app.stacks.repository.StackRepository
 import io.gaia_app.stacks.repository.StepRepository
-import io.gaia_app.stacks.workflow.JobWorkflow
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentCaptor.forClass
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import java.util.*
 import java.util.Optional.empty
 import java.util.Optional.of
 
@@ -41,7 +35,7 @@ class JobRestControllerTest {
         controller.jobs("stackId")
 
         // then
-        verify(jobRepository).findAllByStackIdOrderByStartDateTimeDesc("stackId")
+        verify(jobRepository).findAllByStackIdOrderByScheduleTimeDesc("stackId")
     }
 
     @Test

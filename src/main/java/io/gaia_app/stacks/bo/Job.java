@@ -21,6 +21,7 @@ public class Job {
 
     private String id;
     private String stackId;
+    private LocalDateTime scheduleTime = LocalDateTime.now();
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private JobType type;
