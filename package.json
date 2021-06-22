@@ -24,7 +24,7 @@
     "vue": "^2.6.12",
     "vue-form-wizard": "^0.8.4",
     "vue-multiselect": "^2.1.6",
-    "vue-router": "^3.4.3",
+    "vue-router": "^3.5.2",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
