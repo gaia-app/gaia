@@ -21,24 +21,24 @@
     "jquery": "^3.5.0",
     "marked": "^2.0.0",
     "messenger-hubspot": "^1.5.0",
-    "vue": "^2.6.12",
+    "vue": "^2.6.14",
     "vue-form-wizard": "^0.8.4",
     "vue-multiselect": "^2.1.6",
-    "vue-router": "^3.4.3",
-    "vuex": "^3.5.1"
+    "vue-router": "^3.5.2",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.9",
-    "@vue/cli-plugin-eslint": "~4.5.7",
-    "@vue/cli-plugin-router": "~4.5.4",
-    "@vue/cli-plugin-vuex": "~4.5.4",
-    "@vue/cli-service": "~4.5.4",
-    "@vue/eslint-config-airbnb": "^5.1.0",
+    "@vue/cli-plugin-babel": "~4.5.13",
+    "@vue/cli-plugin-eslint": "~4.5.13",
+    "@vue/cli-plugin-router": "~4.5.13",
+    "@vue/cli-plugin-vuex": "~4.5.13",
+    "@vue/cli-service": "~4.5.13",
+    "@vue/eslint-config-airbnb": "^5.3.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.16.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.12",
+    "vue-template-compiler": "^2.6.14",
     "copy-webpack-plugin": "^6.1.0"
   }
 }
