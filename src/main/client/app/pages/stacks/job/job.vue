@@ -1,38 +1,46 @@
 <template>
-  <div
-    v-if="loaded"
-    class="block"
-  >
-    <div class="block_head_flex">
-      <h2>Stack {{ stack.name }}</h2>
-      <app-cli-badge
-        :cli="job.terraformImage"
-        badge-style="for-the-badge"
-      />
+  <div>
+    <div
+      v-if="loaded"
+      class="block"
+    >
+      <div class="block_head_flex">
+        <h2>Stack {{ stack.name }}</h2>
+        <app-cli-badge
+          :cli="job.terraformImage"
+          badge-style="for-the-badge"
+        />
+      </div>
+      <div class="block_content">
+        <app-job-metadata
+          :stack="stack"
+          :job="job"
+          @retry="retryJob"
+          @delete="deleteJob"
+        />
+        <app-job-step
+          id="step-1"
+          :header-title="firstStepTitle"
+          :step="job.steps[0]"
+        />
+        <app-job-apply-confirm
+          v-if="isSecondStepDoable"
+          :title="secondStepTitle"
+          @apply="applyJob"
+        />
+        <app-job-step
+          id="step-2"
+          :header-title="secondStepTitle"
+          :step="job.steps[1]"
+        />
+      </div>
     </div>
-    <div class="block_content">
-      <app-job-metadata
-        :stack="stack"
-        :job="job"
-        @retry="retryJob"
-        @delete="deleteJob"
-      />
-      <app-job-step
-        id="step-1"
-        :header-title="firstStepTitle"
-        :step="job.steps[0]"
-      />
-      <app-job-apply-confirm
-        v-if="isSecondStepDoable"
-        :title="secondStepTitle"
-        @apply="applyJob"
-      />
-      <app-job-step
-        id="step-2"
-        :header-title="secondStepTitle"
-        :step="job.steps[1]"
-      />
-    </div>
+
+    <app-stack-outputs
+      v-if="isJobApplied"
+      :outputs="state.outputs || state.modules[0].outputs"
+      class="mt-2"
+    />
   </div>
 </template>
 
@@ -52,12 +60,15 @@
     displayConfirmDialog,
     displayNotification,
   } from '@/shared/services/modal-service';
+  import AppStackOutputs from '@/pages/stacks/stack-outputs.vue';
+  import { getState } from '@/shared/api/state-api';
 
   const INTERVAL_TIMEOUT = 1000;
 
   export default {
     name: 'AppJob',
     components: {
+      AppStackOutputs,
       AppCliBadge,
       AppJobMetadata,
       AppJobStep,
@@ -90,6 +101,9 @@
           && !this.job.status.includes('STARTED')
           && !this.job.status.includes('FAILED')
           && !this.job.status.includes('APPLY');
+      },
+      isJobApplied() {
+        return this.job.status === 'APPLY_FINISHED';
       },
     },
     async created() {
@@ -128,6 +142,7 @@
       async refreshJobUntilCompletion() {
         this.job = await getJob(this.jobId);
         if (this.job.status.includes('FINISHED') || this.job.status.includes('FAILED')) {
+          this.state = await getState(this.stackId);
           clearInterval(this.refreshIntervalId);
         }
         return this.job;
