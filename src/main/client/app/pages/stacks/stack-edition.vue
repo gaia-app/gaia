@@ -185,6 +185,7 @@
               v-model="variable.value"
               v-bind="moduleVar(variable.name)"
               @valid="(isValid) => variable.isValid = isValid"
+              @input="stack.state = 'TO_UPDATE'"
             />
           </div>
         </div>
