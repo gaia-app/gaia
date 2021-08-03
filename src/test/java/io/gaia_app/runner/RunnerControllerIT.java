@@ -1,6 +1,7 @@
 package io.gaia_app.runner;
 
 import com.jayway.jsonpath.JsonPath;
+import io.gaia_app.settings.bo.Settings;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
@@ -23,7 +24,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,6 +45,9 @@ class RunnerControllerIT extends SharedMongoContainerTest {
 
     @Autowired
     private StepRepository stepRepository;
+
+    @Autowired
+    private Settings settings;
 
     @BeforeEach
     void setUp() {
@@ -78,7 +82,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
 
     @Test
     @WithMockUser("gaia-runner")
-    void findFirstRunnableJob_shouldReturnNothing_whenJobIsPending() throws Exception {
+    void findFirstRunnableJob_shouldReturnAJob_whenJobIsPending() throws Exception {
         var stackId = "5a215b6b-fe53-4afa-85f0-a10175a7f264";
 
         // creating a job of type RUN
@@ -92,13 +96,19 @@ class RunnerControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(post("/api/jobs/{jobId}/plan", jobId).with(csrf()))
             .andExpect(status().isOk());
 
+        // change settings to add some env_var
+        var envVar = new Settings.EnvVar();
+        envVar.setName("LONDON");
+        envVar.setValue("CALLING");
+        settings.getEnvVars().add(envVar);
+
         // request as the runner will do
         mockMvc.perform(get("/api/runner/steps/request"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.env", notNullValue()))
+            .andExpect(jsonPath("$.env", hasItems("LONDON=CALLING")))
             .andExpect(jsonPath("$.id", notNullValue()))
             .andExpect(jsonPath("$.script", notNullValue()))
-            .andExpect(jsonPath("$.image", notNullValue()));
+            .andExpect(jsonPath("$.image", is("hashicorp/terraform:0.11.14")));
     }
 
     @Test

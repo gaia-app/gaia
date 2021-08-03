@@ -1,6 +1,7 @@
 package io.gaia_app.runner;
 
 import io.gaia_app.credentials.CredentialsService;
+import io.gaia_app.settings.bo.Settings;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.PlanRepository;
@@ -12,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -43,6 +44,9 @@ public class RunnerController {
 
     @Autowired
     private PlanRepository planRepository;
+
+    @Autowired
+    private Settings settings;
 
     @GetMapping(value = "/stacks/{id}.tfvars", produces = "text/plain")
     public String tfvars(@PathVariable String id){
@@ -80,11 +84,13 @@ public class RunnerController {
             }
         }
 
-        List<String> env = Collections.emptyList();
+        List<String> env = new ArrayList<>();
+        env.addAll(settings.env());
+
         if(stack.getCredentialsId() != null){
             var credentials = this.credentialsService.load(stack.getCredentialsId()).orElse(null);
             if(credentials != null){
-                env = credentials.toEnv();
+                env.addAll(credentials.toEnv());
             }
         }
 
