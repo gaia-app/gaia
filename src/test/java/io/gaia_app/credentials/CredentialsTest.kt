@@ -14,9 +14,9 @@ internal class CredentialsTest {
     }
 
     @Test
-    fun `toEnv() for AzureRMCredentials should return ARM_CLIENT_ID and ARM_CLIENT_SECRET`() {
-        assertThat(AzureRMCredentials("clientId", "secret").toEnv())
-            .containsExactly("ARM_CLIENT_ID=clientId", "ARM_CLIENT_SECRET=secret")
+    fun `toEnv() for AzureRMCredentials should return ARM_CLIENT_ID, ARM_CLIENT_SECRET, ARM_SUBSCRIPTION_ID, ARM_TENANT_ID, ARM_ACCESS_KEY, ARM_ENVIRONMENT`() {
+        assertThat(AzureRMCredentials("clientId", "secret", "subscriptionId", "tenantId", "backendAccessKey", "environment").toEnv())
+            .containsExactly("ARM_CLIENT_ID=clientId", "ARM_CLIENT_SECRET=secret", "ARM_SUBSCRIPTION_ID=subscriptionId", "ARM_TENANT_ID=tenantId", "ARM_ACCESS_KEY=backendAccessKey", "ARM_ENVIRONMENT=environment")
     }
 
     @Test
