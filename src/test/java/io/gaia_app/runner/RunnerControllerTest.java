@@ -3,6 +3,7 @@ package io.gaia_app.runner;
 import io.gaia_app.credentials.Credentials;
 import io.gaia_app.credentials.CredentialsService;
 import io.gaia_app.modules.bo.TerraformImage;
+import io.gaia_app.settings.bo.Settings;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
@@ -40,6 +41,9 @@ class RunnerControllerTest {
 
     @Mock
     private CredentialsService credentialsService;
+
+    @Mock
+    private Settings settings;
 
     private Step step;
 
@@ -162,7 +166,7 @@ class RunnerControllerTest {
     }
 
     @Test
-    void findFirstRunnableStep_shouldStackCredentials() {
+    void findFirstRunnableStep_shouldImportStackCredentials() {
         //given
         stack.setCredentialsId("fakeCredentials");
 
@@ -177,4 +181,18 @@ class RunnerControllerTest {
         assertThat(result)
             .containsEntry("env", credentials.toEnv());
     }
+
+    @Test
+    void findFirstRunnableStep_shouldImportSettingsEnvVars() {
+        //given
+        when(settings.env()).thenReturn(List.of("LED=ZEPPELIN", "THE=DOORS"));
+
+        // when
+        var result = runnerController.findFirstRunnableStep();
+
+        // then
+        assertThat(result)
+            .containsEntry("env", List.of("LED=ZEPPELIN", "THE=DOORS"));
+    }
+
 }
