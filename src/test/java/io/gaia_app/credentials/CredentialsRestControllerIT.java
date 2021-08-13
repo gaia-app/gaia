@@ -1,4 +1,5 @@
 package io.gaia_app.credentials;
+//src/test/java/io/gaia_app/credentials/CredentialsRestControllerIT.java
 
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -154,6 +155,10 @@ class CredentialsRestControllerIT extends SharedMongoContainerTest {
                     "    \"provider\": \"azurerm\",\n" +
                     "    \"name\": \"Holocron\",\n" +
                     "    \"clientId\": \"DEATH_STAR_KEY\",\n" +
+                    "    \"subscriptionId\": \"DEATH_STAR_SUBSCRIPTION\",\n" +
+                    "    \"tenantId\": \"DEATH_STAR_TENANT\",\n" +
+                    "    \"environment\": \"DEATH_STAR_ENVIRONMENT\",\n" +
+                    "    \"backendAccessKey\": \"DEATH_STAR_BACKEND\",\n" +
                     "    \"clientSecret\": \"DEATH_STAR_SECRET\"\n" +
                     "  }"))
             .andExpect(status().isOk())
@@ -161,6 +166,10 @@ class CredentialsRestControllerIT extends SharedMongoContainerTest {
             .andExpect(jsonPath("provider", is("azurerm")))
             .andExpect(jsonPath("clientId", is("DEATH_STAR_KEY")))
             .andExpect(jsonPath("clientSecret", is("DEATH_STAR_SECRET")))
+            .andExpect(jsonPath("subscriptionId", is("DEATH_STAR_SUBSCRIPTION")))
+            .andExpect(jsonPath("tenantId", is("DEATH_STAR_TENANT")))
+            .andExpect(jsonPath("environment", is("DEATH_STAR_ENVIRONMENT")))
+            .andExpect(jsonPath("backendAccessKey", is("DEATH_STAR_BACKEND")))
             .andExpect(jsonPath("createdBy.username", is("Darth Vader")))
             .andExpect(jsonPath("id").exists());
     }

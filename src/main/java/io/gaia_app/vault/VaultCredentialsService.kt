@@ -97,11 +97,27 @@ fun EncryptionService.decryptGoogleCredentials(googleCredentials: GoogleCredenti
 fun EncryptionService.encryptAzurermCredentials(azureRMCredentials: AzureRMCredentials): Credentials {
     azureRMCredentials.clientId = this.encrypt(azureRMCredentials.clientId)
     azureRMCredentials.clientSecret = this.encrypt(azureRMCredentials.clientSecret)
+    azureRMCredentials.subscriptionId = this.encrypt(azureRMCredentials.subscriptionId)
+    azureRMCredentials.tenantId = this.encrypt(azureRMCredentials.tenantId)
+    if (azureRMCredentials.environment != null){
+        azureRMCredentials.environment = this.encrypt(azureRMCredentials.environment!!)
+    }
+    if (azureRMCredentials.backendAccessKey != null){
+        azureRMCredentials.backendAccessKey = this.encrypt(azureRMCredentials.backendAccessKey!!)
+    }
     return azureRMCredentials
 }
 
 fun EncryptionService.decryptAzurermCredentials(azureRMCredentials: AzureRMCredentials): Credentials {
     azureRMCredentials.clientId = this.decrypt(azureRMCredentials.clientId)
     azureRMCredentials.clientSecret = this.decrypt(azureRMCredentials.clientSecret)
+    azureRMCredentials.subscriptionId = this.decrypt(azureRMCredentials.subscriptionId)
+    azureRMCredentials.tenantId = this.decrypt(azureRMCredentials.tenantId)
+    if (azureRMCredentials.environment != null){
+        azureRMCredentials.environment = this.decrypt(azureRMCredentials.environment!!)
+    }
+    if (azureRMCredentials.backendAccessKey != null){
+        azureRMCredentials.backendAccessKey = this.decrypt(azureRMCredentials.backendAccessKey!!)
+    }
     return azureRMCredentials
 }

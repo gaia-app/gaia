@@ -65,11 +65,15 @@ class VaultCredentialsServiceTest {
 
     @Test
     fun findAzureRMCredentials_shouldReturnDecryptedCredentials() {
-        val encryptedAzureRMCredentials = AzureRMCredentials("encryptedClientId", "encryptedSecret")
-        val plainAzureRMCredentials = AzureRMCredentials("clientId", "secret")
+        val encryptedAzureRMCredentials = AzureRMCredentials("encryptedClientId", "encryptedSecret", "encryptedSubscriptionId", "encryptedTenantId", "encryptedEnvironment", "encryptedBackendAccessKey")
+        val plainAzureRMCredentials = AzureRMCredentials("clientId", "secret", "subscriptionId", "tenantId", "environment", "backendAccessKey")
 
         `when`(encryptionService.decrypt("encryptedClientId")).thenReturn("clientId")
         `when`(encryptionService.decrypt("encryptedSecret")).thenReturn("secret")
+        `when`(encryptionService.decrypt("encryptedSubscriptionId")).thenReturn("subscriptionId")
+        `when`(encryptionService.decrypt("encryptedTenantId")).thenReturn("tenantId")
+        `when`(encryptionService.decrypt("encryptedBackendAccessKey")).thenReturn("backendAccessKey")
+        `when`(encryptionService.decrypt("encryptedEnvironment")).thenReturn("environment")
         `when`(credentialsRepository.findById("AzureRM")).thenReturn(Optional.of(encryptedAzureRMCredentials))
 
         val credentials = credentialsService.findById("AzureRM").get()
@@ -78,11 +82,15 @@ class VaultCredentialsServiceTest {
 
     @Test
     fun saveAzureRMCredentials_shouldReturnEncryptCredentials() {
-        val plainAzureRMCredentials = AzureRMCredentials("clientId", "secret")
-        val encryptedAzureRMCredentials = AzureRMCredentials("encryptedClientId", "encryptedSecret")
+        val plainAzureRMCredentials = AzureRMCredentials("clientId", "secret", "subscriptionId", "tenantId", "environment", "backendAccessKey")
+        val encryptedAzureRMCredentials = AzureRMCredentials("encryptedClientId", "encryptedSecret", "encryptedSubscriptionId", "encryptedTenantId", "encryptedEnvironment", "encryptedBackendAccessKey")
 
         `when`(encryptionService.encrypt("clientId")).thenReturn("encryptedClientId")
         `when`(encryptionService.encrypt("secret")).thenReturn("encryptedSecret")
+        `when`(encryptionService.encrypt("subscriptionId")).thenReturn("encryptedSubscriptionId")
+        `when`(encryptionService.encrypt("tenantId")).thenReturn("encryptedTenantId")
+        `when`(encryptionService.encrypt("backendAccessKey")).thenReturn("encryptedBackendAccessKey")
+        `when`(encryptionService.encrypt("environment")).thenReturn("encryptedEnvironment")
 
         val credentials = credentialsService.save(plainAzureRMCredentials)
         assertThat(credentials).isEqualTo(encryptedAzureRMCredentials)

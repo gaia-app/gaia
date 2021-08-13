@@ -48,8 +48,8 @@ data class GoogleCredentials(var serviceAccountJSONContents:String, var projectI
 }
 
 @Document
-data class AzureRMCredentials(var clientId:String, var clientSecret:String):Credentials("azurerm") {
-    override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret")
+data class AzureRMCredentials(var clientId:String, var clientSecret:String, var subscriptionId:String, var tenantId:String, var environment:String? = "public", var backendAccessKey:String? = null):Credentials("azurerm") {
+    override fun toEnv() = listOf("ARM_CLIENT_ID=$clientId", "ARM_CLIENT_SECRET=$clientSecret", "ARM_SUBSCRIPTION_ID=$subscriptionId", "ARM_TENANT_ID=$tenantId", "ARM_ACCESS_KEY=$backendAccessKey", "ARM_ENVIRONMENT=$environment")
 }
 
 @Document
