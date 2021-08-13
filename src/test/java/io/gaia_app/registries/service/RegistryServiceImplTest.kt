@@ -1,6 +1,7 @@
 package io.gaia_app.registries.service
 
 import io.gaia_app.hcl.HclParser
+import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.TerraformModule
 import io.gaia_app.modules.bo.Variable
 import io.gaia_app.modules.repository.TerraformModuleRepository
@@ -60,6 +61,10 @@ class RegistryServiceImplTest {
         whenever(gitlabRegistryApi.getFileContent(user, "15689", "variables.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
 
+        val outputsFileContent = "outputs file content"
+        whenever(gitlabRegistryApi.getFileContent(user, "15689", "outputs.tf")).thenReturn(outputsFileContent)
+        whenever(hclParser.parseOutputs(outputsFileContent)).thenReturn(listOf(Output("dummyOutput")))
+
         whenever(gitlabRegistryApi.getFileContent(user, "15689", "main.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseProvider(variablesFileContent)).thenReturn("docker")
 
@@ -101,6 +106,10 @@ class RegistryServiceImplTest {
         whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
 
+        val outputsFileContent = "outputs file content"
+        whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "outputs.tf")).thenReturn(outputsFileContent)
+        whenever(hclParser.parseOutputs(outputsFileContent)).thenReturn(listOf(Output("dummyOutput")))
+
         whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "main.tf")).thenReturn(variablesFileContent)
         whenever(hclParser.parseProvider(variablesFileContent)).thenReturn("docker")
 
@@ -127,4 +136,41 @@ class RegistryServiceImplTest {
 
         assertThat(module.variables).containsExactly(Variable("dummy"))
     }
+
+    @Test
+    fun `importVariables() should call the registry and return variables definitions`() {
+        // returns saved module as first arg
+        val user = User("juwit", null)
+
+        val variablesFileContent = "mock file content"
+        whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")).thenReturn(variablesFileContent)
+        whenever(hclParser.parseVariables(variablesFileContent)).thenReturn(listOf(Variable("dummy")))
+
+        val variables = registryService.importVariables("juwit/terraform-docker-mongo", RegistryType.GITHUB, user)
+
+        verify(githubRegistryApi).getFileContent(user, "juwit/terraform-docker-mongo", "variables.tf")
+
+        verifyNoMoreInteractions(githubRegistryApi)
+
+        assertThat(variables).containsExactly(Variable("dummy"))
+    }
+
+    @Test
+    fun `importOutputs() should call the registry and return outputs definitions`() {
+        // returns saved module as first arg
+        val user = User("juwit", null)
+
+        val outputsFileContent = "mock file content"
+        whenever(githubRegistryApi.getFileContent(user, "juwit/terraform-docker-mongo", "outputs.tf")).thenReturn(outputsFileContent)
+        whenever(hclParser.parseOutputs(outputsFileContent)).thenReturn(listOf(Output("dummy")))
+
+        val outputs = registryService.importOutputs("juwit/terraform-docker-mongo", RegistryType.GITHUB, user)
+
+        verify(githubRegistryApi).getFileContent(user, "juwit/terraform-docker-mongo", "outputs.tf")
+
+        verifyNoMoreInteractions(githubRegistryApi)
+
+        assertThat(outputs).containsExactly(Output("dummy"))
+    }
+
 }

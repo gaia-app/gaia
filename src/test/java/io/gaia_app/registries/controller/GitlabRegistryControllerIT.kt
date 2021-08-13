@@ -1,6 +1,7 @@
 package io.gaia_app.registries.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
 import io.gaia_app.modules.repository.TerraformModuleRepository
 import io.gaia_app.registries.RegistryDetails
@@ -96,6 +97,10 @@ class GitlabRegistryControllerIT: SharedMongoContainerTest() {
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo-content-variables.json"), MediaType.APPLICATION_JSON))
 
+        server.expect(requestTo("https://gitlab.com/api/v4/projects/16181047/repository/files/outputs.tf?ref=master"))
+                    .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
+                    .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo-content-outputs.json"), MediaType.APPLICATION_JSON))
+
         server.expect(requestTo("https://gitlab.com/api/v4/projects/16181047/repository/files/main.tf?ref=master"))
                 .andExpect(MockRestRequestMatchers.header("Authorization", "Bearer Tok'ra"))
                 .andRespond(MockRestResponseCreators.withSuccess(ClassPathResource("/rest/gitlab/selmak-terraform-docker-mongo-content-main.json"), MediaType.APPLICATION_JSON))
@@ -122,6 +127,10 @@ class GitlabRegistryControllerIT: SharedMongoContainerTest() {
         assertThat(importedModule.variables).containsExactly(
                 Variable("mongo_container_name", "string", "name of the container"),
                 Variable("mongo_exposed_port", "string", "exposed port of the mongo container", "27017")
+        )
+
+        assertThat(importedModule.outputs).containsExactly(
+            Output("docker_container_name", "docker_container.mongo.name", "name of the docker container", "false")
         )
 
         assertThat(terraformModuleRepository.findById(importedModule.id))

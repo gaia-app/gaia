@@ -25,6 +25,9 @@ public class TerraformModule {
     @Valid
     private List<Variable> variables = new ArrayList<>();
 
+    @Valid
+    private List<Output> outputs = new ArrayList<>();
+
     @NotBlank
     private String name;
 
@@ -100,6 +103,14 @@ public class TerraformModule {
 
     public void setVariables(List<Variable> variables) {
         this.variables = variables;
+    }
+
+    public List<Output> getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(List<Output> outputs) {
+        this.outputs = outputs;
     }
 
     public TerraformImage getTerraformImage() {

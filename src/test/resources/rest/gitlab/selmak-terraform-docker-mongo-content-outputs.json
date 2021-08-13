@@ -1,0 +1,12 @@
+{
+  "file_name": "outputs.tf",
+  "file_path": "outputs.tf",
+  "size": 169,
+  "encoding": "base64",
+  "content_sha256": "2427e98c3dfdc3778b1174d21a302151fb4cd6634300a0fd759c6952b0682028",
+  "ref": "master",
+  "blob_id": "fb9ddf63eb2cccd4dd5e4b352fdae5c59e5d67c2",
+  "commit_id": "5ed5569ba3ead1966c0b39e04f3e6de676bb5564",
+  "last_commit_id": "5ed5569ba3ead1966c0b39e04f3e6de676bb5564",
+  "content": "IyBvdXRwdXQgdGhlIGNvbnRhaW5lciBuYW1lIGFzIGFuIGV4YW1wbGUKCm91dHB1dCAiZG9ja2VyX2NvbnRhaW5lcl9uYW1lIiB7CiAgZGVzY3JpcHRpb24gPSAibmFtZSBvZiB0aGUgZG9ja2VyIGNvbnRhaW5lciIKICB2YWx1ZSAgICAgICA9IGRvY2tlcl9jb250YWluZXIubW9uZ28ubmFtZQp9Cg=="
+}
