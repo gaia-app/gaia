@@ -166,7 +166,10 @@
       </div>
 
       <div class="col-md-6">
-        <app-stack-outputs :outputs="state.outputs || state.modules[0].outputs" />
+        <app-stack-outputs
+          :outputs="state.outputs || state.modules[0].outputs"
+          :module-outputs="stack.module.outputs"
+        />
       </div>
     </div>
 

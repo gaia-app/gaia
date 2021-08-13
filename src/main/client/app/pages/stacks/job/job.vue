@@ -39,6 +39,7 @@
     <app-stack-outputs
       v-if="isJobApplied"
       :outputs="state.outputs || state.modules[0].outputs"
+      :module-outputs="stack.module.outputs"
       class="mt-2"
     />
   </div>
