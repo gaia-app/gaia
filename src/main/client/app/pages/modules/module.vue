@@ -95,6 +95,8 @@
           </b-col>
         </b-form-row>
 
+        <hr>
+
         <h2>Authorized Teams</h2>
 
         <b-form-row>
@@ -113,6 +115,8 @@
           </b-col>
         </b-form-row>
 
+        <hr>
+
         <h2>
           Variables
           <b-button
@@ -123,12 +127,22 @@
           </b-button>
         </h2>
 
+        <b-button
+          variant="info"
+          class="mt-1"
+          @click="refreshModuleAction()"
+        >
+          Refresh module definition
+        </b-button>
+
         <app-module-variable
           v-for="(modVar, idx) in module.variables"
           :key="idx"
           :variable="modVar"
           @removeVar="removeVar"
         />
+
+        <hr>
 
         <b-button
           variant="primary"
@@ -147,10 +161,14 @@
   import AppTerraformImageInput from '@/pages/modules/terraform-image-input.vue';
   import {
     getModule,
+    refreshModule,
     updateModule,
   } from '@/shared/api/modules-api';
   import { getTeams } from '@/shared/api/teams-api';
-  import { displayNotification } from '@/shared/services/modal-service';
+  import {
+    displayConfirmDialog,
+    displayNotification,
+  } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppModule',
@@ -209,6 +227,18 @@
       },
       addVar() {
         this.module.variables.push({});
+      },
+      async refreshModuleAction() {
+        const confirmMessage = 'This will refresh variables & outputs definitions. '
+          + 'Variables will be reset ? Continue ?';
+        if (await displayConfirmDialog(this, { title: 'Refresh Module', message: confirmMessage })) {
+          try {
+            this.module = await refreshModule(this.module.id);
+            displayNotification(this, { message: 'Module refreshed', variant: 'success' });
+          } catch ({ error, message }) {
+            displayNotification(this, { title: error, message, variant: 'danger' });
+          }
+        }
       },
     },
   };

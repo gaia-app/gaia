@@ -3,6 +3,7 @@ package io.gaia_app.modules.controller;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
+import io.gaia_app.registries.service.RegistryService;
 import io.gaia_app.teams.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,34 +22,37 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/modules")
-@Secured({"ROLE_USER","ROLE_ADMIN"})
+@Secured({"ROLE_USER", "ROLE_ADMIN"})
 public class ModuleRestController {
 
     private TerraformModuleRepository moduleRepository;
 
     private TerraformModuleGitRepository moduleGitRepository;
 
+    private RegistryService registryService;
+
     @Autowired
-    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository) {
+    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository, RegistryService registryService) {
         this.moduleRepository = moduleRepository;
         this.moduleGitRepository = moduleGitRepository;
+        this.registryService = registryService;
     }
 
     @GetMapping
-    public List<TerraformModule> findAllModules(User user){
-        if(user.isAdmin()){
+    public List<TerraformModule> findAllModules(User user) {
+        if (user.isAdmin()) {
             return moduleRepository.findAll();
         }
-        if(user.getTeam() != null){
+        if (user.getTeam() != null) {
             return moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
         }
         return moduleRepository.findAllByModuleMetadataCreatedBy(user);
     }
 
     @GetMapping("/{id}")
-    public TerraformModule findModule(@PathVariable String id, User user){
+    public TerraformModule findModule(@PathVariable String id, User user) {
         var module = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
-        if(!module.isAuthorizedFor(user)){
+        if (!module.isAuthorizedFor(user)) {
             throw new ModuleForbiddenException();
         }
         return module;
@@ -56,16 +60,16 @@ public class ModuleRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TerraformModule createModule(@RequestBody TerraformModule module, User user){
+    public TerraformModule createModule(@RequestBody TerraformModule module, User user) {
         module.setId(UUID.randomUUID().toString());
         module.getModuleMetadata().setCreatedBy(user);
         return moduleRepository.save(module);
     }
 
     @PutMapping("/{id}")
-    public TerraformModule saveModule(@PathVariable String id, @RequestBody @Valid TerraformModule module, User user){
+    public TerraformModule saveModule(@PathVariable String id, @RequestBody @Valid TerraformModule module, User user) {
         var existingModule = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
-        if(!existingModule.isAuthorizedFor(user)){
+        if (!existingModule.isAuthorizedFor(user)) {
             throw new ModuleForbiddenException();
         }
 
@@ -78,16 +82,43 @@ public class ModuleRestController {
     @GetMapping(value = "/{id}/readme", produces = MediaType.TEXT_PLAIN_VALUE)
     public String readme(@PathVariable String id) {
         var module = moduleRepository.findById(id).orElseThrow();
-        return moduleGitRepository.getReadme(module).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND) );
+        return moduleGitRepository.getReadme(module).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * Refresh the module definition (variables/outputs) from the repository (git)
+     *
+     * @param id   id of the module to refresh
+     * @param user loggued user
+     * @return the refreshed module
+     */
+    @PostMapping(value = "/{id}/refresh")
+    public TerraformModule refreshModule(@PathVariable String id, User user) {
+        var existingModule = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
+        if (!existingModule.isAuthorizedFor(user)) {
+            throw new ModuleForbiddenException();
+        }
+
+        var projectId = existingModule.getRegistryDetails().getProjectId();
+        var registryType = existingModule.getRegistryDetails().getRegistryType();
+
+        // refresh variables & outputs
+        existingModule.setVariables(registryService.importVariables(projectId, registryType, user));
+        existingModule.setOutputs(registryService.importOutputs(projectId, registryType, user));
+
+        existingModule.getModuleMetadata().setUpdatedBy(user);
+        existingModule.getModuleMetadata().setUpdatedAt(LocalDateTime.now());
+
+        return moduleRepository.save(existingModule);
     }
 
 }
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class ModuleNotFoundException extends RuntimeException{
+class ModuleNotFoundException extends RuntimeException {
 }
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
-class ModuleForbiddenException extends RuntimeException{
+class ModuleForbiddenException extends RuntimeException {
 }
 

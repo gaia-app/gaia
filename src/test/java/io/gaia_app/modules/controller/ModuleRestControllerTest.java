@@ -4,6 +4,9 @@ import io.gaia_app.modules.bo.ModuleMetadata;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
+import io.gaia_app.registries.RegistryDetails;
+import io.gaia_app.registries.RegistryType;
+import io.gaia_app.registries.service.RegistryService;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformModule;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testcontainers.shaded.org.bouncycastle.math.raw.Mod;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +39,9 @@ class ModuleRestControllerTest {
 
     @Mock
     private TerraformModuleGitRepository moduleGitRepository;
+
+    @Mock
+    private RegistryService registryService;
 
     private User admin;
 
@@ -245,6 +252,25 @@ class ModuleRestControllerTest {
         // then
         verify(moduleRepository).findById("TEST");
         verifyNoInteractions(moduleGitRepository);
+    }
+
+    @Test
+    void refreshModule_shouldRefreshModuleVariablesAndOutputs(){
+        // given
+        var module = new TerraformModule();
+        module.getModuleMetadata().setCreatedBy(bob);
+        module.setRegistryDetails(new RegistryDetails(RegistryType.GITHUB, "github/id"));
+        when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+        // when
+        moduleRestController.refreshModule("12", bob);
+
+        // then
+        verify(registryService).importVariables("github/id", RegistryType.GITHUB, bob);
+        verify(registryService).importOutputs("github/id", RegistryType.GITHUB, bob);
+
+        assertThat(module.getModuleMetadata().getUpdatedAt()).isEqualToIgnoringMinutes(LocalDateTime.now());
+        assertThat(module.getModuleMetadata().getUpdatedBy()).isEqualTo(bob);
     }
 
 }
