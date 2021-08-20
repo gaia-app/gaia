@@ -1,5 +1,142 @@
 # Changelog
 
+<a name="2.2.0"></a>
+## 2.2.0 (2021-08-20)
+
+### Added
+
+- ✨ : add a refresh module definition button [[b039c89](https://github.com/gaia-app/gaia/commit/b039c89e14d66d87e42cd9b22ffef98ec7929751)]
+- ✨ : parse output definition when importing a module [[4d477de](https://github.com/gaia-app/gaia/commit/4d477dedf4d78391f51393937e016c8612bacce4)]
+- ✨ : extends AzureRM Credentials [[970c3c0](https://github.com/gaia-app/gaia/commit/970c3c0d61cf0fc65a8617ede0e9f71d8e85c24d)]
+- ✨ : show outputs at the end of a job [[d126688](https://github.com/gaia-app/gaia/commit/d126688d27aa2dea10865e923c74deaa25ef7c00)]
+- ✨ : add scheduled date to jobs [[614fa6d](https://github.com/gaia-app/gaia/commit/614fa6de03738a6c179624d033a2a59a70b95fba)]
+- ✨ : do not show apply button if plan is up to date [[02a9aeb](https://github.com/gaia-app/gaia/commit/02a9aeb90a87b7352a12bc0008366f217eed70fc)]
+- ✨ : add upToDate property [[adede7a](https://github.com/gaia-app/gaia/commit/adede7af8e668f7a1a66533a9ed0ebd1f0be03c9)]
+- ✨ : make destroy jobs upload their plan [[21f17ed](https://github.com/gaia-app/gaia/commit/21f17edd6abfa02ecf8d5082210d0c4d55052e88)]
+- ✨ : add terraform blocs support [[d478ebb](https://github.com/gaia-app/gaia/commit/d478ebb777a809d61fe0af0729f829f20d617d9a)]
+- ✅ : add types to test data [[43eda58](https://github.com/gaia-app/gaia/commit/43eda58bdc8581a22ce5c120b1043bbdc3f385a7)]
+- ✨ : add support for complex variable types [[a9eddec](https://github.com/gaia-app/gaia/commit/a9eddec8b69bf2f509b7cf5e4e3fc24a86d9986a)]
+- ✨ : generate tfvar files for complex variable types [[aa9dcf7](https://github.com/gaia-app/gaia/commit/aa9dcf7daf166634e887abb6596f68e2597e86f2)]
+- ✅ : add a plan to sample test data [[68227ed](https://github.com/gaia-app/gaia/commit/68227ed55eb043ff22596f5b7054ff007d3c390e)]
+- ✨ : upload result plan to server for analysis [[bb87522](https://github.com/gaia-app/gaia/commit/bb875229f7bc880b15ac9027a7983c56ba024e7a)]
+- ✨ : save plan for currently running job step [[34058f2](https://github.com/gaia-app/gaia/commit/34058f290d11a9b5428e6ce57fde7cc7cc9650ac)]
+- ✨ : add plan deserialization [[5a9e74c](https://github.com/gaia-app/gaia/commit/5a9e74c341c8808674ae2b7336d9ed6622041891)]
+- ✅ : fixes the date for the test module [[cc316bd](https://github.com/gaia-app/gaia/commit/cc316bdbc81d894e6701695449489510d3ace26b)]
+- ✅ : add navigation to module description page [[0833bec](https://github.com/gaia-app/gaia/commit/0833bec857de0fea1d9b9456c790d197ebeac897)]
+- ✅ : add registryDetails to test data [[e3f1f61](https://github.com/gaia-app/gaia/commit/e3f1f615f788ee694009e4d9c18b9c11e5ae32ab)]
+- ✨ : add archived stacks filter [[e831e01](https://github.com/gaia-app/gaia/commit/e831e013d7b3459f04447abccfb6a371e44b9109)]
+- ✨ : add stack archive support [[c5b4951](https://github.com/gaia-app/gaia/commit/c5b49513b734ca2bd075785b8cb75e2037f61880)]
+    * ✨ : add archived state support ([274e037](https://github.com/gaia-app/gaia/commit/274e03755dba66c8637e7b15e9cc1441b4b15950))
+- ✅ : stabilize users page tests [[5fcd987](https://github.com/gaia-app/gaia/commit/5fcd98746e902d12e7c9957092a68fb69d601ecc)]
+- ✨ : organization creation &amp; deletion [[8c5a778](https://github.com/gaia-app/gaia/commit/8c5a77822bfe53b900d32ed2398e4fb5741b36a4)]
+- ✨ : user creation &amp; edition [[d7f1ed4](https://github.com/gaia-app/gaia/commit/d7f1ed427299fea093312f600bb69a24095b88e7)]
+- ✅ : add users page navigation test [[d8fe174](https://github.com/gaia-app/gaia/commit/d8fe1745d7d539972719e9599d88dfe47b1b6f31)]
+- 🔊 : add error log [[d360e87](https://github.com/gaia-app/gaia/commit/d360e879bd714b1de39c4ec44c24de41ac56ff54)]
+- ✅ : add RunnerController tests [[2929365](https://github.com/gaia-app/gaia/commit/2929365ad892b9a4cfde0bd92adfb985aa3d4e7f)]
+- ✨ : update workflow with PENDING states [[b5d2867](https://github.com/gaia-app/gaia/commit/b5d2867fa512c625267c4ac3c5811ddac91c88ee)]
+- ✨ : extract runner code to gaia-runner [[c37dc1f](https://github.com/gaia-app/gaia/commit/c37dc1f2c1fb10a202a6291726b5145065d2382d)]
+- ✅ : convert SeleniumIT to Cucumber tests [[469313f](https://github.com/gaia-app/gaia/commit/469313f21ac62bfe85b5042c6d2b7f09c699143d)]
+- ➕ : add cucumber dependency [[46c61df](https://github.com/gaia-app/gaia/commit/46c61df16e445082cd81a954942fc747b9829f59)]
+- ✨ : generate tfvar file for the runner [[8bb0b86](https://github.com/gaia-app/gaia/commit/8bb0b8698ae3acb215688683f61a4452c331f700)]
+- 🔊 : prefix job logs with [gaia] [[3df9129](https://github.com/gaia-app/gaia/commit/3df9129b8549ca91aab9d1667e7d07f89522b0ea)]
+- ✅ : execute mongo scripts with mongo shell instead of db.eval() [[e21c05b](https://github.com/gaia-app/gaia/commit/e21c05be1c8cd7f3e38a35046e4732575e983858)]
+- ✨ : encrypt state when encryption service exists [[f9ad238](https://github.com/gaia-app/gaia/commit/f9ad238826246aba56a8ec609ff4c6ccc297dd92)]
+
+### Changed
+
+- ⬆️ : bump jacoco-maven-plugin from 0.8.6 to 0.8.7 [[0ae0587](https://github.com/gaia-app/gaia/commit/0ae05877f11ecd133cb3efa2af8a577a345edd05)]
+    * ⬆️ : bump jacoco-maven-plugin from 0.8.5 to 0.8.6 ([bdb586e](https://github.com/gaia-app/gaia/commit/bdb586ea4c484fdeff10fa6c29c62f76fc2f9945))
+- ⬆️ : bump kotlin.version to 1.5.21 [[9f6d18f](https://github.com/gaia-app/gaia/commit/9f6d18f54a16d098959c08c887db3d4b6fe9bda0)]
+- ⬆️ : update build phase to openjdk-16 [[3c2e8e0](https://github.com/gaia-app/gaia/commit/3c2e8e0dc514b3f8c9054fab788c2a6a37b84762)]
+- 💄 : add output description [[407eb1f](https://github.com/gaia-app/gaia/commit/407eb1f3b1bc2d52c6bb0935cc7f8ed4a081c72d)]
+- ⬆️ : bump marked to 2.1.2 [[47e2924](https://github.com/gaia-app/gaia/commit/47e29240515e20101165e8a3913fa94d03d6e39b)]
+- ⬆️ : bump jquery to 3.6.0 [[fcda27b](https://github.com/gaia-app/gaia/commit/fcda27b127efde6f24575d63b3b41678e865883c)]
+- ⬆️ : bump core-js to 3.15.1 [[1402439](https://github.com/gaia-app/gaia/commit/14024393cbec596f85594d92080a011217245137)]
+- ⬆️ : update fortawesome dependencies [[e1d6a22](https://github.com/gaia-app/gaia/commit/e1d6a2268ace1ee538cdc2f4c5f55f416644ff51)]
+- ⬆️ : update vuejs dependencies [[9063129](https://github.com/gaia-app/gaia/commit/90631294ff26622e0119130bdc868787854c788b)]
+- ♻️ : better use of conditions [[11acf19](https://github.com/gaia-app/gaia/commit/11acf197efd33664a2a8d278004d904eb72ea9e5)]
+- ♻️ : convert test to Kotlin [[70a5ba0](https://github.com/gaia-app/gaia/commit/70a5ba0014485d1776d8bddb5f8dc21d7876b05f)]
+- ⬆️ : bump openjdk from 15-jdk to 16-jdk ([#579](https://github.com/gaia-app/gaia/issues/579)) : [[4945c00](https://github.com/gaia-app/gaia/commit/4945c002c021c4f806bba9a00a6987343f33007e)]
+    * ⬆️ : bump openjdk from 14-jdk to 15-jdk ([#434](https://github.com/gaia-app/gaia/issues/434)) ([5fef6a9](https://github.com/gaia-app/gaia/commit/5fef6a9cc28da4816ef1c8ad0d575ad102e95ded))
+- ⬆️ : bump testcontainers.version from 1.15.1 to 1.15.2 ([#553](https://github.com/gaia-app/gaia/issues/553)) [[70a9b46](https://github.com/gaia-app/gaia/commit/70a9b461e37e5759a1e9fbb3d5a134177f9f2f8b)]
+    * ⬆️ : bump testcontainers.version from 1.14.3 to 1.15.1 ([43c744b](https://github.com/gaia-app/gaia/commit/43c744b0d2fe0db1bca2d16e5bd60de9cd278238))
+- ⬆️ :  bump cucumber-jvm.version from 6.9.1 to 6.10.0 ([#554](https://github.com/gaia-app/gaia/issues/554)) [[62e9843](https://github.com/gaia-app/gaia/commit/62e98438b49745048a657e91a590b6b6a87714b3)]
+    * ⬆️ : bump cucumber-jvm.version from 6.7.0 to 6.9.1 ([#507](https://github.com/gaia-app/gaia/issues/507)) ([9cd2588](https://github.com/gaia-app/gaia/commit/9cd258881e00ba28b76a4a0498f524a28909caca))
+    * ⬆️ : bump cucumber-jvm.version from 6.6.0 to 6.7.0 ([#432](https://github.com/gaia-app/gaia/issues/432)) ([a3d81ca](https://github.com/gaia-app/gaia/commit/a3d81caeae4c2ce163eca276bf0fd701457922e6))
+- ⬆️ : bump bootstrap-vue from 2.17.3 to 2.21.2 ([#545](https://github.com/gaia-app/gaia/issues/545)) [[1e16759](https://github.com/gaia-app/gaia/commit/1e16759c4091dcfff3bfa0d15a8aff0b554f69c1)]
+    * ⬆️ : bump bootstrap-vue from 2.16.0 to 2.17.3 ([#437](https://github.com/gaia-app/gaia/issues/437)) ([103efbf](https://github.com/gaia-app/gaia/commit/103efbff197554c5585cb164c0d24f56744bbf07))
+- ⬆️ 🔒 : bump marked from 1.2.7 to 2.0.0 ([#551](https://github.com/gaia-app/gaia/issues/551)) [[72dc5d7](https://github.com/gaia-app/gaia/commit/72dc5d743a63114e28764eba73215b8008357cf7)]
+- ⬆️ : bump kotlin.version from 1.4.10 to 1.4.30 ([#549](https://github.com/gaia-app/gaia/issues/549)) [[6a90999](https://github.com/gaia-app/gaia/commit/6a909990e4fc5dac603cbc984f7a1f3f8df86f22)]
+    * ⬆️ : bump kotlin.version from 1.4.0 to 1.4.10 ([#422](https://github.com/gaia-app/gaia/issues/422)) ([91b2f63](https://github.com/gaia-app/gaia/commit/91b2f6304d3ae821eafb7ebebfa8f86845d19c97))
+- 💄 : add plan results [[0dab84a](https://github.com/gaia-app/gaia/commit/0dab84a5bc0642ab9e325a2bff50b274cf100d0e)]
+- ⬆️ : bump @fortawesome/free-brands-svg-icons from 5.14.0 to 5.15.2 ([#533](https://github.com/gaia-app/gaia/issues/533)) [[5df13ef](https://github.com/gaia-app/gaia/commit/5df13ef3e9abbfed27d5d0752571260b4b3a5670)]
+    * ⬆️ : bump @fortawesome/free-solid-svg-icons from 5.14.0 to 5.15.2 ([#534](https://github.com/gaia-app/gaia/issues/534)) ([2513d9e](https://github.com/gaia-app/gaia/commit/2513d9ef733523538a4c1aa56cd13590be57fdc8))
+- ⬆️ 🔒 : bump axios from 0.20.0 to 0.21.1 ([#518](https://github.com/gaia-app/gaia/issues/518)) [[fba375b](https://github.com/gaia-app/gaia/commit/fba375bbdd0b979b742d1396d620bf5a46b090dc)]
+    * ⬆️ : bump axios from 0.19.2 to 0.20.0 ([#414](https://github.com/gaia-app/gaia/issues/414)) ([176170c](https://github.com/gaia-app/gaia/commit/176170c614ea2feded4ac2705f99ed2015c7fffb))
+- ⬆️ : bump spring-boot-starter-parent from 2.4.1 to 2.4.2 ([#535](https://github.com/gaia-app/gaia/issues/535)) [[1441657](https://github.com/gaia-app/gaia/commit/1441657f2d04f2a94f12ac6269f895b445253748)]
+    * ⬆️ : bump spring-boot-starter-parent from 2.3.3.RELEASE to 2.4.1 ([#502](https://github.com/gaia-app/gaia/issues/502)) ([7844b6e](https://github.com/gaia-app/gaia/commit/7844b6e718b855b96d536721a4e380cec46d56a4))
+- ⬆️ : bump frontend-maven-plugin from 1.10.0 to 1.11.0 ([#503](https://github.com/gaia-app/gaia/issues/503)) [[e5c5bd0](https://github.com/gaia-app/gaia/commit/e5c5bd03eb5e3b678c2f6e13e7d56770f4e63a0b)]
+- ⬆️ : bump compiler from 0.9.6 to 0.9.7 ([#460](https://github.com/gaia-app/gaia/issues/460)) [[5006ae9](https://github.com/gaia-app/gaia/commit/5006ae973c388be3b576311a8870726c4002444c)]
+- ⬆️ : bump antlr4.version from 4.8-1 to 4.9.1 ([#521](https://github.com/gaia-app/gaia/issues/521)) [[6db9b5b](https://github.com/gaia-app/gaia/commit/6db9b5b7d7e03a89be26ae1cd85241dfc6d42592)]
+- ♻️ : self host font [[0c464b4](https://github.com/gaia-app/gaia/commit/0c464b410a4963ed1022c9edcf290af696f291c4)]
+- ⬆️ : bump @vue/cli-plugin-babel from 4.5.4 to 4.5.9 ([#487](https://github.com/gaia-app/gaia/issues/487)) [[a376c5c](https://github.com/gaia-app/gaia/commit/a376c5cba5cdb4ce9641961a12447abdc06c4aef)]
+    * ⬆️ : bump @vue/cli-plugin-eslint from 4.5.4 to 4.5.7 ([#456](https://github.com/gaia-app/gaia/issues/456)) ([74d0450](https://github.com/gaia-app/gaia/commit/74d0450ab28fc8447f2210546190bbf6d9ad8eaa))
+- ⬆️ : bump eslint from 7.8.1 to 7.16.0 ([#505](https://github.com/gaia-app/gaia/issues/505)) [[a324b96](https://github.com/gaia-app/gaia/commit/a324b967db17a1db9dae915086d4b56faf90e1df)]
+    * ⬆️ : bump eslint from 7.7.0 to 7.8.1 ([#420](https://github.com/gaia-app/gaia/issues/420)) ([fc90a19](https://github.com/gaia-app/gaia/commit/fc90a191e5e163467a616a2a70407adf92bbfdfb))
+- ⬆️ : bump eslint-plugin-import from 2.22.0 to 2.22.1 ([#444](https://github.com/gaia-app/gaia/issues/444)) [[7420cb1](https://github.com/gaia-app/gaia/commit/7420cb19993e96539d0915baf93f8fa5b9cec84e)]
+- ⬆️ : bump pitest-maven from 1.5.2 to 1.6.1 [[53d096f](https://github.com/gaia-app/gaia/commit/53d096f475ff39278734ea626703ba6f405f941d)]
+- 💄 : add user edition views [[6910005](https://github.com/gaia-app/gaia/commit/69100053e080fb7430292a163b62313ca0fde35c)]
+- ♻️ : use stepId instead of step object [[27f35db](https://github.com/gaia-app/gaia/commit/27f35db7d59dac3e4d921adbf3f2ee807fd5147e)]
+- 💄 : add PENDING state management [[a8ea854](https://github.com/gaia-app/gaia/commit/a8ea854909dd313aa9a6e7688d5b4d2cfb4975cf)]
+- 🔧 : use dependency injection for webdriver [[2a03f72](https://github.com/gaia-app/gaia/commit/2a03f725124401e82a850af98d80cb13c2aa49cd)]
+- ♻️ : create runner api [[6a6bb77](https://github.com/gaia-app/gaia/commit/6a6bb771e61ca80eda95599b194e57092ec421ae)]
+- ⬆️ : bump @fortawesome/vue-fontawesome from 0.1.10 to 2.0.0 ([#421](https://github.com/gaia-app/gaia/issues/421)) [[daa34ab](https://github.com/gaia-app/gaia/commit/daa34ab2fa1e4d3c326a6fada628add8d36f5ce2)]
+- ⬆️ : use mongodb 4.4 [[dbd1469](https://github.com/gaia-app/gaia/commit/dbd1469ded7e35e769928bbde76012fdbd490ba9)]
+- ⬆️ : bump copy-webpack-plugin from 6.0.3 to 6.1.0 ([#417](https://github.com/gaia-app/gaia/issues/417)) [[0ca21ea](https://github.com/gaia-app/gaia/commit/0ca21ea37efa7c9cb6c0e4ee1330f4f1366905d3)]
+- ⬆️ : bump vue and vue-template-compiler ([#413](https://github.com/gaia-app/gaia/issues/413)) [[aebfac8](https://github.com/gaia-app/gaia/commit/aebfac8f1dc127b35f50b02d058bc0697e9c3422)]
+- ♻️ : better use of dependency injection [[3bfcfd4](https://github.com/gaia-app/gaia/commit/3bfcfd451573663394847a1eba57787f09b5e475)]
+
+### Removed
+
+- ➖ : remove bootstrap direct dependency [[833aef7](https://github.com/gaia-app/gaia/commit/833aef7256510ac0fddfdd81b0a167a79f43672f)]
+- 🔥 : remove pitest dependency [[ad8b39c](https://github.com/gaia-app/gaia/commit/ad8b39c91dc2467956284696be7ce7665fc7bc23)]
+- 🔥 : remove unused css [[9424fbf](https://github.com/gaia-app/gaia/commit/9424fbf6b5e7ea963826133c4fa4570db9c7bdbd)]
+- 🔥 : remove .travis.yml [[196901f](https://github.com/gaia-app/gaia/commit/196901f379d0f567d4c340d432b54b92f15a5e9d)]
+- ➖ : remove guava from dependency management [[0137d6e](https://github.com/gaia-app/gaia/commit/0137d6e237cece1a08570ab0f169e52b051d8470)]
+- ➖ : remove docker-java dependency [[8ffbeaa](https://github.com/gaia-app/gaia/commit/8ffbeaa438aeb83da524c88d32d714266c33219e)]
+
+### Fixed
+
+- 🐛 : correct Settings env vars propagation to runner [[3c47ce7](https://github.com/gaia-app/gaia/commit/3c47ce7d41d352552fef068c5335fed8c5efed40)]
+- 🐛 : set the stack status to TO_UPDATE on variable change [[2292191](https://github.com/gaia-app/gaia/commit/2292191b753421522a5a28ec6b26eced8ec12610)]
+- 🐛 : fix deleteCount variable name [[cc447e1](https://github.com/gaia-app/gaia/commit/cc447e13d9686c6c12a1c3293408618b5142cf1a)]
+- 🐛 : prevent spring from loading LdapAutoConfiguration [[8f7c767](https://github.com/gaia-app/gaia/commit/8f7c7672e29f9316e420563934c15e9d981e4f6b)]
+- 🐛 : ignore dummy providers when info is parsed from resources [[346497f](https://github.com/gaia-app/gaia/commit/346497f1de86b140a8cd10debb68247ca76b469e)]
+- 🐛 : remove ref&#x3D;master parameter from Github requests [[6fc5a6f](https://github.com/gaia-app/gaia/commit/6fc5a6f73aa87e5f19415adcaa23da898539507e)]
+- 🐛 : fixes manual import navigation after module creation [[75c07e8](https://github.com/gaia-app/gaia/commit/75c07e84ae5a8fd4012359a114fd17a4432a321e)]
+- 🐛 : add export for java.naming/com.sun.jndi.ldap package [[724fccf](https://github.com/gaia-app/gaia/commit/724fccf3e0a5dc42e47bd3846757a1200046352b)]
+- 🐛 : use ignoring minutes instead of seconds [[29ae28f](https://github.com/gaia-app/gaia/commit/29ae28fc80cd9dd7ed2ebbc17b865e904b34337c)]
+- 🐛 : correct NPE when stack has no credentials [[e1c28a9](https://github.com/gaia-app/gaia/commit/e1c28a9891cee617d16799095d582a6e71f30845)]
+
+### Security
+
+- 🔒 : authenticate users with database password [[2b6d435](https://github.com/gaia-app/gaia/commit/2b6d435ace2244e62c49804e141972301607d695)]
+- 🔒 : add updatable isAdmin flag [[685db79](https://github.com/gaia-app/gaia/commit/685db793ac3cc1c7caf407c283e55811ba793d62)]
+
+### Miscellaneous
+
+- 📝 : add contribution guidelines [[e9c31bc](https://github.com/gaia-app/gaia/commit/e9c31bc0c332e3e387321b951bfb3173fc0975e8)]
+-  👷 : rename master branch to main [[b106a97](https://github.com/gaia-app/gaia/commit/b106a9795e8c5c574475e3e9ececadc2199c894a)]
+-  👷 : add percy on baseline branch [[cd9fea8](https://github.com/gaia-app/gaia/commit/cd9fea833e1a0c13f1e63f3431d9c4579e11ff24)]
+-  👷 : add percy tests [[aca01a9](https://github.com/gaia-app/gaia/commit/aca01a9a129173739db06fd527a4df739eeef812)]
+-  👷 : add github workflow for tests [[55a3320](https://github.com/gaia-app/gaia/commit/55a332056ff81ed3fe3f11b5aeff44fb8f6a346d)]
+-  👷 : remove docker build [[9ed36bb](https://github.com/gaia-app/gaia/commit/9ed36bbe26dba18a39dd529485e74a54715c6b74)]
+- 🐋 : remove docker socket from volumes mount [[f72271f](https://github.com/gaia-app/gaia/commit/f72271f641eb2b8732bee25f1c4ee4d1b39752bc)]
+- 📝 : add runner api properties [[3a48a2b](https://github.com/gaia-app/gaia/commit/3a48a2b03c8b4665cc3158618fd577c5e9b1759a)]
+- ⚗️ : use junit-platform-engine [[f1d5437](https://github.com/gaia-app/gaia/commit/f1d5437e5e1e8200a32c6b448135df031d4ac415)]
+-  👷 : add separate stage for e2e [[d177a33](https://github.com/gaia-app/gaia/commit/d177a33b1db9b41d14a74fa8fb7cf0baf5ae1f80)]
+
+
 <a name="2.1.0"></a>
 ## 2.1.0 (2020-08-19)
 
