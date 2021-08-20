@@ -1,0 +1,18 @@
+{
+  "name": "outputs.tf",
+  "path": "outputs.tf",
+  "sha": "fb9ddf63eb2cccd4dd5e4b352fdae5c59e5d67c2",
+  "size": 169,
+  "url": "https://api.github.com/repos/juwit/terraform-docker-mongo/contents/outputs.tf?ref=master",
+  "html_url": "https://github.com/juwit/terraform-docker-mongo/blob/master/outputs.tf",
+  "git_url": "https://api.github.com/repos/juwit/terraform-docker-mongo/git/blobs/fb9ddf63eb2cccd4dd5e4b352fdae5c59e5d67c2",
+  "download_url": "https://raw.githubusercontent.com/juwit/terraform-docker-mongo/master/outputs.tf",
+  "type": "file",
+  "content": "IyBvdXRwdXQgdGhlIGNvbnRhaW5lciBuYW1lIGFzIGFuIGV4YW1wbGUKCm91\ndHB1dCAiZG9ja2VyX2NvbnRhaW5lcl9uYW1lIiB7CiAgZGVzY3JpcHRpb24g\nPSAibmFtZSBvZiB0aGUgZG9ja2VyIGNvbnRhaW5lciIKICB2YWx1ZSAgICAg\nICA9IGRvY2tlcl9jb250YWluZXIubW9uZ28ubmFtZQp9Cg==\n",
+  "encoding": "base64",
+  "_links": {
+    "self": "https://api.github.com/repos/juwit/terraform-docker-mongo/contents/outputs.tf?ref=master",
+    "git": "https://api.github.com/repos/juwit/terraform-docker-mongo/git/blobs/fb9ddf63eb2cccd4dd5e4b352fdae5c59e5d67c2",
+    "html": "https://github.com/juwit/terraform-docker-mongo/blob/master/outputs.tf"
+  }
+}

@@ -1,9 +1,7 @@
 package io.gaia_app.registries.service
 
 import io.gaia_app.hcl.HclParser
-import io.gaia_app.modules.bo.ModuleMetadata
-import io.gaia_app.modules.bo.TerraformImage
-import io.gaia_app.modules.bo.TerraformModule
+import io.gaia_app.modules.bo.*
 import io.gaia_app.modules.repository.TerraformModuleRepository
 import io.gaia_app.registries.RegistryApi
 import io.gaia_app.registries.RegistryDetails
@@ -15,6 +13,16 @@ import java.util.*
 
 interface RegistryService {
     fun importRepository(projectId: String, registryType: RegistryType, user: User): TerraformModule
+
+    /**
+     * import variables definition from a repository, by reading the variables.tf file and parsing it
+     */
+    fun importVariables(projectId: String, registryType: RegistryType, user: User): List<Variable>
+
+    /**
+     * import outputs definition from a repository, by reading the outputs.tf file and parsing it
+     */
+    fun importOutputs(projectId: String, registryType: RegistryType, user: User): List<Output>
 }
 
 @Service
@@ -39,8 +47,10 @@ class RegistryServiceImpl(
         module.moduleMetadata = ModuleMetadata(createdBy = user)
 
         // get variables
-        val variablesFile = registryApis[registryType]?.getFileContent(user, projectId, "variables.tf")!!
-        module.variables = hclParser.parseVariables(variablesFile)
+        module.variables = this.importVariables(projectId, registryType, user)
+
+        // get outputs
+        module.outputs = this.importOutputs(projectId, registryType, user)
 
         // find main provider
         val mainFile = registryApis[registryType]?.getFileContent(user, projectId, "main.tf")!!
@@ -50,4 +60,13 @@ class RegistryServiceImpl(
         return moduleRepository.save(module)
     }
 
+    override fun importVariables(projectId: String, registryType: RegistryType, user: User): List<Variable> {
+        val variablesFile = registryApis[registryType]?.getFileContent(user, projectId, "variables.tf")!!
+        return hclParser.parseVariables(variablesFile)
+    }
+
+    override fun importOutputs(projectId: String, registryType: RegistryType, user: User): List<Output> {
+        val outputsFile = registryApis[registryType]?.getFileContent(user, projectId, "outputs.tf")!!
+        return hclParser.parseOutputs(outputsFile)
+    }
 }

@@ -19,7 +19,11 @@
           v-for="(output, key) in outputs"
           :key="key"
         >
-          <td>{{ key }}</td>
+          <td>
+            {{ key }}
+            <br>
+            <small>{{ description(key) }}</small>
+          </td>
           <td>{{ output.value }}</td>
         </tr>
       </tbody>
@@ -42,6 +46,19 @@
     name: 'AppStackOutputs',
     props: {
       outputs: { type: Object, default: () => {} },
+      moduleOutputs: { type: Array, default: () => [] },
+    },
+    methods: {
+      description(outputName) {
+        const output = this.moduleOutputs.find((out) => out.name === outputName);
+        return output ? output.description : '';
+      },
     },
   };
 </script>
+
+<style>
+small {
+  color: grey;
+}
+</style>
