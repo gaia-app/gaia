@@ -132,7 +132,7 @@ public class JobWorkflow {
         if (result == 0) {
             this.state.end(this);
         } else {
-            this.state.fail(this);;
+            this.state.fail(this);
         }
     }
 }
