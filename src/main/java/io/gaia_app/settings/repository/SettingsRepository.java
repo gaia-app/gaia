@@ -26,13 +26,11 @@ public class SettingsRepository {
      */
     @PostConstruct
     void postConstruct(){
-        var savedSettings = mongoTemplate.findAll(Settings.class).stream()
-                .findFirst().orElse(null);
-
-        if(savedSettings != null) {
+        mongoTemplate.findAll(Settings.class).stream()
+            .findFirst()
             // if settings are found in database, merging them in the current settings
-            settings.merge(savedSettings);
-        }
+            .ifPresent(savedSettings -> settings.merge(savedSettings));
+
     }
 
     /**

@@ -87,10 +87,7 @@ public class RunnerController {
         var env = new ArrayList<>(settings.env());
 
         if(stack.getCredentialsId() != null){
-            var credentials = this.credentialsService.load(stack.getCredentialsId()).orElse(null);
-            if(credentials != null){
-                env.addAll(credentials.toEnv());
-            }
+            this.credentialsService.load(stack.getCredentialsId()).ifPresent(credentials -> env.addAll(credentials.toEnv()));
         }
 
         return Map.of(
