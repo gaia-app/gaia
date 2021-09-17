@@ -8,7 +8,6 @@ import io.gaia_app.stacks.repository.PlanRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.repository.StepRepository;
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,26 +26,35 @@ public class RunnerController {
 
     private static final Logger LOG = Logger.getLogger("RunnerController");
 
-    @Autowired
-    private StackRepository stackRepository;
+    private final StackRepository stackRepository;
 
-    @Autowired
-    private JobRepository jobRepository;
+    private final JobRepository jobRepository;
 
-    @Autowired
-    private StepRepository stepRepository;
+    private final StepRepository stepRepository;
 
-    @Autowired
-    private CredentialsService credentialsService;
+    private final CredentialsService credentialsService;
 
-    @Autowired
-    private RunnerCommandBuilder runnerCommandBuilder;
+    private final RunnerCommandBuilder runnerCommandBuilder;
 
-    @Autowired
-    private PlanRepository planRepository;
+    private final PlanRepository planRepository;
 
-    @Autowired
-    private Settings settings;
+    private final Settings settings;
+
+    public RunnerController(StackRepository stackRepository,
+                            JobRepository jobRepository,
+                            StepRepository stepRepository,
+                            CredentialsService credentialsService,
+                            RunnerCommandBuilder runnerCommandBuilder,
+                            PlanRepository planRepository,
+                            Settings settings) {
+        this.stackRepository = stackRepository;
+        this.jobRepository = jobRepository;
+        this.stepRepository = stepRepository;
+        this.credentialsService = credentialsService;
+        this.runnerCommandBuilder = runnerCommandBuilder;
+        this.planRepository = planRepository;
+        this.settings = settings;
+    }
 
     @GetMapping(value = "/stacks/{id}.tfvars", produces = "text/plain")
     public String tfvars(@PathVariable String id){
