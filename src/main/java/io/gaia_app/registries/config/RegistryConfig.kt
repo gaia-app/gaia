@@ -15,15 +15,15 @@ import org.springframework.context.annotation.Configuration
  * Config for registry management
  */
 @Configuration
-open class RegistryConfig {
+class RegistryConfig {
 
     @Bean
-    open fun registryOAuth2Providers(): List<RegistryOAuth2Provider> {
+    fun registryOAuth2Providers(): List<RegistryOAuth2Provider> {
         return listOf(GitHubOAuth2Provider(), GitLabOAuth2Provider())
     }
 
     @Bean
-    open fun registryApis(
+    fun registryApis(
             githubRegistryApi: GithubRegistryApi,
             gitlabRegistryApi: GitlabRegistryApi): Map<RegistryType, RegistryApi<out SourceRepository>> {
         return mapOf(Pair(RegistryType.GITHUB, githubRegistryApi),

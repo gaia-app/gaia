@@ -15,8 +15,8 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher
 class OAuth2ClientSecurityConfig(
     val oAuth2SuccessHandler: OAuth2SuccessHandler) : WebSecurityConfigurerAdapter() {
 
-    private final val oauth2Endpoint = "/auth/oauth2"
-    private final val oauth2Callback = "$oauth2Endpoint/*/callback"
+    private val oauth2Endpoint = "/auth/oauth2"
+    private val oauth2Callback = "$oauth2Endpoint/*/callback"
 
     override fun configure(http: HttpSecurity) {
         val requestMatcher = OrRequestMatcher(
