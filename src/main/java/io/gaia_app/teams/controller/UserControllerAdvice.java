@@ -3,7 +3,6 @@ package io.gaia_app.teams.controller;
 import io.gaia_app.teams.Team;
 import io.gaia_app.teams.User;
 import io.gaia_app.teams.repository.UserRepository;
-import io.gaia_app.teams.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;

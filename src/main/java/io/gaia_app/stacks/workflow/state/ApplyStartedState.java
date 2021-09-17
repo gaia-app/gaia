@@ -2,8 +2,6 @@ package io.gaia_app.stacks.workflow.state;
 
 import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.stacks.bo.JobStatus;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 
 /**
  * Describes a job which apply has been started

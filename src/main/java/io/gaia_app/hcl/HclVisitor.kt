@@ -4,7 +4,6 @@ import io.gaia_app.hcl.antlr.hclParser
 import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
 import java.util.*
-import kotlin.NoSuchElementException
 
 class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
 

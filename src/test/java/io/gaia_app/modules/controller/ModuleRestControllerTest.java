@@ -1,7 +1,5 @@
 package io.gaia_app.modules.controller;
 
-import io.gaia_app.modules.bo.ModuleMetadata;
-import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.registries.RegistryDetails;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testcontainers.shaded.org.bouncycastle.math.raw.Mod;
 
 import java.time.LocalDateTime;
 import java.util.List;

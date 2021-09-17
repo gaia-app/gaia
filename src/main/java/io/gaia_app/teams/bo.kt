@@ -1,6 +1,5 @@
 package io.gaia_app.teams
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id

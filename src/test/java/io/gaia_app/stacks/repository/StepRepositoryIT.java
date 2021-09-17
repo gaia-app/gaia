@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataMongoTest

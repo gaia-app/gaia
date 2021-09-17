@@ -1,7 +1,6 @@
 package io.gaia_app.stacks.workflow.state;
 
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 
 /**
  * Describe the state of job and its possible actions

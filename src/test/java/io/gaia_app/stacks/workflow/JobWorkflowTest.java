@@ -2,11 +2,6 @@ package io.gaia_app.stacks.workflow;
 
 import io.gaia_app.stacks.bo.Job;
 import io.gaia_app.stacks.bo.JobStatus;
-import io.gaia_app.stacks.bo.Step;
-import io.gaia_app.stacks.workflow.state.*;
-import io.gaia_app.stacks.bo.Job;
-import io.gaia_app.stacks.bo.JobStatus;
-import io.gaia_app.stacks.bo.Step;
 import io.gaia_app.stacks.workflow.state.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)

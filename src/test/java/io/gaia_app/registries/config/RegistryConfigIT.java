@@ -1,6 +1,5 @@
 package io.gaia_app.registries.config;
 
-import io.gaia_app.config.BeansConfig;
 import io.gaia_app.registries.RegistryOAuth2Provider;
 import io.gaia_app.registries.RegistryRawContent;
 import io.gaia_app.registries.github.GitHubOAuth2Provider;

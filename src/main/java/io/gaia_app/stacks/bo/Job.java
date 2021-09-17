@@ -2,7 +2,6 @@ package io.gaia_app.stacks.bo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.gaia_app.credentials.Credentials;
-import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformImage;
 import org.springframework.data.annotation.Transient;
