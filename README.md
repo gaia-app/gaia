@@ -20,6 +20,10 @@ It features :
 * running modules (plan/apply/destroy) in one click and managing Terraform state
 * team management
 
+## Documentation
+
+Go to [docs.gaia-app.io](https://docs.gaia-app.io) for the full documentation.
+
 ## Screenshots
 
 The module edition view allows you to edit module details, such as variables and their validation.
@@ -43,27 +47,7 @@ Gaia needs :
 
 ## Quick start
 
-Start Gaia with `docker-compose` quickly !
-
-Clone this repository, and just run `docker-compose up -d`. 
-
-The docker-compose will start a Gaia server, listening on http://localhost:8080, and a MongoDb database.
-
-Default credentials for entering:
-
-- Admin account `ROLE_ADMIN`:
-
-  ```
-  Username: admin
-  Password: admin123
-  ```
-
-- User account `ROLE_USER`:
-
-  ```
-  Username: user
-  Password: user123
-  ```
+See the documentation at [https://docs.gaia-app.io/](https://docs.gaia-app.io/getting-started/quick-start/) for quick-start instructions.
 
 ## Contributors
 
