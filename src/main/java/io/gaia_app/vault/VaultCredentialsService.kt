@@ -56,7 +56,7 @@ class VaultCredentialsService(val credentialsRepository: CredentialsRepository,
 
     fun loadAWSCredentialsFromVault(vaultAWSCredentials: VaultAWSCredentials): AWSCredentials {
         val path = "${vaultAWSCredentials.vaultAwsSecretEnginePath.trimEnd('/')}/creds/${vaultAWSCredentials.vaultAwsRole}"
-        val vaultResponse = vaultTemplate!!.read(path, VaultAWSResponse::class.java)
+        val vaultResponse = vaultTemplate.read(path, VaultAWSResponse::class.java)
 
         // IAM credentials are eventually consistent with respect to other Amazon services.
         // adding a delay of 5 seconds before returning them
