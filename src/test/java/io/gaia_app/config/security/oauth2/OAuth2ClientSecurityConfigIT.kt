@@ -36,7 +36,7 @@ class OAuth2ClientSecurityConfigIT {
 
     @Nested
     @SpringBootTest
-    @ActiveProfiles("oauth2")
+    @ActiveProfiles("github")
     inner class OAuth2ClientSecurityConfigLoadedTest: SharedMongoContainerTest() {
 
         @Test
