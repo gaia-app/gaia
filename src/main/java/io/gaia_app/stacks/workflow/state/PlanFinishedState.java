@@ -4,10 +4,6 @@ import io.gaia_app.stacks.bo.JobStatus;
 import io.gaia_app.stacks.bo.Step;
 import io.gaia_app.stacks.bo.StepType;
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.stacks.bo.JobStatus;
-import io.gaia_app.stacks.bo.Step;
-import io.gaia_app.stacks.bo.StepType;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 
 /**
  * Describes a job which plan has been finished

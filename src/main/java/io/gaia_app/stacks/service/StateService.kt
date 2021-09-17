@@ -46,7 +46,7 @@ class EncryptedStateServiceImpl(
     override fun findById(id: String): Optional<TerraformState> {
         val state = this.terraformStateRepository.findById(id)
         return state.map {
-            val decrypted = encryptionService.decrypt(it.value["encrypted"] as String);
+            val decrypted = encryptionService.decrypt(it.value["encrypted"] as String)
             it.value = objectMapper.readValue(decrypted)
             it
         }

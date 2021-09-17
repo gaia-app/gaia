@@ -23,13 +23,13 @@ class HclParserImpl : HclParser {
         val charStream = CharStreams.fromString(content)
 
         // configuring antlr lexer
-        val lexer = io.gaia_app.hcl.antlr.hclLexer(charStream)
+        val lexer = hclLexer(charStream)
 
         // using the lexer to configure a token stream
         val tokenStream = CommonTokenStream(lexer)
 
         // configuring antlr parser using the token stream
-        val parser = io.gaia_app.hcl.antlr.hclParser(tokenStream)
+        val parser = hclParser(tokenStream)
 
         // visit the AST
         val hclVisitor = HclVisitor()

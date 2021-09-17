@@ -4,7 +4,6 @@ import io.gaia_app.hcl.antlr.hclParser
 import io.gaia_app.modules.bo.Output
 import io.gaia_app.modules.bo.Variable
 import java.util.*
-import kotlin.NoSuchElementException
 
 class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
 
@@ -18,50 +17,50 @@ class HclVisitor : io.gaia_app.hcl.antlr.hclBaseVisitor<Unit>() {
     private var currentOutput: Output = Output()
 
 
-    override fun visitVariableDirective(ctx: io.gaia_app.hcl.antlr.hclParser.VariableDirectiveContext) {
+    override fun visitVariableDirective(ctx: hclParser.VariableDirectiveContext) {
         currentVariable = Variable(name = ctx.STRING().text.removeSurrounding("\""))
         variables.add(currentVariable)
         visitChildren(ctx)
     }
 
-    override fun visitVariableType(ctx: io.gaia_app.hcl.antlr.hclParser.VariableTypeContext) {
+    override fun visitVariableType(ctx: hclParser.VariableTypeContext) {
         currentVariable.type = ctx.type().text.removeSurrounding("\"")
     }
 
-    override fun visitVariableDefault(ctx: io.gaia_app.hcl.antlr.hclParser.VariableDefaultContext) {
+    override fun visitVariableDefault(ctx: hclParser.VariableDefaultContext) {
         currentVariable.defaultValue = ctx.expression().text.removeSurrounding("\"")
     }
 
-    override fun visitVariableDescription(ctx: io.gaia_app.hcl.antlr.hclParser.VariableDescriptionContext) {
+    override fun visitVariableDescription(ctx: hclParser.VariableDescriptionContext) {
         currentVariable.description = ctx.STRING().text.removeSurrounding("\"")
     }
 
-    override fun visitOutputDirective(ctx: io.gaia_app.hcl.antlr.hclParser.OutputDirectiveContext) {
+    override fun visitOutputDirective(ctx: hclParser.OutputDirectiveContext) {
         currentOutput = Output(name = ctx.STRING().text.removeSurrounding("\""))
         outputs.add(currentOutput)
         visitChildren(ctx)
     }
 
-    override fun visitOutputDescription(ctx: io.gaia_app.hcl.antlr.hclParser.OutputDescriptionContext) {
+    override fun visitOutputDescription(ctx: hclParser.OutputDescriptionContext) {
         currentOutput.description = ctx.STRING().text.removeSurrounding("\"")
     }
 
-    override fun visitOutputValue(ctx: io.gaia_app.hcl.antlr.hclParser.OutputValueContext) {
+    override fun visitOutputValue(ctx: hclParser.OutputValueContext) {
         currentOutput.value = ctx.expression().text.removeSurrounding("\"")
     }
 
-    override fun visitOutputSensitive(ctx: io.gaia_app.hcl.antlr.hclParser.OutputSensitiveContext) {
+    override fun visitOutputSensitive(ctx: hclParser.OutputSensitiveContext) {
         currentOutput.sensitive = ctx.BOOLEAN().text.removeSurrounding("\"")
     }
 
-    override fun visitProviderDirective(ctx: io.gaia_app.hcl.antlr.hclParser.ProviderDirectiveContext) {
+    override fun visitProviderDirective(ctx: hclParser.ProviderDirectiveContext) {
         val parsedProvider = ctx.STRING().text.removeSurrounding("\"")
         if (! IGNORED_PROVIDERS.contains(parsedProvider)) {
             provider = parsedProvider
         }
     }
 
-    override fun visitResourceDirective(ctx: io.gaia_app.hcl.antlr.hclParser.ResourceDirectiveContext) {
+    override fun visitResourceDirective(ctx: hclParser.ResourceDirectiveContext) {
         // provider already found !
         if (provider != "unknown") return
 

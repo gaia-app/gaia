@@ -2,8 +2,6 @@ package io.gaia_app.modules.repository;
 
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.registries.RegistryRawContent;
-import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.registries.RegistryRawContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

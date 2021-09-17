@@ -33,7 +33,7 @@ class OAuth2SuccessHandler(
         user.oAuth2User = getOAuth2User(authentication as OAuth2AuthenticationToken)
         userRepository.save(user)
 
-        response.sendRedirect("/");
+        response.sendRedirect("/")
     }
 
     private fun getOAuth2User(authentication: OAuth2AuthenticationToken): OAuth2User? {

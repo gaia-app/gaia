@@ -24,11 +24,6 @@ public class Settings {
      */
     private List<EnvVar> envVars = new ArrayList<>();
 
-    /**
-     * The docker daemon url used by Gaia to spawn its runners
-     */
-    private String dockerDaemonUrl;
-
     public String getExternalUrl() {
         return externalUrl;
     }
@@ -51,14 +46,6 @@ public class Settings {
                 .collect(Collectors.toList());
     }
 
-    public String getDockerDaemonUrl() {
-        return dockerDaemonUrl;
-    }
-
-    public void setDockerDaemonUrl(String dockerDaemonUrl) {
-        this.dockerDaemonUrl = dockerDaemonUrl;
-    }
-
     /**
      * Merging two settings objets
      * @param saved the settings to merge
@@ -66,9 +53,6 @@ public class Settings {
     public void merge(Settings saved) {
         if (saved.externalUrl != null) {
             this.externalUrl = saved.externalUrl;
-        }
-        if (saved.dockerDaemonUrl != null) {
-            this.dockerDaemonUrl = saved.dockerDaemonUrl;
         }
         if (saved.envVars != null) {
             this.envVars.addAll(saved.envVars);

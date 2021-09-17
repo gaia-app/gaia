@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.vault.core.VaultTemplate
-import org.springframework.vault.support.Ciphertext
-import org.springframework.vault.support.Plaintext
 
 @Service
 @ConditionalOnProperty(name = ["gaia.vault.enabled"], havingValue = "true")

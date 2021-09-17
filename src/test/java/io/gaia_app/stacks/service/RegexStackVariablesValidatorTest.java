@@ -1,9 +1,6 @@
 package io.gaia_app.stacks.service;
 
-import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.modules.bo.Variable;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
-import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.bo.Variable;
 import io.gaia_app.stacks.bo.Stack;

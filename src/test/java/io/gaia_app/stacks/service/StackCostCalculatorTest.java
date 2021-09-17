@@ -35,7 +35,7 @@ class StackCostCalculatorTest {
         var stack = new Stack();
         stack.setId("12");
 
-        when(jobRepository.findAllByStackIdOrderByScheduleTimeDesc("12")).thenReturn(Collections.EMPTY_LIST);
+        when(jobRepository.findAllByStackIdOrderByScheduleTimeDesc("12")).thenReturn(List.of());
 
         // when
         var cost = calculator.calculateRunningCostEstimation(stack);

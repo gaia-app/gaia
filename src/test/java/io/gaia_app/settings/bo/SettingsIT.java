@@ -36,11 +36,6 @@ class SettingsIT {
     }
 
     @Test
-    void dockerDaemonUrl_shouldBeConfigurableViaProperty(){
-        assertEquals("unix:///var/run/docker.sock", settings.getDockerDaemonUrl());
-    }
-
-    @Test
     void envVars_shouldBeConfigurableViaProperty(){
         assertEquals("test", settings.getEnvVars().get(0).name);
         assertEquals("value", settings.getEnvVars().get(0).value);
@@ -67,7 +62,6 @@ class SettingsIT {
         settings.merge(savedSettings);
 
         assertEquals("https://gaia.io", settings.getExternalUrl());
-        assertEquals("unix:///var/run/docker.sock", settings.getDockerDaemonUrl());
         assertThat(settings.getEnvVars()).hasSize(3)
                 .containsExactlyInAnyOrder(existingEnvVar, testVar, otherTestVar);
     }

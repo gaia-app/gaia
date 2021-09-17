@@ -49,7 +49,7 @@ class GitLabOAuth2ProviderTest {
                 .withRegistrationId("test_registration_id")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .clientId("test_client_id")
-                .redirectUriTemplate("test_uri_template")
+                .redirectUri("test_uri_template")
                 .authorizationUri("test_authorization_uri")
                 .tokenUri("test_token_uri")
                 .build();

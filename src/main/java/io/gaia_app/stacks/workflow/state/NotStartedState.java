@@ -2,9 +2,6 @@ package io.gaia_app.stacks.workflow.state;
 
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.stacks.bo.Step;
-import io.gaia_app.stacks.bo.StepType;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 
 /**
  * Describes a new job before any action

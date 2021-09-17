@@ -28,7 +28,6 @@ class SettingsRepositoryTest {
     void setUp() {
         settings = new Settings();
         settings.setExternalUrl("externalUrl");
-        settings.setDockerDaemonUrl("dockerDaemonUrl");
 
         settingsRepository = new SettingsRepository(mongoTemplate, settings);
     }
@@ -37,7 +36,6 @@ class SettingsRepositoryTest {
     void settings_shouldBeLoadedFromDatabase(){
         var savedSettings = new Settings();
         savedSettings.setExternalUrl("savedExternalUrl");
-        savedSettings.setDockerDaemonUrl("savedDockerDaemonUrl");
 
         when(mongoTemplate.findAll(Settings.class)).thenReturn(List.of(savedSettings));
 
@@ -46,7 +44,6 @@ class SettingsRepositoryTest {
 
         //then
         assertEquals("savedExternalUrl", settings.getExternalUrl());
-        assertEquals("savedDockerDaemonUrl", settings.getDockerDaemonUrl());
 
         verify(mongoTemplate).findAll(Settings.class);
         verifyNoMoreInteractions(mongoTemplate);

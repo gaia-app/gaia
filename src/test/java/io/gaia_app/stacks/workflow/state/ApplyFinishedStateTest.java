@@ -1,7 +1,6 @@
 package io.gaia_app.stacks.workflow.state;
 
 import io.gaia_app.stacks.workflow.JobWorkflow;
-import io.gaia_app.stacks.workflow.JobWorkflow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,8 +2,6 @@ package io.gaia_app.modules.repository;
 
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.registries.RegistryRawContent;
-import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.registries.RegistryRawContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

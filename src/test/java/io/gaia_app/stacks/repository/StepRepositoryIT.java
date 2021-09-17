@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataMongoTest
@@ -22,7 +21,7 @@ class StepRepositoryIT extends SharedMongoContainerTest {
     StepRepository stepRepository;
 
     @Test
-    void jobShouldBeSavedWithLogs() throws IOException {
+    void jobShouldBeSavedWithLogs() {
         var step = new Step(StepType.PLAN, "42");
         step.setId("12");
         step.setLogs(List.of("some logs"));

@@ -1,11 +1,8 @@
 package io.gaia_app.registries.gitlab;
 
-import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.registries.RegistryDetails;
 import io.gaia_app.registries.RegistryFile;
 import io.gaia_app.registries.RegistryType;
-import io.gaia_app.teams.OAuth2User;
-import io.gaia_app.teams.User;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.teams.OAuth2User;
 import io.gaia_app.teams.User;

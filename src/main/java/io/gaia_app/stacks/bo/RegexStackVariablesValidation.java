@@ -1,7 +1,6 @@
 package io.gaia_app.stacks.bo;
 
 import io.gaia_app.stacks.service.RegexStackVariablesValidator;
-import io.gaia_app.stacks.service.RegexStackVariablesValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
