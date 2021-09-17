@@ -21,7 +21,7 @@ class StepRepositoryIT extends SharedMongoContainerTest {
     StepRepository stepRepository;
 
     @Test
-    void jobShouldBeSavedWithLogs() throws IOException {
+    void jobShouldBeSavedWithLogs() {
         var step = new Step(StepType.PLAN, "42");
         step.setId("12");
         step.setLogs(List.of("some logs"));
