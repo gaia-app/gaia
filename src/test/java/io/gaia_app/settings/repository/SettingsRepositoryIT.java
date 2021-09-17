@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(properties = {"gaia.externalUrl=http://gaia.io", "gaia.dockerDaemonUrl=unix:///var/run/docker.sock"})
+@TestPropertySource(properties = {"gaia.externalUrl=http://gaia.io"})
 class SettingsRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
@@ -20,9 +20,6 @@ class SettingsRepositoryIT extends SharedMongoContainerTest {
 
     @Autowired
     private SettingsRepository settingsRepository;
-
-    @Autowired
-    private Settings settings;
 
     @Test
     void itShouldSaveSettings(){
@@ -34,7 +31,6 @@ class SettingsRepositoryIT extends SharedMongoContainerTest {
         // then
         var saved = mongoTemplate.findAll(Settings.class).get(0);
         assertEquals("http://gaia.io", saved.getExternalUrl());
-        assertEquals("unix:///var/run/docker.sock", saved.getDockerDaemonUrl());
     }
 
     @Test
