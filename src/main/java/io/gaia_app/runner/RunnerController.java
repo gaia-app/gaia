@@ -84,8 +84,7 @@ public class RunnerController {
             }
         }
 
-        List<String> env = new ArrayList<>();
-        env.addAll(settings.env());
+        var env = new ArrayList<>(settings.env());
 
         if(stack.getCredentialsId() != null){
             var credentials = this.credentialsService.load(stack.getCredentialsId()).orElse(null);
