@@ -8,6 +8,8 @@ interface UserService {
 
     fun findById(username: String): User
 
+    fun existsById(username: String): Boolean
+
     fun findAll(): List<User>
 
     fun create(user:User): User
@@ -23,6 +25,8 @@ interface UserService {
 class UserServiceImpl(val userRepository: UserRepository, val passwordEncoder: PasswordEncoder):UserService{
 
     override fun findById(username: String): User = userRepository.findById(username).orElseThrow()
+
+    override fun existsById(username: String): Boolean = userRepository.existsById(username)
 
     override fun findAll(): List<User> = userRepository.findAll()
 
