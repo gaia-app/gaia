@@ -41,7 +41,7 @@
 
     <properties>
         <java.version>17</java.version>
-        
+
         <antlr4.version>4.9.1</antlr4.version>
         <cucumber-jvm.version>6.10.0</cucumber-jvm.version>
         <jersey.version>2.27</jersey.version>
@@ -297,6 +297,9 @@
                         <include>**/*Test.java</include>
                         <include>**/*IT.java</include>
                     </includes>
+                    <argLine>
+                        --add-exports java.naming/com.sun.jndi.ldap=ALL-UNNAMED
+                    </argLine>
                 </configuration>
             </plugin>
 
