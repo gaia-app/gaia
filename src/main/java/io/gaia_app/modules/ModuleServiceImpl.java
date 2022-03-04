@@ -20,30 +20,30 @@ public class ModuleServiceImpl implements ModuleService {
     /**
      * matches https://github.com/something(.git), and captures 'something'.
      * The first group (.+?) expands as few times as possible.
-     * The second non-capturing group (?:) matches the end of the line or .git
+     * The second non-capturing group (?:) matches the end of the line ($) or .git$
      */
-    private static final Pattern GITHUB_HTTPS_REPOSITORY_URL_REGEX = Pattern.compile("https://github\\.com/(.+?)(?:$|\\.git$)");
+    private static final Pattern GITHUB_HTTPS_REPOSITORY_URL_REGEX = Pattern.compile("https://github\\.com/(.+?)(?:(?:$)|(?:\\.git$))");
 
     /**
      * matches git@github.com:something(.git), and captures 'something'.
      * The first group (.+?) expands as few times as possible.
      * The second non-capturing group (?:) matches the end of the line or .git
      */
-    private static final Pattern GITHUB_SSH_REPOSITORY_URL_REGEX = Pattern.compile("git@github\\.com:(.+?)(?:$|\\.git$)");
+    private static final Pattern GITHUB_SSH_REPOSITORY_URL_REGEX = Pattern.compile("git@github\\.com:(.+?)(?:(?:$)|(?:\\.git$))");
 
     /**
      * matches https://gitlab.com/something(.git), and captures 'something'.
      * The first group (.+?) expands as few times as possible.
      * The second non-capturing group (?:) matches the end of the line or .git
      */
-    private static final Pattern GITLAB_HTTPS_REPOSITORY_URL_REGEX = Pattern.compile("https://gitlab\\.com/(.+?)(?:/?$|\\.git$)");
+    private static final Pattern GITLAB_HTTPS_REPOSITORY_URL_REGEX = Pattern.compile("https://gitlab\\.com/(.+?)(?:(?:/?$)|(?:\\.git$))");
 
     /**
      * matches git@gitlab.com:something(.git), and captures 'something'.
      * The first group (.+?) expands as few times as possible.
      * The second non-capturing group (?:) matches the end of the line or .git
      */
-    private static final Pattern GITLAB_SSH_REPOSITORY_URL_REGEX = Pattern.compile("git@gitlab\\.com:(.+?)(?:$|\\.git$)");
+    private static final Pattern GITLAB_SSH_REPOSITORY_URL_REGEX = Pattern.compile("git@gitlab\\.com:(.+?)(?:(?:$)|(?:\\.git$))");
 
     private Map<RegistryType, RegistryApi<? extends SourceRepository>> registryApis;
 
