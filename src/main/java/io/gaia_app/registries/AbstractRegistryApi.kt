@@ -4,10 +4,8 @@ import io.gaia_app.teams.User
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
-import java.net.http.HttpClient
 import java.util.*
 
 abstract class AbstractRegistryApi<K : SourceRepository>(val restTemplate: RestTemplate,
