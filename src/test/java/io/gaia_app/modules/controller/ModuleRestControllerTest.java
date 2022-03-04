@@ -1,5 +1,6 @@
 package io.gaia_app.modules.controller;
 
+import io.gaia_app.modules.ModuleService;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.registries.RegistryDetails;
@@ -39,6 +40,9 @@ class ModuleRestControllerTest {
 
     @Mock
     private RegistryService registryService;
+
+    @Mock
+    private ModuleService moduleService;
 
     private User admin;
 

@@ -77,6 +77,9 @@ public class ModuleRestController {
             throw new ModuleForbiddenException();
         }
 
+        // try to update registry details
+        moduleService.updateRegistryDetails(module);
+
         module.getModuleMetadata().setUpdatedBy(user);
         module.getModuleMetadata().setUpdatedAt(LocalDateTime.now());
 
@@ -101,12 +104,6 @@ public class ModuleRestController {
         var existingModule = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
         if (!existingModule.isAuthorizedFor(user)) {
             throw new ModuleForbiddenException();
-        }
-
-        // no registry details found, try to update
-        if(existingModule.getRegistryDetails() == null){
-            moduleService.updateRegistryDetails(existingModule);
-            moduleRepository.save(existingModule);
         }
 
         var projectId = existingModule.getRegistryDetails().getProjectId();
