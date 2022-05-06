@@ -64,7 +64,6 @@ class AuthenticationRestControllerTest {
         assertThat(providers)
             .isNotNull
             .isNotEmpty
-            .hasSize(3)
             .containsExactlyInAnyOrder("client_1", "client_2", "client_3")
     }
 
