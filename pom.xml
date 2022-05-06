@@ -40,12 +40,13 @@
     </ciManagement>
 
     <properties>
+        <java.version>17</java.version>
+
         <antlr4.version>4.9.1</antlr4.version>
         <cucumber-jvm.version>6.10.0</cucumber-jvm.version>
-        <java.version>11</java.version>
         <jersey.version>2.27</jersey.version>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
-        <kotlin.version>1.5.21</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
         <kotlinx.version>1.5.1</kotlinx.version>
         <testcontainers.version>1.15.2</testcontainers.version>
         <node.version>v12.16.0</node.version>
@@ -296,6 +297,9 @@
                         <include>**/*Test.java</include>
                         <include>**/*IT.java</include>
                     </includes>
+                    <argLine>
+                        --add-exports java.naming/com.sun.jndi.ldap=ALL-UNNAMED
+                    </argLine>
                 </configuration>
             </plugin>
 
