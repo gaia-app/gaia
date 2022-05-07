@@ -19,7 +19,7 @@ jobs:
           # fetching all history (to help sonar computing PRs)
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: 17
