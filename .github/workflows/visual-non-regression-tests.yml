@@ -26,6 +26,6 @@ jobs:
       - name: Percy Test
         uses: percy/exec-action@v0.3.1
         with:
-          command: "mvn test -Dgroups=e2e"
+          command: "mvn --batch-mode test -Dgroups=e2e"
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

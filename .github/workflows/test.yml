@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Run Maven tests
-        run: mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report sonar:sonar -DexcludedGroups=e2e -P ci-tu
+        run: mvn --batch-mode org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report sonar:sonar -DexcludedGroups=e2e -P ci-tu
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
