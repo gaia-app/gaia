@@ -53,6 +53,7 @@
         <npm.version>6.13.4</npm.version>
         <spring.vault.version>2.2.2.RELEASE</spring.vault.version>
         <frontend-maven-plugin.version>1.11.0</frontend-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 
         <sonar.projectKey>gaia-app:gaia</sonar.projectKey>
         <sonar.organization>gaia-app</sonar.organization>
@@ -236,7 +237,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.7</version>
+                    <version>${jacoco-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
