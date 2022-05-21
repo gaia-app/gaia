@@ -1,5 +1,6 @@
 package io.gaia_app.modules.controller;
 
+import io.gaia_app.modules.ModuleService;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
@@ -31,11 +32,14 @@ public class ModuleRestController {
 
     private RegistryService registryService;
 
+    private ModuleService moduleService;
+
     @Autowired
-    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository, RegistryService registryService) {
+    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository, RegistryService registryService, ModuleService moduleService) {
         this.moduleRepository = moduleRepository;
         this.moduleGitRepository = moduleGitRepository;
         this.registryService = registryService;
+        this.moduleService = moduleService;
     }
 
     @GetMapping
@@ -72,6 +76,9 @@ public class ModuleRestController {
         if (!existingModule.isAuthorizedFor(user)) {
             throw new ModuleForbiddenException();
         }
+
+        // try to update registry details
+        moduleService.updateRegistryDetails(module);
 
         module.getModuleMetadata().setUpdatedBy(user);
         module.getModuleMetadata().setUpdatedAt(LocalDateTime.now());

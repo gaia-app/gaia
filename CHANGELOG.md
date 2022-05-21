@@ -1,5 +1,61 @@
 # Changelog
 
+<a name="2.3.0"></a>
+## 2.3.0 (2022-05-08)
+
+### Added
+
+- ✨ : update registry details when module is saved [[e15dbcd](https://github.com/gaia-app/gaia/commit/e15dbcd37af99caf5ec64a08f136d0f14aec1474)]
+- ✨ : compute registry details for Gitlab urls [[8436476](https://github.com/gaia-app/gaia/commit/8436476813599b12e8f42c679e8872704e7493ba)]
+    * ✨ : compute registry details for Github ssh urls ([c0c3153](https://github.com/gaia-app/gaia/commit/c0c3153940fbcb795d434e45595d2eb9822b7be8))
+    * ✨ : compute registry details for Github https urls ([1bfcecc](https://github.com/gaia-app/gaia/commit/1bfceccb1e0fe928e141362c90ef0e6237cf7c2b))
+
+### Changed
+
+- ⬆️ : bump kotlin to 1.6.21 [[d569337](https://github.com/gaia-app/gaia/commit/d5693373fba3a01cfa0a0770333003d491ad1918)]
+- ⬆️ : bump jacoco-maven-plugin to 0.8.8 [[4573ad1](https://github.com/gaia-app/gaia/commit/4573ad1e6a69c12801b28c091bce2028dc37c8ea)]
+- ⬆️ : bump setup-java action to v3 [[8347df6](https://github.com/gaia-app/gaia/commit/8347df637648b4d18bed9ab6135a6d08b6cb7ec8)]
+- ⬆️ : bump kotlin.version to 1.6.0 [[0004c28](https://github.com/gaia-app/gaia/commit/0004c28b0480910b3131b59aa99b386c5057e594)]
+- 🔧 : add com.sun.jndi.ldap module export [[808b16d](https://github.com/gaia-app/gaia/commit/808b16d7a795d0bbb6a3375b21071be6ee5667d7)]
+- ⬆️ : upgrade to java 17 [[a091b2a](https://github.com/gaia-app/gaia/commit/a091b2a96287b49e6be16cf782884ce7836cc631)]
+    *  👷 : migrate to java 17 ([c0d4fed](https://github.com/gaia-app/gaia/commit/c0d4fed44a9d1caa6353d0634f15629394694cbd))
+    * ⬆️ : upgrade to java 17 ([619bf1e](https://github.com/gaia-app/gaia/commit/619bf1e92922be21782911a75dec39ea3f17b5f8))
+- 🔧 : update default mongodb URL to use 27017 port [[46a3376](https://github.com/gaia-app/gaia/commit/46a33765f1f50bff160b333ac67437dd3066b0db)]
+- ♻️ : remove redundant semicolons [[da4c98e](https://github.com/gaia-app/gaia/commit/da4c98e2e90a44d8084117566ed5ad11add8a51e)]
+- ♻️ : remove redundant qualifiers [[be3273b](https://github.com/gaia-app/gaia/commit/be3273bf6f40b83e352005b33e314832f5e40139)]
+    * 🔥 : remove redundent modifiers ([8649046](https://github.com/gaia-app/gaia/commit/86490460f744eee521a05eacd071bfd9db523169))
+- ♻️ : remove unnecessary non-null assertion [[0aeb6eb](https://github.com/gaia-app/gaia/commit/0aeb6eb896944f0aa8007ba0b49b295c7456bd24)]
+- ♻️ : replace field injection with constructor [[56de233](https://github.com/gaia-app/gaia/commit/56de2339f208ee4e8b3f44b9dca57646afc8d497)]
+- ♻️ : replace null checks with ifPresent() [[446cdd9](https://github.com/gaia-app/gaia/commit/446cdd978d81a560580e8c5cd92babfa766b11e3)]
+- ♻️ : replace addAll with parametrized constructor call [[7352877](https://github.com/gaia-app/gaia/commit/73528770688d6b537aa20f59c010f3349d8ad7a7)]
+- ♻️ : replace unchecked assignment [[a5ff22b](https://github.com/gaia-app/gaia/commit/a5ff22b53eaf76790141098dc92a9ef0134006d7)]
+- 🎨 : remove unnecessary semicolon [[7ae64ea](https://github.com/gaia-app/gaia/commit/7ae64ea7fdfd79a7298038905bf2f9a7cd76e6e5)]
+- ♻️ : stop using deprecated constructor [[65e4b36](https://github.com/gaia-app/gaia/commit/65e4b36d4b3068f10cade84d15ecb83dd47f9a05)]
+- ♻️ : use redirectUri instead of redirectUriTemplate [[492778b](https://github.com/gaia-app/gaia/commit/492778be3ea9cd383bb9a05d237d64a2e033d3a1)]
+- 🚚 : split configuration of oauth providers [[bcee58c](https://github.com/gaia-app/gaia/commit/bcee58c44a81d1eacdcdda2f632d02d9dadc0ddc)]
+
+### Removed
+
+- 🔥 : remove unused imports [[7ffa067](https://github.com/gaia-app/gaia/commit/7ffa067560be69f00877f46efc2281b4523bd538)]
+- 🔥 : remove redundant throws clause [[164fdcd](https://github.com/gaia-app/gaia/commit/164fdcde3e49bad4864bac5c85e4cde010b661a7)]
+- 🔥 : remove unnecessary imports [[a230bdd](https://github.com/gaia-app/gaia/commit/a230bdd48438d4a72320c241102deeb9c65f423b)]
+- 🔥 : remove unused dockerDaemon settings [[929914c](https://github.com/gaia-app/gaia/commit/929914cf8c084d705e8e8c56922283d2dd6bf19e)]
+
+### Fixed
+
+- 🐛 : group parts of the regex together to make the intended operator precedence explicit [[b1aeaca](https://github.com/gaia-app/gaia/commit/b1aeaca6edfbfc86fa90ceda614437e59143c410)]
+
+### Security
+
+- 🔒 : auto create admin user on startup [[f4ba7e9](https://github.com/gaia-app/gaia/commit/f4ba7e9ad4a2ec9ec36fdda206161d681b8653a4)]
+
+### Miscellaneous
+
+-  👷 : set maven to batch-mode [[4d5b722](https://github.com/gaia-app/gaia/commit/4d5b7227a98e7f2173cb49227be08230f0a44dce)]
+- 🙈 : add node_modules to .dockerignore [[262ce92](https://github.com/gaia-app/gaia/commit/262ce92962ccd1d1fa2706af3f82a729541437fe)]
+- 📝 : add documentation links [[6dcb23a](https://github.com/gaia-app/gaia/commit/6dcb23a998eb2e449002757ffe2fcc942702f012)]
+
+
 <a name="2.2.0"></a>
 ## 2.2.0 (2021-08-20)
 
