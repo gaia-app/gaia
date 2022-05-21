@@ -51,7 +51,7 @@
         <testcontainers.version>1.15.2</testcontainers.version>
         <node.version>v12.16.0</node.version>
         <npm.version>6.13.4</npm.version>
-        <spring.vault.version>2.2.2.RELEASE</spring.vault.version>
+        <spring.vault.version>2.3.2</spring.vault.version>
         <frontend-maven-plugin.version>1.11.0</frontend-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 
@@ -173,6 +173,7 @@
         <dependency>
             <groupId>org.springframework.vault</groupId>
             <artifactId>spring-vault-core</artifactId>
+            <version>${spring.vault.version}</version>
         </dependency>
 
         <!-- selenium tests -->
@@ -210,18 +211,6 @@
         </dependency>
 
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.vault</groupId>
-                <artifactId>spring-vault-dependencies</artifactId>
-                <version>${spring.vault.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <testResources>
