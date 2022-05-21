@@ -57,6 +57,8 @@
         <sonar.projectKey>gaia-app:gaia</sonar.projectKey>
         <sonar.organization>gaia-app</sonar.organization>
         <sonar.host.url>https://sonarcloud.io/</sonar.host.url>
+
+        <argLine>--add-exports java.naming/com.sun.jndi.ldap=ALL-UNNAMED</argLine>
     </properties>
 
     <dependencies>
@@ -297,9 +299,6 @@
                         <include>**/*Test.java</include>
                         <include>**/*IT.java</include>
                     </includes>
-                    <argLine>
-                        --add-exports java.naming/com.sun.jndi.ldap=ALL-UNNAMED
-                    </argLine>
                 </configuration>
             </plugin>
 
