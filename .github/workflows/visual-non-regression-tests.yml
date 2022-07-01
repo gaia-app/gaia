@@ -24,8 +24,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: Percy Test
-        uses: percy/exec-action@v0.3.1
-        with:
-          command: "mvn --batch-mode test -Dgroups=e2e"
+        run: npx @percy/cli exec -- mvn --batch-mode test -Dgroups=e2e
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
