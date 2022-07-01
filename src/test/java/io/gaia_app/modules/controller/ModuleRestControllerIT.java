@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Simple integration test that validates the security configuration of the TeamsRestController, and its http routes
+ * Simple integration test that validates the security configuration of the OrganizationsRestController, and its http routes
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,7 +31,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setup() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
         mongo.runScript("20_module.js");
     }
@@ -43,7 +43,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]name", is("terraform-docker-mongo-limited")))
-                .andExpect(jsonPath("$[0]authorizedTeams..id", contains("Not Ze Team")));
+                .andExpect(jsonPath("$[0]authorizedOrganizations..id", contains("Not Ze Organization")));
     }
 
     @Test
@@ -52,7 +52,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[*]name", contains("terraform-docker-mongo", "terraform-docker-mongo-limited", "terraform-docker-mongo-with-validation")))
-                .andExpect(jsonPath("$..authorizedTeams..id", contains("Ze Team", "Not Ze Team", "Ze Team")));
+                .andExpect(jsonPath("$..authorizedOrganizations..id", contains("Ze Organization", "Not Ze Organization", "Ze Organization")));
     }
 
     @Test
@@ -65,7 +65,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
 
     @Test
     @WithMockUser("Mary J")
-    void findModule_shouldNotReturnModuleOfOtherTeams_forStandardUsers() throws Exception {
+    void findModule_shouldNotReturnModuleOfOtherOrganizations_forStandardUsers() throws Exception {
         mockMvc.perform(get("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676"))
                 .andExpect(status().isForbidden());
     }
@@ -78,7 +78,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
     }
 
     @Test
-    void findModule_shouldReturnModulesOfOtherTeams_forAdmin() throws Exception {
+    void findModule_shouldReturnModulesOfOtherOrganizations_forAdmin() throws Exception {
         mockMvc.perform(get("/api/modules/845543d0-20a5-466c-8978-33c9a4661606"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("terraform-docker-mongo-limited")));

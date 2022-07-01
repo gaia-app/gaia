@@ -1,6 +1,6 @@
 package io.gaia_app.registries;
 
-import io.gaia_app.teams.OAuth2User;
+import io.gaia_app.organizations.OAuth2User;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 

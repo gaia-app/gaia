@@ -1,7 +1,7 @@
 package io.gaia_app.credentials
 
 import io.gaia_app.encryption.EncryptionService
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.stereotype.Service
 import java.util.*

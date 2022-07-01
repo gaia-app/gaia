@@ -28,7 +28,7 @@
 
     <div class="block mt-3">
       <b-table
-        :items="teams"
+        :items="organizations"
         :fields="fields"
         striped
         fixed
@@ -52,13 +52,13 @@
 </template>
 
 <script>
-  import { createOrganization, deleteOrganization, getTeams } from '@/shared/api/teams-api';
+  import { createOrganization, deleteOrganization, getOrganizations } from '@/shared/api/organizations-api';
   import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppOrganizations',
     data: () => ({
-      teams: [],
+      organizations: [],
       newOrganizationName: '',
       fields: [
         { key: 'id', label: 'Name', sortable: true },
@@ -70,7 +70,7 @@
     },
     methods: {
       async refresh() {
-        this.teams = await getTeams();
+        this.organizations = await getOrganizations();
       },
       async createOrg() {
         await createOrganization({ id: this.newOrganizationName })

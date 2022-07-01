@@ -51,7 +51,7 @@ class RunnerControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setUp() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
         mongo.runScript("20_module.js");
         mongo.runScript("30_stack.js");

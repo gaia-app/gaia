@@ -1,7 +1,7 @@
-package io.gaia_app.teams.repository
+package io.gaia_app.organizations.repository
 
-import io.gaia_app.teams.Team
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.Organization
+import io.gaia_app.organizations.User
 import io.gaia_app.test.SharedMongoContainerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,7 +17,7 @@ class UserRepositoryIT: SharedMongoContainerTest() {
     @Test
     fun user_shouldBeSaved() {
         // given
-        val sam = User("Samantha Carter", Team("SG-1"))
+        val sam = User("Samantha Carter", Organization("SG-1"))
 
         // when
         userRepository.save(sam)

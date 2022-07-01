@@ -1,6 +1,6 @@
 package io.gaia_app.credentials
 
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks

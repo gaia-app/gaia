@@ -1,6 +1,6 @@
-package io.gaia_app.teams
+package io.gaia_app.organizations
 
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 

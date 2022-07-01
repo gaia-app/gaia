@@ -1,8 +1,8 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
-import io.gaia_app.teams.repository.UserRepository;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
+import io.gaia_app.organizations.repository.UserRepository;
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setUp() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
     }
 
@@ -60,7 +60,7 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
             .andExpect(jsonPath("$", hasSize(5)))
             .andExpect(jsonPath("$..username", contains("admin", "Mary J", "Darth Vader", "Luke Skywalker", "selmak")))
             .andExpect(jsonPath("$..admin", contains(true, false, false, false, false)))
-            .andExpect(jsonPath("$..team.id", contains("Ze Team", "Not Ze Team")));
+            .andExpect(jsonPath("$..organization.id", contains("Ze Organization", "Not Ze Organization")));
     }
 
     @Test
@@ -72,35 +72,35 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.username", is("Luke Skywalker")))
             .andExpect(jsonPath("$.admin", is(false)))
-            .andExpect(jsonPath("$.team", is(emptyOrNullString())));
+            .andExpect(jsonPath("$.organization", is(emptyOrNullString())));
 
         assertThat(userRepository.existsById("Luke Skywalker")).isTrue();
     }
 
     @Test
-    void users_canBeChangedOfTeam() throws Exception {
+    void users_canBeChangedOfOrganization() throws Exception {
         // given
         assertThat(userRepository.findById("Darth Vader"))
             .isPresent()
-            .map(User::getTeam)
+            .map(User::getOrganization)
             .isNotPresent();
 
         // when
         mockMvc.perform(put("/api/users/Darth Vader")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"username\": \"Darth Vader\",\"team\": {\"id\": \"Sith\"}}"))
+            .content("{\"username\": \"Darth Vader\",\"organization\": {\"id\": \"Sith\"}}"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.username", is("Darth Vader")))
             .andExpect(jsonPath("$.admin", is(false)))
-            .andExpect(jsonPath("$.team.id", is("Sith")));
+            .andExpect(jsonPath("$.organization.id", is("Sith")));
 
         // then
         assertThat(userRepository.findById("Darth Vader"))
             .isPresent()
-            .map(User::getTeam)
-            .hasValue(new Team("Sith"));
+            .map(User::getOrganization)
+            .hasValue(new Organization("Sith"));
     }
 
     @Test
@@ -129,7 +129,7 @@ class UsersRestControllerIT extends SharedMongoContainerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.username", is("Obi Wan Kenobi")))
             .andExpect(jsonPath("$.admin", is(false)))
-            .andExpect(jsonPath("$.team", is(emptyOrNullString())));
+            .andExpect(jsonPath("$.organization", is(emptyOrNullString())));
 
         assertThat(userRepository.existsById("Obi Wan Kenobi")).isTrue();
     }

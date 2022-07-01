@@ -3,7 +3,7 @@ package io.gaia_app.vault
 import com.fasterxml.jackson.annotation.JsonAlias
 import io.gaia_app.credentials.*
 import io.gaia_app.encryption.EncryptionService
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean

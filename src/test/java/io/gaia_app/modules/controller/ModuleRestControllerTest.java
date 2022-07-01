@@ -6,8 +6,8 @@ import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.registries.RegistryDetails;
 import io.gaia_app.registries.RegistryType;
 import io.gaia_app.registries.service.RegistryService;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import io.gaia_app.modules.bo.TerraformModule;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +50,7 @@ class ModuleRestControllerTest {
 
     private User john;
 
-    private Team bobsTeam;
+    private Organization bobsOrganization;
 
     @BeforeEach
     void setUp() {
@@ -59,8 +59,8 @@ class ModuleRestControllerTest {
 
         john = new User("John Dorian", null);
 
-        bobsTeam = new Team("bobsTeam");
-        bob = new User("Bob Kelso", bobsTeam);
+        bobsOrganization = new Organization("bobsOrganization");
+        bob = new User("Bob Kelso", bobsOrganization);
     }
 
     @Test
@@ -73,20 +73,20 @@ class ModuleRestControllerTest {
     }
 
     @Test
-    void findAll_shouldReturnAuthorizedModules_forUserTeam_andOwnedModules(){
+    void findAll_shouldReturnAuthorizedModules_forUserOrganization_andOwnedModules(){
         // given
-        when(moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam)).thenReturn(List.of(new TerraformModule()));
+        when(moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedOrganizationsContaining(bob, bobsOrganization)).thenReturn(List.of(new TerraformModule()));
 
         // when
         var modules = moduleRestController.findAllModules(bob);
 
         // then
         Assertions.assertThat(modules).hasSize(1);
-        verify(moduleRepository).findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(bob, bobsTeam);
+        verify(moduleRepository).findAllByModuleMetadataCreatedByOrAuthorizedOrganizationsContaining(bob, bobsOrganization);
     }
 
     @Test
-    void findAll_shouldReturnOwnedModules_forUserWithNoTeam(){
+    void findAll_shouldReturnOwnedModules_forUserWithNoOrganization(){
         // when
         var modules = moduleRestController.findAllModules(john);
 
@@ -107,7 +107,7 @@ class ModuleRestControllerTest {
     }
 
     @Test
-    void findById_shouldReturnOwnedModule_forUserWithNoTeam(){
+    void findById_shouldReturnOwnedModule_forUserWithNoOrganization(){
         // given
         var ownedModule = new TerraformModule();
         ownedModule.getModuleMetadata().setCreatedBy(john);
@@ -121,7 +121,7 @@ class ModuleRestControllerTest {
     }
 
     @Test
-    void findById_shouldReturnAuthorizedModule_forUserTeam(){
+    void findById_shouldReturnAuthorizedModule_forUserOrganization(){
         // given
         var module = mock(TerraformModule.class);
         when(module.isAuthorizedFor(bob)).thenReturn(true);

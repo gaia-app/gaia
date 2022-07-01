@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Simple integration test that validates the security configuration of the TeamsRestController, and its http routes
+ * Simple integration test that validates the security configuration of the OrganizationsRestController, and its http routes
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +30,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setUp() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
         mongo.runScript("20_module.js");
         mongo.runScript("30_stack.js");
@@ -43,7 +43,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
             .andExpect(jsonPath("$[0]name", is("mongo-instance-limited")))
-            .andExpect(jsonPath("$[0]ownerTeam.id", is("Not Ze Team")));
+            .andExpect(jsonPath("$[0]ownerOrganization.id", is("Not Ze Organization")));
     }
 
     @Test
@@ -52,7 +52,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(5)))
             .andExpect(jsonPath("$.[*].name", contains("mongo-instance-1", "mongo-instance-2", "mongo-instance-limited", "local-mongo", "archived-stack")))
-            .andExpect(jsonPath("$.[*].ownerTeam.id", contains("Ze Team", "Ze Team", "Not Ze Team")));
+            .andExpect(jsonPath("$.[*].ownerOrganization.id", contains("Ze Organization", "Ze Organization", "Not Ze Organization")));
     }
 
     @Test
@@ -61,13 +61,13 @@ class StackRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(get("/api/stacks/845543d0-20a5-466c-8978-33c9a4661606"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is("mongo-instance-limited")))
-            .andExpect(jsonPath("$.ownerTeam.id", is("Not Ze Team")))
+            .andExpect(jsonPath("$.ownerOrganization.id", is("Not Ze Organization")))
             .andExpect(jsonPath("$.estimatedRunningCost", is(0)));
     }
 
     @Test
     @WithMockUser("Mary J")
-    void getStacks_shouldNotReturnStackOfOtherTeams_forStandardUsers() throws Exception {
+    void getStacks_shouldNotReturnStackOfOtherOrganizations_forStandardUsers() throws Exception {
         mockMvc.perform(get("/api/stacks/5a215b6b-fe53-4afa-85f0-a10175a7f264"))
             .andExpect(status().isNotFound());
     }
@@ -77,7 +77,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
         mockMvc.perform(get("/api/stacks/5a215b6b-fe53-4afa-85f0-a10175a7f264"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is("mongo-instance-1")))
-            .andExpect(jsonPath("$.ownerTeam.id", is("Ze Team")))
+            .andExpect(jsonPath("$.ownerOrganization.id", is("Ze Organization")))
             .andExpect(jsonPath("$.estimatedRunningCost", is(0)));
     }
 
@@ -90,7 +90,7 @@ class StackRestControllerIT extends SharedMongoContainerTest {
             .content("{\"name\":\"stack-test\", \"module\": {\"id\":\"e01f9925-a559-45a2-8a55-f93dc434c676\"}}"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", notNullValue()))
-            .andExpect(jsonPath("$.ownerTeam.id", is("Not Ze Team")))
+            .andExpect(jsonPath("$.ownerOrganization.id", is("Not Ze Organization")))
             .andExpect(jsonPath("$.createdBy.username", is("Mary J")))
             .andExpect(jsonPath("$.createdAt", notNullValue()));
     }

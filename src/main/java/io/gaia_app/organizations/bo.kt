@@ -1,4 +1,4 @@
-package io.gaia_app.teams
+package io.gaia_app.organizations
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -6,16 +6,16 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef
 
 /**
- * A Gaia Team, which groups users
+ * A Gaia Organization, which groups users
  */
-data class Team(val id: String)
+data class Organization(val id: String)
 
 /**
  * a Gaia user, which has granted access to modules
  */
 data class User(
         @Id val username: String,
-        @DBRef val team: Team?) {
+        @DBRef val organization: Organization?) {
 
     var isAdmin: Boolean = false
 

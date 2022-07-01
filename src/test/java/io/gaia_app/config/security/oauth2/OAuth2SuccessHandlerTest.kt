@@ -1,9 +1,9 @@
 package io.gaia_app.config.security.oauth2
 
 import io.gaia_app.registries.RegistryOAuth2Provider
-import io.gaia_app.teams.OAuth2User
-import io.gaia_app.teams.User
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.OAuth2User
+import io.gaia_app.organizations.User
+import io.gaia_app.organizations.repository.UserRepository
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -69,7 +69,7 @@ class OAuth2SuccessHandlerTest {
         assertThat(captor.value)
             .isNotNull
             .hasFieldOrPropertyWithValue("username", "django")
-            .hasFieldOrPropertyWithValue("team", null)
+            .hasFieldOrPropertyWithValue("organization", null)
     }
 
     @Test

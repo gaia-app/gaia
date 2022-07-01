@@ -2,8 +2,8 @@ package io.gaia_app.registries.gitlab
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.gaia_app.registries.RegistryFile
-import io.gaia_app.teams.OAuth2User
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.OAuth2User
+import io.gaia_app.organizations.User
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.internal.Base64
 import org.junit.jupiter.api.Test

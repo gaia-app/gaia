@@ -4,7 +4,7 @@ import io.gaia_app.registries.RegistryApi
 import io.gaia_app.registries.RegistryType
 import io.gaia_app.registries.gitlab.GitlabRepository
 import io.gaia_app.registries.service.RegistryService
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks

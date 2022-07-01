@@ -1,7 +1,7 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.User;
-import io.gaia_app.teams.UserService;
+import io.gaia_app.organizations.User;
+import io.gaia_app.organizations.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

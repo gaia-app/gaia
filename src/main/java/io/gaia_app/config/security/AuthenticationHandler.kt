@@ -1,8 +1,8 @@
 package io.gaia_app.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.gaia_app.teams.User
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.User
+import io.gaia_app.organizations.repository.UserRepository
 import org.springframework.http.MediaType
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.Authentication

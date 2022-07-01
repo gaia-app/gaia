@@ -6,8 +6,8 @@ import io.gaia_app.modules.bo.Variable
 import io.gaia_app.modules.repository.TerraformModuleRepository
 import io.gaia_app.registries.RegistryDetails
 import io.gaia_app.registries.RegistryType
-import io.gaia_app.teams.OAuth2User
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.OAuth2User
+import io.gaia_app.organizations.User
 import io.gaia_app.test.SharedMongoContainerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

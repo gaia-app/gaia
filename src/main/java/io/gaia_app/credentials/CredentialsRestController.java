@@ -1,6 +1,6 @@
 package io.gaia_app.credentials;
 
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;

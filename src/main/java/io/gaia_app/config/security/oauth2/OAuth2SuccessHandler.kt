@@ -2,9 +2,9 @@ package io.gaia_app.config.security.oauth2
 
 import io.gaia_app.config.security.SuccessHandler
 import io.gaia_app.registries.RegistryOAuth2Provider
-import io.gaia_app.teams.OAuth2User
-import io.gaia_app.teams.User
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.OAuth2User
+import io.gaia_app.organizations.User
+import io.gaia_app.organizations.repository.UserRepository
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition
 import org.springframework.context.annotation.Conditional
 import org.springframework.security.core.Authentication

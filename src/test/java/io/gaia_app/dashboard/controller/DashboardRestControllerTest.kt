@@ -3,8 +3,8 @@ package io.gaia_app.dashboard.controller
 import io.gaia_app.modules.repository.TerraformModuleRepository
 import io.gaia_app.stacks.bo.StackState
 import io.gaia_app.stacks.repository.StackRepository
-import io.gaia_app.teams.Team
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.Organization
+import io.gaia_app.organizations.User
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -73,19 +73,19 @@ class DashboardRestControllerTest {
     }
 
     @Nested
-    inner class WhenUserWithTeamTest {
+    inner class WhenUserWithOrganizationTest {
 
-        private val team = Team("userTeam")
-        private val user = User("user", team)
+        private val organization = Organization("userOrganization")
+        private val user = User("user", organization)
 
         @Test
         fun `summary() should return modules count`() {
             // when
-            whenever(moduleRepository.countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(team, user)).thenReturn(4)
-            val result = controller.summary(user, team)
+            whenever(moduleRepository.countByAuthorizedOrganizationsContainingOrModuleMetadataCreatedBy(organization, user)).thenReturn(4)
+            val result = controller.summary(user, organization)
 
             // then
-            verify(moduleRepository, times(1)).countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(team, user)
+            verify(moduleRepository, times(1)).countByAuthorizedOrganizationsContainingOrModuleMetadataCreatedBy(organization, user)
             verifyNoMoreInteractions(moduleRepository)
             assertThat(result)
                 .isNotNull
@@ -95,13 +95,13 @@ class DashboardRestControllerTest {
         @Test
         fun `summary() should return stacks count`() {
             // when
-            whenever(stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, team)).thenReturn(5)
-            whenever(stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team)).thenReturn(6)
-            val result = controller.summary(user, team)
+            whenever(stackRepository.countStacksByStateAndOwnerOrganization(StackState.RUNNING, organization)).thenReturn(5)
+            whenever(stackRepository.countStacksByStateAndOwnerOrganization(StackState.TO_UPDATE, organization)).thenReturn(6)
+            val result = controller.summary(user, organization)
 
             // then
-            verify(stackRepository, times(1)).countStacksByStateAndOwnerTeam(StackState.RUNNING, team)
-            verify(stackRepository, times(1)).countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team)
+            verify(stackRepository, times(1)).countStacksByStateAndOwnerOrganization(StackState.RUNNING, organization)
+            verify(stackRepository, times(1)).countStacksByStateAndOwnerOrganization(StackState.TO_UPDATE, organization)
             verifyNoMoreInteractions(stackRepository)
             assertThat(result)
                 .isNotNull
@@ -112,7 +112,7 @@ class DashboardRestControllerTest {
     }
 
     @Nested
-    inner class WhenUserWithoutTeamTest {
+    inner class WhenUserWithoutOrganizationTest {
 
         private val user = User("user", null)
 

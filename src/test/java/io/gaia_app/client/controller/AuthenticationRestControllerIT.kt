@@ -26,7 +26,7 @@ class AuthenticationRestControllerIT: SharedMongoContainerTest() {
     @BeforeAll
     fun setUp() {
         mongo.emptyDatabase()
-        mongo.runScript("00_team.js")
+        mongo.runScript("00_organization.js")
         mongo.runScript("10_user.js")
     }
 
@@ -37,7 +37,7 @@ class AuthenticationRestControllerIT: SharedMongoContainerTest() {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.username", equalTo("admin")))
             .andExpect(jsonPath("$.admin", equalTo(true)))
-            .andExpect(jsonPath("$.team.id", equalTo("Ze Team")))
+            .andExpect(jsonPath("$.organization.id", equalTo("Ze Organization")))
     }
 
     @Test

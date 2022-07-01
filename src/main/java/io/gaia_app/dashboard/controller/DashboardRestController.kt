@@ -3,8 +3,8 @@ package io.gaia_app.dashboard.controller
 import io.gaia_app.modules.repository.TerraformModuleRepository
 import io.gaia_app.stacks.bo.StackState
 import io.gaia_app.stacks.repository.StackRepository
-import io.gaia_app.teams.Team
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.Organization
+import io.gaia_app.organizations.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,7 +18,7 @@ class DashboardRestController(
     private val stackRepository: StackRepository) {
 
     @GetMapping("/summary")
-    fun summary(user: User, team: Team?) =
+    fun summary(user: User, organization: Organization?) =
         when {
             user.isAdmin -> {
                 mapOf(
@@ -26,11 +26,11 @@ class DashboardRestController(
                     "runningStacksCount" to stackRepository.countStacksByState(StackState.RUNNING),
                     "toUpdateStacksCount" to stackRepository.countStacksByState(StackState.TO_UPDATE))
             }
-            team != null -> {
+            organization != null -> {
                 mapOf(
-                    "modulesCount" to moduleRepository.countByAuthorizedTeamsContainingOrModuleMetadataCreatedBy(team, user),
-                    "runningStacksCount" to stackRepository.countStacksByStateAndOwnerTeam(StackState.RUNNING, team),
-                    "toUpdateStacksCount" to stackRepository.countStacksByStateAndOwnerTeam(StackState.TO_UPDATE, team))
+                    "modulesCount" to moduleRepository.countByAuthorizedOrganizationsContainingOrModuleMetadataCreatedBy(organization, user),
+                    "runningStacksCount" to stackRepository.countStacksByStateAndOwnerOrganization(StackState.RUNNING, organization),
+                    "toUpdateStacksCount" to stackRepository.countStacksByStateAndOwnerOrganization(StackState.TO_UPDATE, organization))
             }
             else -> {
                 mapOf(

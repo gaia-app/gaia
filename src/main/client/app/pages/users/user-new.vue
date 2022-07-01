@@ -36,16 +36,16 @@
         </b-form-group>
 
         <b-form-group
-          label="Team"
-          description="The user team"
+          label="Organization"
+          description="The user organization"
         >
           <vue-multiselect
-            v-model="user.team"
-            :options="teams"
+            v-model="user.organization"
+            :options="organizations"
             track-by="id"
             label="id"
             :multiple="false"
-            placeholder="Select user team"
+            placeholder="Select user organization"
             :show-labels="false"
           />
         </b-form-group>
@@ -79,18 +79,18 @@
 </template>
 
 <script>
-  import { getTeams } from '@/shared/api/teams-api';
+  import { getOrganizations } from '@/shared/api/organizations-api';
   import { createUser } from '@/shared/api/users-api';
   import { displayNotification } from '@/shared/services/modal-service';
 
   export default {
     name: 'AppUserEdition',
     data: () => ({
-      teams: [],
+      organizations: [],
       user: {},
     }),
     async created() {
-      this.teams = await getTeams();
+      this.organizations = await getOrganizations();
     },
     methods: {
       async createUser() {

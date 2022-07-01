@@ -1,8 +1,8 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
-import io.gaia_app.teams.repository.UserRepository;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
+import io.gaia_app.organizations.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +31,7 @@ public class UserControllerAdvice {
     }
 
     @ModelAttribute
-    public Team userTeam(Authentication authentication, @ModelAttribute User user) {
+    public Organization userOrganization(Authentication authentication, @ModelAttribute User user) {
         // in case of anonymous access (like healthcheck)
         if (authentication == null) {
             return null;
@@ -40,7 +40,7 @@ public class UserControllerAdvice {
         if ("gaia-runner".equals(authentication.getName())) {
             return null;
         }
-        return user.getTeam();
+        return user.getOrganization();
     }
 
 }

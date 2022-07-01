@@ -5,7 +5,7 @@ import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.registries.service.RegistryService;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,8 +47,8 @@ public class ModuleRestController {
         if (user.isAdmin()) {
             return moduleRepository.findAll();
         }
-        if (user.getTeam() != null) {
-            return moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedTeamsContaining(user, user.getTeam());
+        if (user.getOrganization() != null) {
+            return moduleRepository.findAllByModuleMetadataCreatedByOrAuthorizedOrganizationsContaining(user, user.getOrganization());
         }
         return moduleRepository.findAllByModuleMetadataCreatedBy(user);
     }

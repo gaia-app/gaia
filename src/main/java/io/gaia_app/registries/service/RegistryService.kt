@@ -7,7 +7,7 @@ import io.gaia_app.registries.RegistryApi
 import io.gaia_app.registries.RegistryDetails
 import io.gaia_app.registries.RegistryType
 import io.gaia_app.registries.SourceRepository
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.stereotype.Service
 import java.util.*
 

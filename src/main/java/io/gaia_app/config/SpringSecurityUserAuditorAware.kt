@@ -1,7 +1,7 @@
 package io.gaia_app.config
 
-import io.gaia_app.teams.User
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.User
+import io.gaia_app.organizations.repository.UserRepository
 import org.springframework.data.domain.AuditorAware
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component

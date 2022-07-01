@@ -1,6 +1,6 @@
 package io.gaia_app.client.controller
 
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties
 import org.springframework.security.core.Authentication

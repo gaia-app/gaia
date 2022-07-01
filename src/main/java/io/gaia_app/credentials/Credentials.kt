@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef

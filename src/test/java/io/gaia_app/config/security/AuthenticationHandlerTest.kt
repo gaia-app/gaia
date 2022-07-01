@@ -1,8 +1,8 @@
 package io.gaia_app.config.security
 
 import com.jayway.jsonpath.JsonPath
-import io.gaia_app.teams.User
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.User
+import io.gaia_app.organizations.repository.UserRepository
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -65,7 +65,7 @@ class AuthenticationHandlerTest {
             assertThat(captor.value)
                 .isNotNull
                 .hasFieldOrPropertyWithValue("username", "spencer")
-                .hasFieldOrPropertyWithValue("team", null)
+                .hasFieldOrPropertyWithValue("organization", null)
         }
 
         @Test

@@ -1,8 +1,8 @@
 package io.gaia_app.stacks.bo;
 
 import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.validation.constraints.NotBlank;
@@ -55,7 +55,7 @@ public class Stack {
     private StackState state = StackState.NEW;
 
     @DBRef
-    private Team ownerTeam;
+    private Organization ownerOrganization;
 
     private BigDecimal estimatedRunningCost;
 
@@ -127,12 +127,12 @@ public class Stack {
         this.state = state;
     }
 
-    public void setOwnerTeam(Team ownerTeam) {
-        this.ownerTeam = ownerTeam;
+    public void setOwnerOrganization(Organization ownerOrganization) {
+        this.ownerOrganization = ownerOrganization;
     }
 
-    public Team getOwnerTeam() {
-        return ownerTeam;
+    public Organization getOwnerOrganization() {
+        return ownerOrganization;
     }
 
     public BigDecimal getEstimatedRunningCost() {

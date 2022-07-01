@@ -1,6 +1,6 @@
 package io.gaia_app.config.security
 
-import io.gaia_app.teams.repository.UserRepository
+import io.gaia_app.organizations.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -90,7 +90,7 @@ class SecurityConfig(
 
 }
 
-fun io.gaia_app.teams.User.toAuthorities(): List<GrantedAuthority> {
+fun io.gaia_app.organizations.User.toAuthorities(): List<GrantedAuthority> {
     return if (this.isAdmin) {
         listOf(SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("ROLE_USER"))
     } else {

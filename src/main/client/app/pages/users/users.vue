@@ -47,7 +47,7 @@
     getUsers,
     updateUser,
   } from '@/shared/api/users-api';
-  import { getTeams } from '@/shared/api/teams-api';
+  import { getOrganizations } from '@/shared/api/organizations-api';
   import { displayNotification } from '@/shared/services/modal-service';
   import AppUserName from '@/pages/users/user-name.vue';
 
@@ -55,16 +55,16 @@
     name: 'AppUsers',
     components: { AppUserName },
     data: () => ({
-      teams: [],
+      organizations: [],
       users: [],
       fields: [
         { key: 'username', label: 'User', sortable: true },
-        { key: 'team.id', label: 'Team', sortable: true },
+        { key: 'organization.id', label: 'Organization', sortable: true },
         { key: 'edit' },
       ],
     }),
     async created() {
-      [this.users, this.teams] = await Promise.all([getUsers(), getTeams()]);
+      [this.users, this.organizations] = await Promise.all([getUsers(), getOrganizations()]);
     },
     methods: {
       saveUser(user) {

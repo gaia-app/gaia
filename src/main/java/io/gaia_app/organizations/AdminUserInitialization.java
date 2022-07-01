@@ -1,4 +1,4 @@
-package io.gaia_app.teams;
+package io.gaia_app.organizations;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

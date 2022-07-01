@@ -36,7 +36,7 @@
       </div>
     </div>
     <div
-      v-if="isWithoutTeam"
+      v-if="isWithoutOrganization"
       class="center"
     >
       <div class="error_page">
@@ -49,7 +49,7 @@
         </div>
         <br>
         <h3>Hi there !</h3>
-        <p>It seems that you're not a member of a team yet. Ask your admin to add you a team !</p>
+        <p>It seems that you're not a member of a organization yet. Ask your admin to add you a organization !</p>
         <p>Until then, you'll only be able to use public modules.</p>
       </div>
     </div>
@@ -72,8 +72,8 @@
     }),
     computed: {
       ...mapState('session', ['user']),
-      isWithoutTeam() {
-        return !this.user.admin && !this.user.team;
+      isWithoutOrganization() {
+        return !this.user.admin && !this.user.organization;
       },
     },
     async created() {

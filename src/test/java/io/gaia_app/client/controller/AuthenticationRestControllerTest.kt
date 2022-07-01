@@ -1,6 +1,6 @@
 package io.gaia_app.client.controller
 
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

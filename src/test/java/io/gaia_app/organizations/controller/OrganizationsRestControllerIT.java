@@ -1,7 +1,7 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.repository.TeamRepository;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.repository.OrganizationsRepository;
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,18 +24,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Simple integration test that validates the security configuration of the TeamsRestController, and its http routes
+ * Simple integration test that validates the security configuration of the OrganizationsRestController, and its http routes
  */
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(value = "admin", roles = "ADMIN")
-class TeamsRestControllerIT extends SharedMongoContainerTest {
+class OrganizationsRestControllerIT extends SharedMongoContainerTest {
 
     @Autowired
-    private TeamsRestController teamsRestController;
+    private OrganizationsRestController organizationsRestController;
 
     @Autowired
-    private TeamRepository teamRepository;
+    private OrganizationsRepository organizationsRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,38 +43,38 @@ class TeamsRestControllerIT extends SharedMongoContainerTest {
     @BeforeEach
     void setUp() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
     }
 
     @Test
-    void teams_shouldBeExposed_atSpecificUrl() throws Exception {
-        mockMvc.perform(get("/api/teams"))
+    void organizations_shouldBeExposed_atSpecificUrl() throws Exception {
+        mockMvc.perform(get("/api/organizations"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(3)))
-            .andExpect(jsonPath("$..id", contains("Ze Team", "Not Ze Team", "Sith")));
+            .andExpect(jsonPath("$..id", contains("Ze Organization", "Not Ze Organization", "Sith")));
     }
 
     @Test
     void createOrganization_shouldCreateOrganization() throws Exception {
-        mockMvc.perform(post("/api/teams")
+        mockMvc.perform(post("/api/organizations")
             .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\":\"Gungans\"}"))
             .andExpect(status().isOk());
 
-        assertTrue(teamRepository.existsById("Gungans"));
+        assertTrue(organizationsRepository.existsById("Gungans"));
     }
 
     @Test
     void deleteOrganization_shouldDeleteOrganization() throws Exception {
-        teamRepository.save(new Team("First Order"));
+        organizationsRepository.save(new Organization("First Order"));
 
-        mockMvc.perform(delete("/api/teams/First Order")
+        mockMvc.perform(delete("/api/organizations/First Order")
             .with(csrf()))
             .andExpect(status().isOk());
 
-        assertFalse(teamRepository.existsById("First Order"));
+        assertFalse(organizationsRepository.existsById("First Order"));
     }
 
     @Nested
@@ -82,26 +82,26 @@ class TeamsRestControllerIT extends SharedMongoContainerTest {
 
         @Test
         @WithMockUser("Jar Jar Binks")
-        void teams_shouldBeAccessible_forStandardUsers() {
-            Assertions.assertDoesNotThrow(() -> teamsRestController.teams());
+        void organizations_shouldBeAccessible_forStandardUsers() {
+            Assertions.assertDoesNotThrow(() -> organizationsRestController.organizations());
         }
 
         @Test
         @WithMockUser("Jar Jar Binks")
         void createOrganization_shouldBeForbidden_forStandardUsers() {
-            assertThrows(AccessDeniedException.class, () -> teamsRestController.createOrganization(new Team("Gungans")));
+            assertThrows(AccessDeniedException.class, () -> organizationsRestController.createOrganization(new Organization("Gungans")));
         }
 
         @Test
         @WithMockUser("Jar Jar Binks")
         void deleteOrganization_shouldBeForbidden_forStandardUsers() {
-            assertThrows(AccessDeniedException.class, () -> teamsRestController.deleteOrganization("Gungans"));
+            assertThrows(AccessDeniedException.class, () -> organizationsRestController.deleteOrganization("Gungans"));
         }
 
         @Test
         @WithMockUser(value = "admin", roles = "ADMIN")
-        void teams_shouldBeAccessible_forAdminUser() {
-            Assertions.assertDoesNotThrow(() -> teamsRestController.teams());
+        void organizations_shouldBeAccessible_forAdminUser() {
+            Assertions.assertDoesNotThrow(() -> organizationsRestController.organizations());
         }
 
     }

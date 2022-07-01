@@ -1,6 +1,6 @@
 package io.gaia_app.registries
 
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 
 interface RegistryApi<T> {
 

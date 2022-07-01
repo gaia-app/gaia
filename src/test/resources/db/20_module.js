@@ -12,7 +12,7 @@ gaia.terraformModule.insert([
             "repository": "hashicorp/terraform",
             "tag": "0.11.14"
         },
-        "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
+        "authorizedOrganizations": [{"$ref": "organization", "$id": "Ze Organization"}],
         "moduleMetadata": {
             "createdAt": "2020-08-07T14:32:22.015+00:00",
             "createdBy": {"$ref": "user", "$id": "admin"}
@@ -41,7 +41,7 @@ gaia.terraformModule.insert([
     {
         "_id": "845543d0-20a5-466c-8978-33c9a4661606",
         "name": "terraform-docker-mongo-limited",
-        "description": "A module only visible by admin and team Not Ze Team",
+        "description": "A module only visible by admin and organization Not Ze Organization",
         "gitRepositoryUrl": "https://github.com/juwit/terraform-docker-mongo.git",
         "directory": null,
         "gitBranch": "master",
@@ -49,7 +49,7 @@ gaia.terraformModule.insert([
             "repository": "hashicorp/terraform",
             "tag": "0.11.14"
         },
-        "authorizedTeams": [{"$ref": "team", "$id": "Not Ze Team"}],
+        "authorizedOrganizations": [{"$ref": "organization", "$id": "Not Ze Organization"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },
@@ -70,7 +70,7 @@ gaia.terraformModule.insert([
             "repository": "hashicorp/terraform",
             "tag": "0.11.14"
         },
-        "authorizedTeams": [{"$ref": "team", "$id": "Ze Team"}],
+        "authorizedOrganizations": [{"$ref": "organization", "$id": "Ze Organization"}],
         "moduleMetadata": {
             "createdBy": {"$ref": "user", "$id": "admin"}
         },

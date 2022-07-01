@@ -1,7 +1,7 @@
 package io.gaia_app.modules.bo;
 
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,7 +28,7 @@ class TerraformModuleTest {
     @Test
     void module_shouldBeAuthorized_forTheModuleCreator(){
         // given
-        var sg1 = new Team("SG-1");
+        var sg1 = new Organization("SG-1");
         var daniel = new User("Daniel Jackson", sg1);
 
         var module = new TerraformModule();
@@ -43,13 +43,13 @@ class TerraformModuleTest {
 
 
     @Test
-    void module_shouldBeAuthorized_forAUserOfAnAuthorizedTeam(){
+    void module_shouldBeAuthorized_forAUserOfAnAuthorizedOrganization(){
         // given
-        var sg1 = new Team("SG-1");
+        var sg1 = new Organization("SG-1");
         var daniel = new User("Daniel Jackson", sg1);
 
         var module = new TerraformModule();
-        module.setAuthorizedTeams(List.of(sg1));
+        module.setAuthorizedOrganizations(List.of(sg1));
 
         // when
         var authorized = module.isAuthorizedFor(daniel);
@@ -59,9 +59,9 @@ class TerraformModuleTest {
     }
 
     @Test
-    void module_shouldBeUnauthorized_forAUserOfAnUnauthorizedTeam(){
+    void module_shouldBeUnauthorized_forAUserOfAnUnauthorizedOrganization(){
         // given
-        var sg1 = new Team("SG-1");
+        var sg1 = new Organization("SG-1");
         var daniel = new User("Daniel Jackson", sg1);
 
         var module = new TerraformModule();

@@ -1,8 +1,8 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
-import io.gaia_app.teams.repository.UserRepository;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
+import io.gaia_app.organizations.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -50,20 +50,20 @@ class UserControllerAdviceTest {
     }
 
     @Test
-    void userTeam_shouldTeamOfUser() {
+    void userOrganization_shouldOrganizationOfUser() {
         // given
-        var the_wailers = new Team("the_wailers");
+        var the_wailers = new Organization("the_wailers");
         var marley = new User("marley", the_wailers);
 
         // when
-        var result = userControllerAdvice.userTeam(authentication, marley);
+        var result = userControllerAdvice.userOrganization(authentication, marley);
 
         // then
         assertThat(result).isEqualTo(the_wailers);
     }
 
     @Test
-    void userTeam_shouldReturnNothing_withoutAuthentication() {
-        assertNull(userControllerAdvice.userTeam(null, null));
+    void userOrganization_shouldReturnNothing_withoutAuthentication() {
+        assertNull(userControllerAdvice.userOrganization(null, null));
     }
 }

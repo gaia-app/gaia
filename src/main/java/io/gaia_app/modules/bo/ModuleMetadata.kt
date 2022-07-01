@@ -1,6 +1,6 @@
 package io.gaia_app.modules.bo
 
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.data.mongodb.core.mapping.DBRef
 import java.time.LocalDateTime
 

@@ -1,8 +1,8 @@
 package io.gaia_app.modules.bo;
 
 import io.gaia_app.registries.RegistryDetails;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.validation.Valid;
@@ -37,7 +37,7 @@ public class TerraformModule {
     private TerraformImage terraformImage = TerraformImage.Companion.defaultInstance();
 
     @DBRef
-    private List<Team> authorizedTeams = new ArrayList<>();
+    private List<Organization> authorizedOrganizations = new ArrayList<>();
 
     private BigDecimal estimatedMonthlyCost;
 
@@ -121,16 +121,16 @@ public class TerraformModule {
         this.terraformImage = terraformImage;
     }
 
-    public List<Team> getAuthorizedTeams() {
-        return authorizedTeams;
+    public List<Organization> getAuthorizedOrganizations() {
+        return authorizedOrganizations;
     }
 
-    public void setAuthorizedTeams(List<Team> authorizedTeams) {
-        this.authorizedTeams = authorizedTeams;
+    public void setAuthorizedOrganizations(List<Organization> authorizedOrganizations) {
+        this.authorizedOrganizations = authorizedOrganizations;
     }
 
     public boolean isAuthorizedFor(User user) {
-        return user.isAdmin() || this.authorizedTeams.contains(user.getTeam()) || user.equals(this.moduleMetadata.getCreatedBy());
+        return user.isAdmin() || this.authorizedOrganizations.contains(user.getOrganization()) || user.equals(this.moduleMetadata.getCreatedBy());
     }
 
     public BigDecimal getEstimatedMonthlyCost() {

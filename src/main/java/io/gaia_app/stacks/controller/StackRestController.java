@@ -7,8 +7,8 @@ import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +47,8 @@ public class StackRestController {
     public List<Stack> listStacks(User user) {
         if (user.isAdmin()) {
             return stackRepository.findAll();
-        } else if (user.getTeam() != null) {
-            return stackRepository.findByOwnerTeam(user.getTeam());
+        } else if (user.getOrganization() != null) {
+            return stackRepository.findByOwnerOrganization(user.getOrganization());
         }
         return stackRepository.findByCreatedBy(user);
     }
@@ -58,8 +58,8 @@ public class StackRestController {
         Stack stack;
         if (user.isAdmin()) {
             stack = stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
-        } else if (user.getTeam() != null) {
-            stack = stackRepository.findByIdAndOwnerTeam(id, user.getTeam()).orElseThrow(StackNotFoundException::new);
+        } else if (user.getOrganization() != null) {
+            stack = stackRepository.findByIdAndOwnerOrganization(id, user.getOrganization()).orElseThrow(StackNotFoundException::new);
         } else {
             stack = stackRepository.findById(id).orElseThrow(StackNotFoundException::new);
         }
@@ -68,8 +68,8 @@ public class StackRestController {
     }
 
     @PostMapping
-    public Stack save(@RequestBody @Valid Stack stack, Team userTeam, User user) {
-        stack.setOwnerTeam(userTeam);
+    public Stack save(@RequestBody @Valid Stack stack, Organization userOrganization, User user) {
+        stack.setOwnerOrganization(userOrganization);
         stack.setId(UUID.randomUUID().toString());
         stack.setCreatedBy(user);
         stack.setCreatedAt(LocalDateTime.now());

@@ -1,7 +1,7 @@
-package io.gaia_app.teams.controller;
+package io.gaia_app.organizations.controller;
 
-import io.gaia_app.teams.User;
-import io.gaia_app.teams.UserService;
+import io.gaia_app.organizations.User;
+import io.gaia_app.organizations.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;

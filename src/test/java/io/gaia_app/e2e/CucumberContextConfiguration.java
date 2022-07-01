@@ -26,7 +26,7 @@ public class CucumberContextConfiguration extends SharedMongoContainerTest {
     @Before
     public void setup_cucumber_spring_context() {
         mongo.emptyDatabase();
-        mongo.runScript("00_team.js");
+        mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
         mongo.runScript("20_module.js");
         mongo.runScript("30_stack.js");

@@ -9,7 +9,7 @@ import io.gaia_app.registries.RegistryApi
 import io.gaia_app.registries.RegistryType
 import io.gaia_app.registries.github.GithubRepository
 import io.gaia_app.registries.gitlab.GitlabRepository
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import io.gaia_app.test.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

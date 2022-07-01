@@ -1,8 +1,8 @@
 package io.gaia_app.modules.repository;
 
 import io.gaia_app.modules.bo.TerraformModule;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,9 @@ class TerraformModuleRepositoryIT extends SharedMongoContainerTest {
 
     @BeforeEach
     void setUp() {
-        // sample teams
-        Team team1 = new Team("team1");
-        Team team2 = new Team("team2");
+        // sample organizations
+        Organization organization1 = new Organization("organization1");
+        Organization organization2 = new Organization("organization2");
 
         // sample owners
         bob = new User("Bob", null);
@@ -33,12 +33,12 @@ class TerraformModuleRepositoryIT extends SharedMongoContainerTest {
         // saving sample modules
         TerraformModule module1 = new TerraformModule();
         module1.setId("Module 1");
-        module1.setAuthorizedTeams(List.of(team1));
+        module1.setAuthorizedOrganizations(List.of(organization1));
         module1.getModuleMetadata().setCreatedBy(bob);
 
         TerraformModule module2 = new TerraformModule();
         module2.setId("Module 2");
-        module2.setAuthorizedTeams(List.of(team1, team2));
+        module2.setAuthorizedOrganizations(List.of(organization1, organization2));
         module2.getModuleMetadata().setCreatedBy(bob);
 
         terraformModuleRepository.deleteAll();

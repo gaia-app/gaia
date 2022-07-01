@@ -97,19 +97,19 @@
 
         <hr>
 
-        <h2>Authorized Teams</h2>
+        <h2>Authorized Organizations</h2>
 
         <b-form-row>
           <b-col cols="6">
             <b-form-group>
               <vue-multiselect
-                v-model="module.authorizedTeams"
+                v-model="module.authorizedOrganizations"
                 :multiple="true"
                 label="id"
                 track-by="id"
                 searchable
-                placeholder="Select teams"
-                :options="teams"
+                placeholder="Select organizations"
+                :options="organizations"
               />
             </b-form-group>
           </b-col>
@@ -164,7 +164,7 @@
     refreshModule,
     updateModule,
   } from '@/shared/api/modules-api';
-  import { getTeams } from '@/shared/api/teams-api';
+  import { getOrganizations } from '@/shared/api/organizations-api';
   import {
     displayConfirmDialog,
     displayNotification,
@@ -190,7 +190,7 @@
         module: null,
         isTerraformImageValid: null,
         isTerraformImageOverride: null,
-        teams: [],
+        organizations: [],
         providers: [
           { value: 'aws', text: 'AWS' },
           { value: 'azurerm', text: 'Azure' },
@@ -210,7 +210,7 @@
 
     async created() {
       this.module = await getModule(this.moduleId);
-      this.teams = await getTeams();
+      this.organizations = await getOrganizations();
     },
 
     methods: {

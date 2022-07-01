@@ -6,8 +6,8 @@ import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
-import io.gaia_app.teams.Team;
-import io.gaia_app.teams.User;
+import io.gaia_app.organizations.Organization;
+import io.gaia_app.organizations.User;
 import io.gaia_app.modules.bo.TerraformImage;
 import io.gaia_app.modules.bo.TerraformModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +32,11 @@ class StackRestControllerTest {
 
     private User adminUser = new User("admin", null);
 
-    private Team userTeam = new Team("Red Is Dead");
+    private Organization userOrganization = new Organization("Red Is Dead");
 
-    private User standardUser = new User("Serge Karamazov", userTeam);
+    private User standardUser = new User("Serge Karamazov", userOrganization);
 
-    private User userWithNoTeam = new User("Émile Gravier", null);
+    private User userWithNoOrganization = new User("Émile Gravier", null);
 
     private Stack stack = new Stack();
 
@@ -70,21 +70,21 @@ class StackRestControllerTest {
     }
 
     @Test
-    void listStack_shouldFindTeamStacks_forStandardUser() {
+    void listStack_shouldFindOrganizationStacks_forStandardUser() {
         // when
         stackRestController.listStacks(standardUser);
 
         // then
-        verify(stackRepository).findByOwnerTeam(userTeam);
+        verify(stackRepository).findByOwnerOrganization(userOrganization);
     }
 
     @Test
-    void listStack_shouldFindOwnedStacks_forUserWithNoTeam() {
+    void listStack_shouldFindOwnedStacks_forUserWithNoOrganization() {
         // when
-        stackRestController.listStacks(userWithNoTeam);
+        stackRestController.listStacks(userWithNoOrganization);
 
         // then
-        verify(stackRepository).findByCreatedBy(userWithNoTeam);
+        verify(stackRepository).findByCreatedBy(userWithNoOrganization);
     }
 
     @Test
@@ -102,22 +102,22 @@ class StackRestControllerTest {
     @Test
     void getStack_shouldFindStack_forStandardUser() {
         // given
-        when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.of(stack));
+        when(stackRepository.findByIdAndOwnerOrganization("42", userOrganization)).thenReturn(Optional.of(stack));
 
         // when
         stackRestController.getStack("42", standardUser);
 
         // then
-        verify(stackRepository).findByIdAndOwnerTeam("42", userTeam);
+        verify(stackRepository).findByIdAndOwnerOrganization("42", userOrganization);
     }
 
     @Test
-    void getStack_shouldFindStack_forUserWithNoTeam() {
+    void getStack_shouldFindStack_forUserWithNoOrganization() {
         // given
         when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
 
         // when
-        stackRestController.getStack("42", userWithNoTeam);
+        stackRestController.getStack("42", userWithNoOrganization);
 
         // then
         verify(stackRepository).findById("42");
@@ -126,13 +126,13 @@ class StackRestControllerTest {
     @Test
     void getStack_shouldCalculateRunningCost_forStandardUser() {
         // given
-        when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.of(stack));
+        when(stackRepository.findByIdAndOwnerOrganization("42", userOrganization)).thenReturn(Optional.of(stack));
 
         // when
         stackRestController.getStack("42", standardUser);
 
         // then
-        verify(stackRepository).findByIdAndOwnerTeam("42", userTeam);
+        verify(stackRepository).findByIdAndOwnerOrganization("42", userOrganization);
         verify(stackCostCalculator).calculateRunningCostEstimation(stack);
     }
 
@@ -140,7 +140,7 @@ class StackRestControllerTest {
     void getStack_shouldThrowStackNotFoundException() {
         // given
         when(stackRepository.findById("12")).thenReturn(Optional.empty());
-        when(stackRepository.findByIdAndOwnerTeam("42", userTeam)).thenReturn(Optional.empty());
+        when(stackRepository.findByIdAndOwnerOrganization("42", userOrganization)).thenReturn(Optional.empty());
 
         // when/then
         assertThrows(StackNotFoundException.class, () -> stackRestController.getStack("12", adminUser));
@@ -150,11 +150,11 @@ class StackRestControllerTest {
     @Test
     void save_shouldSaveStack() {
         // when
-        stackRestController.save(stack, userTeam, standardUser);
+        stackRestController.save(stack, userOrganization, standardUser);
 
         // then
         assertThat(stack.getId()).isNotBlank();
-        assertThat(stack.getOwnerTeam()).isEqualTo(userTeam);
+        assertThat(stack.getOwnerOrganization()).isEqualTo(userOrganization);
         assertThat(stack.getCreatedBy()).isEqualTo(standardUser);
         assertThat(stack.getCreatedAt()).isEqualToIgnoringSeconds(LocalDateTime.now());
         verify(stackRepository).save(stack);

@@ -5,7 +5,7 @@ import io.gaia_app.registries.RegistryApi
 import io.gaia_app.registries.RegistryType
 import io.gaia_app.registries.gitlab.GitlabRepository
 import io.gaia_app.registries.service.RegistryService
-import io.gaia_app.teams.User
+import io.gaia_app.organizations.User
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
