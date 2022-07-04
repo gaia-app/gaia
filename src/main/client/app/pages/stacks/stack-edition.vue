@@ -264,7 +264,7 @@
         return this.stack.state !== 'ARCHIVED' && (this.stack.state === 'RUNNING' || this.stack.state === 'TO_UPDATE');
       },
       canUpdateStack() {
-        return this.stack.state !== 'ARCHIVED' && this.stack.state === 'TO_UPDATE';
+        return this.canStopStack;
       },
       canArchiveStack() {
         return this.stack.state !== 'ARCHIVED';
