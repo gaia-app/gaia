@@ -22,8 +22,20 @@ echo 'terraform {
     }
 }' > backend.tf
 
+set +e
+
+TF_VARS_URL={{externalUrl}}/api/runner/stacks/{{stackId}}.tfvars
 echo '[gaia] generating tfvars variable file'
-curl --silent --user {{stateApiUser}}:{{stateApiPassword}} {{externalUrl}}/api/runner/stacks/{{stackId}}.tfvars > gaia.auto.tfvars
+curl --silent --user {{stateApiUser}}:{{stateApiPassword}} $TF_VARS_URL > gaia.auto.tfvars
+
+GENERATE_TFVARS_RESULT=$?
+if [ $GENERATE_TFVARS_RESULT ]
+then
+    echo "[gaia] unable to get tfvars from url $TF_VARS_URL"
+    echo "[gaia] stopping execution"
+    return $GENERATE_TFVARS_RESULT
+fi
+set -e
 
 echo '[gaia] running terraform init'
 terraform version
