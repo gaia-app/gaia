@@ -5,6 +5,7 @@ import io.gaia_app.credentials.CredentialsRepository;
 import io.gaia_app.stacks.bo.*;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
+import io.gaia_app.stacks.repository.TerraformStateRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
 import io.gaia_app.organizations.Organization;
 import io.gaia_app.organizations.User;
@@ -54,6 +55,9 @@ class StackRestControllerTest {
 
     @Mock
     private CredentialsRepository credentialsRepository;
+
+    @Mock
+    private TerraformStateRepository terraformStateRepository;
 
     @BeforeEach
     void setUp() {
@@ -183,6 +187,7 @@ class StackRestControllerTest {
         // then
         verify(stackRepository).delete(stack);
         verify(jobRepository).deleteByStackId("42");
+        verify(terraformStateRepository).deleteById("42");
     }
 
     @Test
@@ -197,6 +202,7 @@ class StackRestControllerTest {
         // then
         verify(stackRepository).delete(stack);
         verify(jobRepository).deleteByStackId("42");
+        verify(terraformStateRepository).deleteById("42");
     }
 
     @Test
@@ -211,6 +217,7 @@ class StackRestControllerTest {
         // then
         verify(stackRepository).delete(stack);
         verify(jobRepository).deleteByStackId("42");
+        verify(terraformStateRepository).deleteById("42");
     }
 
     @Test

@@ -6,6 +6,7 @@ import io.gaia_app.stacks.bo.JobType;
 import io.gaia_app.stacks.bo.Stack;
 import io.gaia_app.stacks.repository.JobRepository;
 import io.gaia_app.stacks.repository.StackRepository;
+import io.gaia_app.stacks.repository.TerraformStateRepository;
 import io.gaia_app.stacks.service.StackCostCalculator;
 import io.gaia_app.organizations.Organization;
 import io.gaia_app.organizations.User;
@@ -31,16 +32,20 @@ public class StackRestController {
 
     private CredentialsRepository credentialsRepository;
 
+    private TerraformStateRepository stateRepository;
+
     @Autowired
     public StackRestController(
         StackRepository stackRepository,
         StackCostCalculator stackCostCalculator,
         JobRepository jobRepository,
-        CredentialsRepository credentialsRepository) {
+        CredentialsRepository credentialsRepository,
+        TerraformStateRepository stateRepository) {
         this.stackRepository = stackRepository;
         this.stackCostCalculator = stackCostCalculator;
         this.jobRepository = jobRepository;
         this.credentialsRepository = credentialsRepository;
+        this.stateRepository = stateRepository;
     }
 
     @GetMapping
@@ -93,6 +98,7 @@ public class StackRestController {
         // delete stack if it was found
         stackRepository.delete(stack);
         jobRepository.deleteByStackId(id);
+        stateRepository.deleteById(id);
     }
 
     @PostMapping("/{id}/{jobType}")
