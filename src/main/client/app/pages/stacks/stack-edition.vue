@@ -52,6 +52,14 @@
       >
         <font-awesome-icon icon="archive" /> Un-Archive
       </b-button>
+      <b-button
+        v-if="canDeleteStack"
+        variant="danger"
+        class="float-right mr-1"
+        @click="deleteStack"
+      >
+        <font-awesome-icon :icon="['far', 'trash-alt']" /> Delete
+      </b-button>
     </div>
 
     <div class="row margin_bottom_30">
@@ -211,6 +219,7 @@
     getStack,
     runStack,
     saveStack,
+    deleteStack,
   } from '@/shared/api/stacks-api';
   import { getState } from '@/shared/api/state-api';
 
@@ -270,6 +279,9 @@
         return this.stack.state !== 'ARCHIVED';
       },
       canUnarchiveStack() {
+        return this.stack.state === 'ARCHIVED';
+      },
+      canDeleteStack() {
         return this.stack.state === 'ARCHIVED';
       },
     },
@@ -354,6 +366,16 @@
         if (await displayConfirmDialog(this, { title: 'UnArchive Stack', message })) {
           this.stack.state = 'NEW';
           await saveStack(this.stack);
+        }
+      },
+      async deleteStack() {
+        // ask for confirmation
+        const message = 'This will delete the stack. '
+          + 'The stack and all related data will be deleted. '
+          + 'This will not destroy any Terraform resources the stack may have instanciated. Continue?';
+        if (await displayConfirmDialog(this, { title: 'Delete Stack', message })) {
+          await deleteStack(this.stack.id);
+          this.$router.push({ name: 'stacks' });
         }
       },
       async refreshJobs() {
