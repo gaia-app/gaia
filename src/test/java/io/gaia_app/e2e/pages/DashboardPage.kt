@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.time.Duration
 
 class DashboardPage (private val webDriver: WebDriver){
 
@@ -15,7 +16,7 @@ class DashboardPage (private val webDriver: WebDriver){
     }
 
     fun waitForPageLoaded() {
-        val wait = WebDriverWait(webDriver, 10)
+        val wait = WebDriverWait(webDriver, Duration.ofSeconds(10))
         wait.until(ExpectedConditions.titleIs("Gaia - Dashboard"))
         wait.until(ExpectedConditions.numberOfElementsToBe(By.className("b-overlay"), 0))
 

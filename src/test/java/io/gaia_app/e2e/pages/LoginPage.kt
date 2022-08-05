@@ -5,11 +5,12 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.FindBy
 import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.time.Duration
 
 class LoginPage(private val webDriver: WebDriver) {
 
     init {
-        val wait = WebDriverWait(webDriver, 10)
+        val wait = WebDriverWait(webDriver, Duration.ofSeconds(10))
         wait.until(titleIs("Gaia - A terraform UI - Login"))
     }
 
@@ -28,7 +29,7 @@ class LoginPage(private val webDriver: WebDriver) {
         submitButton.click()
 
         // wait for successful login
-        val wait = WebDriverWait(webDriver, 10)
+        val wait = WebDriverWait(webDriver, Duration.ofSeconds(10))
         wait.until(titleIs("Gaia - Dashboard"))
     }
 
