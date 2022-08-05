@@ -24,6 +24,7 @@ public class MongoContainer extends GenericContainer {
 
     public MongoContainer() {
         super("mongo:4.4");
+        this.addExposedPort(MONGO_PORT);
         withClasspathResourceMapping("db", GAIA_SCRIPTS_DIRECTORY, BindMode.READ_ONLY);
     }
 
@@ -35,7 +36,7 @@ public class MongoContainer extends GenericContainer {
     }
 
     public String connectionURL(){
-        return String.format("mongodb://%s:%d/gaia",this.getContainerIpAddress(), getMappedPort(MONGO_PORT));
+        return String.format("mongodb://%s:%d/gaia",this.getHost(), getFirstMappedPort());
     }
 
     public MongoDatabase getDatabase() {
