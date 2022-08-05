@@ -83,6 +83,17 @@ public class StackRestController {
         return stackRepository.save(stack);
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id, User user){
+        // try to load stack for the current user
+        var stack = this.getStack(id, user);
+        if(!stack.isArchived()){
+            throw new StackArchivedException();
+        }
+        // delete stack if it was found
+        stackRepository.delete(stack);
+    }
+
     @PostMapping("/{id}/{jobType}")
     public Map<String, String> launchJob(@PathVariable String id, @PathVariable JobType jobType, User user) {
         // get the stack

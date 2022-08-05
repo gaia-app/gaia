@@ -172,6 +172,55 @@ class StackRestControllerTest {
     }
 
     @Test
+    void delete_shouldRemoveStack_forAdmin(){
+        // given
+        when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
+        stack.setState(StackState.ARCHIVED);
+
+        //when
+        stackRestController.delete("42", adminUser);
+
+        // then
+        verify(stackRepository).delete(stack);
+    }
+
+    @Test
+    void delete_shouldRemoveStack_forStandardUser() {
+        // given
+        when(stackRepository.findByIdAndOwnerOrganization("42", userOrganization)).thenReturn(Optional.of(stack));
+        stack.setState(StackState.ARCHIVED);
+
+        // when
+        stackRestController.delete("42", standardUser);
+
+        // then
+        verify(stackRepository).delete(stack);
+    }
+
+    @Test
+    void delete_shouldRemoveStack_forUserWithoutOrganization() {
+        // given
+        when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
+        stack.setState(StackState.ARCHIVED);
+
+        // when
+        stackRestController.delete("42", userWithNoOrganization);
+
+        // then
+        verify(stackRepository).delete(stack);
+    }
+
+    @Test
+    void delete_shouldFail_forNonArchivedStacks(){
+        // given
+        when(stackRepository.findById("42")).thenReturn(Optional.of(stack));
+        stack.setState(StackState.RUNNING);
+
+        //when
+        assertThrows(StackArchivedException.class, () -> stackRestController.delete("42", adminUser));
+    }
+
+    @Test
     void launchJob_shouldConfigureAndSaveTheJob() {
         // given
         var stack = new Stack();
