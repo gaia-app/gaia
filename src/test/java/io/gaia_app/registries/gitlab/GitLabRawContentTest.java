@@ -6,7 +6,6 @@ import io.gaia_app.registries.RegistryType;
 import io.gaia_app.modules.bo.TerraformModule;
 import io.gaia_app.organizations.OAuth2User;
 import io.gaia_app.organizations.User;
-import org.bson.internal.Base64;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Base64;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +62,7 @@ class GitLabRawContentTest {
 
         var requestCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
-        var gitlabFile = new RegistryFile(Base64.encode("# Module Readme".getBytes()));
+        var gitlabFile = new RegistryFile(Base64.getEncoder().encodeToString("# Module Readme".getBytes()));
         var response = new ResponseEntity<>(gitlabFile, HttpStatus.OK);
 
         when(restTemplate.exchange(

@@ -5,7 +5,6 @@ import io.gaia_app.registries.RegistryFile
 import io.gaia_app.organizations.OAuth2User
 import io.gaia_app.organizations.User
 import org.assertj.core.api.Assertions.assertThat
-import org.bson.internal.Base64
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -16,6 +15,7 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.header
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
 import java.nio.charset.Charset
+import java.util.Base64
 
 
 @RestClientTest(GitlabRegistryApi::class)
@@ -77,7 +77,7 @@ class GitlabRegistryApiTest{
         val readmeContent = """
             # Sample README.md
         """
-        val sampleResult = RegistryFile(content = Base64.encode(readmeContent.toByteArray(Charset.defaultCharset())))
+        val sampleResult = RegistryFile(content = Base64.getEncoder().encodeToString(readmeContent.toByteArray(Charset.defaultCharset())))
         val detailsString = objectMapper.writeValueAsString(sampleResult)
         server.expect(requestTo("https://gitlab.com/api/v4/projects/15689/repository/files/README.md?ref=master"))
                 .andExpect(header("Authorization", "Bearer johnstoken"))
