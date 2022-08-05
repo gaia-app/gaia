@@ -44,7 +44,6 @@
 
         <antlr4.version>4.10.1</antlr4.version>
         <cucumber-jvm.version>7.5.0</cucumber-jvm.version>
-        <jersey.version>2.27</jersey.version>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
         <kotlin.version>1.6.21</kotlin.version>
         <kotlinx.version>1.5.1</kotlinx.version>
