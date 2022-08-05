@@ -182,6 +182,7 @@ class StackRestControllerTest {
 
         // then
         verify(stackRepository).delete(stack);
+        verify(jobRepository).deleteByStackId("42");
     }
 
     @Test
@@ -195,6 +196,7 @@ class StackRestControllerTest {
 
         // then
         verify(stackRepository).delete(stack);
+        verify(jobRepository).deleteByStackId("42");
     }
 
     @Test
@@ -208,6 +210,7 @@ class StackRestControllerTest {
 
         // then
         verify(stackRepository).delete(stack);
+        verify(jobRepository).deleteByStackId("42");
     }
 
     @Test

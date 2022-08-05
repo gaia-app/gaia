@@ -92,6 +92,7 @@ public class StackRestController {
         }
         // delete stack if it was found
         stackRepository.delete(stack);
+        jobRepository.deleteByStackId(id);
     }
 
     @PostMapping("/{id}/{jobType}")

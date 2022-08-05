@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository
 interface JobRepository : MongoRepository<Job, String> {
 
     fun findAllByStackIdOrderByScheduleTimeDesc(stackId: String): List<Job>
+    fun deleteByStackId(stackId: String);
 
 }
