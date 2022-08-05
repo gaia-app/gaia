@@ -17,6 +17,7 @@ data class User(
         @Id val username: String,
         @DBRef val organization: Organization?) {
 
+    @JsonProperty("admin")
     var isAdmin: Boolean = false
 
     var oAuth2User: OAuth2User? = null
