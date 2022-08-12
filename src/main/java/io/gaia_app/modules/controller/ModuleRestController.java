@@ -6,6 +6,7 @@ import io.gaia_app.modules.repository.TerraformModuleGitRepository;
 import io.gaia_app.modules.repository.TerraformModuleRepository;
 import io.gaia_app.registries.service.RegistryService;
 import io.gaia_app.organizations.User;
+import io.gaia_app.stacks.repository.StackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,12 +35,15 @@ public class ModuleRestController {
 
     private ModuleService moduleService;
 
+    private StackRepository stackRepository;
+
     @Autowired
-    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository, RegistryService registryService, ModuleService moduleService) {
+    public ModuleRestController(TerraformModuleRepository moduleRepository, TerraformModuleGitRepository moduleGitRepository, RegistryService registryService, ModuleService moduleService, StackRepository stackRepository) {
         this.moduleRepository = moduleRepository;
         this.moduleGitRepository = moduleGitRepository;
         this.registryService = registryService;
         this.moduleService = moduleService;
+        this.stackRepository = stackRepository;
     }
 
     @GetMapping
@@ -86,6 +90,22 @@ public class ModuleRestController {
         return moduleRepository.save(module);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteModule(@PathVariable String id, User user) {
+        var existingModule = moduleRepository.findById(id).orElseThrow(ModuleNotFoundException::new);
+        if (!existingModule.isAuthorizedFor(user)) {
+            throw new ModuleForbiddenException();
+        }
+
+        // find if module is still used by stacks
+        if( this.stackRepository.countStacksByModule(existingModule) > 0 ){
+            throw new CannotDeleteModuleException();
+        }
+
+        moduleRepository.delete(existingModule);
+    }
+
     @GetMapping(value = "/{id}/readme", produces = MediaType.TEXT_PLAIN_VALUE)
     public String readme(@PathVariable String id) {
         var module = moduleRepository.findById(id).orElseThrow();
@@ -127,5 +147,13 @@ class ModuleNotFoundException extends RuntimeException {
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
 class ModuleForbiddenException extends RuntimeException {
+}
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class CannotDeleteModuleException extends RuntimeException {
+
+    public CannotDeleteModuleException() {
+        super("Module cannot be deleted as some stacks still use it.");
+    }
 }
 

@@ -2,6 +2,7 @@ package io.gaia_app.modules.controller;
 
 import io.gaia_app.test.SharedMongoContainerTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,6 +35,7 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
         mongo.runScript("00_organization.js");
         mongo.runScript("10_user.js");
         mongo.runScript("20_module.js");
+        mongo.runScript("30_stack.js");
     }
 
     @Test
@@ -167,4 +169,33 @@ class ModuleRestControllerIT extends SharedMongoContainerTest {
                 .andExpect(jsonPath("$.name", is("new-module")));
     }
 
+    @Nested
+    class DeleteModule{
+
+        @Test
+        @WithMockUser("Mary J")
+        void deleteModule_shouldNotBeAuthorized_forWrongUser() throws Exception {
+            mockMvc.perform(delete("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
+                    .with(csrf()))
+                .andExpect(status().isForbidden());
+        }
+
+        @Test
+        void deleteModule_shouldNotBeAuthorized_withExistingStacks() throws Exception {
+            mockMvc.perform(delete("/api/modules/e01f9925-a559-45a2-8a55-f93dc434c676")
+                    .with(csrf()))
+                .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        void deleteModule_shouldWork_forModuleWithoutStacks() throws Exception {
+            mockMvc.perform(delete("/api/modules/b39ccd07-80f5-455f-a6b3-b94f915738c4")
+                    .with(csrf()))
+                .andExpect(status().isNoContent());
+        }
+
+
+    }
+
 }
+

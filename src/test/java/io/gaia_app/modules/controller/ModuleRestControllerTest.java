@@ -9,8 +9,10 @@ import io.gaia_app.registries.service.RegistryService;
 import io.gaia_app.organizations.Organization;
 import io.gaia_app.organizations.User;
 import io.gaia_app.modules.bo.TerraformModule;
+import io.gaia_app.stacks.repository.StackRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,6 +45,9 @@ class ModuleRestControllerTest {
 
     @Mock
     private ModuleService moduleService;
+
+    @Mock
+    private StackRepository stackRepository;
 
     private User admin;
 
@@ -272,6 +277,58 @@ class ModuleRestControllerTest {
 
         assertThat(module.getModuleMetadata().getUpdatedAt()).isEqualToIgnoringMinutes(LocalDateTime.now());
         assertThat(module.getModuleMetadata().getUpdatedBy()).isEqualTo(bob);
+    }
+
+    @Nested
+    class DeleteModules {
+        @Test
+        void deleteModule_shouldDeleteUnusedModule(){
+            // given
+            var module = new TerraformModule();
+            module.getModuleMetadata().setCreatedBy(bob);
+            when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+            when(stackRepository.countStacksByModule(module)).thenReturn(0L);
+
+            // when
+            moduleRestController.deleteModule("12", bob);
+
+            // then
+            verify(moduleRepository).findById("12");
+            verify(moduleRepository).delete(module);
+        }
+
+        @Test
+        void deleteModule_shouldThrowAnException_ifModuleIsInUse(){
+            // given
+            var module = new TerraformModule();
+            module.getModuleMetadata().setCreatedBy(bob);
+            when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+            when(stackRepository.countStacksByModule(module)).thenReturn(1L);
+
+            // when
+            assertThrows(CannotDeleteModuleException.class, () -> moduleRestController.deleteModule("12", bob));
+
+            // then
+            verify(moduleRepository).findById("12");
+            verifyNoMoreInteractions(moduleRepository);
+        }
+
+        @Test
+        void deleteModule_shouldThrowAnException_ifModuleIsUnauthorizedForUser(){
+            // given
+            var module = new TerraformModule();
+            module.getModuleMetadata().setCreatedBy(john);
+            when(moduleRepository.findById("12")).thenReturn(Optional.of(module));
+
+            // when
+            assertThrows(ModuleForbiddenException.class, () -> moduleRestController.deleteModule("12", bob));
+
+            // then
+            verify(moduleRepository).findById("12");
+            verifyNoMoreInteractions(moduleRepository);
+        }
     }
 
 }
