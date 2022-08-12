@@ -1,5 +1,47 @@
 # Changelog
 
+<a name="2.4.0"></a>
+## 2.4.0 (2022-08-12)
+
+### Added
+
+- ✨ : add delete module button [[a4766ea](https://github.com/gaia-app/gaia/commit/a4766ea24f88a4130d4d7ae5de024c2eeca04d2b)]
+- ✨ : add backend implementation [[b6513f3](https://github.com/gaia-app/gaia/commit/b6513f367f3b78547e9c9112346a79e1999f985d)]
+    * ✨ : add backend implementation ([99f6176](https://github.com/gaia-app/gaia/commit/99f6176346e5263b36a5ae7dc9dd611183ef613b))
+- ✨ : delete state related to stack [[4f9462e](https://github.com/gaia-app/gaia/commit/4f9462e862bca69a85c01ee7d36775674c0b6f02)]
+- ✨ : delete jobs related to stack [[dc9f931](https://github.com/gaia-app/gaia/commit/dc9f931c16414d334459abb864fcff0d374eb3aa)]
+- ✨ : add delete stack button [[8358021](https://github.com/gaia-app/gaia/commit/83580211919f316d56a5ef3fab5b6eb33f9b00dd)]
+- ➕ : explicit import of spring-boot-starter-logging dependency [[ec6d163](https://github.com/gaia-app/gaia/commit/ec6d163f00918e58d2d59aa25fdd40699215ef58)]
+- ✨ : allow running stacks to be updated [[cb178ef](https://github.com/gaia-app/gaia/commit/cb178eff8fa7272e52263283d028541956393c7e)]
+
+### Changed
+
+- 👽 : correct port mapping [[fb48a86](https://github.com/gaia-app/gaia/commit/fb48a86d32b52b4012d218bfa2b5fe9720180556)]
+- ♻️ : use correct Base64 type [[6136241](https://github.com/gaia-app/gaia/commit/613624139355c7e8896ccdf2ea4750147614aae7)]
+- 👽 : change duration type [[70ee36e](https://github.com/gaia-app/gaia/commit/70ee36e78d1a27981efec72c74e1a4a6f28068bf)]
+- ⬆️ : bump cucumber-jvm to 7.5.0 [[93975cc](https://github.com/gaia-app/gaia/commit/93975ccd79353de20b7be98972d821bc67ccd111)]
+- ⬆️ : bump antlr4 to 4.10.1 [[34caf21](https://github.com/gaia-app/gaia/commit/34caf2141f9289fe0c1478b4c6eb3bd9dc2340ac)]
+- ⬆️ : bump mustache to 0.9.10 [[569523a](https://github.com/gaia-app/gaia/commit/569523a982b04acdfa753b91f33053bc23a512bf)]
+- ♻️ : extract mustache.version as property [[5399fe3](https://github.com/gaia-app/gaia/commit/5399fe32c28a6db7c0fb04bb4f472080f382cb98)]
+- ⬆️ : bump testcontainers to 1.17.3 [[c3e6aa4](https://github.com/gaia-app/gaia/commit/c3e6aa43fbe22f828762a26a2d97a8bc369608a6)]
+- ⬆️ : bump spring-boot-starter-parent to 2.7.2 [[f80a9c2](https://github.com/gaia-app/gaia/commit/f80a9c2666209dd47b6a45480a68ec86c649fe53)]
+    * ⬆️ : bump spring-boot-starter-parent to 2.6.10 ([2e4e1fd](https://github.com/gaia-app/gaia/commit/2e4e1fd26f023777b94a9c7f720b4a29377e4e2c))
+- 👽 : add JsonProperty to isAdmin field [[0b1a652](https://github.com/gaia-app/gaia/commit/0b1a652cae266e04d3988c6fa810ab49d5064fcc)]
+- 📌 : lock jackson-databind to ${jackson-bom.version} [[891632d](https://github.com/gaia-app/gaia/commit/891632dc79f6326171ee6fb1b73280514d7b8bf1)]
+- ⬆️ : bump spring-vault to 2.3.2 [[895fa1e](https://github.com/gaia-app/gaia/commit/895fa1e632fd119353ae10830ffed0e015c41df8)]
+
+### Removed
+
+- 🔥 : remove unused jersey.version property [[1e9e5a9](https://github.com/gaia-app/gaia/commit/1e9e5a9101ac01204d09171f4fc5b948504a3c32)]
+- 🔥 : remove ClientForwardController [[7933fb5](https://github.com/gaia-app/gaia/commit/7933fb5bf023f9582d8adc901d93ff24c92d8435)]
+- 🔥 : remove hasSize assertion [[f82b44f](https://github.com/gaia-app/gaia/commit/f82b44f1734f3d8df01de2d3522acaefc6589986)]
+
+### Miscellaneous
+
+- 🚛 : rename Team to Organization [[e9fb489](https://github.com/gaia-app/gaia/commit/e9fb489288626263ac61416b0cca3f8777ac09d0)]
+- 🔀 : merge pull request [#699](https://github.com/gaia-app/gaia/issues/699) from gaia-app/feature/module-refresh-for-manually-imported-modules [[57e49d3](https://github.com/gaia-app/gaia/commit/57e49d361dbe7e180d485aa49763071fc2ea5b3c)]
+
+
 <a name="2.3.0"></a>
 ## 2.3.0 (2022-05-08)
 
