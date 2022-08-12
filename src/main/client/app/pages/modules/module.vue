@@ -151,6 +151,13 @@
         >
           <font-awesome-icon icon="save" /> Save
         </b-button>
+        <b-button
+          variant="danger"
+          class="ml-1"
+          @click="deleteModule"
+        >
+          <font-awesome-icon icon="save" /> Delete
+        </b-button>
       </form>
     </div>
   </div>
@@ -160,6 +167,7 @@
   import AppModuleVariable from '@/pages/modules/module-variable.vue';
   import AppTerraformImageInput from '@/pages/modules/terraform-image-input.vue';
   import {
+    deleteModule,
     getModule,
     refreshModule,
     updateModule,
@@ -221,6 +229,19 @@
         await updateModule(this.module)
           .then(() => displayNotification(this, { message: 'Module saved', variant: 'success' }))
           .catch(({ error, message }) => displayNotification(this, { title: error, message, variant: 'danger' }));
+      },
+      async deleteModule() {
+        const confirmMessage = 'This will delete the module. '
+          + 'Continue ?';
+        if (await displayConfirmDialog(this, { title: 'Delete Module', message: confirmMessage })) {
+          try {
+            this.module = await deleteModule(this.module.id);
+            displayNotification(this, { message: 'Module deleted', variant: 'success' });
+            this.$router.push({ name: 'modules' });
+          } catch ({ error, message }) {
+            displayNotification(this, { title: error, message, variant: 'danger' });
+          }
+        }
       },
       removeVar(variable) {
         this.module.variables.splice(this.module.variables.findIndex((v) => v.name === variable.name), 1);
