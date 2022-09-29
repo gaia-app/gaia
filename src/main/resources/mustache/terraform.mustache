@@ -2,8 +2,14 @@ set -e
 
 echo '[gaia] using image {{terraformImage}}'
 
-echo '[gaia] installing curl'
-apk -q add curl
+curl --version
+if $? > 0
+then
+  echo '[gaia] installing curl'
+  apk -q add curl
+else
+  echo '[gaia] curl already installed'
+fi
 
 echo '[gaia] cloning {{gitRepositoryUrl}}' | awk '{ sub(/oauth2:(.*)@/, "oauth2:[MASKED]@");}1'
 git clone {{gitRepositoryUrl}} module
