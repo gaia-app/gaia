@@ -79,7 +79,7 @@
         return !!this.image.repository;
       },
       isRepositoryValid() {
-        return /^[\w][\w.\-/]{0,127}$/.test(this.image.repository);
+        return /^[\w][\w.\-/:]{0,127}$/.test(this.image.repository);
       },
       isTagNotEmpty() {
         return !!this.image.tag && /^\S*$/.test(this.image.tag);
@@ -112,7 +112,7 @@
       formatRepository(value) {
         if (!value) return '';
         if (!value.includes(':')) return value;
-        [this.image.repository, this.image.tag] = value.split(':');
+        [this.image.host, this.image.repository, this.image.tag] = /(\S*):(\S*)/.exec(value);
         document.getElementById('image_tag').focus();
         return this.image.repository;
       },
