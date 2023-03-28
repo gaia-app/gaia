@@ -21,10 +21,10 @@ public class OrganizationsRestController {
         this.organizationsRepository = organizationsRepository;
     }
 
-    // @GetMapping
-    // public Organization organizations(){
-    //     return this.organizationsRepository.findAll();
-    // }
+    @GetMapping
+    public List<Organization> organizations(){
+        return this.organizationsRepository.findAll();
+    }
 
     @PostMapping
     public Organization createOrganization(@RequestBody Organization organization){
