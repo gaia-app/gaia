@@ -4,7 +4,7 @@ const modulesRoutes = [
     name: 'modules',
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/modules.vue'),
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Modules' }],
       title: 'Gaia - Modules',
     },
@@ -14,7 +14,7 @@ const modulesRoutes = [
     name: 'module_import',
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/module-import.vue'),
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module import' }],
       title: 'Gaia - Modules import',
     },
@@ -25,7 +25,7 @@ const modulesRoutes = [
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/module.vue'),
     props: true,
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module edition' }],
       title: 'Gaia - Module edition',
     },
@@ -36,7 +36,7 @@ const modulesRoutes = [
     component: () => import(/* webpackChunkName: "chunk-modules" */ '@/pages/modules/module-description.vue'),
     props: true,
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Modules', to: { name: 'modules' } }, { text: 'Module description' }],
       title: 'Gaia - Module description',
     },

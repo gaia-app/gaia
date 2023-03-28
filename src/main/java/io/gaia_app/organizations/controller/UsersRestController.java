@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Secured("ROLE_ADMIN")
+@Secured({"ROLE_SUPERADMIN", "ROLE_ADMIN"})
 public class UsersRestController {
 
     private UserService userService;

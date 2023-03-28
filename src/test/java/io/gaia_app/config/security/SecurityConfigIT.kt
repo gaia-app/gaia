@@ -119,7 +119,7 @@ class SecurityConfigIT {
     class FakeRestController {
 
         @GetMapping("/admin-access")
-        @Secured("ROLE_ADMIN")
+        @Secured("ROLE_SUPERADMIN")
         fun adminAccess() = "admin_access"
 
     }

@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/modules")
-@Secured({"ROLE_USER", "ROLE_ADMIN"})
+@Secured({"ROLE_SUPERADMIN", "ROLE_ADMIN", "ROLE_PROFESSOR"})
 public class ModuleRestController {
 
     private TerraformModuleRepository moduleRepository;

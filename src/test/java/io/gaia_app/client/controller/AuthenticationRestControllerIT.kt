@@ -46,7 +46,7 @@ class AuthenticationRestControllerIT: SharedMongoContainerTest() {
         mockMvc.perform(get("/auth/authorities"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$", hasSize<Any>(2)))
-            .andExpect(jsonPath("$", equalTo(listOf("ROLE_ADMIN", "ROLE_USER"))))
+            .andExpect(jsonPath("$", equalTo(listOf("ROLE_ADMIN", "ROLE_STUDENT"))))
     }
 
 }

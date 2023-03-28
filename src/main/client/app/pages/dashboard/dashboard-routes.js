@@ -6,7 +6,7 @@ const dashboardRoutes = [
     name: 'dashboard',
     component: AppDashboard,
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Dashboard' }],
       title: 'Gaia - Dashboard',
     },

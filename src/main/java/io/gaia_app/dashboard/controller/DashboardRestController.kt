@@ -20,7 +20,7 @@ class DashboardRestController(
     @GetMapping("/summary")
     fun summary(user: User, organization: Organization?) =
         when {
-            user.isAdmin -> {
+            (user.role == "superadmin" || user.role == "admin") -> {
                 mapOf(
                     "modulesCount" to moduleRepository.count(),
                     "runningStacksCount" to stackRepository.countStacksByState(StackState.RUNNING),

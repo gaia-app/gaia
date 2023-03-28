@@ -20,6 +20,10 @@ data class User(
     @JsonProperty("admin")
     var isAdmin: Boolean = false
 
+    @JsonProperty("admin")
+    var role: String = "user"
+
+
     var oAuth2User: OAuth2User? = null
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

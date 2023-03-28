@@ -327,6 +327,7 @@
           .catch(({ message }) => {
             displayNotification(this, { variant: 'info', message: `Error saving stack: ${message}` });
           });
+          this.stopStack();
       },
       async runStack() {
         // ask for confirmation
@@ -336,9 +337,11 @@
           const { jobId } = await runStack(this.stack.id);
           await planJob(jobId);
           this.$router.push({ name: 'job', params: { jobId } });
+          this.stopStack();
         }
       },
       async stopStack() {
+        console.log('Inside stop stack function');
         // ask for confirmation
         const message = 'This will completely stop the stack, and destroy all created resources. Continue?';
         if (await displayConfirmDialog(this, { title: 'Stop request', message })) {

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/credentials")
-@Secured({"ROLE_USER", "ROLE_ADMIN"})
+@Secured({"ROLE_SUPERADMIN", "ROLE_ADMIN"})
 public class CredentialsRestController {
 
     private CredentialsService credentialsService;

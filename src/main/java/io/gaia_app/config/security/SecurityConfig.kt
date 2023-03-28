@@ -91,9 +91,16 @@ class SecurityConfig(
 }
 
 fun io.gaia_app.organizations.User.toAuthorities(): List<GrantedAuthority> {
-    return if (this.isAdmin) {
-        listOf(SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("ROLE_USER"))
-    } else {
-        listOf(SimpleGrantedAuthority("ROLE_USER"))
+    return if (this.role == "superadmin") {
+        listOf(SimpleGrantedAuthority("ROLE_SUPERADMIN"), SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("ROLE_PROFESSOR"), SimpleGrantedAuthority("ROLE_STUDENT"))
+    } 
+    else if (this.role == "admin"){
+        listOf(SimpleGrantedAuthority("ROLE_ADMIN"), SimpleGrantedAuthority("ROLE_PROFESSOR"), SimpleGrantedAuthority("ROLE_STUDENT"))
+    }
+    else if (this.role == "professor"){
+        listOf(SimpleGrantedAuthority("ROLE_PROFESSOR"), SimpleGrantedAuthority("ROLE_STUDENT"))
+    }
+    else {
+        listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
     }
 }

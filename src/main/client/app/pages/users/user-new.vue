@@ -49,16 +49,60 @@
             :show-labels="false"
           />
         </b-form-group>
+
         <b-form-group
           label="Administrator"
           :description="user.admin === true ? 'The user is an administrator' : 'The user is not an administrator'"
         >
-          <b-form-checkbox
+          <!-- <b-form-checkbox
             v-model="user.admin"
             type="password"
             switch
             size="lg"
-          />
+          /> -->
+          <b-form-checkbox
+            v-model="user.role"
+            name="role"
+            value="superadmin"
+            switch
+            size="lg"
+            unchecked-value="user"
+          >
+            Super Admin
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            v-model="user.role"
+            name="role"
+            value="admin"
+            switch
+            size="lg"
+            unchecked-value="user"
+          >
+            Admin
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            v-model="user.role"
+            name="role"
+            value="professor"
+            switch
+            size="lg"
+            unchecked-value="user"
+          >
+            Professor
+          </b-form-checkbox>
+
+          <b-form-checkbox
+            v-model="user.role"
+            name="role"
+            value="student"
+            switch
+            size="lg"
+            unchecked-value="user"
+          >
+            Student
+          </b-form-checkbox>
         </b-form-group>
       </b-form>
     </div>
@@ -82,12 +126,14 @@
   import { getOrganizations } from '@/shared/api/organizations-api';
   import { createUser } from '@/shared/api/users-api';
   import { displayNotification } from '@/shared/services/modal-service';
+  // import { mapState } from 'vuex';
 
   export default {
     name: 'AppUserEdition',
     data: () => ({
       organizations: [],
       user: {},
+      authorities: []
     }),
     async created() {
       this.organizations = await getOrganizations();

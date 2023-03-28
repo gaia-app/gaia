@@ -4,7 +4,7 @@ const credentialsRoutes = [
     name: 'credentialsList',
     component: () => import(/* webpackChunkName: "chunk-credentials" */ '@/pages/credentials/credentials-list.vue'),
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Credentials' }],
       title: 'Gaia - Credentials',
     },
@@ -14,7 +14,7 @@ const credentialsRoutes = [
     name: 'new_credentials',
     component: () => import(/* webpackChunkName: "chunk-credentials" */ '@/pages/credentials/new-credentials'),
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Credentials', to: { name: 'credentialsList' } }, { text: 'New Credentials' }],
       title: 'Gaia - New credentials edition',
     },
@@ -25,7 +25,7 @@ const credentialsRoutes = [
     component: () => import(/* webpackChunkName: "chunk-credentials" */ '@/pages/credentials/credentials.vue'),
     props: true,
     meta: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT'],
       breadcrumb: [{ text: 'Credentials', to: { name: 'credentialsList' } }, { text: 'Credentials edition' }],
       title: 'Gaia - Credentials edition',
     },

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/api/settings")
-@Secured("ROLE_ADMIN")
+@Secured("ROLE_SUPERADMIN")
 class SettingsRestController(
         private val settings: Settings,
         private val settingsRepository: SettingsRepository) {
