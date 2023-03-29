@@ -8,6 +8,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Collections;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/api/organizations")
@@ -22,8 +27,15 @@ public class OrganizationsRestController {
     }
 
     @GetMapping
-    public List<Organization> organizations(){
-        return this.organizationsRepository.findAll();
+    @Secured("ROLE_ADMIN")
+    public List<Organization> organizations(User user){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SUPERADMIN"))) {
+            return this.organizationsRepository.findAll();
+        }
+        else {
+            return Collections.singletonList(user.getOrganization());
+        }
     }
 
     @PostMapping

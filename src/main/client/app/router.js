@@ -8,6 +8,7 @@ import { stacksRoutes } from '@/pages/stacks';
 import { credentialsRoutes } from '@/pages/credentials';
 import { settingsRoutes } from '@/pages/settings';
 import { usersRoutes } from '@/pages/users';
+import { labsRoutes } from '@/pages/labs';
 
 import {
   AppPageForbidden,
@@ -49,6 +50,7 @@ const router = new VueRouter({
     ...credentialsRoutes,
     ...settingsRoutes,
     ...usersRoutes,
+    ...labsRoutes,
     ...appRoutes,
   ],
 });

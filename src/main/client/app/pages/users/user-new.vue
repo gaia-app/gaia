@@ -133,7 +133,6 @@
     data: () => ({
       organizations: [],
       user: {},
-      authorities: []
     }),
     async created() {
       this.organizations = await getOrganizations();

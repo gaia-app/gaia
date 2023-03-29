@@ -45,6 +45,9 @@
           route: 'users', icon: 'user-friends', class: 'yellow_color', title: 'Users', roles: ['ROLE_ADMIN'],
         },
         {
+          route: 'labs', icon: 'user-friends', class: 'yellow_color', title: 'Labs', roles: ['ROLE_PROFESSOR'],
+        },
+        {
           route: 'organizations', icon: 'sitemap', class: 'yellow_color', title: 'Organizations', roles: ['ROLE_SUPERADMIN'],
         },
       ],
